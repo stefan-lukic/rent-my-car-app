@@ -1,0 +1,6 @@
+export enum CarType {
+  SALOON = 'SALOON',
+  ESTATE = 'ESTATE',
+  ROADSTER = 'ROADSTER',
+  HATCHBACK = 'HATCHBACK',
+}
