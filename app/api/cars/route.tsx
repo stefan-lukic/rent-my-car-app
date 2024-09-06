@@ -8,6 +8,8 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get('city');
   const start = searchParams.get('start');
   const end = searchParams.get('end');
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
 
   if (!city || !start || !end) {
     return NextResponse.json(
@@ -54,7 +56,16 @@ export async function GET(req: NextRequest) {
         )
     );
 
-    return NextResponse.json(availableCars);
+    const totalCars = availableCars.length;
+    const totalPages = Math.ceil(totalCars / limit);
+    const paginatedCars = availableCars.slice((page - 1) * limit, page * limit);
+
+    return NextResponse.json({
+      cars: paginatedCars,
+      currentPage: page,
+      totalPages: totalPages,
+      totalCars: totalCars,
+    });
   } catch (error) {
     console.error('Search error:', error);
     return NextResponse.json(

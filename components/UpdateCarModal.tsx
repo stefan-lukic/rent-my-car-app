@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { Button } from './UI/Button';
 import { ICar } from '@/lib/model/car/Car';
+import { CarMake } from '@/lib/model/car/CarMake';
+import { CarEngineType } from '@/lib/model/car/CarEngineType';
+import { CarType } from '@/lib/model/car/CarType';
+import { CarCity } from '@/lib/model/car/CarCity';
 
-type UpdateCarFields = Pick<ICar, 'make' | 'carModel' | 'engine' | 'power'>;
+type UpdateCarFields = Pick<
+  ICar,
+  'make' | 'carModel' | 'engine' | 'power' | 'carType' | 'city'
+>;
 
 interface UpdateCarModalProps {
   isOpen: boolean;
@@ -22,9 +29,13 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
     carModel: car.carModel,
     engine: car.engine,
     power: car.power,
+    carType: car.carType,
+    city: car.city,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setUpdatedCar({ ...updatedCar, [name]: value });
   };
@@ -68,14 +79,19 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             >
               Make
             </label>
-            <input
-              type="text"
+            <select
               id="make"
               name="make"
               value={updatedCar.make}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            >
+              {Object.values(CarMake).map((make) => (
+                <option key={make} value={make}>
+                  {make}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label
@@ -100,14 +116,19 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             >
               Engine
             </label>
-            <input
-              type="text"
+            <select
               id="engine"
               name="engine"
               value={updatedCar.engine}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
+            >
+              {Object.values(CarEngineType).map((engineType) => (
+                <option key={engineType} value={engineType}>
+                  {engineType}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label
@@ -124,6 +145,48 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="carType"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Type
+            </label>
+            <select
+              id="carType"
+              name="carType"
+              value={updatedCar.carType}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            >
+              {Object.values(CarType).map((carType) => (
+                <option key={carType} value={carType}>
+                  {carType}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700"
+            >
+              City
+            </label>
+            <select
+              id="city"
+              name="city"
+              value={updatedCar.city}
+              onChange={handleInputChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            >
+              {Object.values(CarCity).map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex justify-end space-x-2">
             <Button

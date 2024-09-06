@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 import { CarType } from './CarType';
 import { CarMake } from './CarMake';
 import { CarEngineType } from './CarEngineType';
+import { CarCity } from './CarCity';
 
 export interface ICar extends Document {
   _id: string;
@@ -10,7 +11,7 @@ export interface ICar extends Document {
   engine: CarEngineType;
   power: string;
   carType: CarType;
-  city: string;
+  city: CarCity;
   firstRegistration?: Date;
   image?: string;
   pricePerDay: number;
@@ -29,7 +30,7 @@ const carSchema: Schema<ICar> = new Schema(
     power: { type: String, required: true },
     carType: { type: String, required: true, enum: Object.values(CarType) },
     firstRegistration: { type: Date },
-    city: { type: String },
+    city: { type: String, required: true, enum: Object.values(CarCity) },
     image: { type: String },
     pricePerDay: { type: Number, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },

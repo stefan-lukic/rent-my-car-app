@@ -4,6 +4,7 @@ import Car from '@/lib/model/car/Car';
 import { CarType } from '@/lib/model/car/CarType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
+import { CarCity } from '@/lib/model/car/CarCity';
 
 export async function POST(request: NextRequest) {
   try {
@@ -70,6 +71,10 @@ export async function POST(request: NextRequest) {
         { message: 'Invalid engine type' },
         { status: 400 }
       );
+    }
+
+    if (!Object.values(CarCity).includes(carData.city as CarCity)) {
+      return NextResponse.json({ message: 'Invalid city' }, { status: 400 });
     }
 
     const newCar = new Car({

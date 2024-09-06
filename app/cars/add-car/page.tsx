@@ -10,6 +10,8 @@ import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+import { CarCity } from '@/lib/model/car/CarCity';
+
 export default function AddCarPage() {
   const [carData, setCarData] = useState({
     make: CarMake.MERCEDES,
@@ -17,7 +19,7 @@ export default function AddCarPage() {
     engine: CarEngineType.PETROL,
     power: '',
     carType: CarType.SALOON,
-    city: '',
+    city: CarCity.NOVI_SAD,
     firstRegistration: null as Date | null,
     image: null as File | null,
     owner: '',
@@ -86,7 +88,7 @@ export default function AddCarPage() {
         engine: '' as CarEngineType,
         power: '',
         carType: '' as CarType,
-        city: '',
+        city: '' as CarCity,
         firstRegistration: null,
         image: null,
         owner: session?.user?.id || '',
@@ -190,17 +192,22 @@ export default function AddCarPage() {
         </div>
         <div>
           <label htmlFor="city" className="block mb-1">
-            City
+            Car City
           </label>
-          <input
-            type="text"
+          <select
             id="city"
             name="city"
             value={carData.city}
             onChange={handleInputChange}
             required
             className="w-full p-2 border rounded"
-          />
+          >
+            {Object.values(CarCity).map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="firstRegistration" className="block mb-1">
