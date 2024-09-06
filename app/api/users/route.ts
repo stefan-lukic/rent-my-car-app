@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
 
     // Remove sensitive information before sending the response
     const { password, ...userWithoutPassword } = user.toObject();
+
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
     console.error('Error fetching user data:', error);

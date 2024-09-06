@@ -5,7 +5,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
-import { ICar } from '@/lib/model/Car';
+import { ICar } from '@/lib/model/car/Car';
+import SearchResults from './CarSearchResults';
 
 export default function CarRentalSearch() {
   const [city, setCity] = useState('');
@@ -14,8 +15,13 @@ export default function CarRentalSearch() {
   const [searchResults, setSearchResults] = useState<ICar[]>([]);
 
   const handleSearch = async () => {
+    if (!city || !startDate || !endDate) {
+      alert('Please fill in all fields');
+      return;
+    }
+
     const response = await fetch(
-      `/api/search?city=${city}&start=${startDate?.toISOString()}&end=${endDate?.toISOString()}`
+      `/api/cars?city=${encodeURIComponent(city)}&start=${startDate.toISOString()}&end=${endDate.toISOString()}`
     );
     const data = await response.json();
     setSearchResults(data);
@@ -24,19 +30,19 @@ export default function CarRentalSearch() {
   return (
     <div className="flex flex-col space-y-4 p-4 bg-white rounded-lg shadow-md">
       <input
+        className="p-2 border rounded-md"
         type="text"
         placeholder="Enter city"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        className="p-2 border rounded-md"
       />
       <div className="flex space-x-4">
         <DatePicker
           className="p-2 border rounded-md w-full"
           selected={startDate}
           selectsStart
-          startDate={startDate}
-          endDate={endDate}
+          startDate={startDate ?? undefined}
+          endDate={endDate ?? undefined}
           placeholderText="Start Date"
           onChange={(date: Date | null) => setStartDate(date)}
         />
@@ -44,30 +50,26 @@ export default function CarRentalSearch() {
           className="p-2 border rounded-md w-full"
           selected={endDate}
           selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
+          startDate={startDate ?? undefined}
+          endDate={endDate ?? undefined}
+          minDate={startDate ?? undefined}
           placeholderText="End Date"
           onChange={(date: Date | null) => setEndDate(date)}
         />
       </div>
       <Button
-        onClick={handleSearch}
         className="flex items-center justify-center"
+        onClick={handleSearch}
       >
         <SearchIcon className="mr-2" />
         Search
       </Button>
 
-      {searchResults.length > 0 && (
-        <ul>
-          {searchResults.map((car) => (
-            <li key={car.id}>
-              {car.carModel} - {car.city}
-            </li>
-          ))}
-        </ul>
-      )}
+      <SearchResults
+        cars={searchResults}
+        startDate={startDate}
+        endDate={endDate}
+      />
     </div>
   );
 }

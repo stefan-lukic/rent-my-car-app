@@ -1,37 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Car from '@/lib/model/car/Car';
+import Rental from '@/lib/model/Rental';
 import connectToDatabase from '@/lib/db/mongoose';
-import Car from '@/lib/model/Car';
 
-export async function GET(request: NextRequest) {
-  const city = request.nextUrl.searchParams.get('city');
-  const start = request.nextUrl.searchParams.get('start');
-  const end = request.nextUrl.searchParams.get('end');
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const city = searchParams.get('city');
+  const start = searchParams.get('start');
+  const end = searchParams.get('end');
+
+  if (!city || !start || !end) {
+    return NextResponse.json(
+      { error: 'Missing required parameters' },
+      { status: 400 }
+    );
+  }
+
+  await connectToDatabase();
 
   try {
-    await connectToDatabase();
+    const cars = await Car.find({ city: city });
 
-    let query: any = {};
-
-    if (city) {
-      query.city = { $regex: city, $options: 'i' };
-    }
-
-    if (start && end) {
-      query.availableDates = {
-        $elemMatch: {
-          $gte: new Date(start),
-          $lte: new Date(end),
+    // Find rentals that overlap with the specified date range
+    const overlappingRentals = await Rental.find({
+      car: { $in: cars.map((car) => car._id) },
+      $or: [
+        {
+          'rentalPeriod.startDate': {
+            $lte: new Date(end),
+            $gte: new Date(start),
+          },
         },
-      };
-    }
+        {
+          'rentalPeriod.endDate': {
+            $lte: new Date(end),
+            $gte: new Date(start),
+          },
+        },
+        {
+          $and: [
+            { 'rentalPeriod.startDate': { $lte: new Date(start) } },
+            { 'rentalPeriod.endDate': { $gte: new Date(end) } },
+          ],
+        },
+      ],
+    });
 
-    const cars = await Car.find(query);
+    // Filter out cars that have overlapping rentals
+    const availableCars = cars.filter(
+      (car) =>
+        !overlappingRentals.some(
+          (rental) => rental.car.toString() === car._id.toString()
+        )
+    );
 
-    return NextResponse.json(cars);
+    return NextResponse.json(availableCars);
   } catch (error) {
-    console.error('Error searching for cars:', error);
+    console.error('Search error:', error);
     return NextResponse.json(
-      { message: 'Error searching for cars' },
+      { error: 'An error occurred while searching for cars' },
       { status: 500 }
     );
   }

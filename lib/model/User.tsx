@@ -9,9 +9,12 @@ export interface IUser extends Document {
   emailVerified?: Date;
   image?: string;
   role: Role;
+  cars: mongoose.Types.ObjectId[];
+  rentals: mongoose.Types.ObjectId[];
+  createdAt: Date;
 }
 
-const UserSchema: Schema<IUser> = new Schema(
+const userSchema: Schema<IUser> = new Schema(
   {
     name: { type: String, required: false },
     password: { type: String, required: true },
@@ -19,6 +22,8 @@ const UserSchema: Schema<IUser> = new Schema(
     emailVerified: { type: Date },
     image: { type: String },
     role: { type: String },
+    cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }], // Cars owned by the user
+    rentals: [{ type: Schema.Types.ObjectId, ref: 'Rental' }], // Cars rented by the user
   },
   {
     timestamps: true,
@@ -26,5 +31,5 @@ const UserSchema: Schema<IUser> = new Schema(
 );
 
 const User: Model<IUser> =
-  mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+  mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 export default User;

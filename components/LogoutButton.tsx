@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import { Button } from './UI/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function LogoutButton() {

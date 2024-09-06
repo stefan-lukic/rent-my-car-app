@@ -1,0 +1,12 @@
+export enum CarMake {
+  MERCEDES = 'MERCEDES',
+  BMW = 'BMW',
+  AUDI = 'AUDI',
+  VOLKSWAGEN = 'VOLKSWAGEN',
+  TOYOTA = 'TOYOTA',
+  HONDA = 'HONDA',
+  FORD = 'FORD',
+  CHEVROLET = 'CHEVROLET',
+  NISSAN = 'NISSAN',
+  HYUNDAI = 'HYUNDAI',
+}

@@ -103,8 +103,8 @@ const ProfileForm = ({
         {type === 'sign-up' ? (
           <div className="flex-center flex-col">
             <button
-              type="submit"
               className="w-full p-4 bg-red-500 text-white rounded hover:bg-red-600"
+              type="submit"
               disabled={isLoading}
             >
               {isLoading ? 'Creating Account...' : 'Create Account'}
@@ -112,11 +112,11 @@ const ProfileForm = ({
 
             <button className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center">
               <Image
+                className="mr-2"
                 src="/icons/icon-google.svg"
                 alt="Google logo"
                 width={20}
                 height={20}
-                className="mr-2"
               />
               Sign up with Google
             </button>
@@ -124,16 +124,16 @@ const ProfileForm = ({
         ) : (
           <div className="flex-between">
             <button
-              type="submit"
               className="px-12 py-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600"
+              type="submit"
               disabled={isLoading}
             >
               {isLoading ? 'Logging In...' : 'Log In'}
             </button>
 
             <a
-              href="#"
               className="text-[var(--secondary-2)] hover:underline hover:underline-offset-4"
+              href="#"
             >
               Forget Password?
             </a>
