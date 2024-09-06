@@ -59,7 +59,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           >
             <div className="relative h-48 overflow-hidden">
               <img
-                className="w-full h-full object-cover transform -rotate-90"
+                className="w-full h-full object-cover transform"
                 src={car.image || '/placeholder-car.jpg'}
                 alt={car.carModel}
               />

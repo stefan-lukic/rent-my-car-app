@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Button } from './UI/Button';
 import { useRouter } from 'next/navigation';
 import UpdateCarModal from './UpdateCarModal';
+import CarCard from './CarCard';
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -55,14 +56,14 @@ const ProfilePage = () => {
     );
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
+    <div className="container mx-auto p-4 max-w-6xl">
+      <h1 className="text-4xl font-bold mb-8 p-4 text-left text-gray-800">
         My Profile
       </h1>
 
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="md:flex">
-          <div className="md:w-1/3 bg-gradient-to-b from-blue-50 to-blue-100 p-8 flex flex-col items-center">
+          <div className="md:w-1/3 bg-gradient-to-br from-blue-400 to-blue-600 p-8 flex flex-col items-center md:h-[calc(100vh-35rem)] md:sticky md:top-24 rounded-[10px]">
             <Image
               className="rounded-full shadow-lg mb-4 border-4 border-white"
               src={user?.image || '/default-profile.png'}
@@ -72,22 +73,22 @@ const ProfilePage = () => {
               priority={true}
             />
 
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            <h2 className="text-2xl font-semibold text-white mb-2">
               {user.name}
             </h2>
-            <p className="text-gray-600 mb-4">{user.email}</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-blue-100 mb-4">{user.email}</p>
+            <p className="text-sm text-blue-200">
               Member since: {new Date(user.createdAt).toLocaleDateString()}
             </p>
           </div>
           <div className="md:w-2/3 p-8">
             <div className="mb-8">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold text-gray-800">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl p-4 font-semibold text-gray-800">
                   My Cars
                 </h2>
                 <Button
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
                   onClick={() => router.push('/cars/add-car')}
                 >
                   Add Car
@@ -98,35 +99,18 @@ const ProfilePage = () => {
                   You haven't listed any cars yet.
                 </p>
               ) : (
-                <ul className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {cars.map((car) => (
-                    <li
+                    <CarCard
                       key={car._id}
-                      className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out flex justify-between items-center"
-                    >
-                      <div>
-                        <span className="font-medium text-lg">
-                          {car.make} {car.carModel}
-                        </span>
-                        <span className="text-gray-600 ml-2">
-                          ({car.engine})
-                        </span>
-                        <span className="ml-2 text-green-600 font-semibold">
-                          {car.power}
-                        </span>
-                      </div>
-                      <Button
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-                        onClick={() => {
-                          setSelectedCar(car);
-                          setIsUpdateModalOpen(true);
-                        }}
-                      >
-                        Update
-                      </Button>
-                    </li>
+                      car={car}
+                      onUpdate={() => {
+                        setSelectedCar(car);
+                        setIsUpdateModalOpen(true);
+                      }}
+                    />
                   ))}
-                </ul>
+                </div>
               )}
             </div>
             <div>
