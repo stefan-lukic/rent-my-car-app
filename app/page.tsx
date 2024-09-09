@@ -1,27 +1,27 @@
-import CarRentalSearch from '@/components/CarRentalSearch';
-import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-white to-gray-100">
-      <section className="text-center mt-24 mb-16 px-4">
-        <h2 className="text-5xl font-bold mb-4 text-gray-800">
-          Rent Your Car or Find the Perfect Ride
-        </h2>
-        <p className="text-xl mb-8 text-gray-60xp0">
-          Peer-to-peer car rental made easy and secure
+    <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
+      <section className="text-center mt-32 mb-16 px-4">
+        <h1 className="text-6xl font-extrabold mb-4 text-gray-900 leading-tight">
+          Rent Your Car or{' '}
+          <span className="text-blue-600">Find the Perfect Ride</span>
+        </h1>
+        <p className="text-xl mb-12 text-gray-600 max-w-2xl mx-auto">
+          Experience hassle-free, secure peer-to-peer car rentals with our
+          innovative platform
         </p>
-        <button className="bg-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 transition-colors shadow-lg">
+        <Link
+          href="/cars/car-list"
+          className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+        >
           Get Started Now
-        </button>
+        </Link>
       </section>
 
-      <section className="w-full max-w-6xl px-4 mb-16">
-        <CarRentalSearch />
-      </section>
-
-      <section id="how-it-works" className="w-full max-w-6xl mb-16 px-4">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
+      <section id="how-it-works" className="w-full max-w-6xl mb-24 px-4">
+        <h2 className="text-4xl font-bold mb-12 text-center text-gray-900">
           How It Works
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -45,10 +45,10 @@ export default function Home() {
           ].map((step, index) => (
             <div
               key={index}
-              className="text-center bg-white p-6 rounded-lg shadow-md"
+              className="text-center bg-white p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl"
             >
-              <div className="text-5xl mb-4">{step.icon}</div>
-              <h3 className="text-2xl font-semibold mb-2 text-gray-800">
+              <div className="text-6xl mb-6">{step.icon}</div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">
                 {step.title}
               </h3>
               <p className="text-gray-600">{step.description}</p>
@@ -57,8 +57,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="benefits" className="w-full max-w-6xl mb-16 px-4">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
+      <section
+        id="benefits"
+        className="w-full max-w-6xl mb-24 px-4 bg-blue-600 py-16 rounded-3xl"
+      >
+        <h2 className="text-4xl font-bold mb-12 text-center text-white">
           Benefits
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -72,35 +75,40 @@ export default function Home() {
           ].map((benefit, index) => (
             <div
               key={index}
-              className="flex items-center bg-white p-4 rounded-lg shadow-md"
+              className="flex items-center bg-white bg-opacity-10 p-6 rounded-lg"
             >
-              <div className="text-green-500 mr-4">✓</div>
-              <p className="text-lg text-gray-700">{benefit}</p>
+              <div className="text-green-400 mr-4 text-2xl">✓</div>
+              <p className="text-lg text-white font-medium">{benefit}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="testimonials" className="w-full max-w-6xl mb-16 px-4">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
+      <section id="testimonials" className="w-full max-w-6xl mb-24 px-4">
+        <h2 className="text-4xl font-bold mb-12 text-center text-gray-900">
           What Our Users Say
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {[
             {
               name: 'John D.',
               quote:
                 "RentMyCar has been a game-changer for me. I've made over $1000 in just two months!",
+              avatar: '👨🏻‍💼',
             },
             {
               name: 'Sarah M.',
               quote:
                 "I love the variety of cars available. It's perfect for trying out different vehicles before buying.",
+              avatar: '👩🏽‍🦱',
             },
           ].map((testimonial, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-gray-600 italic mb-4">"{testimonial.quote}"</p>
-              <p className="text-gray-800 font-semibold">
+            <div key={index} className="bg-white p-8 rounded-xl shadow-lg">
+              <div className="text-5xl mb-4">{testimonial.avatar}</div>
+              <p className="text-gray-700 italic mb-4 text-lg">
+                "{testimonial.quote}"
+              </p>
+              <p className="text-gray-900 font-bold text-xl">
                 - {testimonial.name}
               </p>
             </div>
@@ -108,19 +116,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full max-w-6xl mb-16 px-4 text-center">
-        <h2 className="text-4xl font-bold mb-4 text-gray-800">
+      <section className="w-full max-w-6xl mb-24 px-4 text-center">
+        <h2 className="text-5xl font-bold mb-6 text-gray-900">
           Ready to Get Started?
         </h2>
-        <p className="text-xl mb-8 text-gray-600">
+        <p className="text-xl mb-12 text-gray-600 max-w-2xl mx-auto">
           Join thousands of happy car owners and renters today!
         </p>
-        <button className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg">
+        <button className="bg-blue-600 text-white px-10 py-5 rounded-full text-xl font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
           Sign Up Now
         </button>
       </section>
 
-      <footer className="w-full text-center py-8 bg-gray-800 text-white">
+      <footer className="w-full text-center py-16 bg-gray-900 text-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>

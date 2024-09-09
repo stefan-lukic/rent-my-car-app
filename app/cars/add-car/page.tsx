@@ -9,7 +9,6 @@ import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 import { CarCity } from '@/lib/model/car/CarCity';
 
 export default function AddCarPage() {

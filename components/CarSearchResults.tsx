@@ -6,9 +6,14 @@ interface SearchResultsProps {
   startDate: Date | null;
   endDate: Date | null;
   onBookNow: () => void;
+  onViewDetails: () => void;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ car, onBookNow }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  car,
+  onBookNow,
+  onViewDetails,
+}) => {
   return (
     <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 flex flex-col">
       <div className="relative h-48 overflow-hidden">
@@ -32,6 +37,12 @@ const SearchResults: React.FC<SearchResultsProps> = ({ car, onBookNow }) => {
             onClick={onBookNow}
           >
             Book Now
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+            onClick={onViewDetails}
+          >
+            View details
           </button>
         </div>
       </div>

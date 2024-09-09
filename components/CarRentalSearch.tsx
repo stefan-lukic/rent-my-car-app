@@ -9,6 +9,8 @@ import { ICar } from '@/lib/model/car/Car';
 import SearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 
+import { useRouter } from 'next/navigation';
+
 export default function CarRentalSearch() {
   const [city, setCity] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -18,6 +20,7 @@ export default function CarRentalSearch() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCars, setTotalCars] = useState(0);
+  const router = useRouter();
 
   const handleSearch = async (page = 1) => {
     if (!city || !startDate || !endDate) {
@@ -35,19 +38,20 @@ export default function CarRentalSearch() {
     setTotalCars(data.totalCars);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const handlePageChange = async (newPage: number) => {
     setCurrentPage(newPage);
     await handleSearch(newPage);
 
-    // Scroll to 40 pixels above the sezrch of the page
+    // Scroll the search results into view
     const headerElement = document.getElementById('car-rental-search');
     if (headerElement) {
-      const yOffset = -40;
-      const y =
-        headerElement.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      headerElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -82,6 +86,10 @@ export default function CarRentalSearch() {
     }
   };
 
+  const handleViewDetails = (carId: string) => {
+    router.push(`/cars/${carId}`);
+  };
+
   return (
     <div
       id="car-rental-search"
@@ -94,6 +102,7 @@ export default function CarRentalSearch() {
         placeholder="Enter city"
         value={city}
         onChange={(e) => setCity(e.target.value)}
+        onKeyPress={handleKeyPress}
       />
       <div className="flex space-x-4">
         <DatePicker
@@ -134,6 +143,7 @@ export default function CarRentalSearch() {
               startDate={startDate}
               endDate={endDate}
               onBookNow={() => setSelectedCar(car)}
+              onViewDetails={() => handleViewDetails(car._id)}
             />
           ))}
         </div>
