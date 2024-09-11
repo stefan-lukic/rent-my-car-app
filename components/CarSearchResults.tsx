@@ -9,7 +9,7 @@ interface SearchResultsProps {
   onViewDetails: () => void;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({
+const CarSearchResults: React.FC<SearchResultsProps> = ({
   car,
   onBookNow,
   onViewDetails,
@@ -32,22 +32,24 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           <span className="text-lg font-bold text-green-600">
             ${car.pricePerDay}/day
           </span>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-            onClick={onBookNow}
-          >
-            Book Now
-          </button>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-            onClick={onViewDetails}
-          >
-            View details
-          </button>
+          <div className="flex space-x-2">
+            <button
+              className="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
+              onClick={onBookNow}
+            >
+              Book
+            </button>
+            <button
+              className="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
+              onClick={onViewDetails}
+            >
+              Details
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default SearchResults;
+export default CarSearchResults;

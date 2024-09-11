@@ -6,10 +6,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
-import SearchResults from './CarSearchResults';
+import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
-
-import { useRouter } from 'next/navigation';
+import CarDetailsDrawer from './CarDetailsDrawer';
 
 export default function CarRentalSearch() {
   const [city, setCity] = useState('');
@@ -20,7 +19,9 @@ export default function CarRentalSearch() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCars, setTotalCars] = useState(0);
-  const router = useRouter();
+  const [selectedCarDetails, setSelectedCarDetails] = useState<ICar | null>(
+    null
+  );
 
   const handleSearch = async (page = 1) => {
     if (!city || !startDate || !endDate) {
@@ -76,6 +77,10 @@ export default function CarRentalSearch() {
 
       if (response.ok) {
         alert('Booking successful!');
+        setSearchResults((prevResults) =>
+          prevResults.filter((car) => car._id !== selectedCar._id)
+        );
+        setTotalCars((prevTotal) => prevTotal - 1);
         setSelectedCar(null);
       } else {
         alert('Booking failed. Please try again.');
@@ -86,8 +91,18 @@ export default function CarRentalSearch() {
     }
   };
 
-  const handleViewDetails = (carId: string) => {
-    router.push(`/cars/${carId}`);
+  const handleViewDetails = async (carId: string) => {
+    try {
+      const response = await fetch(`/api/cars/${carId}`);
+      if (response.ok) {
+        const carData = await response.json();
+        setSelectedCarDetails(carData);
+      } else {
+        console.error('Failed to fetch car details');
+      }
+    } catch (error) {
+      console.error('Error fetching car details:', error);
+    }
   };
 
   return (
@@ -137,7 +152,7 @@ export default function CarRentalSearch() {
         <h2 className="text-2xl font-semibold mb-4">Search Results</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {searchResults.map((car) => (
-            <SearchResults
+            <CarSearchResults
               key={car._id}
               car={car}
               startDate={startDate}
@@ -179,6 +194,12 @@ export default function CarRentalSearch() {
           onBook={() => handleBookNow(startDate, endDate)}
         />
       )}
+
+      <CarDetailsDrawer
+        car={selectedCarDetails}
+        isOpen={!!selectedCarDetails}
+        onClose={() => setSelectedCarDetails(null)}
+      />
     </div>
   );
 }
