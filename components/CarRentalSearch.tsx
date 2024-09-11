@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
@@ -9,8 +9,13 @@ import { ICar } from '@/lib/model/car/Car';
 import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
+import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
-export default function CarRentalSearch() {
+export interface CarRentalSearchProps {
+  filters: CarFilterState;
+}
+
+export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
   const [city, setCity] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -23,15 +28,24 @@ export default function CarRentalSearch() {
     null
   );
 
+  useEffect(() => {
+    handleSearch();
+  }, [filters, startDate, endDate]);
+
   const handleSearch = async (page = 1) => {
-    if (!city || !startDate || !endDate) {
-      alert('Please fill in all fields');
+    if (!startDate || !endDate) {
       return;
     }
 
-    const response = await fetch(
-      `/api/cars?city=${encodeURIComponent(city)}&start=${startDate.toISOString()}&end=${endDate.toISOString()}&page=${page}&limit=10`
-    );
+    const queryParams = new URLSearchParams({
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
+      page: page.toString(),
+      limit: '10',
+      ...filters,
+    });
+
+    const response = await fetch(`/api/cars?${queryParams}`);
     const data = await response.json();
     setSearchResults(data.cars);
     setCurrentPage(data.currentPage);
