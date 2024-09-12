@@ -1,3 +1,4 @@
+import SignUpButton from '@/components/SignUpButton';
 import Link from 'next/link';
 
 export default function Home() {
@@ -123,9 +124,7 @@ export default function Home() {
         <p className="text-xl mb-12 text-gray-600 max-w-2xl mx-auto">
           Join thousands of happy car owners and renters today!
         </p>
-        <button className="bg-blue-600 text-white px-10 py-5 rounded-full text-xl font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-          Sign Up Now
-        </button>
+        <SignUpButton />
       </section>
 
       <footer className="w-full text-center py-16 bg-gray-900 text-white">

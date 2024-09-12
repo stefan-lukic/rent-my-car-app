@@ -5,8 +5,15 @@ import { CarType } from '@/lib/model/car/CarType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function POST(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     await connectToDatabase();
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CarFilters from '@/components/CarFilters';
 import CarRentalSearch from '@/components/CarRentalSearch';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';

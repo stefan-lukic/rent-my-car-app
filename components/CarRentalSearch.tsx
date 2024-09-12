@@ -16,30 +16,33 @@ export interface CarRentalSearchProps {
 }
 
 export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
-  const [city, setCity] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [searchResults, setSearchResults] = useState<ICar[]>([]);
+  const [searchParams, setSearchParams] = useState({
+    city: '',
+    startDate: null as Date | null,
+    endDate: null as Date | null,
+  });
+  const [searchState, setSearchState] = useState({
+    results: [] as ICar[],
+    currentPage: 1,
+    totalPages: 0,
+    totalCars: 0,
+  });
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCars, setTotalCars] = useState(0);
-  const [selectedCarDetails, setSelectedCarDetails] = useState<ICar | null>(
-    null
-  );
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
   useEffect(() => {
     handleSearch();
-  }, [filters, startDate, endDate]);
+  }, [filters, searchParams.startDate, searchParams.endDate]);
 
   const handleSearch = async (page = 1) => {
-    if (!startDate || !endDate) {
+    if (!searchParams.startDate || !searchParams.endDate) {
       return;
     }
 
     const queryParams = new URLSearchParams({
-      start: startDate.toISOString(),
-      end: endDate.toISOString(),
+      start: searchParams.startDate.toISOString(),
+      end: searchParams.endDate.toISOString(),
       page: page.toString(),
       limit: '10',
       ...filters,
@@ -47,10 +50,12 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
 
     const response = await fetch(`/api/cars?${queryParams}`);
     const data = await response.json();
-    setSearchResults(data.cars);
-    setCurrentPage(data.currentPage);
-    setTotalPages(data.totalPages);
-    setTotalCars(data.totalCars);
+    setSearchState({
+      results: data.cars,
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalCars: data.totalCars,
+    });
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,7 +65,6 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
   };
 
   const handlePageChange = async (newPage: number) => {
-    setCurrentPage(newPage);
     await handleSearch(newPage);
 
     // Scroll the search results into view
@@ -70,7 +74,27 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
     }
   };
 
-  const handleBookNow = async (
+  const handleBookNow = (car: ICar) => {
+    setSelectedCar(car);
+    setIsBookingModalOpen(true);
+  };
+
+  const handleViewDetails = async (carId: string) => {
+    try {
+      const response = await fetch(`/api/cars/${carId}`);
+      if (response.ok) {
+        const carData = await response.json();
+        setSelectedCar(carData);
+        setIsDetailsDrawerOpen(true);
+      } else {
+        console.error('Failed to fetch car details');
+      }
+    } catch (error) {
+      console.error('Error fetching car details:', error);
+    }
+  };
+
+  const handleBookingConfirmation = async (
     startDate: Date | null,
     endDate: Date | null
   ) => {
@@ -91,31 +115,21 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
 
       if (response.ok) {
         alert('Booking successful!');
-        setSearchResults((prevResults) =>
-          prevResults.filter((car) => car._id !== selectedCar._id)
-        );
-        setTotalCars((prevTotal) => prevTotal - 1);
+        setSearchState((prevState) => ({
+          ...prevState,
+          results: prevState.results.filter(
+            (car) => car._id !== selectedCar._id
+          ),
+          totalCars: prevState.totalCars - 1,
+        }));
         setSelectedCar(null);
+        setIsBookingModalOpen(false);
       } else {
-        alert('Booking failed. Please try again.');
+        alert('Booking failed. Please login and try again.');
       }
     } catch (error) {
       console.error('Error booking car:', error);
       alert('An error occurred. Please try again.');
-    }
-  };
-
-  const handleViewDetails = async (carId: string) => {
-    try {
-      const response = await fetch(`/api/cars/${carId}`);
-      if (response.ok) {
-        const carData = await response.json();
-        setSelectedCarDetails(carData);
-      } else {
-        console.error('Failed to fetch car details');
-      }
-    } catch (error) {
-      console.error('Error fetching car details:', error);
     }
   };
 
@@ -129,29 +143,35 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
         className="p-2 border rounded-md"
         type="text"
         placeholder="Enter city"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
+        value={searchParams.city}
+        onChange={(e) =>
+          setSearchParams({ ...searchParams, city: e.target.value })
+        }
         onKeyPress={handleKeyPress}
       />
       <div className="flex space-x-4">
         <DatePicker
           className="p-2 border rounded-md w-full"
-          selected={startDate}
+          selected={searchParams.startDate}
           selectsStart
-          startDate={startDate ?? undefined}
-          endDate={endDate ?? undefined}
+          startDate={searchParams.startDate ?? undefined}
+          endDate={searchParams.endDate ?? undefined}
           placeholderText="Start Date"
-          onChange={(date: Date | null) => setStartDate(date)}
+          onChange={(date: Date | null) =>
+            setSearchParams({ ...searchParams, startDate: date })
+          }
         />
         <DatePicker
           className="p-2 border rounded-md w-full"
-          selected={endDate}
+          selected={searchParams.endDate}
           selectsEnd
-          startDate={startDate ?? undefined}
-          endDate={endDate ?? undefined}
-          minDate={startDate ?? undefined}
+          startDate={searchParams.startDate ?? undefined}
+          endDate={searchParams.endDate ?? undefined}
+          minDate={searchParams.startDate ?? undefined}
           placeholderText="End Date"
-          onChange={(date: Date | null) => setEndDate(date)}
+          onChange={(date: Date | null) =>
+            setSearchParams({ ...searchParams, endDate: date })
+          }
         />
       </div>
       <Button
@@ -165,54 +185,65 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
       <div id="search-results" className="mt-6">
         <h2 className="text-2xl font-semibold mb-4">Search Results</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {searchResults.map((car) => (
+          {searchState.results.map((car) => (
             <CarSearchResults
               key={car._id}
               car={car}
-              startDate={startDate}
-              endDate={endDate}
-              onBookNow={() => setSelectedCar(car)}
+              startDate={searchParams.startDate}
+              endDate={searchParams.endDate}
+              onBookNow={() => handleBookNow(car)}
               onViewDetails={() => handleViewDetails(car._id)}
             />
           ))}
         </div>
-        {totalPages > 1 && (
+        {searchState.totalPages > 1 && (
           <div className="mt-4 flex justify-center">
             <Button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
+              onClick={() => handlePageChange(searchState.currentPage - 1)}
+              disabled={searchState.currentPage === 1}
             >
               Previous
             </Button>
             <span className="mx-4">
-              Page {currentPage} of {totalPages}
+              Page {searchState.currentPage} of {searchState.totalPages}
             </span>
             <Button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(searchState.currentPage + 1)}
+              disabled={searchState.currentPage === searchState.totalPages}
             >
               Next
             </Button>
           </div>
         )}
-        <p className="text-center mt-2">Total cars: {totalCars}</p>
+        <p className="text-center mt-2">Total cars: {searchState.totalCars}</p>
       </div>
 
       {selectedCar && (
         <BookingDialog
           car={selectedCar}
-          isOpen={!!selectedCar}
-          startDate={startDate}
-          endDate={endDate}
-          onClose={() => setSelectedCar(null)}
-          onBook={() => handleBookNow(startDate, endDate)}
+          isOpen={isBookingModalOpen}
+          startDate={searchParams.startDate}
+          endDate={searchParams.endDate}
+          onClose={() => {
+            setIsBookingModalOpen(false);
+            setSelectedCar(null);
+          }}
+          onBook={() =>
+            handleBookingConfirmation(
+              searchParams.startDate,
+              searchParams.endDate
+            )
+          }
         />
       )}
 
       <CarDetailsDrawer
-        car={selectedCarDetails}
-        isOpen={!!selectedCarDetails}
-        onClose={() => setSelectedCarDetails(null)}
+        car={selectedCar}
+        isOpen={isDetailsDrawerOpen}
+        onClose={() => {
+          setIsDetailsDrawerOpen(false);
+          setSelectedCar(null);
+        }}
       />
     </div>
   );
