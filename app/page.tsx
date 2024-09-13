@@ -134,19 +134,9 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Company</h3>
               <ul>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/about" className="hover:text-blue-300">
                     About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-300">
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-300">
-                    Press
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -154,19 +144,19 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Support</h3>
               <ul>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/help" className="hover:text-blue-300">
                     Help Center
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/safety" className="hover:text-blue-300">
                     Safety
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/cancellation" className="hover:text-blue-300">
                     Cancellation Options
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -174,19 +164,14 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Legal</h3>
               <ul>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/terms" className="hover:text-blue-300">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-blue-300">
+                  <Link href="/privacy" className="hover:text-blue-300">
                     Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-300">
-                    Cookie Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
