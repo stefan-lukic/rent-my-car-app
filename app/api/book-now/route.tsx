@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Rental from '@/lib/model/Rental';
 import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]/route';
 import connectToDatabase from '@/lib/db/mongoose';
+import { authOptions } from '@/lib/authOptions';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);

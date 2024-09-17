@@ -8,7 +8,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const carId = params.id;
+  const carId = params?.id;
 
   if (!carId) {
     return NextResponse.json({ error: 'Car ID is required' }, { status: 400 });

@@ -15,7 +15,7 @@ export default function About() {
         traditional rental companies.
       </p>
       <p className="text-lg mb-8 text-gray-700">
-        We're committed to building a community of trust, where car owners can
+        We`re committed to building a community of trust, where car owners can
         earn extra income and renters can find the perfect vehicle for their
         needs.
       </p>

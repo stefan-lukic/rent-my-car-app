@@ -10,7 +10,7 @@ export default function Safety() {
               Our Commitment to Your Safety
             </h2>
             <p className="text-base text-gray-500 mb-4">
-              At RentMyCar, your safety is our top priority. We've implemented
+              At RentMyCar, your safety is our top priority. We`ve implemented
               several measures to ensure a secure experience for both car owners
               and renters.
             </p>

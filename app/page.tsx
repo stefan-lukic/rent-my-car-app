@@ -107,7 +107,7 @@ export default function Home() {
             <div key={index} className="bg-white p-8 rounded-xl shadow-lg">
               <div className="text-5xl mb-4">{testimonial.avatar}</div>
               <p className="text-gray-700 italic mb-4 text-lg">
-                "{testimonial.quote}"
+                `{testimonial.quote}`
               </p>
               <p className="text-gray-900 font-bold text-xl">
                 - {testimonial.name}

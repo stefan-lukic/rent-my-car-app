@@ -31,10 +31,6 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    handleSearch();
-  }, [filters, searchParams.startDate, searchParams.endDate]);
-
   const handleSearch = async (page = 1) => {
     if (!searchParams.startDate || !searchParams.endDate) {
       return;

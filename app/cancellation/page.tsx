@@ -12,7 +12,7 @@ export default function CancellationOptions() {
               Our Flexible Cancellation Policy
             </h2>
             <p className="text-base text-gray-500 mb-4">
-              We understand that plans can change. That's why we offer flexible
+              We understand that plans can change. That`s why we offer flexible
               cancellation options for both car owners and renters.
             </p>
 
@@ -42,7 +42,7 @@ export default function CancellationOptions() {
                 time may incur a penalty
               </li>
               <li>
-                Repeated cancellations may affect your listing's visibility
+                Repeated cancellations may affect your listing`s visibility
               </li>
             </ul>
           </div>
@@ -55,11 +55,11 @@ export default function CancellationOptions() {
             </h3>
             <ol className="list-decimal pl-5 space-y-2 text-base text-gray-500">
               <li>Log in to your RentMyCar account</li>
-              <li>Go to 'My Reservations' in your dashboard</li>
+              <li>Go to `My Reservations`` in your dashboard</li>
               <li>Find the reservation you want to cancel</li>
-              <li>Click on 'Cancel Reservation' and follow the prompts</li>
+              <li>Click on `Cancel Reservation` and follow the prompts</li>
               <li>
-                You'll receive a confirmation email once the cancellation is
+                You`ll receive a confirmation email once the cancellation is
                 processed
               </li>
             </ol>

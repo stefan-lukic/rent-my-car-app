@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import connectToDatabase from '@/lib/db/mongoose';
+import { authOptions } from '@/lib/authOptions';
 
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(authOptions);

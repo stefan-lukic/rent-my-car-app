@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICar } from '@/lib/model/car/Car';
-
+import Image from 'next/image';
 interface SearchResultsProps {
   car: ICar;
   startDate: Date | null;
@@ -17,10 +17,11 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
   return (
     <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 flex flex-col">
       <div className="relative h-48 overflow-hidden">
-        <img
-          className="w-full h-full object-cover transform"
+        <Image
           src={car.image || '/placeholder-car.jpg'}
           alt={car.carModel}
+          width={500}
+          height={300}
         />
       </div>
       <div className="p-4 flex-grow flex flex-col justify-between">

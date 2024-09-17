@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { sidebarLinks } from "@/helper/constants";
-import Image from "next/image";
+import { sidebarLinks } from '@/helper/constants';
+import Image from 'next/image';
 
 const Sidebar = () => {
   return (

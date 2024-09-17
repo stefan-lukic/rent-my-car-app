@@ -6,7 +6,7 @@ import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/authOptions';
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);

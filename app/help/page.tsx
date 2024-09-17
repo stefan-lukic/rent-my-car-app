@@ -42,7 +42,7 @@ export default function HelpCenter() {
 
         <div className="mt-8 text-center">
           <p className="text-base text-gray-500">
-            Can't find what you're looking for?{' '}
+            Can`t find what you`re looking for?
             <Link
               href="/contact"
               className="font-medium text-blue-600 hover:text-blue-500"

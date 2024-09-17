@@ -112,7 +112,7 @@ const ProfilePage = () => {
         </div>
         {cars.length === 0 ? (
           <p className="text-gray-600 italic">
-            You haven't listed any cars yet.
+            You haven`t listed any cars yet.
           </p>
         ) : (
           <>
