@@ -7,6 +7,7 @@ import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
+import User from '@/lib/model/User';
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -91,6 +92,10 @@ export async function POST(request: NextRequest) {
     });
 
     await newCar.save();
+
+    await User.findByIdAndUpdate(session.user.id, {
+      $push: { cars: newCar._id },
+    });
 
     return NextResponse.json(
       { message: 'Car added successfully', car: newCar },

@@ -41,6 +41,7 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
       end: searchParams.endDate.toISOString(),
       page: page.toString(),
       limit: '10',
+      city: searchParams.city,
       ...filters,
     });
 

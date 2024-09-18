@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
   const make = searchParams.get('make');
   const carType = searchParams.get('carType');
   const engine = searchParams.get('engine');
+  const city = searchParams.get('city');
 
   if (!start || !end) {
     return NextResponse.json(
@@ -35,6 +36,7 @@ export async function GET(req: NextRequest) {
     if (make && make !== '') filter.make = make;
     if (carType && carType !== '') filter.carType = carType;
     if (engine && engine !== '') filter.engine = engine;
+    if (city && city !== '') filter.city = city; // Add city filter
 
     const cars = await Car.find(filter);
 
