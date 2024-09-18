@@ -4,6 +4,7 @@ import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
+import { sendBookingEmail } from '@/lib/emailService/sendEmail';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -52,6 +53,15 @@ export async function POST(req: NextRequest) {
     });
 
     await rental.save();
+
+    // TODO implement sendrig or some other mailing service in sendEmail.tsx
+    // await sendBookingEmail(
+    //   session.user.email || '',
+    //   car,
+    //   new Date(startDate),
+    //   new Date(endDate)
+    // );
+
     return NextResponse.json(
       { message: 'Booking successful', rental },
       { status: 201 }

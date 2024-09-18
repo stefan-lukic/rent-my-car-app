@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     if (make && make !== '') filter.make = make;
     if (carType && carType !== '') filter.carType = carType;
     if (engine && engine !== '') filter.engine = engine;
-    if (city && city !== '') filter.city = city; // Add city filter
+    if (city && city !== '') filter.city = city;
 
     const cars = await Car.find(filter);
 
