@@ -127,6 +127,9 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
     } catch (error) {
       console.error('Error booking car:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setIsBookingModalOpen(false);
+      setSelectedCar(null);
     }
   };
 
