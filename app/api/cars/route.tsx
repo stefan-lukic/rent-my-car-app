@@ -83,7 +83,6 @@ export async function GET(req: NextRequest) {
       appliedFilters: filter,
     });
   } catch (error) {
-    console.error('Search error:', error);
     return NextResponse.json(
       { error: 'An error occurred while searching for cars' },
       { status: 500 }

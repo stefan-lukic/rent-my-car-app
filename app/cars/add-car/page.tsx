@@ -79,8 +79,6 @@ export default function AddCarPage() {
         throw new Error('Failed to add car');
       }
 
-      const result = await response.json();
-      console.log('Car added successfully:', result.car);
       setCarData({
         make: '' as CarMake,
         carModel: '',
@@ -95,7 +93,6 @@ export default function AddCarPage() {
       });
       alert('Car added successfully!');
     } catch (error) {
-      console.error('Error adding car:', error);
       alert('Failed to add car. Please try again.');
     }
   };

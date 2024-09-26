@@ -119,8 +119,6 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
           ),
           totalCars: prevState.totalCars - 1,
         }));
-        setSelectedCar(null);
-        setIsBookingModalOpen(false);
       } else {
         alert('Booking failed. Please login and try again.');
       }

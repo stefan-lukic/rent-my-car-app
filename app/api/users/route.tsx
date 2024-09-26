@@ -22,7 +22,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
-    console.error('Error fetching user data:', error);
     return NextResponse.json(
       { message: 'Error fetching user data' },
       { status: 500 }
