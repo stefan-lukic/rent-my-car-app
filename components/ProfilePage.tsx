@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import UpdateCarModal from './UpdateCarModal';
 import CarCard from './CarCard';
 import ReactPaginate from 'react-paginate';
+import RentalCard from './RentalCard';
+import { RentalWithCar } from '@/types/RentalWithCar';
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -19,6 +21,7 @@ const ProfilePage = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [carsPerPage] = useState(4);
+  const [rentals, setRentals] = useState<RentalWithCar[]>([]);
 
   const router = useRouter();
 
@@ -43,6 +46,18 @@ const ProfilePage = () => {
         })
         .then((carsData) => setCars(carsData))
         .catch((error) => console.error('Error fetching data:', error));
+
+      fetch(`/api/my-rentals?userId=${session.user.id}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch rentals data');
+          }
+          return res.json();
+        })
+        .then((rentalData) => {
+          setRentals(rentalData);
+        })
+        .catch((error) => console.error('Error fetching rentals:', error));
     }
   }, [session]);
 
@@ -100,60 +115,70 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
+      <div className="mb-6 flex">
+        <div className="w-1/2 pr-4">
           <h2 className="text-xl font-semibold text-gray-800">My Cars</h2>
-          <Button
-            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-sm rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-            onClick={() => router.push('/cars/add-car')}
-          >
-            Add Car
-          </Button>
+          {cars.length === 0 ? (
+            <p className="text-gray-600 italic">
+              You haven`t listed any cars yet.
+            </p>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {currentCars.map((car) => (
+                  <CarCard
+                    key={car._id}
+                    car={car}
+                    onUpdate={() => {
+                      setSelectedCar(car);
+                      setIsUpdateModalOpen(true);
+                    }}
+                  />
+                ))}
+              </div>
+              <ReactPaginate
+                previousLabel={'Previous'}
+                nextLabel={'Next'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+                containerClassName={
+                  'pagination flex justify-left mt-6 space-x-2'
+                }
+                pageClassName={
+                  'px-2 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
+                }
+                pageLinkClassName={''}
+                previousClassName={
+                  'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+                }
+                nextClassName={
+                  'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+                }
+                breakClassName={'px-3 py-2'}
+                activeClassName={'bg-blue-500 text-white'}
+              />
+            </>
+          )}
         </div>
-        {cars.length === 0 ? (
-          <p className="text-gray-600 italic">
-            You haven`t listed any cars yet.
-          </p>
-        ) : (
-          <>
+        <div className="w-1/2 pl-4">
+          <h2 className="text-xl font-semibold text-gray-800">
+            My Booked Cars
+          </h2>
+          {rentals.length === 0 ? (
+            <p className="text-gray-600 italic">
+              You haven't booked any cars yet.
+            </p>
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {currentCars.map((car) => (
-                <CarCard
-                  key={car._id}
-                  car={car}
-                  onUpdate={() => {
-                    setSelectedCar(car);
-                    setIsUpdateModalOpen(true);
-                  }}
-                />
+              {rentals.map((rental) => (
+                <RentalCard key={rental._id} rental={rental} />
               ))}
             </div>
-            <ReactPaginate
-              previousLabel={'Previous'}
-              nextLabel={'Next'}
-              breakLabel={'...'}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageChange}
-              containerClassName={
-                'pagination flex justify-center mt-6 space-x-2'
-              }
-              pageClassName={
-                'px-2 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
-              }
-              pageLinkClassName={''}
-              previousClassName={
-                'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
-              }
-              nextClassName={
-                'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
-              }
-              breakClassName={'px-3 py-2'}
-              activeClassName={'bg-blue-500 text-white'}
-            />
-          </>
-        )}
+          )}
+        </div>
       </div>
       {selectedCar && (
         <UpdateCarModal
