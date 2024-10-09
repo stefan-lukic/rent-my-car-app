@@ -169,7 +169,7 @@ const ProfilePage = () => {
           </h2>
           {rentals.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven't booked any cars yet.
+              You haven`t booked any cars yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
