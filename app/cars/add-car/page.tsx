@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI/Button';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CarType } from '@/lib/model/car/CarType';
@@ -20,14 +20,13 @@ export default function AddCarPage() {
     carType: CarType.SALOON,
     city: CarCity.NOVI_SAD,
     firstRegistration: null as Date | null,
-    image: null as File | null,
+    images: [] as File[],
     owner: '',
     pricePerDay: '',
   });
 
   const { data: session, status } = useSession();
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.id) {
@@ -43,8 +42,11 @@ export default function AddCarPage() {
     const { name, value, type } = e.target;
     if (type === 'file') {
       const fileInput = e.target as HTMLInputElement;
-      const file = fileInput.files?.[0] || null;
-      setCarData((prev) => ({ ...prev, [name]: file }));
+      const files = fileInput.files;
+      if (files) {
+        const filesArray = Array.from(files);
+        setCarData((prev) => ({ ...prev, images: filesArray }));
+      }
     } else {
       setCarData((prev) => ({ ...prev, [name]: value }));
     }
@@ -60,12 +62,12 @@ export default function AddCarPage() {
       const formData = new FormData();
       Object.entries(carData).forEach(([key, value]) => {
         if (value !== null) {
-          if (value instanceof Date) {
+          if (Array.isArray(value)) {
+            value.forEach((file) => formData.append('images', file));
+          } else if (value instanceof Date) {
             formData.append(key, value.toISOString());
-          } else if (typeof value === 'string' || value instanceof File) {
-            formData.append(key, value);
           } else {
-            formData.append(key, String(value));
+            formData.append(key, value);
           }
         }
       });
@@ -80,14 +82,14 @@ export default function AddCarPage() {
       }
 
       setCarData({
-        make: '' as CarMake,
+        make: CarMake.MERCEDES,
         carModel: '',
-        engine: '' as CarEngineType,
+        engine: CarEngineType.PETROL,
         power: '',
-        carType: '' as CarType,
-        city: '' as CarCity,
+        carType: CarType.SALOON,
+        city: CarCity.NOVI_SAD,
         firstRegistration: null,
-        image: null,
+        images: [],
         owner: session?.user?.id || '',
         pricePerDay: '',
       });
@@ -217,16 +219,16 @@ export default function AddCarPage() {
           />
         </div>
         <div>
-          <label htmlFor="image" className="block mb-1">
-            Car Image
+          <label htmlFor="images" className="block mb-1">
+            Car Images
           </label>
           <input
             type="file"
-            id="image"
-            name="image"
+            id="images"
+            name="images"
             onChange={handleInputChange}
             accept="image/*"
-            ref={fileInputRef}
+            multiple
             className="w-full p-2 border rounded"
           />
         </div>

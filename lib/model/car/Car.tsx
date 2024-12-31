@@ -13,7 +13,7 @@ export interface ICar extends Document {
   carType: CarType;
   city: CarCity;
   firstRegistration?: Date;
-  image?: string;
+  images?: string[];
   pricePerDay: number;
   owner: mongoose.Types.ObjectId;
 }
@@ -31,7 +31,7 @@ const carSchema: Schema<ICar> = new Schema(
     carType: { type: String, required: true, enum: Object.values(CarType) },
     firstRegistration: { type: Date },
     city: { type: String, required: true, enum: Object.values(CarCity) },
-    image: { type: String },
+    images: { type: [String] },
     pricePerDay: { type: Number, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },

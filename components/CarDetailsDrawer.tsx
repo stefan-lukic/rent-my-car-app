@@ -75,7 +75,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 <div className="mt-8">
                   <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                     <Image
-                      src={car.image || '/placeholder-car.jpg'}
+                      src={car?.images?.[0] || '/placeholder-car.jpg'}
                       alt={`${car.make} ${car.carModel}`}
                       width={500}
                       height={300}

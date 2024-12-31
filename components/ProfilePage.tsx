@@ -5,13 +5,13 @@ import { IUser } from '@/lib/model/User';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from './UI/Button';
 import { useRouter } from 'next/navigation';
 import UpdateCarModal from './UpdateCarModal';
 import CarCard from './CarCard';
 import ReactPaginate from 'react-paginate';
 import RentalCard from './RentalCard';
 import { RentalWithCar } from '@/types/RentalWithCar';
+import { Button } from './UI/Button';
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -180,6 +180,9 @@ const ProfilePage = () => {
           )}
         </div>
       </div>
+
+      <Button onClick={() => router.push('/cars/add-car')}>Add new car</Button>
+
       {selectedCar && (
         <UpdateCarModal
           isOpen={isUpdateModalOpen}

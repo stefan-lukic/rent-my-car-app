@@ -16,7 +16,7 @@ interface RentalCardProps {
 const RentalCard: React.FC<RentalCardProps> = ({ rental }) => {
   return (
     <div className="bg-white shadow-lg rounded-lg p-4">
-      <h3 className="text-lg font-semibold">{rental.car.carModel}</h3>
+      <h3 className="text-lg font-semibold">{rental.car?.carModel}</h3>
       <p>
         Rented from:{' '}
         {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} to{' '}

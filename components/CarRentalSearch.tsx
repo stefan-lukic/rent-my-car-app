@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
@@ -13,7 +13,7 @@ import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
-  initialCars: ICar[];
+  initialCars?: ICar[];
 }
 
 const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
@@ -82,7 +82,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
   };
 
   const handleViewDetails = async (carId: string) => {
-    const car = searchState.results.find((car) => car._id === carId);
+    const car = searchState?.results?.find((car) => car._id === carId);
     if (car) {
       setSelectedCar(car);
       await fetchOwnerDetails(car.owner.toString());
@@ -127,7 +127,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
         alert('Booking successful!');
         setSearchState((prevState) => ({
           ...prevState,
-          results: prevState.results.filter(
+          results: prevState.results?.filter(
             (car) => car._id !== selectedCar._id
           ),
           totalCars: prevState.totalCars - 1,

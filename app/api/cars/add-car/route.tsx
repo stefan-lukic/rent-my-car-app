@@ -19,10 +19,10 @@ export async function POST(request: NextRequest) {
     await connectToDatabase();
 
     const formData = await request.formData();
-    const image = formData.get('image') as File | null;
+    const images: File[] = Array.from(formData.getAll('images')) as File[];
 
-    let imageBase64 = '';
-    if (image) {
+    const imageBase64Array: string[] = [];
+    for (const image of images) {
       const bytes = await image.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
@@ -35,7 +35,9 @@ export async function POST(request: NextRequest) {
         .jpeg({ quality: 80 })
         .toBuffer();
 
-      imageBase64 = `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`;
+      imageBase64Array.push(
+        `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`
+      );
     }
 
     const carData = Object.fromEntries(formData);
@@ -87,7 +89,7 @@ export async function POST(request: NextRequest) {
 
     const newCar = new Car({
       ...carData,
-      image: imageBase64,
+      images: imageBase64Array,
       owner: carData.owner,
     });
 
