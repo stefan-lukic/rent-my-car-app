@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
@@ -13,21 +13,26 @@ import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
+  initialCars: ICar[];
 }
 
-export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
+const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
+  filters,
+  initialCars,
+}) => {
   const [searchParams, setSearchParams] = useState({
     city: '',
     startDate: null as Date | null,
     endDate: null as Date | null,
   });
   const [searchState, setSearchState] = useState({
-    results: [] as ICar[],
+    results: initialCars,
     currentPage: 1,
     totalPages: 0,
     totalCars: 0,
   });
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [owner, setOwner] = useState<any>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
@@ -77,17 +82,25 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
   };
 
   const handleViewDetails = async (carId: string) => {
+    const car = searchState.results.find((car) => car._id === carId);
+    if (car) {
+      setSelectedCar(car);
+      await fetchOwnerDetails(car.owner.toString());
+      setIsDetailsDrawerOpen(true);
+    }
+  };
+
+  const fetchOwnerDetails = async (ownerId: string) => {
     try {
-      const response = await fetch(`/api/cars/${carId}`);
+      const response = await fetch(`/api/users/${ownerId}`);
+      const data = await response.json();
       if (response.ok) {
-        const carData = await response.json();
-        setSelectedCar(carData);
-        setIsDetailsDrawerOpen(true);
+        setOwner(data);
       } else {
-        console.error('Failed to fetch car details');
+        console.error(data.message);
       }
     } catch (error) {
-      console.error('Error fetching car details:', error);
+      console.error('Error fetching owner details:', error);
     }
   };
 
@@ -183,7 +196,7 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
       <div id="search-results" className="mt-6">
         <h2 className="text-2xl font-semibold mb-4">Search Results</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {searchState.results.map((car) => (
+          {searchState.results?.map((car) => (
             <CarSearchResults
               key={car._id}
               car={car}
@@ -216,6 +229,19 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
         <p className="text-center mt-2">Total cars: {searchState.totalCars}</p>
       </div>
 
+      {selectedCar && owner && (
+        <CarDetailsDrawer
+          car={selectedCar}
+          owner={owner}
+          isOpen={isDetailsDrawerOpen}
+          onClose={() => {
+            setIsDetailsDrawerOpen(false);
+            setSelectedCar(null);
+            setOwner(null);
+          }}
+        />
+      )}
+
       {selectedCar && (
         <BookingDialog
           car={selectedCar}
@@ -234,15 +260,8 @@ export default function CarRentalSearch({ filters }: CarRentalSearchProps) {
           }
         />
       )}
-
-      <CarDetailsDrawer
-        car={selectedCar}
-        isOpen={isDetailsDrawerOpen}
-        onClose={() => {
-          setIsDetailsDrawerOpen(false);
-          setSelectedCar(null);
-        }}
-      />
     </div>
   );
-}
+};
+
+export default CarRentalSearch;

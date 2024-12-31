@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
+import HowItWorksModal from './HowItWorksModal';
+import { howItWorksContent, howItWorksIcons } from '@/helper/constants';
+import OwnerCard from './OwnerCard';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
+  owner: {
+    name: string;
+    email: string;
+    profilePicture: string;
+    rating: number;
+  };
   isOpen: boolean;
   onClose: () => void;
 }
 
 const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   car,
+  owner,
   isOpen,
   onClose,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   if (!car || !isOpen) return null;
 
   return (
@@ -91,6 +111,23 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     </ul>
                   </div>
                 </div>
+
+                <OwnerCard owner={owner} />
+
+                <button
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                  onClick={handleOpenModal}
+                >
+                  See How It Works
+                </button>
+
+                <HowItWorksModal
+                  title="How It Works"
+                  isOpen={isModalOpen}
+                  content={howItWorksContent}
+                  icons={howItWorksIcons}
+                  onClose={handleCloseModal}
+                />
               </div>
             </div>
           </div>
