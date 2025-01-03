@@ -22,6 +22,8 @@ const ProfilePage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [carsPerPage] = useState(4);
   const [rentals, setRentals] = useState<RentalWithCar[]>([]);
+  const [currentRentalPage, setCurrentRentalPage] = useState(0);
+  const [rentalsPerPage] = useState(4);
 
   const router = useRouter();
 
@@ -74,6 +76,17 @@ const ProfilePage = () => {
     setCurrentPage(selected);
   };
 
+  const rentalPageCount = Math.ceil(rentals.length / rentalsPerPage);
+  const rentalOffset = currentRentalPage * rentalsPerPage;
+  const currentRentals = rentals.slice(
+    rentalOffset,
+    rentalOffset + rentalsPerPage
+  );
+
+  const handleRentalPageChange = ({ selected }: { selected: number }) => {
+    setCurrentRentalPage(selected);
+  };
+
   if (!user) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -114,6 +127,13 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+
+      <Button
+        onClick={() => router.push('/cars/add-car')}
+        className="bg-green-500 text-white hover:bg-green-600"
+      >
+        Add Car
+      </Button>
 
       <div className="mb-6 flex">
         <div className="w-1/2 pr-4">
@@ -167,21 +187,40 @@ const ProfilePage = () => {
           <h2 className="text-xl font-semibold text-gray-800">
             My Booked Cars
           </h2>
-          {rentals.length === 0 ? (
+          {currentRentals.length === 0 ? (
             <p className="text-gray-600 italic">
               You haven`t booked any cars yet.
             </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {rentals.map((rental) => (
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 w-full max-w-lg">
+              {currentRentals.map((rental) => (
                 <RentalCard key={rental._id} rental={rental} />
               ))}
             </div>
           )}
+          <ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'...'}
+            pageCount={rentalPageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handleRentalPageChange}
+            containerClassName={'pagination flex justify-left mt-6 space-x-2'}
+            pageClassName={
+              'px-2 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
+            }
+            previousClassName={
+              'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+            }
+            nextClassName={
+              'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+            }
+            breakClassName={'px-3 py-2'}
+            activeClassName={'bg-blue-500 text-white'}
+          />
         </div>
       </div>
-
-      <Button onClick={() => router.push('/cars/add-car')}>Add new car</Button>
 
       {selectedCar && (
         <UpdateCarModal

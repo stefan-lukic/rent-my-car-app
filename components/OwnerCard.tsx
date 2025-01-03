@@ -4,6 +4,7 @@ interface OwnerCardProps {
   owner: {
     name: string;
     email: string;
+    contactInfo: string;
     profilePicture: string;
     rating: number;
   };
@@ -20,6 +21,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ owner }) => {
       <div>
         <h3 className="text-lg font-semibold">{owner.name}</h3>
         <p className="text-gray-600">{owner.email}</p>
+        <p className="text-gray-600">{owner.contactInfo}</p>
         <p className="text-yellow-500">Rating: {owner.rating} ★</p>
       </div>
     </div>

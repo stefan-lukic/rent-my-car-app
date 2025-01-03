@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
+
 interface SearchResultsProps {
   car: ICar;
   startDate: Date | null;
@@ -14,15 +15,48 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
   onBookNow,
   onViewDetails,
 }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = () => {
+    if (car.images && currentImageIndex < car.images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
   return (
     <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 flex flex-col">
       <div className="relative h-48 overflow-hidden">
         <Image
-          src={car.images?.[0] || '/placeholder-car.jpg'}
+          src={car.images?.[currentImageIndex] || '/placeholder-car.jpg'}
           alt={car.carModel}
           width={500}
           height={300}
+          className="object-cover"
         />
+        {car.images && car.images.length > 1 && (
+          <div className="absolute inset-0 flex justify-between items-center">
+            <button
+              className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-2xl ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              onClick={handlePrevImage}
+              disabled={currentImageIndex === 0}
+            >
+              &lt;
+            </button>
+            <button
+              className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-2xl ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              onClick={handleNextImage}
+              disabled={currentImageIndex === car.images.length - 1}
+            >
+              &gt;
+            </button>
+          </div>
+        )}
       </div>
       <div className="p-4 flex-grow flex flex-col justify-between">
         <div>

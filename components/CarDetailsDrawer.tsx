@@ -10,6 +10,7 @@ interface CarDetailsDrawerProps {
   owner: {
     name: string;
     email: string;
+    contactInfo: string;
     profilePicture: string;
     rating: number;
   };
@@ -24,6 +25,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   onClose,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for current image index
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -31,6 +33,18 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleNextImage = () => {
+    if (car && car.images && currentImageIndex < car.images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
   };
 
   if (!car || !isOpen) return null;
@@ -73,14 +87,63 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 </div>
 
                 <div className="mt-8">
-                  <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <Image
-                      src={car?.images?.[0] || '/placeholder-car.jpg'}
-                      alt={`${car.make} ${car.carModel}`}
-                      width={500}
-                      height={300}
-                      className="object-center object-cover"
-                    />
+                  <div className="relative">
+                    <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                      <Image
+                        src={
+                          car.images?.[currentImageIndex] ||
+                          '/placeholder-car.jpg'
+                        }
+                        alt={`${car.make} ${car.carModel}`}
+                        width={500}
+                        height={300}
+                        className="object-center object-cover"
+                      />
+                    </div>
+                    {car.images && car.images.length > 1 && (
+                      <div className="absolute inset-0 flex justify-between items-center">
+                        <button
+                          className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-3xl ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          onClick={handlePrevImage}
+                          disabled={currentImageIndex === 0}
+                        >
+                          <span className="sr-only">Previous</span>
+                          <svg
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-3xl ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          onClick={handleNextImage}
+                          disabled={currentImageIndex === car.images.length - 1}
+                        >
+                          <span className="sr-only">Next</span>
+                          <svg
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-4">
                     <h2 className="text-2xl font-bold text-gray-900">
