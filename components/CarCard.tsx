@@ -13,7 +13,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
       <div className="relative h-48 w-full overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
-            src={car.images?.[0] || '/default-car.jpg'}
+            src={car.images?.[0] || ''}
             alt={`${car.make} ${car.carModel}`}
             layout="fill"
             objectFit="contain"
