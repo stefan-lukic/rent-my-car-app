@@ -1,3 +1,3 @@
 export function getBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  return 'https://rent-my-car-app.vercel.app' || 'http://localhost:3000';
 }
