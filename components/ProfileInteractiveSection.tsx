@@ -68,7 +68,7 @@ const ProfileInteractiveSection = ({
           <h2 className="text-xl font-semibold text-gray-800">My Cars</h2>
           {cars.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven't listed any cars yet.
+              You haven`t listed any cars yet.
             </p>
           ) : (
             <>
