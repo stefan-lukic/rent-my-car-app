@@ -18,17 +18,14 @@ export default async function MyProfilePage() {
     return null;
   }
 
-  // change url for prod
   const userRes = await fetch(
     `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`
   );
   const user = await userRes.json();
 
-  // change url for prod
   const carsRes = await fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`);
   const cars = await carsRes.json();
 
-  // change url for prod
   const rentalsRes = await fetch(
     `${baseUrl}/api/my-rentals?userId=${user._id}`
   );
