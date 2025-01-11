@@ -7,7 +7,6 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
-
 export const metadata: Metadata = {
   title: 'Rent My Car',
   description: 'Car rental service',
