@@ -1,8 +1,10 @@
+import { getBaseUrl } from '@/app/api/api';
 import ProfilePage from '@/components/ProfilePage';
 import { getServerSession } from 'next-auth/next';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
+  const baseUrl = getBaseUrl();
 
   if (!session) {
     return {
@@ -18,19 +20,17 @@ export default async function MyProfilePage() {
 
   // change url for prod
   const userRes = await fetch(
-    `http://localhost:3000/api/users?email=${encodeURIComponent(session.user.email)}`
+    `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`
   );
   const user = await userRes.json();
 
   // change url for prod
-  const carsRes = await fetch(
-    `http://localhost:3000/api/cars/my-cars?userId=${user._id}`
-  );
+  const carsRes = await fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`);
   const cars = await carsRes.json();
 
   // change url for prod
   const rentalsRes = await fetch(
-    `http://localhost:3000/api/my-rentals?userId=${user._id}`
+    `${baseUrl}/api/my-rentals?userId=${user._id}`
   );
   const rentals = await rentalsRes.json();
 
