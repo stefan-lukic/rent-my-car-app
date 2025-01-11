@@ -23,21 +23,37 @@ export async function POST(request: NextRequest) {
 
     const imageBase64Array: string[] = [];
     for (const image of images) {
-      const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+      try {
+        const bytes = await image.arrayBuffer();
+        const buffer = Buffer.from(bytes);
 
-      // Import sharp dynamically only on the server
-      const sharp = (await import('sharp')).default;
+        // Import sharp dynamically only on the server
+        const sharp = (await import('sharp')).default;
 
-      // Resize and compress the image
-      const resizedBuffer = await sharp(buffer)
-        .resize({ width: 800, height: 600, fit: 'inside' })
-        .jpeg({ quality: 80 })
-        .toBuffer();
+        // Resize and compress the image more aggressively
+        const resizedBuffer = await sharp(buffer)
+          .resize({ width: 800, height: 600, fit: 'inside' })
+          .jpeg({ quality: 60 }) // Reduced quality for smaller file size
+          .toBuffer();
 
-      imageBase64Array.push(
-        `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`
-      );
+        // Check if the base64 string would be too large (roughly 6MB)
+        if (resizedBuffer.length > 6 * 1024 * 1024) {
+          return NextResponse.json(
+            { message: 'Image too large after compression' },
+            { status: 400 }
+          );
+        }
+
+        imageBase64Array.push(
+          `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`
+        );
+      } catch (imageError) {
+        console.error('Error processing image:', imageError);
+        return NextResponse.json(
+          { message: 'Error processing image' },
+          { status: 400 }
+        );
+      }
     }
 
     const carData = Object.fromEntries(formData);
@@ -104,6 +120,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    console.error('Error in POST handler:', error);
     return NextResponse.json(
       { message: 'Error adding new car' },
       { status: 500 }
