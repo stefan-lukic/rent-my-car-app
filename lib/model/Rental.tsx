@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { ICar } from './car/Car';
 
 export interface IRental extends Document {
   _id: string;
