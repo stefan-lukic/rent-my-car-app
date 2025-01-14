@@ -112,12 +112,10 @@ const ProfileInteractiveSection = ({
           )}
         </div>
         <div className="w-1/2 pl-4">
-          <h2 className="text-xl font-semibold text-gray-800">
-            My Booked Cars
-          </h2>
+          <h2 className="text-xl font-semibold text-gray-800">My Rentals</h2>
           {currentRentals.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven`t booked any cars yet.
+              You haven`t rented any cars yet.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 w-full max-w-lg">
