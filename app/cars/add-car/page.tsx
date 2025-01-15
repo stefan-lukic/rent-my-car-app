@@ -210,6 +210,20 @@ export default function AddCarPage() {
           </select>
         </div>
         <div>
+          <label htmlFor="carLocation" className="block mb-1">
+            Car Location
+          </label>
+          <input
+            type="text"
+            id="carLocation"
+            name="carLocation"
+            value={carData.carLocation}
+            onChange={handleInputChange}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
           <label htmlFor="firstRegistration" className="block mb-1">
             First Registration
           </label>
@@ -243,20 +257,6 @@ export default function AddCarPage() {
             id="pricePerDay"
             name="pricePerDay"
             value={carData.pricePerDay}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="carLocation" className="block mb-1">
-            Car Location
-          </label>
-          <input
-            type="text"
-            id="carLocation"
-            name="carLocation"
-            value={carData.carLocation}
             onChange={handleInputChange}
             required
             className="w-full p-2 border rounded"
