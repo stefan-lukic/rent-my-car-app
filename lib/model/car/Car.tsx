@@ -12,6 +12,7 @@ export interface ICar extends Document {
   power: string;
   carType: CarType;
   city: CarCity;
+  carLocation: string;
   firstRegistration?: Date;
   images?: string[];
   pricePerDay: number;
@@ -31,6 +32,7 @@ const carSchema: Schema<ICar> = new Schema(
     carType: { type: String, required: true, enum: Object.values(CarType) },
     firstRegistration: { type: Date },
     city: { type: String, required: true, enum: Object.values(CarCity) },
+    carLocation: { type: String, required: true },
     images: { type: [String] },
     pricePerDay: { type: Number, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },

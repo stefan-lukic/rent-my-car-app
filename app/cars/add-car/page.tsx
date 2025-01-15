@@ -19,6 +19,7 @@ export default function AddCarPage() {
     power: '',
     carType: CarType.SALOON,
     city: CarCity.NOVI_SAD,
+    carLocation: '',
     firstRegistration: null as Date | null,
     images: [] as File[],
     owner: '',
@@ -88,6 +89,7 @@ export default function AddCarPage() {
         power: '',
         carType: CarType.SALOON,
         city: CarCity.NOVI_SAD,
+        carLocation: '',
         firstRegistration: null,
         images: [],
         owner: session?.user?.id || '',
@@ -241,6 +243,20 @@ export default function AddCarPage() {
             id="pricePerDay"
             name="pricePerDay"
             value={carData.pricePerDay}
+            onChange={handleInputChange}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label htmlFor="carLocation" className="block mb-1">
+            Car Location
+          </label>
+          <input
+            type="text"
+            id="carLocation"
+            name="carLocation"
+            value={carData.carLocation}
             onChange={handleInputChange}
             required
             className="w-full p-2 border rounded"
