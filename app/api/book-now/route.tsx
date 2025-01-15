@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     const rental = new Rental({
       car: carId,
-      renter: userId,
+      rentee: userId,
       rentalPeriod: {
         startDate: new Date(startDate),
         endDate: new Date(endDate),

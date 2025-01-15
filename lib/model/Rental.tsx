@@ -4,6 +4,7 @@ export interface IRental extends Document {
   _id: string;
   car: Schema.Types.ObjectId;
   renter: Schema.Types.ObjectId;
+  rentee: Schema.Types.ObjectId;
   rentalPeriod: {
     startDate: Date;
     endDate: Date;
@@ -14,7 +15,8 @@ export interface IRental extends Document {
 const rentalSchema: Schema<IRental> = new Schema(
   {
     car: { type: Schema.Types.ObjectId, ref: 'Car', required: true },
-    renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    renter: { type: Schema.Types.ObjectId, ref: 'User', required: false },
+    rentee: { type: Schema.Types.ObjectId, ref: 'User', required: false },
     rentalPeriod: {
       startDate: { type: Date, required: true },
       endDate: { type: Date, required: true },
