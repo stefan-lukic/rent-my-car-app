@@ -14,8 +14,11 @@ export interface ICar extends Document {
   city: CarCity;
   carLocation: string;
   firstRegistration?: Date;
+  milage: number;
+  averageConsumption: string;
   images?: string[];
   pricePerDay: number;
+  description?: string;
   owner: mongoose.Types.ObjectId;
 }
 
@@ -30,11 +33,14 @@ const carSchema: Schema<ICar> = new Schema(
     },
     power: { type: String, required: true },
     carType: { type: String, required: true, enum: Object.values(CarType) },
-    firstRegistration: { type: Date },
     city: { type: String, required: true, enum: Object.values(CarCity) },
     carLocation: { type: String, required: true },
+    firstRegistration: { type: Date },
+    milage: { type: Number, required: true },
+    averageConsumption: { type: String, required: true },
     images: { type: [String] },
     pricePerDay: { type: Number, required: true },
+    description: { type: String, required: false },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   {
