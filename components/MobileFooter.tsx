@@ -6,7 +6,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useAuth } from '@/hooks/useAuth';
 import LogoutButton from './LogoutButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const MobileFooter = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -15,6 +15,11 @@ const MobileFooter = () => {
   const handleClick = (action: string) => {
     setActiveButton(action);
   };
+
+  useEffect(() => {
+    // Reset active button on route change
+    setActiveButton(null);
+  }, [window.location.pathname]); // Listen for changes in the pathname
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-6 md:hidden">
