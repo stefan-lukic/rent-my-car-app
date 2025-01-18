@@ -40,7 +40,9 @@ export default function Home() {
             >
               Get Started Now
             </Link>
-            <p className="text-black">ADD DASHBOARD</p> // Changed class from
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 text-black text-lg font-medium">
+              ADD DASHBOARD
+            </div>
           </>
         ) : (
           <> {!loading && <SignInPage />}</>
