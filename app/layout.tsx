@@ -6,7 +6,7 @@ import { Providers } from '@/components/Providers';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
-import MobileFooter from '@/components/MobileFooter';
+import MobileFooter from '@/components/mobile/MobileFooter';
 
 const inter = Inter({ subsets: ['latin'] });
 

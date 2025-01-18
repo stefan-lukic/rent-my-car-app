@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Button } from './UI/Button';
+import { Button } from '../UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';

@@ -7,7 +7,7 @@ import SignInPage from './(auth)/sign-in/page';
 import { useAuth } from '@/hooks/useAuth';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { LucideLoader2 } from 'lucide-react';
-import MobileCarSearchView from '@/components/MobileCarSearchView';
+import MobileCarSearchView from '@/components/mobile/MobileCarSearchView';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
