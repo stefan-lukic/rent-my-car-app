@@ -1,12 +1,9 @@
 'use client';
 
-import {
-  InstallPrompt,
-  PushNotificationManager,
-} from '@/components/PushNotificationManager';
+import { InstallPrompt } from '@/components/PushNotificationManager';
 import SignUpButton from '@/components/SignUpButton';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Home() {
   useEffect(() => {
