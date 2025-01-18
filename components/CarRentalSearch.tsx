@@ -118,6 +118,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
         },
         body: JSON.stringify({
           carId: selectedCar._id,
+          carLocation: selectedCar.carLocation,
           startDate,
           endDate,
         }),

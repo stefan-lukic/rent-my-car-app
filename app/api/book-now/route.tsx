@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
   await connectToDatabase();
 
   const body = await req.json();
-  const { carId, startDate, endDate } = body;
+  const { carId, carLocation, startDate, endDate } = body;
 
-  if (!carId || !startDate || !endDate) {
+  if (!carId || !startDate || !endDate || !carLocation) {
     return NextResponse.json(
       { message: 'Missing required fields' },
       { status: 400 }
@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
     const rental = new Rental({
       car: carId,
       rentee: userId,
+      carLocation: carLocation,
       rentalPeriod: {
         startDate: new Date(startDate),
         endDate: new Date(endDate),
