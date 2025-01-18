@@ -18,7 +18,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="bg-white shadow-md rounded-lg p-2">
       <h2 className="text-xl font-semibold mb-4">Filters</h2>
       <div className="space-y-4">
         <div>
