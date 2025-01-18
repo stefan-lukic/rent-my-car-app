@@ -24,6 +24,9 @@ export default function AddCarPage() {
     images: [] as File[],
     owner: '',
     pricePerDay: '',
+    milage: 0,
+    averageConsumption: '',
+    description: '',
   });
 
   const { data: session, status } = useSession();
@@ -38,7 +41,9 @@ export default function AddCarPage() {
   }, [status, session, router]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value, type } = e.target;
     if (type === 'file') {
@@ -68,7 +73,7 @@ export default function AddCarPage() {
           } else if (value instanceof Date) {
             formData.append(key, value.toISOString());
           } else {
-            formData.append(key, value);
+            formData.append(key, value.toString());
           }
         }
       });
@@ -94,6 +99,9 @@ export default function AddCarPage() {
         images: [],
         owner: session?.user?.id || '',
         pricePerDay: '',
+        milage: 0,
+        averageConsumption: '',
+        description: '',
       });
       alert('Car added successfully!');
     } catch (error) {
@@ -235,20 +243,6 @@ export default function AddCarPage() {
           />
         </div>
         <div>
-          <label htmlFor="images" className="block mb-1">
-            Car Images
-          </label>
-          <input
-            type="file"
-            id="images"
-            name="images"
-            onChange={handleInputChange}
-            accept="image/*"
-            multiple
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
           <label htmlFor="pricePerDay" className="block mb-1">
             Price Per Day
           </label>
@@ -259,6 +253,47 @@ export default function AddCarPage() {
             value={carData.pricePerDay}
             onChange={handleInputChange}
             required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label htmlFor="averageConsumption" className="block mb-1">
+            Average Consumption
+          </label>
+          <input
+            type="text"
+            id="averageConsumption"
+            name="averageConsumption"
+            value={carData.averageConsumption}
+            onChange={handleInputChange}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label htmlFor="description" className="block mb-1">
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            value={carData.description}
+            onChange={handleInputChange}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label htmlFor="images" className="block mb-1">
+            Car Images
+          </label>
+          <input
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleInputChange}
+            accept="image/*"
+            multiple
             className="w-full p-2 border rounded"
           />
         </div>
