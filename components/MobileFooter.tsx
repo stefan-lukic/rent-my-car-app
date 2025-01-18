@@ -1,30 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import LogoutButton from '../LogoutButton';
-import { useAuth } from '@/hooks/useAuth';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import LoginIcon from '@mui/icons-material/Login';
 import HomeIcon from '@mui/icons-material/Home';
+import LoginIcon from '@mui/icons-material/Login';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { useAuth } from '@/hooks/useAuth';
+import LogoutButton from './LogoutButton';
 
-interface HeaderProps {
-  className?: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ className }) => {
+const MobileFooter = () => {
   const { isAuthenticated, loading } = useAuth();
 
   return (
-    <header
-      className={`sticky top-0 h-12 w-full flex justify-between bg-black text-white text-sm font-extralight z-50 ${className}`}
-    >
-      <div className="flex items-center pl-8">
-        <Link href="/" className="flex items-center gap-2 cursor-pointer">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 md:hidden">
+      <div className="flex items-start">
+        <Link href="/" className="flex items-start gap-2 cursor-pointer">
           Home
           <HomeIcon />
         </Link>
       </div>
-      <div className="flex justify-end gap-2 pr-8">
+      <div className="flex justify-between">
         {!loading && (
           <>
             {!isAuthenticated ? (
@@ -48,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <>
                 <Link
                   href="/profile/my-profile"
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-start gap-2 cursor-pointer"
                 >
                   Profile
                   <AccountBoxIcon />
@@ -59,8 +53,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           </>
         )}
       </div>
-    </header>
+    </div>
   );
 };
 
-export default Header;
+export default MobileFooter;

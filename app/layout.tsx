@@ -6,6 +6,7 @@ import { Providers } from '@/components/Providers';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
+import MobileFooter from '@/components/MobileFooter';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,14 +34,14 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-hidden md:overflow-auto`}>
         <Providers>
-          <Header />
+          <Header className="hidden md:block" />
           {children}
           <Analytics />
           <SpeedInsights />
           <ServiceWorkerRegistration />
-          {/* Include the service worker registration component */}
+          <MobileFooter />
         </Providers>
       </body>
     </html>
