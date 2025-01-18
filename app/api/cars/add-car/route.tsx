@@ -65,12 +65,17 @@ export async function POST(request: NextRequest) {
       !carData.power ||
       !carData.carType ||
       !carData.city ||
-      !carData.owner
+      !carData.owner ||
+      !carData.carLocation ||
+      !carData.pricePerDay ||
+      !carData.milage ||
+      !carData.averageConsumption ||
+      !carData.description
     ) {
       return NextResponse.json(
         {
           message:
-            'Make, model, engine, power, car type, city, and owner are required',
+            'Make, model, engine, power, car type, city, owner, car location, price per day, milage, average consumption, and description are required',
         },
         { status: 400 }
       );
