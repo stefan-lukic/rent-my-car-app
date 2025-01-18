@@ -5,11 +5,21 @@ import Header from '@/components/UI/Header';
 import { Providers } from '@/components/Providers';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 
 const inter = Inter({ subsets: ['latin'] });
+
 export const metadata: Metadata = {
   title: 'Rent My Car',
   description: 'Car rental service',
+  manifest: '/manifest.json',
+  icons: {
+    apple: '/icons/icon-192x192.png',
+  },
+};
+
+export const viewport = {
+  themeColor: '#000000',
 };
 
 export default function RootLayout({
@@ -19,12 +29,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
+      </head>
       <body className={inter.className}>
         <Providers>
           <Header />
           {children}
           <Analytics />
           <SpeedInsights />
+          <ServiceWorkerRegistration />
+          {/* Include the service worker registration component */}
         </Providers>
       </body>
     </html>

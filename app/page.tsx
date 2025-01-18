@@ -1,10 +1,35 @@
+'use client';
+
+import {
+  InstallPrompt,
+  PushNotificationManager,
+} from '@/components/PushNotificationManager';
 import SignUpButton from '@/components/SignUpButton';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((registration) => {
+          console.log(
+            'Service Worker registered with scope:',
+            registration.scope
+          );
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
       <section className="text-center mt-32 mb-16 px-4">
+        <PushNotificationManager />
+        <InstallPrompt />
         <h1 className="text-6xl font-extrabold mb-4 text-gray-900 leading-tight">
           Rent Your Car or{' '}
           <span className="text-blue-600">Find the Perfect Ride</span>
