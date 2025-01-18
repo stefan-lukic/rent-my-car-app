@@ -85,7 +85,6 @@ export function PushNotificationManager() {
 
   return (
     <div>
-      <h3>Push Notifications</h3>
       {subscription ? (
         <>
           <p>You are subscribed to push notifications.</p>
@@ -101,7 +100,12 @@ export function PushNotificationManager() {
       ) : (
         <>
           <p>You are not subscribed to push notifications.</p>
-          <button onClick={subscribeToPush}>Subscribe</button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+            onClick={subscribeToPush}
+          >
+            Subscribe
+          </button>
         </>
       )}
     </div>
@@ -111,6 +115,7 @@ export function PushNotificationManager() {
 export function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
 
   useEffect(() => {
     setIsIOS(
@@ -125,12 +130,24 @@ export function InstallPrompt() {
 
   return (
     <div>
-      <h3>Install App</h3>
-      {isIOS && (
-        <p>
-          To install this app on your iOS device tap the button
-          <Button>Get From App Store</Button>
-        </p>
+      {isIOS && isPopupOpen && (
+        <>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="relative flex justify-end">
+                <button onClick={() => setIsPopupOpen(false)}>✖</button>
+              </div>
+
+              <p>To install this app on your iOS device tap:</p>
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded"
+                onClick={() => null}
+              >
+                Get From App Store
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

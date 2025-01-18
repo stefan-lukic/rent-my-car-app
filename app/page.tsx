@@ -6,7 +6,7 @@ import {
 } from '@/components/PushNotificationManager';
 import SignUpButton from '@/components/SignUpButton';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   useEffect(() => {
@@ -27,9 +27,10 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
+      <InstallPrompt />
+      {/* <PushNotificationManager /> */}
+
       <section className="text-center mt-32 mb-16 px-4">
-        <PushNotificationManager />
-        <InstallPrompt />
         <h1 className="text-6xl font-extrabold mb-4 text-gray-900 leading-tight">
           Rent Your Car or{' '}
           <span className="text-blue-600">Find the Perfect Ride</span>
