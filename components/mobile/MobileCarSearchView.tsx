@@ -6,6 +6,7 @@ import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import MobileCarRentalSearch from './MobileCarRentalSearch';
 
 export default function MobileCarSearchView() {
+  const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<CarFilterState>({
     minPrice: '',
     maxPrice: '',
@@ -16,7 +17,8 @@ export default function MobileCarSearchView() {
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col w-full">
-      <CarFilters filters={filters} setFilters={setFilters} />
+      <button onClick={() => setShowFilters((prev) => !prev)}>Filters</button>
+      {showFilters && <CarFilters filters={filters} setFilters={setFilters} />}
       <MobileCarRentalSearch filters={filters} />
     </div>
   );

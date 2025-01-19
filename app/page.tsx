@@ -34,7 +34,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
       {isMobile ? (
         isAuthenticated ? (
-          <div className="flex h-screen flex-col">
+          <div className="flex h-screen flex-1">
             <MobileCarSearchView />
           </div>
         ) : (

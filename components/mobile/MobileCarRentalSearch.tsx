@@ -38,7 +38,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
   };
 
   return (
-    <div className="h-full flex flex-col p-2 bg-white rounded-lg shadow-md">
+    <div className="h-screen flex flex-col p-2 bg-white rounded-lg shadow-md">
       <input
         type="text"
         placeholder="City"
@@ -48,14 +48,14 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
         }
         className="w-full p-2 mb-2 mt-2 border rounded-md"
       />
-      <div className="w-full p-0 flex-1 mb-2">
+      <div className="w-full p-0 flex-1">
         <DatePicker
           selected={searchParams.startDate}
           onChange={(date) =>
             setSearchParams({ ...searchParams, startDate: date })
           }
           placeholderText="Start Date"
-          className="flex p-2 border mb-2 rounded-md"
+          className="flex flex-col p-2 border mb-2 rounded-md"
         />
         <DatePicker
           selected={searchParams.endDate}
@@ -63,7 +63,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
             setSearchParams({ ...searchParams, endDate: date })
           }
           placeholderText="End Date"
-          className="flex p-2 border rounded-md"
+          className="flex p-2 border mb-2 rounded-md"
         />
       </div>
       <Button
@@ -72,7 +72,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
       >
         <SearchIcon className="mr-2" /> Search
       </Button>
-      <div className="h-[300px] overflow-auto">
+      <div className="h-full flex flex-col overflow-auto">
         {searchResults.map((car) => (
           <MobileCarSearchResults key={car._id} car={car} />
         ))}
