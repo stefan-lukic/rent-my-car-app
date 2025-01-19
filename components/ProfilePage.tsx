@@ -43,7 +43,6 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
           </div>
         </div>
       </div>
-
       <ProfileInteractiveSection cars={cars} rentals={rentals} />
     </div>
   );

@@ -55,7 +55,7 @@ const ProfileInteractiveSection = ({
   };
 
   return (
-    <>
+    <div>
       <Button
         onClick={() => router.push('/cars/add-car')}
         className="bg-green-500 text-white hover:bg-green-600"
@@ -156,7 +156,7 @@ const ProfileInteractiveSection = ({
           onClose={() => setIsUpdateModalOpen(false)}
         />
       )}
-    </>
+    </div>
   );
 };
 

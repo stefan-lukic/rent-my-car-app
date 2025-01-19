@@ -12,7 +12,7 @@ interface MobileProfilePageProps {
 
 const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
   return (
-    <div className="h-screen bg-gray-50 p-4 overflow-auto">
+    <div className="h-screen bg-gray-50 p-4 flex flex-col">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">My Profile</h1>
       <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
         <div className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-500 to-blue-700">
@@ -41,7 +41,9 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
           </p>
         </div>
       </div>
-      <ProfileInteractiveSection cars={cars} rentals={rentals} />
+      <div className="h-full flex-1 overflow-auto pb-16">
+        <ProfileInteractiveSection cars={cars} rentals={rentals} />
+      </div>
     </div>
   );
 };
