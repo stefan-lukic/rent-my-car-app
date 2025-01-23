@@ -7,6 +7,7 @@ import SignInPage from './(auth)/sign-in/page';
 import { useAuth } from '@/hooks/useAuth';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { LucideLoader2 } from 'lucide-react';
+import MobileCarSearchView from '@/components/mobile/MobileCarSearchView';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
@@ -30,20 +31,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
+    <main className="h-screen flex flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
       {isMobile ? (
         isAuthenticated ? (
-          <>
-            <Link
-              href="/cars/car-list"
-              className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Get Started Now
-            </Link>
-            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 text-black text-lg font-medium">
-              ADD DASHBOARD
-            </div>
-          </>
+          <div className="flex h-full flex-1">
+            <MobileCarSearchView />
+          </div>
         ) : (
           <> {!loading && <SignInPage />}</>
         )

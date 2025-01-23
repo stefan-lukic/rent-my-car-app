@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useAuth } from '@/hooks/useAuth';
-import LogoutButton from './LogoutButton';
+import LogoutButton from '../LogoutButton';
 import { useState } from 'react';
 
 const MobileFooter = () => {
