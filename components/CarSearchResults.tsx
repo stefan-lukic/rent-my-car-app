@@ -4,8 +4,6 @@ import Image from 'next/image';
 
 interface SearchResultsProps {
   car: ICar;
-  startDate: Date | null;
-  endDate: Date | null;
   onBookNow: () => void;
   onViewDetails: () => void;
 }
