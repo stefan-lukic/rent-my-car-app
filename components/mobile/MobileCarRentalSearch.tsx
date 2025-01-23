@@ -65,13 +65,14 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
           placeholderText="End Date"
           className="flex p-2 border mb-2 rounded-md"
         />
+        <Button
+          className="w-full flex items-center justify-center"
+          onClick={handleSearch}
+        >
+          <SearchIcon className="mr-2" /> Search
+        </Button>
       </div>
-      <Button
-        className="w-full flex items-center justify-center"
-        onClick={handleSearch}
-      >
-        <SearchIcon className="mr-2" /> Search
-      </Button>
+
       <div className="flex flex-col">
         {searchResults.map((car) => (
           <MobileCarSearchResults key={car._id} car={car} />
