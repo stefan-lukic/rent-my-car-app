@@ -1,9 +1,9 @@
+import React, { useState } from 'react';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarType } from '@/lib/model/car/CarType';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
-import React, { useState } from 'react';
 
 interface CarFiltersProps {
   filters: CarFilterState;
