@@ -16,7 +16,7 @@ export default function MobileCarSearchView() {
   });
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col w-full">
+    <div className="h-full bg-gray-100 flex flex-col w-full">
       <button onClick={() => setShowFilters((prev) => !prev)}>Filters</button>
       {showFilters && <CarFilters filters={filters} setFilters={setFilters} />}
       <MobileCarRentalSearch filters={filters} />

@@ -8,13 +8,13 @@ interface CarSearchResultsProps {
 
 const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({ car }) => {
   return (
-    <div className="min-h-screen bg-gray-100 rounded-lg overflow-hidden shadow-md">
+    <div className="flex flex-col bg-gray-100 rounded-lg overflow-hidden shadow-md">
       <Image
         src={car.images?.[0] || '/placeholder-car.jpg'}
         alt={car.carModel}
         width={400}
         height={200}
-        className="w-full h-40 object-cover rounded-md"
+        className="object-cover rounded-md"
       />
       <div className="mt-2">
         <h3 className="text-lg font-bold">{car.carModel}</h3>

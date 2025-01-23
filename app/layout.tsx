@@ -34,7 +34,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={`${inter.className} overflow-hidden md:overflow-auto`}>
+      <body
+        className={`${inter.className} h-screen overflow-hidden md:overflow-auto`}
+      >
         <Providers>
           <Header className="hidden md:block" />
           {children}
