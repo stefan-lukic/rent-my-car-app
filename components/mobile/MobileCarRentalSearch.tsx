@@ -8,19 +8,34 @@ import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import MobileCarSearchResults from './MobileCarSearchResults';
+import CarDetailsDrawer from '../CarDetailsDrawer';
+import BookingDialog from '../BookNowDialog';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
+  initialCars?: ICar[];
 }
 
-const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
+const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
+  filters,
+  initialCars,
+}) => {
   const [searchParams, setSearchParams] = useState({
     city: '',
     startDate: null as Date | null,
     endDate: null as Date | null,
   });
-
   const [searchResults, setSearchResults] = useState<ICar[]>([]);
+  const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [owner, setOwner] = useState<any>(null);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
+  const [searchState, setSearchState] = useState({
+    results: initialCars,
+    currentPage: 1,
+    totalPages: 0,
+    totalCars: 0,
+  });
 
   const handleSearch = async () => {
     if (!searchParams.startDate || !searchParams.endDate) return;
@@ -37,8 +52,77 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
     setSearchResults(data.cars);
   };
 
+  const handleBookNow = (car: ICar) => {
+    setSelectedCar(car);
+    setIsBookingModalOpen(true);
+  };
+
+  const handleViewDetails = async (carId: string) => {
+    const car = searchState?.results?.find((car) => car._id === carId);
+    if (car) {
+      setSelectedCar(car);
+      await fetchOwnerDetails(car.owner.toString());
+      setIsDetailsDrawerOpen(true);
+    }
+  };
+
+  const fetchOwnerDetails = async (ownerId: string) => {
+    try {
+      const response = await fetch(`/api/users/${ownerId}`);
+      const data = await response.json();
+      if (response.ok) {
+        setOwner(data);
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching owner details:', error);
+    }
+  };
+
+  const handleBookingConfirmation = async (
+    startDate: Date | null,
+    endDate: Date | null
+  ) => {
+    if (!selectedCar) return;
+
+    try {
+      const response = await fetch('/api/book-now', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          carId: selectedCar._id,
+          carLocation: selectedCar.carLocation,
+          startDate,
+          endDate,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Booking successful!');
+        setSearchState((prevState) => ({
+          ...prevState,
+          results: prevState.results?.filter(
+            (car) => car._id !== selectedCar._id
+          ),
+          totalCars: prevState.totalCars - 1,
+        }));
+      } else {
+        alert('Booking failed. Please login and try again.');
+      }
+    } catch (error) {
+      console.error('Error booking car:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsBookingModalOpen(false);
+      setSelectedCar(null);
+    }
+  };
+
   return (
-    <div className="h-[calc(100vh-150px)] flex flex-col p-2 bg-white rounded-lg shadow-md overflow-auto">
+    <div className="h-[calc(100vh-120px)] flex flex-col p-2 bg-white rounded-lg shadow-md overflow-auto">
       <input
         type="text"
         placeholder="City"
@@ -75,9 +159,46 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
 
       <div className="flex flex-col">
         {searchResults.map((car) => (
-          <MobileCarSearchResults key={car._id} car={car} />
+          <MobileCarSearchResults
+            key={car._id}
+            car={car}
+            onBookNow={() => handleBookNow(car)}
+            onViewDetails={() => handleViewDetails(car._id)}
+          />
         ))}
       </div>
+      {/* not working on mobile, see why */}
+      {/* {selectedCar && owner && (
+        <CarDetailsDrawer
+          car={selectedCar}
+          owner={owner}
+          isOpen={isDetailsDrawerOpen}
+          onClose={() => {
+            setIsDetailsDrawerOpen(false);
+            setSelectedCar(null);
+            setOwner(null);
+          }}
+        />
+      )} */}
+
+      {selectedCar && (
+        <BookingDialog
+          car={selectedCar}
+          isOpen={isBookingModalOpen}
+          startDate={searchParams.startDate}
+          endDate={searchParams.endDate}
+          onClose={() => {
+            setIsBookingModalOpen(false);
+            setSelectedCar(null);
+          }}
+          onBook={() =>
+            handleBookingConfirmation(
+              searchParams.startDate,
+              searchParams.endDate
+            )
+          }
+        />
+      )}
     </div>
   );
 };

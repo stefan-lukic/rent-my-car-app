@@ -201,8 +201,6 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
             <CarSearchResults
               key={car._id}
               car={car}
-              startDate={searchParams.startDate}
-              endDate={searchParams.endDate}
               onBookNow={() => handleBookNow(car)}
               onViewDetails={() => handleViewDetails(car._id)}
             />
