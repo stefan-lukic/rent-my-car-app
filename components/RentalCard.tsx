@@ -22,7 +22,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental }) => {
         {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} to{' '}
         {new Date(rental.rentalPeriod.endDate).toLocaleDateString()}
       </p>
-      <p>Total Earned: ${rental.totalCost}</p>
+      <p>Total Cost: ${rental.totalCost}</p>
     </div>
   );
 };
