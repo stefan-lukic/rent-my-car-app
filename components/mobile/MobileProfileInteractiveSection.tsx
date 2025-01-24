@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { ICar } from '@/lib/model/car/Car';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import { Button } from '../UI/Button';
-import CarCard from '../CarCard';
 import ReactPaginate from 'react-paginate';
 import RentalCard from '../RentalCard';
 import UpdateCarModal from '../UpdateCarModal';
+import MobileCarCard from './MobileCarCard';
+import MobileRentalCard from './MobileRentalCard';
 
 interface MobileProfileInteractiveSectionProps {
   cars: ICar[];
@@ -72,7 +73,7 @@ const MobileProfileInteractiveSection = ({
           <>
             <div className="space-y-4">
               {currentCars.map((car) => (
-                <CarCard
+                <MobileCarCard
                   key={car._id}
                   car={car}
                   onUpdate={() => {
@@ -117,7 +118,7 @@ const MobileProfileInteractiveSection = ({
         ) : (
           <div className="space-y-4">
             {currentRentals.map((rental) => (
-              <RentalCard key={rental._id} rental={rental} />
+              <MobileRentalCard key={rental._id} rental={rental} />
             ))}
           </div>
         )}
