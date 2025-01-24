@@ -13,9 +13,8 @@ interface MobileProfilePageProps {
 const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
   return (
     <div className="h-screen bg-gray-50 p-2 flex flex-col">
-      <h1 className="text-xl font-bold text-gray-800 mb-4">My Profile</h1>
       <div className="bg-white rounded-md shadow-sm overflow-hidden mb-4">
-        <div className="flex flex-col items-center p-3 bg-gradient-to-br from-blue-500 to-blue-700">
+        <div className="flex flex-col items-center p-1 bg-gradient-to-br from-blue-500 to-blue-700">
           <Image
             className="rounded-full shadow-md mb-2 border-2 border-white"
             src={user?.image || ''}
