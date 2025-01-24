@@ -55,7 +55,7 @@ const ProfileInteractiveSection = ({
   };
 
   return (
-    <div>
+    <div className="flex flex-col overflow-x-hidden">
       <Button
         onClick={() => router.push('/cars/add-car')}
         className="bg-green-500 text-white hover:bg-green-600"
@@ -85,7 +85,7 @@ const ProfileInteractiveSection = ({
                 ))}
               </div>
               <ReactPaginate
-                previousLabel={'Previous'}
+                previousLabel={'Prev'}
                 nextLabel={'Next'}
                 breakLabel={'...'}
                 pageCount={pageCount}
@@ -96,14 +96,14 @@ const ProfileInteractiveSection = ({
                   'pagination flex justify-left mt-6 space-x-2'
                 }
                 pageClassName={
-                  'px-2 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
+                  'px-1 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
                 }
                 pageLinkClassName={''}
                 previousClassName={
-                  'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+                  'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
                 }
                 nextClassName={
-                  'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+                  'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
                 }
                 breakClassName={'px-3 py-2'}
                 activeClassName={'bg-blue-500 text-white'}
@@ -111,7 +111,7 @@ const ProfileInteractiveSection = ({
             </>
           )}
         </div>
-        <div className="w-1/2 pl-4">
+        <div className="w-1/2">
           <h2 className="text-xl font-semibold text-gray-800">My Rentals</h2>
           {currentRentals.length === 0 ? (
             <p className="text-gray-600 italic">
@@ -125,7 +125,7 @@ const ProfileInteractiveSection = ({
             </div>
           )}
           <ReactPaginate
-            previousLabel={'Previous'}
+            previousLabel={'Prev'}
             nextLabel={'Next'}
             breakLabel={'...'}
             pageCount={rentalPageCount}
@@ -134,13 +134,13 @@ const ProfileInteractiveSection = ({
             onPageChange={handleRentalPageChange}
             containerClassName={'pagination flex justify-left mt-6 space-x-2'}
             pageClassName={
-              'px-2 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
+              'px-1 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
             }
             previousClassName={
-              'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+              'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
             }
             nextClassName={
-              'px-2 py-1 text-sm rounded-md bg-blue-500 text-white'
+              'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
             }
             breakClassName={'px-3 py-2'}
             activeClassName={'bg-blue-500 text-white'}
