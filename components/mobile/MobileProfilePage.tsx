@@ -2,7 +2,7 @@ import { ICar } from '@/lib/model/car/Car';
 import { IUser } from '@/lib/model/User';
 import Image from 'next/image';
 import { RentalWithCar } from '@/types/RentalWithCar';
-import ProfileInteractiveSection from '../ProfileInteractiveSection';
+import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 
 interface MobileProfilePageProps {
   user: IUser;
@@ -12,7 +12,7 @@ interface MobileProfilePageProps {
 
 const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
   return (
-    <div className="h-screen bg-gray-50 p-2 flex flex-col">
+    <div className="h-screen pb-16 bg-gray-50 p-2 flex flex-col">
       <div className="bg-white rounded-md shadow-sm overflow-hidden mb-4">
         <div className="flex flex-col items-center p-1 bg-gradient-to-br from-blue-500 to-blue-700">
           <Image
@@ -41,7 +41,7 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
         </div>
       </div>
       <div className="h-full flex-1 overflow-auto pb-16">
-        <ProfileInteractiveSection cars={cars} rentals={rentals} />
+        <MobileProfileInteractiveSection cars={cars} rentals={rentals} />
       </div>
     </div>
   );

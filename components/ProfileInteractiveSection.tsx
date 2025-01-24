@@ -25,11 +25,10 @@ const ProfileInteractiveSection = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [carsPerPage] = useState(4);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
-  const [rentalsPerPage] = useState(4);
-  const [rentals] = useState<RentalWithCar[]>(initialRentals);
 
   const router = useRouter();
 
+  const rentalsPerPage = 4;
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
     setIsUpdateModalOpen(false);
@@ -43,9 +42,9 @@ const ProfileInteractiveSection = ({
     setCurrentPage(selected);
   };
 
-  const rentalPageCount = Math.ceil(rentals.length / rentalsPerPage);
+  const rentalPageCount = Math.ceil(initialRentals.length / rentalsPerPage);
   const rentalOffset = currentRentalPage * rentalsPerPage;
-  const currentRentals = rentals.slice(
+  const currentRentals = initialRentals.slice(
     rentalOffset,
     rentalOffset + rentalsPerPage
   );
@@ -60,7 +59,7 @@ const ProfileInteractiveSection = ({
         onClick={() => router.push('/cars/add-car')}
         className="bg-green-500 text-white hover:bg-green-600"
       >
-        Add Car
+        Add New
       </Button>
 
       <div className="mb-6 flex">
