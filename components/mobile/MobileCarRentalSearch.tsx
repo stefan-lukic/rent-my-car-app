@@ -8,18 +8,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import MobileCarSearchResults from './MobileCarSearchResults';
-import CarDetailsDrawer from '../CarDetailsDrawer';
 import BookingDialog from '../BookNowDialog';
+import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
-  initialCars?: ICar[];
 }
 
-const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
-  filters,
-  initialCars,
-}) => {
+const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
   const [searchParams, setSearchParams] = useState({
     city: '',
     startDate: null as Date | null,
@@ -30,12 +26,6 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
   const [owner, setOwner] = useState<any>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
-  const [searchState, setSearchState] = useState({
-    results: initialCars,
-    currentPage: 1,
-    totalPages: 0,
-    totalCars: 0,
-  });
 
   const handleSearch = async () => {
     if (!searchParams.startDate || !searchParams.endDate) return;
@@ -58,7 +48,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
   };
 
   const handleViewDetails = async (carId: string) => {
-    const car = searchState?.results?.find((car) => car._id === carId);
+    const car = searchResults?.find((car) => car._id === carId);
     if (car) {
       setSelectedCar(car);
       await fetchOwnerDetails(car.owner.toString());
@@ -102,13 +92,9 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
 
       if (response.ok) {
         alert('Booking successful!');
-        setSearchState((prevState) => ({
-          ...prevState,
-          results: prevState.results?.filter(
-            (car) => car._id !== selectedCar._id
-          ),
-          totalCars: prevState.totalCars - 1,
-        }));
+        setSearchResults((prevResults) =>
+          prevResults.filter((car) => car._id !== selectedCar._id)
+        );
       } else {
         alert('Booking failed. Please login and try again.');
       }
@@ -167,9 +153,9 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
           />
         ))}
       </div>
-      {/* not working on mobile, see why */}
-      {/* {selectedCar && owner && (
-        <CarDetailsDrawer
+
+      {selectedCar && owner && (
+        <MobileCarDetailsDrawer
           car={selectedCar}
           owner={owner}
           isOpen={isDetailsDrawerOpen}
@@ -179,7 +165,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({
             setOwner(null);
           }}
         />
-      )} */}
+      )}
 
       {selectedCar && (
         <BookingDialog
