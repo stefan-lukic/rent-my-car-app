@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI/Button';
 import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/UI/Button';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CarType } from '@/lib/model/car/CarType';
@@ -10,8 +10,8 @@ import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { CarCity } from '@/lib/model/car/CarCity';
-import useMediaQuery from '@/hooks/useMediaQuery';
 import MobileAddCar from '@/components/mobile/MobileAddCar';
+import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 
 export default function AddCarPage() {
   const [carData, setCarData] = useState({
@@ -33,7 +33,7 @@ export default function AddCarPage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
-  const isMobile = useMediaQuery('(max-width: 680px)');
+  const isMobile = isMobileCSR();
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.id) {

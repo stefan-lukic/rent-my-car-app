@@ -5,14 +5,13 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import SignInPage from './(auth)/sign-in/page';
 import { useAuth } from '@/hooks/useAuth';
-import useMediaQuery from '@/hooks/useMediaQuery';
 import { LucideLoader2 } from 'lucide-react';
 import MobileCarSearchView from '@/components/mobile/MobileCarSearchView';
+import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
-
-  const isMobile = useMediaQuery('(max-width: 480px)');
+  const isMobile = isMobileCSR();
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
