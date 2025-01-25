@@ -1,12 +1,12 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.example.com', // Replace with your SMTP server
-  port: 587, // Replace with your SMTP port
+  host: 'smtp.gmail.com',
+  port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: 'your-email@example.com', // Replace with your email
-    pass: 'your-email-password', // Replace with your email password
+    user: 'rentmycarnotificationservice@gmail.com',
+    pass: 'RentMyCar.12345!',
   },
 });
 
@@ -17,7 +17,7 @@ export const sendBookingEmail = async (
   endDate: Date
 ) => {
   const mailOptions = {
-    from: 'your-email@example.com', // Replace with your email
+    from: 'rentmycarnotificationservice@gmail.com',
     to: userEmail,
     subject: 'Car Booking Confirmation',
     text:
