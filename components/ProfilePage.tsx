@@ -20,7 +20,7 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
           <div className="w-1/4 bg-gradient-to-br from-blue-400 to-blue-600 p-4 flex flex-col items-center justify-center">
             <Image
               className="rounded-full shadow-lg mb-2 border-2 border-white"
-              src={user?.image || ''}
+              src={user?.images?.[0] || ''}
               alt={user?.name}
               width={64}
               height={64}
