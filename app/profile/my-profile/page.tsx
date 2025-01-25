@@ -1,12 +1,13 @@
 import { getBaseUrl } from '@/app/api/api';
 import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
+import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
-import { headers } from 'next/headers';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
   const baseUrl = getBaseUrl();
+  const isMobile = isMobileSSR();
 
   if (!session) {
     return {
@@ -33,10 +34,6 @@ export default async function MyProfilePage() {
   );
   const rentals = await rentalsRes.json();
 
-  const userAgent = headers().get('user-agent') || '';
-  const isMobile = /mobile/i.test(userAgent);
-
-  // Render the appropriate component based on the device type
   return isMobile ? (
     <MobileProfilePage user={user} cars={cars} rentals={rentals} />
   ) : (

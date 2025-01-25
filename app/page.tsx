@@ -11,7 +11,6 @@ import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
-
   const isMobile = isMobileCSR();
 
   useEffect(() => {

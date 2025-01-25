@@ -6,7 +6,6 @@ import { ICar } from '@/lib/model/car/Car';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import { Button } from '../UI/Button';
 import ReactPaginate from 'react-paginate';
-import RentalCard from '../RentalCard';
 import UpdateCarModal from '../UpdateCarModal';
 import MobileCarCard from './MobileCarCard';
 import MobileRentalCard from './MobileRentalCard';

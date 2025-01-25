@@ -33,7 +33,6 @@ export default function AddCarPage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
-
   const isMobile = isMobileCSR();
 
   useEffect(() => {
