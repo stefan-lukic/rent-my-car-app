@@ -9,7 +9,7 @@ export interface IUser extends Document {
   contactInfo: string;
   rating: Number;
   emailVerified?: Date;
-  image?: string;
+  images?: string[];
   role: Role;
   cars: mongoose.Types.ObjectId[];
   rentals: mongoose.Types.ObjectId[];
@@ -24,7 +24,7 @@ const userSchema: Schema<IUser> = new Schema(
     contactInfo: { type: String, required: false },
     rating: { type: Number, required: false },
     emailVerified: { type: Date },
-    image: { type: String },
+    images: { type: [String] },
     role: { type: String },
     cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }], // Cars owned by the user
     rentals: [{ type: Schema.Types.ObjectId, ref: 'Rental' }], // Cars rented by the user

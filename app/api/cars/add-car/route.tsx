@@ -48,7 +48,6 @@ export async function POST(request: NextRequest) {
           `data:image/jpeg;base64,${resizedBuffer.toString('base64')}`
         );
       } catch (imageError) {
-        console.error('Error processing image:', imageError);
         return NextResponse.json(
           { message: 'Error processing image' },
           { status: 400 }

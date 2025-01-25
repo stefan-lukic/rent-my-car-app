@@ -21,6 +21,7 @@ const ProfileForm = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [uploadImages, setUploadImages] = useState<File[]>([]);
 
   const router = useRouter();
 
@@ -38,10 +39,24 @@ const ProfileForm = ({
   const onSubmit = async (data: z.infer<ReturnType<typeof authFormSchema>>) => {
     setIsLoading(true);
     setError('');
-
     try {
       if (type === 'sign-up') {
-        const response = await axios.post('/api/auth/signup', data);
+        const formData = new FormData();
+
+        // Append form fields
+        Object.entries(data).forEach(([key, value]) => {
+          if (value !== null) {
+            formData.append(key, value.toString());
+          }
+        });
+
+        // Append upload images
+        uploadImages.forEach((file) => {
+          formData.append('uploadImages', file);
+        });
+
+        console.log(formData);
+        const response = await axios.post('/api/auth/signup', formData);
         if (response.status === 201) {
           router.push(
             `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`
@@ -69,17 +84,46 @@ const ProfileForm = ({
     }
   };
 
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    if (type === 'file') {
+      const fileInput = e.target as HTMLInputElement;
+      const files = fileInput.files;
+      if (files) {
+        const filesArray = Array.from(files);
+        setUploadImages(filesArray);
+      }
+    } else {
+      setUploadImages((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {type === 'sign-up' && (
-          <CustomInput
-            control={control}
-            name="name"
-            label=""
-            placeholder="Name"
-            type="text"
-          />
+          <>
+            <CustomInput
+              control={control}
+              name="name"
+              label=""
+              placeholder="Name"
+              type="text"
+            />
+            <input
+              type="file"
+              id="images"
+              name="images"
+              onChange={handleInputChange}
+              accept="image/*"
+              multiple
+              className="w-full p-2 border rounded"
+            />
+          </>
         )}
 
         <CustomInput

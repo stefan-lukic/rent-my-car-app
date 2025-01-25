@@ -149,13 +149,13 @@ export default function AddCarPage() {
                 Model
               </label>
               <input
+                className="w-full p-2 border rounded"
                 type="text"
                 id="carModel"
                 name="carModel"
                 value={carData.carModel}
-                onChange={handleInputChange}
                 required
-                className="w-full p-2 border rounded"
+                onChange={handleInputChange}
               />
             </div>
             <div>
