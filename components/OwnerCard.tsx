@@ -8,7 +8,7 @@ interface OwnerCardProps {
     contactInfo: string;
     profilePicture: string;
     rating: number;
-    images: string[];
+    images?: string[];
   };
 }
 
