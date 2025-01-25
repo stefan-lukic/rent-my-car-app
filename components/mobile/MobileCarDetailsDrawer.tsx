@@ -13,6 +13,7 @@ interface CarDetailsDrawerProps {
     contactInfo: string;
     profilePicture: string;
     rating: number;
+    images: string[];
   };
   isOpen: boolean;
   onClose: () => void;

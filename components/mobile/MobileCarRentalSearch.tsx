@@ -118,7 +118,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
         }
         className="w-full p-2 mb-2 mt-2 border rounded-md"
       />
-      <div className="w-full p-0 flex-1">
+      <div className="w-full p-0 flex flex-col">
         <DatePicker
           selected={searchParams.startDate}
           onChange={(date) =>

@@ -17,10 +17,10 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
         <div className="flex flex-col items-center p-1 bg-gradient-to-br from-blue-500 to-blue-700">
           <Image
             className="rounded-full shadow-md mb-2 border-2 border-white"
-            src={user?.image || ''}
+            src={user?.images?.[0] || ''}
             alt={user?.name}
-            width={50}
-            height={50}
+            width={70}
+            height={70}
             priority={true}
           />
           <h2 className="text-sm font-semibold text-white text-center truncate w-full">
