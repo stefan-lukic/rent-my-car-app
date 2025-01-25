@@ -8,11 +8,11 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import { z } from 'zod';
-import { Form } from './UI/Form';
-import CustomInput from './UI/CustomInput';
 import { authFormSchema } from '@/lib/utils';
+import { Form } from '../UI/Form';
+import CustomInput from '../UI/CustomInput';
 
-const ProfileForm = ({
+const MobileProfileForm = ({
   type,
   callbackUrl,
 }: {
@@ -43,19 +43,16 @@ const ProfileForm = ({
       if (type === 'sign-up') {
         const formData = new FormData();
 
-        // Append form fields
         Object.entries(data).forEach(([key, value]) => {
           if (value !== null) {
             formData.append(key, value.toString());
           }
         });
 
-        // Append upload images
         uploadImages.forEach((file) => {
           formData.append('uploadImages', file);
         });
 
-        console.log(formData);
         const response = await axios.post('/api/auth/signup', formData);
         if (response.status === 201) {
           router.push(
@@ -89,24 +86,21 @@ const ProfileForm = ({
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    const { name, value, type } = e.target;
+    const { name, type } = e.target;
     if (type === 'file') {
       const fileInput = e.target as HTMLInputElement;
       const files = fileInput.files;
       if (files) {
-        const filesArray = Array.from(files);
-        setUploadImages(filesArray);
+        setUploadImages(Array.from(files));
       }
-    } else {
-      setUploadImages((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         {type === 'sign-up' && (
-          <>
+          <div className="flex flex-col gap-2">
             <CustomInput
               control={control}
               name="name"
@@ -114,16 +108,29 @@ const ProfileForm = ({
               placeholder="Name"
               type="text"
             />
+            <label
+              htmlFor="images"
+              className="justify-center flex px-2 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600"
+            >
+              Choose Files
+            </label>
             <input
               type="file"
               id="images"
               name="images"
-              onChange={handleInputChange}
               accept="image/*"
               multiple
-              className="w-full p-2 border rounded"
+              className="hidden"
+              onChange={handleInputChange}
             />
-          </>
+            {uploadImages.length > 0 && (
+              <span className="text-gray-600">
+                {uploadImages.length === 1
+                  ? uploadImages[0].name
+                  : `${uploadImages[0].name} and ${uploadImages.length - 1} more...`}
+              </span>
+            )}
+          </div>
         )}
 
         <CustomInput
@@ -142,43 +149,40 @@ const ProfileForm = ({
           type="password"
         />
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
 
         {type === 'sign-up' ? (
-          <div className="flex-center flex-col">
+          <div className="flex flex-col items-center">
             <button
-              className="w-full p-4 bg-red-500 text-white rounded hover:bg-red-600"
+              className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               type="submit"
               disabled={isLoading}
             >
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
 
-            <button className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center">
+            <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center">
               <Image
                 className="mr-2"
-                src="/icons/icon-google.svg"
+                src="/icons/next.svg"
                 alt="Google logo"
-                width={20}
-                height={20}
+                width={40}
+                height={40}
               />
               Sign up with Google
             </button>
           </div>
         ) : (
-          <div className="flex-between">
+          <div className="flex flex-col items-center">
             <button
-              className="px-12 py-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600"
+              className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-600"
               type="submit"
               disabled={isLoading}
             >
               {isLoading ? 'Logging In...' : 'Log In'}
             </button>
 
-            <a
-              className="text-[var(--secondary-2)] hover:underline hover:underline-offset-4"
-              href="#"
-            >
+            <a className="mt-4 text-blue-500 text-sm hover:underline" href="#">
               Forgot Password?
             </a>
           </div>
@@ -188,4 +192,4 @@ const ProfileForm = ({
   );
 };
 
-export default ProfileForm;
+export default MobileProfileForm;

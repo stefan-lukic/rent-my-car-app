@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface OwnerCardProps {
   owner: {
@@ -7,16 +8,19 @@ interface OwnerCardProps {
     contactInfo: string;
     profilePicture: string;
     rating: number;
+    images: string[];
   };
 }
 
 const OwnerCard: React.FC<OwnerCardProps> = ({ owner }) => {
   return (
     <div className="flex items-center p-4 bg-white shadow-md rounded-lg">
-      <img
-        src={owner.profilePicture}
-        alt={`${owner.name}'s profile`}
-        className="w-16 h-16 rounded-full mr-4"
+      <Image
+        src={owner.images?.[0] || '/placeholder-car.jpg'}
+        alt={owner.name}
+        width={80}
+        height={80}
+        className="object-cover rounded-xl mr-4"
       />
       <div>
         <h3 className="text-lg font-semibold">{owner.name}</h3>

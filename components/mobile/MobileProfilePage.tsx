@@ -19,8 +19,8 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
             className="rounded-full shadow-md mb-2 border-2 border-white"
             src={user?.images?.[0] || ''}
             alt={user?.name}
-            width={50}
-            height={50}
+            width={70}
+            height={70}
             priority={true}
           />
           <h2 className="text-sm font-semibold text-white text-center truncate w-full">
