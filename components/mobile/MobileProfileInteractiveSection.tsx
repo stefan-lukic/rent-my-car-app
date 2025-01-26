@@ -48,7 +48,7 @@ const MobileProfileInteractiveSection = ({
                 <MobileCarCard
                   key={car._id}
                   car={car}
-                  onUpdate={() => handleOpenModal(car)} // Open modal with selected car
+                  onUpdate={() => handleOpenModal(car)}
                 />
               ))}
             </div>
@@ -72,7 +72,6 @@ const MobileProfileInteractiveSection = ({
         </div>
       )}
 
-      {/* Update Car Modal */}
       {selectedCar && (
         <UpdateCarModal
           isOpen={!!selectedCar}
