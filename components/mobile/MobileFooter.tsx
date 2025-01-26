@@ -17,56 +17,60 @@ const MobileFooter = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-6 md:hidden">
-      <div className="flex items-center justify-between">
-        <Link
-          href="/"
-          className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Home' ? 'bg-gray-700' : 'hover:bg-gray-600'} p-2 text-sm`}
-          onClick={() => handleClick('Home')}
-        >
-          Home
-          <HomeIcon />
-        </Link>
-        <div className="flex space-x-2">
-          {!loading && (
-            <>
-              {!isAuthenticated ? (
+    <>
+      {isAuthenticated && (
+        <div className="fixed bottom-0 left-0 right-0 bg-blue-700 text-white p-6 md:hidden">
+          <div className="flex items-center justify-between">
+            <Link
+              href="/"
+              className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Home' ? 'bg-blue-500' : 'hover:bg-blue-600'} p-2 text-sm`}
+              onClick={() => handleClick('Home')}
+            >
+              Home
+              <HomeIcon />
+            </Link>
+            <div className="flex space-x-2">
+              {!loading && (
                 <>
-                  <Link
-                    href="/sign-in"
-                    className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-in' ? 'bg-gray-700' : 'hover:bg-gray-600'} p-2 text-sm`}
-                    onClick={() => handleClick('Sign-in')}
-                  >
-                    Sign-in
-                    <LoginIcon />
-                  </Link>
-                  <Link
-                    href="/sign-up"
-                    className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-up' ? 'bg-gray-700' : 'hover:bg-gray-600'} p-2 text-sm`}
-                    onClick={() => handleClick('Sign-up')}
-                  >
-                    Sign-up
-                    <LoginIcon />
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/profile/my-profile"
-                    className={`flex items-start gap-2 cursor-pointer transition duration-300 ${activeButton === 'Profile' ? 'bg-gray-700' : 'hover:bg-gray-600'} p-2 text-sm`}
-                    onClick={() => handleClick('Profile')}
-                  >
-                    Profile
-                    <AccountBoxIcon />
-                  </Link>
-                  <LogoutButton />
+                  {!isAuthenticated ? (
+                    <>
+                      <Link
+                        href="/sign-in"
+                        className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-in' ? 'bg-blue-500' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        onClick={() => handleClick('Sign-in')}
+                      >
+                        Sign-in
+                        <LoginIcon />
+                      </Link>
+                      <Link
+                        href="/sign-up"
+                        className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-up' ? 'bg-blue-500' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        onClick={() => handleClick('Sign-up')}
+                      >
+                        Sign-up
+                        <LoginIcon />
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/profile/my-profile"
+                        className={`flex items-start gap-2 cursor-pointer transition duration-300 ${activeButton === 'Profile' ? 'bg-blue-500' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        onClick={() => handleClick('Profile')}
+                      >
+                        Profile
+                        <AccountBoxIcon />
+                      </Link>
+                      <LogoutButton />
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

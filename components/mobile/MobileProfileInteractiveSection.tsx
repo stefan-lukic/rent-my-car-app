@@ -57,7 +57,7 @@ const MobileProfileInteractiveSection = ({
     <div className="flex flex-col space-y-4 px-4">
       <Button
         onClick={() => router.push('/cars/add-car')}
-        className="bg-green-500 text-white hover:bg-green-600"
+        className="bg-blue-500 text-white hover:bg-blue-600"
       >
         Add New
       </Button>
