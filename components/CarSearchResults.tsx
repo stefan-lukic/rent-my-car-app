@@ -58,13 +58,39 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
       </div>
       <div className="p-4 flex-grow flex flex-col justify-between">
         <div>
-          <h3 className="text-xl font-semibold">{car.carModel}</h3>
-          <p className="text-gray-600">{car.city}</p>
-        </div>
-        <div className="mt-2 flex justify-between items-center">
-          <span className="text-lg font-bold text-green-600">
-            ${car.pricePerDay}/day
-          </span>
+          <div className="flex flex-row justify-between align-center items-center">
+            <div className="flex flex-col justify-start align-start items-start">
+              <p className="text-black">Make: </p>
+              <p className="text-black">Model:</p>
+              <p className="text-black">Type:</p>
+              <p className="text-black">Engine:</p>
+              <p className="text-black">Avg/100km:</p>
+              <p className="text-black">City:</p>
+              <p className="text-black">Location:</p>
+              <p className="text-black">Price per day:</p>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="text-black font-bold">
+                {car.make.charAt(0).toUpperCase() +
+                  car.make.slice(1).toLowerCase()}
+              </p>
+              <p className="text-black font-bold">{car.carModel}</p>
+              <p className="text-black">
+                {car.carType.charAt(0).toUpperCase() +
+                  car.carType.slice(1).toLowerCase()}
+              </p>
+              <p className="text-black">
+                {car.engine.charAt(0).toUpperCase() +
+                  car.engine.slice(1).toLowerCase()}
+              </p>
+              <p className="text-black">{car.averageConsumption} l/100km</p>
+              <p className="text-black">{car.city}</p>
+              <p className="text-black">{car.carLocation}</p>
+              <p className="text-green-500 font-bold">€{car.pricePerDay}/day</p>
+            </div>
+          </div>
+
           <div className="flex space-x-2">
             <button
               className="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"

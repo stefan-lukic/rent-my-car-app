@@ -30,10 +30,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-3 space-y-2">
-      <h3 className="text-base font-semibold text-gray-800 truncate">
-        {rental.car?.carModel}
-      </h3>
+    <div className="bg-white shadow-md rounded-lg space-y-2">
       <div className="relative h-40 w-full overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
@@ -43,7 +40,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
             alt={`${rental.car.make} ${rental.car.carModel}`}
             layout="fill"
             objectFit="cover"
-            className="transition-opacity duration-300 hover:opacity-90"
+            className="transition-opacity duration-300 hover:opacity-90 rounded"
           />
           {rental.car.images && rental.car.images.length > 1 && (
             <div className="absolute left-2 right-2 inset-0 flex justify-between items-center">
@@ -65,15 +62,25 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
           )}
         </div>
       </div>
-      <p className="text-sm text-gray-600">
-        <span className="font-medium text-gray-700">Rented from:</span>{' '}
-        {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} -{' '}
-        {new Date(rental.rentalPeriod.endDate).toLocaleDateString()}
-      </p>
-      <p className="text-sm text-gray-600">
-        <span className="font-medium text-gray-700">Total Cost:</span> $
-        {rental.totalCost}
-      </p>
+      <div className="p-2">
+        <p className="text-sm text-black-600">
+          <span className="font-bold text-black">Car: </span>
+          {rental.car.make} {rental.car.carModel}
+        </p>
+        <p className="text-sm text-gray-600">
+          <span className="font-bold text-black">Location: </span>
+          {rental.car.city}, {rental.car.carLocation}
+        </p>
+        <p className="text-sm text-gray-600">
+          <span className="font-bold text-black">Rented from:</span>{' '}
+          {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} -{' '}
+          {new Date(rental.rentalPeriod.endDate).toLocaleDateString()}
+        </p>
+        <p className="text-sm text-red-500">
+          <span className="font-bold text-black">Total Cost:</span> $
+          {rental.totalCost}
+        </p>
+      </div>
     </div>
   );
 };
