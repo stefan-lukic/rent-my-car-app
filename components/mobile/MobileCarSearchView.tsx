@@ -15,7 +15,7 @@ export default function MobileCarSearchView() {
   });
 
   return (
-    <div className="h-full bg-red-100 flex flex-col w-full">
+    <div className="h-full bg-white flex flex-col w-full">
       <MobileCarFilters filters={filters} setFilters={setFilters} />
       <MobileCarRentalSearch filters={filters} />
     </div>

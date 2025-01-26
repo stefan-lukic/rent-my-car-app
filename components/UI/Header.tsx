@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
       className={`sticky top-0 h-12 w-full flex justify-between bg-black text-white text-sm font-extralight z-50 ${className}`}
     >
       <div className="flex items-center pl-8">
-        <Link href="/" className="flex items-center gap-2 cursor-pointer">
+        <Link href="/" className="flex items-center gap-1 cursor-pointer">
           Home
           <HomeIcon />
         </Link>
@@ -31,14 +31,14 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <>
                 <Link
                   href="/sign-in"
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   Sign-in
                   <LoginIcon />
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   Sign-up
                   <LoginIcon />
@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <>
                 <Link
                   href="/profile/my-profile"
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   Profile
                   <AccountBoxIcon />

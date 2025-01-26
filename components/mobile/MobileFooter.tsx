@@ -23,7 +23,7 @@ const MobileFooter = () => {
           <div className="flex items-center justify-between">
             <Link
               href="/"
-              className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Home' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-2 text-sm`}
+              className={`flex items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Home' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
               onClick={() => handleClick('Home')}
             >
               Home
@@ -36,7 +36,7 @@ const MobileFooter = () => {
                     <>
                       <Link
                         href="/sign-in"
-                        className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-in' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        className={`flex align-items justify-center items-center  gap-1 cursor-pointer transition duration-300 ${activeButton === 'Sign-in' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Sign-in')}
                       >
                         Sign-in
@@ -44,7 +44,7 @@ const MobileFooter = () => {
                       </Link>
                       <Link
                         href="/sign-up"
-                        className={`flex items-center gap-2 cursor-pointer transition duration-300 ${activeButton === 'Sign-up' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        className={`flex align-items justify-center items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Sign-up' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Sign-up')}
                       >
                         Sign-up
@@ -55,13 +55,15 @@ const MobileFooter = () => {
                     <>
                       <Link
                         href="/profile/my-profile"
-                        className={`flex items-start gap-2 cursor-pointer transition duration-300 ${activeButton === 'Profile' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-2 text-sm`}
+                        className={`flex align-items justify-center items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Profile' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Profile')}
                       >
                         Profile
                         <AccountBoxIcon />
                       </Link>
-                      <LogoutButton />
+                      <div className="flex align-items justify-center items-center text-xs">
+                        <LogoutButton />
+                      </div>
                     </>
                   )}
                 </>

@@ -5,7 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 export default function LogoutButton() {
   return (
     <div
-      className="flex flex-row items-center gap-2 cursor-pointer"
+      className="flex flex-row items-center gap-1 cursor-pointer"
       onClick={() => signOut({ callbackUrl: '/sign-in' })}
     >
       Log out
