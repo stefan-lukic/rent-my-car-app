@@ -56,16 +56,20 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
       </div>
 
       <div className="p-3">
-        <h3 className="font-medium text-base text-gray-800 truncate">
+        <h3 className="text-sm text-base text-gray-800 truncate">
           {car.make} {car.carModel}
         </h3>
-        <p className="text-sm text-gray-600">{car.engine}</p>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-green-500 font-medium text-sm">
-            {car.power}
-          </span>
+        <div className="flex flex-row gap-2">
+          <p className="text-sm text-gray-600">{car.engine}</p>
+          <p className="text-blue-500 font-medium text-sm">{car.power} hp</p>
+        </div>
+        <h3 className="text-sm text-base text-gray-800 truncate">{car.city}</h3>
+        <h3 className="text-sm text-base text-gray-800 truncate">
+          {car.carLocation}
+        </h3>
+        <div className="flex justify-between items-center mt-1">
           <Button
-            className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-2 py-1 rounded transition duration-300"
+            className="h-8 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition duration-300"
             onClick={() => onUpdate(car)}
           >
             Update

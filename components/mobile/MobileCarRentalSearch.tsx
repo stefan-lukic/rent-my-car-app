@@ -108,7 +108,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-90px)] flex flex-col p-2 bg-white overflow-auto">
+    <div className="h-[calc(100vh-85px)] flex flex-col p-2 bg-white overflow-auto">
       <input
         type="text"
         placeholder="City"
