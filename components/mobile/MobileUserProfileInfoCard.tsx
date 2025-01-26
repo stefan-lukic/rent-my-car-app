@@ -13,7 +13,7 @@ export default function MobileProfileUserInfoCard({
   user,
 }: UserProfileCardProps) {
   return (
-    <div className="flex flex-col items-center p-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-md">
+    <div className="flex flex-row items-center gap-2 p-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-md">
       <Image
         className="rounded-full shadow-md mb-1 border-2 border-white"
         src={user?.images?.[0] || ''}
@@ -22,16 +22,15 @@ export default function MobileProfileUserInfoCard({
         height={70}
         priority={true}
       />
-      <h2 className="text-sm font-semibold text-white text-center truncate w-full">
-        {user.name}
-      </h2>
-      <p className="text-xs text-blue-100 text-center truncate w-full">
-        {user.email}
-      </p>
-      <div className="p-2 w-full">
-        <h2 className="text-sm font-semibold text-black mb-1">
-          Account Information
+      <div className="flex flex-col">
+        <h2 className="text-xs font-semibold text-white text-center truncate w-full">
+          {user.name}
         </h2>
+        <p className="text-xs text-blue-100 text-center truncate w-full">
+          {user.email}
+        </p>
+      </div>
+      <div className="p-2 w-full">
         <p className="text-xs text-black">
           Member since: {new Date(user.createdAt).toLocaleDateString()}
         </p>
