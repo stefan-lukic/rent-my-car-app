@@ -30,7 +30,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg space-y-2">
+    <div className="bg-white rounded shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
       <div className="relative h-40 w-full overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image

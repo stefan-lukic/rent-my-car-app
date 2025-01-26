@@ -24,7 +24,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <div className="bg-white rounded shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
       <div className="relative h-40 w-full overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
@@ -32,7 +32,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
             alt={`${car.make} ${car.carModel}`}
             layout="fill"
             objectFit="cover"
-            className="transition-opacity duration-300 hover:opacity-90"
+            className="transition-opacity duration-300 hover:opacity-90 rounded"
           />
           {car.images && car.images.length > 1 && (
             <div className="absolute left-2 right-2 inset-0 flex justify-between items-center">
@@ -55,7 +55,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
         </div>
       </div>
 
-      <div className="p-3">
+      <div className="p-2">
         <p className="text-sm text-base text-gray-800 truncate">
           {car.make} {car.carModel}
         </p>
@@ -66,6 +66,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
         <p className="text-sm text-base text-gray-800 truncate">
           {car.city}, {car.carLocation}
         </p>
+        <p className="text-green-500 font-bold">€{car.pricePerDay}/day</p>
         <div className="flex justify-between items-center mt-1">
           <Button
             className="h-8 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition duration-300"
