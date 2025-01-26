@@ -19,7 +19,7 @@ const MobileFooter = () => {
   return (
     <>
       {isAuthenticated && (
-        <div className="fixed bottom-0 left-0 right-0 bg-blue-700 text-white p-6 md:hidden">
+        <div className="fixed bottom-0 left-0 right-0 bg-blue-700 text-white p-2 md:hidden">
           <div className="flex items-center justify-between">
             <Link
               href="/"

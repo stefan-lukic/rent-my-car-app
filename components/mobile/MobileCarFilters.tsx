@@ -24,7 +24,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-2">
+    <div className="bg-white p-2">
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}

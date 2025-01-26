@@ -108,7 +108,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col p-2 bg-white rounded-lg shadow-md overflow-auto">
+    <div className="h-[calc(100vh-90px)] flex flex-col p-2 bg-white overflow-auto">
       <input
         type="text"
         placeholder="City"
@@ -143,7 +143,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
         </Button>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-2">
         {searchResults.map((car) => (
           <MobileCarSearchResults
             key={car._id}
