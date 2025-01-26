@@ -34,7 +34,7 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
           alt={car.carModel}
           width={450}
           height={450}
-          className=" h-40 object-cover rounded-md"
+          className=" h-50 object-cover rounded-md"
         />
         {car.images && car.images.length > 1 && (
           <div className="absolute inset-0 bottom-0 flex justify-between items-center">
@@ -56,24 +56,51 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
         )}
       </div>
 
-      <div className="mt-2">
-        <h3 className="text-lg font-bold">{car.carModel}</h3>
-        <p className="text-gray-500">{car.city}</p>
-        <p className="text-green-600 font-semibold">${car.pricePerDay}/day</p>
-        <div className="flex space-x-2">
-          <button
-            className="bg-blue-500 w-full text-white px-3 py-2 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
-            onClick={onBookNow}
-          >
-            Book
-          </button>
-          <button
-            className="bg-blue-500 w-full text-white px-3 py-2 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
-            onClick={onViewDetails}
-          >
-            Details
-          </button>
+      <div className="flex flex-row justify-between align-center items-center">
+        <div className="flex flex-col justify-start align-start items-start">
+          <p className="text-black">Make: </p>
+          <p className="text-black">Model:</p>
+          <p className="text-black">Type:</p>
+          <p className="text-black">Engine:</p>
+          <p className="text-black">Avg/100km:</p>
+          <p className="text-black">City:</p>
+          <p className="text-black">Location:</p>
+          <p className="text-black">Price per day:</p>
         </div>
+
+        <div className="flex flex-col">
+          <p className="text-black font-bold">
+            {car.make.charAt(0).toUpperCase() + car.make.slice(1).toLowerCase()}
+          </p>
+          <p className="text-black font-bold">{car.carModel}</p>
+          <p className="text-black">
+            {car.carType.charAt(0).toUpperCase() +
+              car.carType.slice(1).toLowerCase()}
+          </p>
+          <p className="text-black">
+            {car.engine.charAt(0).toUpperCase() +
+              car.engine.slice(1).toLowerCase()}
+          </p>
+          <p className="text-black">{car.averageConsumption} l/100km</p>
+          <p className="text-black">{car.city}</p>
+          <p className="text-black">{car.carLocation}</p>
+          <p className="text-green-500 font-bold">€{car.pricePerDay}/day</p>
+        </div>
+      </div>
+
+      <div className="flex space-x-2">
+        <button
+          className="bg-blue-500 w-full text-white px-3 py-2 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
+          onClick={onBookNow}
+        >
+          Book
+        </button>
+        <button
+          className="bg-blue-500 w-full text-white px-3 py-2 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
+          onClick={onViewDetails}
+        >
+          Details
+        </button>
       </div>
     </div>
   );
