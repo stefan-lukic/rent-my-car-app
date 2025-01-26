@@ -13,7 +13,7 @@ export default function MobileProfileUserInfoCard({
   user,
 }: UserProfileCardProps) {
   return (
-    <div className="flex flex-row items-center gap-2 p-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-md">
+    <div className="flex flex-row items-center gap-6 p-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-md">
       <Image
         className="rounded-full shadow-md mb-1 border-2 border-white"
         src={user?.images?.[0] || ''}
