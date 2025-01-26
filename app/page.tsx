@@ -8,10 +8,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { LucideLoader2 } from 'lucide-react';
 import MobileCarSearchView from '@/components/mobile/MobileCarSearchView';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
+  const router = useRouter();
+
   const isMobile = isMobileCSR();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/sign-in');
+    }
+  }, [isAuthenticated, loading, router]);
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
@@ -29,16 +38,24 @@ export default function Home() {
     }
   }, []);
 
+  if (loading) {
+    return (
+      <div className="absolute inset-0 flex justify-center items-center">
+        <LucideLoader2 />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // The redirect will handle this scenario
+  }
+
   return (
     <main className="h-screen flex flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
       {isMobile ? (
-        isAuthenticated ? (
-          <div className="flex h-full w-full flex-1">
-            <MobileCarSearchView />
-          </div>
-        ) : (
-          <> {!loading && <SignInPage />}</>
-        )
+        <div className="flex h-full w-full flex-1">
+          <MobileCarSearchView />
+        </div>
       ) : (
         <>
           {!loading ? (
