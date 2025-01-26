@@ -66,6 +66,14 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
         </div>
       </div>
       <p className="text-sm text-gray-600">
+        <span className="font-medium text-gray-700">Car: </span>
+        {rental.car.make} {rental.car.carModel}
+      </p>
+      <p className="text-sm text-gray-600">
+        <span className="font-medium text-gray-700">Car: </span>
+        {rental.car.city}, {rental.car.carLocation}
+      </p>
+      <p className="text-sm text-gray-600">
         <span className="font-medium text-gray-700">Rented from:</span>{' '}
         {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} -{' '}
         {new Date(rental.rentalPeriod.endDate).toLocaleDateString()}
