@@ -38,6 +38,15 @@ export default function RootLayout({
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        ></meta>
+        <link
+          rel="apple-touch-startup-image"
+          href="/splashscreens/splash-1125x2436.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+        />
       </head>
       <body
         className={`${inter.className} flex flex-col h-screen overflow-hidden md:overflow-auto`}
