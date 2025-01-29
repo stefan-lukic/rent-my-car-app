@@ -34,8 +34,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover',
-  themeColor: '#000000',
+  viewportFit: 'cover', // Ensures the viewport covers the entire screen, including the notch area
+  themeColor: '#000000', // Match this with your app's theme color
 };
 
 export default function RootLayout({
