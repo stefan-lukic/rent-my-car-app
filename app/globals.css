@@ -62,6 +62,14 @@ body {
     background-color: #000000; /* Match this with your app's background color */
   }
   
+
+.element {
+    height: env(safe-area-inset-top);
+    width: env(safe-area-inset-left);
+    margin: env(safe-area-inset-right);
+    padding: env(safe-area-inset-bottom, 20px);
+}
+
   /* Ensure the HTML element covers the entire screen */
   html {
     height: 100vh;
