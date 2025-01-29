@@ -2,7 +2,7 @@
   "name": "Rent My Car",
   "short_name": "RentCar",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "orientation": "portrait",
