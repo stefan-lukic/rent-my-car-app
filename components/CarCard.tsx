@@ -27,7 +27,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
       <div className="relative h-48 w-full overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
-            src={car.images?.[currentImageIndex] || '/placeholder-car.jpg'}
+            src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
             alt={`${car.make} ${car.carModel}`}
             layout="fill"
             objectFit="contain"

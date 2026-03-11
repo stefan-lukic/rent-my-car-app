@@ -92,7 +92,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                       <Image
                         src={
                           car.images?.[currentImageIndex] ||
-                          '/placeholder-car.jpg'
+                          '/placeholder-car.svg'
                         }
                         alt={`${car.make} ${car.carModel}`}
                         width={500}
