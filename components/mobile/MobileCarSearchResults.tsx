@@ -30,7 +30,7 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
     <div className="flex flex-col bg-gray-100 rounded-lg overflow-hidden p-1">
       <div className="relative h-48 overflow-hidden">
         <Image
-          src={car.images?.[currentImageIndex] || '/placeholder-car.jpg'}
+          src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
           alt={car.carModel}
           width={450}
           height={450}

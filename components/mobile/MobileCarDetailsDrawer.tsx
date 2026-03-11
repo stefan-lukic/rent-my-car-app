@@ -83,7 +83,7 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
                 <Image
                   src={
-                    car.images?.[currentImageIndex] || '/placeholder-car.jpg'
+                    car.images?.[currentImageIndex] || '/placeholder-car.svg'
                   }
                   alt={`${car.make} ${car.carModel}`}
                   width={500}

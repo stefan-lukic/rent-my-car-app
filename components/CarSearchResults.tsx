@@ -31,7 +31,7 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
     <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 flex flex-col">
       <div className="relative h-48 overflow-hidden">
         <Image
-          src={car.images?.[currentImageIndex] || '/placeholder-car.jpg'}
+          src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
           alt={car.carModel}
           width={500}
           height={300}

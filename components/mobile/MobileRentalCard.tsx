@@ -35,7 +35,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
             src={
-              rental.car.images?.[currentImageIndex] || '/placeholder-car.jpg'
+              rental.car.images?.[currentImageIndex] || '/placeholder-car.svg'
             }
             alt={`${rental.car.make} ${rental.car.carModel}`}
             layout="fill"
