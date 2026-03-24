@@ -7,8 +7,6 @@ import { RentalWithCar } from '@/types/RentalWithCar';
 import CarCard from './CarCard';
 import RentalCard from './RentalCard';
 import UpdateCarModal from './UpdateCarModal';
-import ReactPaginate from 'react-paginate';
-import { Button } from './UI/Button';
 
 interface ProfileInteractiveSectionProps {
   cars: ICar[];
@@ -23,55 +21,60 @@ const ProfileInteractiveSection = ({
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [carsPerPage] = useState(4);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
 
+  const carsPerPage = 3;
+  const rentalsPerPage = 4;
   const router = useRouter();
 
-  const rentalsPerPage = 4;
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
     setIsUpdateModalOpen(false);
   };
 
   const pageCount = Math.ceil(cars.length / carsPerPage);
-  const offset = currentPage * carsPerPage;
-  const currentCars = cars.slice(offset, offset + carsPerPage);
-
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-  };
-
-  const rentalPageCount = Math.ceil(initialRentals.length / rentalsPerPage);
-  const rentalOffset = currentRentalPage * rentalsPerPage;
-  const currentRentals = initialRentals.slice(
-    rentalOffset,
-    rentalOffset + rentalsPerPage
+  const currentCars = cars.slice(
+    currentPage * carsPerPage,
+    currentPage * carsPerPage + carsPerPage
   );
 
-  const handleRentalPageChange = ({ selected }: { selected: number }) => {
-    setCurrentRentalPage(selected);
-  };
+  const rentalPageCount = Math.ceil(initialRentals.length / rentalsPerPage);
+  const currentRentals = initialRentals.slice(
+    currentRentalPage * rentalsPerPage,
+    currentRentalPage * rentalsPerPage + rentalsPerPage
+  );
 
   return (
-    <div className="flex flex-col overflow-x-hidden">
-      <Button
-        onClick={() => router.push('/cars/add-car')}
-        className="bg-green-500 text-white hover:bg-green-600"
-      >
-        Add New
-      </Button>
+    <div className="flex flex-col gap-4">
+      {/* ===== MY CARS ===== */}
+      <div className="bg-white rounded-2xl p-6 border border-gray-100">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold text-gray-800">My Cars</h2>
+          <button
+            onClick={() => router.push('/cars/add-car')}
+            className="bg-green-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-1"
+          >
+            + Add New Car
+          </button>
+        </div>
 
-      <div className="mb-6 flex">
-        <div className="w-1/2 pr-4">
-          <h2 className="text-xl font-semibold text-gray-800">My Cars</h2>
-          {cars.length === 0 ? (
-            <p className="text-gray-600 italic">
-              You haven`t listed any cars yet.
-            </p>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {cars.length === 0 ? (
+          <p className="text-gray-400 italic text-sm">
+            You haven&apos;t listed any cars yet.
+          </p>
+        ) : (
+          <>
+            {/* Strelice sa strana + kartice */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => p - 1)}
+                disabled={currentPage === 0}
+                className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+              >
+                ‹
+              </button>
+
+              <div className="flex-1 grid grid-cols-3 gap-3">
                 {currentCars.map((car) => (
                   <CarCard
                     key={car._id}
@@ -83,68 +86,78 @@ const ProfileInteractiveSection = ({
                   />
                 ))}
               </div>
-              <ReactPaginate
-                previousLabel={'Prev'}
-                nextLabel={'Next'}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageChange}
-                containerClassName={
-                  'pagination flex justify-left mt-6 space-x-2'
-                }
-                pageClassName={
-                  'px-1 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
-                }
-                pageLinkClassName={''}
-                previousClassName={
-                  'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
-                }
-                nextClassName={
-                  'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
-                }
-                breakClassName={'px-3 py-2'}
-                activeClassName={'bg-blue-500 text-white'}
-              />
-            </>
+
+              <button
+                onClick={() => setCurrentPage((p) => p + 1)}
+                disabled={currentPage >= pageCount - 1}
+                className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+              >
+                ›
+              </button>
+            </div>
+
+            {pageCount > 1 && (
+              <div className="flex justify-center gap-2 mt-4">
+                {Array.from({ length: pageCount }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                      currentPage === i
+                        ? 'bg-green-500 text-white'
+                        : 'border border-gray-200 text-gray-500 hover:border-green-400'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="bg-white rounded-2xl p-6 border border-gray-100">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold text-gray-800">My Rentals</h2>
+          {initialRentals.length > rentalsPerPage && (
+            <button className="text-sm text-blue-500 hover:underline flex items-center gap-1">
+              View All →
+            </button>
           )}
         </div>
-        <div className="w-1/2">
-          <h2 className="text-xl font-semibold text-gray-800">My Rentals</h2>
-          {currentRentals.length === 0 ? (
-            <p className="text-gray-600 italic">
-              You haven`t rented any cars yet.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 w-full max-w-lg">
+
+        {initialRentals.length === 0 ? (
+          <p className="text-gray-400 italic text-sm">
+            You haven&apos;t rented any cars yet.
+          </p>
+        ) : (
+          <>
+            <div className="flex flex-col gap-2">
               {currentRentals.map((rental) => (
                 <RentalCard key={rental._id} rental={rental} />
               ))}
             </div>
-          )}
-          <ReactPaginate
-            previousLabel={'Prev'}
-            nextLabel={'Next'}
-            breakLabel={'...'}
-            pageCount={rentalPageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handleRentalPageChange}
-            containerClassName={'pagination flex justify-left mt-6 space-x-2'}
-            pageClassName={
-              'px-1 py-1 text-sm rounded-md bg-blue-100 text-blue-600'
-            }
-            previousClassName={
-              'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
-            }
-            nextClassName={
-              'px-1 py-1 text-sm rounded-md bg-blue-500 text-white'
-            }
-            breakClassName={'px-3 py-2'}
-            activeClassName={'bg-blue-500 text-white'}
-          />
-        </div>
+
+            {rentalPageCount > 1 && (
+              <div className="flex justify-center gap-2 mt-4">
+                {Array.from({ length: rentalPageCount }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentRentalPage(i)}
+                    className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                      currentRentalPage === i
+                        ? 'bg-green-500 text-white'
+                        : 'border border-gray-200 text-gray-500 hover:border-green-400'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {selectedCar && (
