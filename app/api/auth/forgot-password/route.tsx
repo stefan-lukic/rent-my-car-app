@@ -14,18 +14,15 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message:
-            'If this email exists, you will receive a reset link shortly.',
+          message: 'User does not exist.',
         },
         { status: 200 }
       );
     }
 
-    //console.log(`Password reset requested for: ${email}`);
-
     return NextResponse.json(
       {
-        message: 'If this email exists, you will receive a reset link shortly.',
+        message: 'Password reset link has been sent to your email.',
       },
       { status: 200 }
     );
