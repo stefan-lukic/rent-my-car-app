@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
         {
           message: 'User does not exist.',
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
