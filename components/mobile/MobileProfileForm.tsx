@@ -182,7 +182,10 @@ const MobileProfileForm = ({
               {isLoading ? 'Logging In...' : 'Log In'}
             </button>
 
-            <a className="mt-4 text-blue-500 text-sm hover:underline" href="#">
+            <a
+              className="mt-4 text-blue-500 text-sm hover:underline"
+              href="/forgot-password"
+            >
               Forgot Password?
             </a>
           </div>

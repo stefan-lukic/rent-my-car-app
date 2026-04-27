@@ -47,7 +47,7 @@ const MobileForgotPasswordForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full p-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600 transition-colors disabled:opacity-50"
+            className="w-full p-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
             {isSubmitting ? 'Sending...' : 'Send reset link'}
           </button>
