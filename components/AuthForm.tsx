@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import ProfileForm from './ProfileForm';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 import MobileProfileForm from './mobile/MobileProfileForm';
+import Link from 'next/link';
 
 const AuthForm = ({ type }: { type: string }) => {
   const { data: session, status } = useSession();
@@ -21,62 +22,70 @@ const AuthForm = ({ type }: { type: string }) => {
   }, [status, router, callbackUrl]);
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
 
   if (status === 'authenticated') {
-    return null; // This will prevent the form from rendering while redirecting
+    return null;
   }
 
   return (
-    <div className="h-[calc(100%-80px)] flex items-center justify-center align-center overflow-hidden">
-      <div className="w-full max-w-md space-y-8 p-10 bg-white">
-        {isMobile ? (
-          type === 'sign-up' ? (
-            <h1>Sign up</h1>
-          ) : (
-            <h1>Sign in</h1>
-          )
-        ) : (
-          <div className="space-y-3">
-            <h1 className="text-3xl font-normal text-center">
-              {type === 'sign-in' ? 'Log in to RentMyCar' : 'Create an account'}
-            </h1>
-            <p className="text-gray-600 text-center">
-              Enter your details below
-            </p>
-          </div>
-        )}
+    <div className="flex items-center bg-blue-100 justify-center p-4 min-h-full">
+      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 p-10 border border-blue-50 transition-all">
+        <header className="mb-10 text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
+            {isMobile
+              ? type === 'sign-up'
+                ? 'Join Us'
+                : 'Welcome Back'
+              : type === 'sign-in'
+                ? 'Log in to RentMyCar'
+                : 'Create an Account'}
+          </h1>
+          <p className="text-gray-500 font-medium">
+            {type === 'sign-in'
+              ? 'Enter your details to access your ride'
+              : 'Start your journey with us today'}
+          </p>
+        </header>
 
-        {isMobile ? (
-          <MobileProfileForm type={type} callbackUrl={callbackUrl} />
-        ) : (
-          <ProfileForm type={type} callbackUrl={callbackUrl} />
-        )}
-
-        <div className="text-center">
-          {type !== 'sign-up' ? (
-            <p className="text-black/[0.6] text-xs">
-              Don&apos;t have an account yet?
-              <a
-                href="/sign-up"
-                className="underline underline-offset-[6px] ml-2"
-              >
-                Sign up
-              </a>
-            </p>
+        <div className="mb-8">
+          {isMobile ? (
+            <MobileProfileForm type={type} callbackUrl={callbackUrl} />
           ) : (
-            <p className="text-black/[0.6] text-xs">
-              Already have an account?
-              <a
-                href="/sign-in"
-                className="underline underline-offset-[6px] ml-2"
-              >
-                Log in
-              </a>
-            </p>
+            <ProfileForm type={type} callbackUrl={callbackUrl} />
           )}
         </div>
+
+        <footer className="text-center pt-6 border-t border-gray-100">
+          <p className="text-gray-500 font-medium text-sm">
+            {type !== 'sign-up' ? (
+              <>
+                Don&apos;t have an account?
+                <Link
+                  href="/sign-up"
+                  className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
+                >
+                  Sign up
+                </Link>
+              </>
+            ) : (
+              <>
+                Already have an account?
+                <Link
+                  href="/sign-in"
+                  className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
+                >
+                  Log in
+                </Link>
+              </>
+            )}
+          </p>
+        </footer>
       </div>
     </div>
   );
