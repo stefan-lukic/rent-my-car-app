@@ -177,7 +177,7 @@ const ProfileForm = ({
 
             <a
               className="text-[var(--secondary-2)] hover:underline hover:underline-offset-4"
-              href="#"
+              href="/forgot-password"
             >
               Forgot Password?
             </a>
