@@ -6,14 +6,6 @@ import MobileForgotPasswordForm from '@/components/mobile/MobileForgotPasswordFo
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 
 const ForgotPasswordPage = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
   const isMobile = isMobileCSR();
 
   return isMobile ? <MobileForgotPasswordForm /> : <ForgotPasswordForm />;
