@@ -34,8 +34,8 @@ const AuthForm = ({ type }: { type: string }) => {
   }
 
   return (
-    <div className="flex items-center bg-blue-100 justify-center p-4 min-h-full">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 p-10 border border-blue-50 transition-all">
+    <div className="flex items-center bg-blue-100 justify-center h-full overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 p-4 border border-blue-50 transition-all">
         <header className="mb-10 text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
             {isMobile
