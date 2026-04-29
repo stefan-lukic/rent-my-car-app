@@ -104,7 +104,7 @@ const ProfileForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {type === 'sign-up' && (
           <>
             <CustomInput

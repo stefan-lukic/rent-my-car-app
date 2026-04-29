@@ -164,7 +164,7 @@ const MobileProfileForm = ({
             <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center">
               <Image
                 className="mr-2"
-                src="/icons/next.svg"
+                src="/icons/icon-google.svg"
                 alt="Google logo"
                 width={40}
                 height={40}
