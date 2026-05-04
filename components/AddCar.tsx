@@ -13,27 +13,17 @@ import FormInput, {
   labelClasses,
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
-import { CarData } from '@/hooks/useAddCar';
+import { useAddCar } from '@/hooks/useAddCar';
 
-interface DesktopAddCarProps {
-  carData: CarData;
-  isSubmitting: boolean;
-  handleSubmit: (e: React.FormEvent) => void;
-  handleInputChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => void;
-  handleDateChange: (date: Date | null) => void;
-}
+export default function AddCar() {
+  const {
+    carData,
+    isSubmitting,
+    handleInputChange,
+    handleDateChange,
+    handleSubmit,
+  } = useAddCar();
 
-export default function DesktopAddCar({
-  carData,
-  isSubmitting,
-  handleSubmit,
-  handleInputChange,
-  handleDateChange,
-}: DesktopAddCarProps) {
   return (
     <div className="max-w-4xl mx-auto px-4">
       <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 p-8 md:p-12">
@@ -42,8 +32,7 @@ export default function DesktopAddCar({
             Add a New Car
           </h1>
           <p className="text-gray-500">
-            Add your vehicle details to create a rental listing and make it
-            available for bookings
+            Add your vehicle details to create a rental listing
           </p>
         </header>
 
@@ -106,6 +95,7 @@ export default function DesktopAddCar({
               onChange={handleInputChange}
               options={Object.values(CarCity)}
             />
+
             <FormInput
               label="Car Location"
               name="carLocation"
@@ -124,7 +114,6 @@ export default function DesktopAddCar({
                 showYearDropdown
                 className={inputClasses}
                 placeholderText="Select date"
-                required
               />
             </div>
 
@@ -154,7 +143,7 @@ export default function DesktopAddCar({
           <div className="space-y-2">
             <label className={labelClasses}>Car Images</label>
             <div className="relative group">
-              <div className="w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl flex flex-col items-center justify-center bg-blue-50 group-hover:bg-blue-100 transition-colors cursor-pointer">
+              <div className="w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl flex flex-col items-center justify-center bg-blue-50 cursor-pointer">
                 <CloudUploadIcon
                   className="text-blue-500 mb-2"
                   fontSize="large"
@@ -165,6 +154,7 @@ export default function DesktopAddCar({
                     : 'Click to upload photos'}
                 </span>
               </div>
+
               <input
                 type="file"
                 name="images"
@@ -172,7 +162,6 @@ export default function DesktopAddCar({
                 onChange={handleInputChange}
                 accept="image/*"
                 className="absolute inset-0 opacity-0 cursor-pointer"
-                required
               />
             </div>
           </div>
@@ -180,13 +169,13 @@ export default function DesktopAddCar({
           <Button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full text-white py-4 rounded-2xl text-lg font-bold shadow-lg transition-all transform ${
+            className={`w-full text-white py-4 rounded-2xl text-lg font-bold transition ${
               isSubmitting
                 ? 'bg-blue-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200 hover:scale-[1.01] active:scale-[0.99]'
+                : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
-            {isSubmitting ? 'Adding...' : 'Add a New Car'}
+            {isSubmitting ? 'Adding...' : 'Add Car'}
           </Button>
         </form>
       </div>
