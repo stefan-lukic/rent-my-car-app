@@ -1,170 +1,33 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/UI/Button';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; //ovde sam i npm install ovo ali se onda promenili json fajlovi pa sam discard promene
+import 'react-datepicker/dist/react-datepicker.css';
 import { CarType } from '@/lib/model/car/CarType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { CarCity } from '@/lib/model/car/CarCity';
 import MobileAddCar from '@/components/mobile/MobileAddCar';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
-const inputClasses =
-  'w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-700';
-const labelClasses = 'block mb-2 text-sm font-semibold text-gray-600 ml-1';
-
-const FormInput = ({
-  label,
-  name,
-  type = 'text',
-  placeholder,
-  value,
-  onChange,
-}: any) => (
-  <div>
-    <label className={labelClasses}>{label}</label>
-    <input
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      required
-      className={inputClasses}
-    />
-  </div>
-);
-
-const FormSelect = ({ label, name, value, onChange, options }: any) => (
-  <div>
-    <label className={labelClasses}>{label}</label>
-    <select
-      name={name}
-      value={value}
-      onChange={onChange}
-      className={inputClasses}
-    >
-      {options.map((opt: string) => (
-        <option key={opt} value={opt}>
-          {opt}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+import FormInput, {
+  inputClasses,
+  labelClasses,
+} from '@/components/UI/FormInput';
+import FormSelect from '@/components/UI/FormSelect';
+import { useAddCar } from '@/hooks/useAddCar';
 
 export default function AddCarPage() {
-  const [carData, setCarData] = useState({
-    make: CarMake.MERCEDES,
-    carModel: '',
-    engine: CarEngineType.PETROL,
-    power: '',
-    carType: CarType.SALOON,
-    city: CarCity.NOVI_SAD,
-    carLocation: '',
-    firstRegistration: null as Date | null,
-    images: [] as File[],
-    owner: '',
-    pricePerDay: '',
-    milage: 0,
-    averageConsumption: '',
-    description: '',
-  });
+  const {
+    carData,
+    isSubmitting,
+    showSuccess,
+    handleInputChange,
+    handleDateChange,
+    handleSubmit,
+  } = useAddCar();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  const { data: session, status } = useSession();
-  const router = useRouter();
   const isMobile = isMobileCSR();
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.id) {
-      setCarData((prev) => ({ ...prev, owner: session.user.id }));
-    } else if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-  }, [status, session, router]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value, type } = e.target;
-    if (type === 'file') {
-      const fileInput = e.target as HTMLInputElement;
-      const files = fileInput.files;
-      if (files) {
-        setCarData((prev) => ({ ...prev, images: Array.from(files) }));
-      }
-    } else {
-      setCarData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    setCarData((prev) => ({ ...prev, firstRegistration: date }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const formData = new FormData();
-      Object.entries(carData).forEach(([key, value]) => {
-        if (value !== null) {
-          if (Array.isArray(value)) {
-            value.forEach((file) => formData.append('images', file));
-          } else if (value instanceof Date) {
-            formData.append(key, value.toISOString());
-          } else {
-            formData.append(key, value.toString());
-          }
-        }
-      });
-
-      const response = await fetch('/api/cars/add-car', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add car');
-      }
-
-      setCarData({
-        make: CarMake.MERCEDES,
-        carModel: '',
-        engine: CarEngineType.PETROL,
-        power: '',
-        carType: CarType.SALOON,
-        city: CarCity.NOVI_SAD,
-        carLocation: '',
-        firstRegistration: null,
-        images: [],
-        owner: session?.user?.id || '',
-        pricePerDay: '',
-        milage: 0,
-        averageConsumption: '',
-        description: '',
-      });
-
-      setShowSuccess(true);
-
-      setTimeout(() => {
-        router.push('/profile/my-profile');
-      }, 2000);
-    } catch (error) {
-      alert('Failed to add car. Please try again.');
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-24 pb-12 relative">
@@ -177,7 +40,6 @@ export default function AddCarPage() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
@@ -192,7 +54,7 @@ export default function AddCarPage() {
               Your car has been successfully added. Redirecting to your
               profile...
             </p>
-            <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
           </div>
         </div>
       )}
@@ -232,6 +94,7 @@ export default function AddCarPage() {
                   value={carData.carModel}
                   onChange={handleInputChange}
                   placeholder="e.g. C-Class"
+                  required
                 />
                 <FormSelect
                   label="Car Type"
@@ -239,6 +102,7 @@ export default function AddCarPage() {
                   value={carData.carType}
                   onChange={handleInputChange}
                   options={Object.values(CarType)}
+                  required
                 />
                 <FormSelect
                   label="Engine Type"
@@ -246,6 +110,7 @@ export default function AddCarPage() {
                   value={carData.engine}
                   onChange={handleInputChange}
                   options={Object.values(CarEngineType)}
+                  required
                 />
                 <FormInput
                   label="Horsepower (HP)"
@@ -253,13 +118,15 @@ export default function AddCarPage() {
                   value={carData.power}
                   onChange={handleInputChange}
                   placeholder="e.g. 150"
+                  required
                 />
                 <FormInput
-                  label="Average Consumption"
+                  label="Avg. Consumption"
                   name="averageConsumption"
                   value={carData.averageConsumption}
                   onChange={handleInputChange}
                   placeholder="e.g. 6.5 L/100km"
+                  required
                 />
               </div>
 
@@ -277,6 +144,7 @@ export default function AddCarPage() {
                   value={carData.carLocation}
                   onChange={handleInputChange}
                   placeholder="e.g. Liman 3"
+                  required
                 />
 
                 <div>
@@ -288,6 +156,7 @@ export default function AddCarPage() {
                     showYearDropdown
                     className={inputClasses}
                     placeholderText="Select date"
+                    required
                   />
                 </div>
 
@@ -298,6 +167,7 @@ export default function AddCarPage() {
                   value={carData.pricePerDay}
                   onChange={handleInputChange}
                   placeholder="e.g. 45"
+                  required
                 />
               </div>
 
@@ -309,7 +179,6 @@ export default function AddCarPage() {
                   placeholder="Tell us more about your car..."
                   value={carData.description}
                   onChange={handleInputChange}
-                  required
                   className={`${inputClasses} resize-none`}
                 />
               </div>
@@ -335,6 +204,7 @@ export default function AddCarPage() {
                     onChange={handleInputChange}
                     accept="image/*"
                     className="absolute inset-0 opacity-0 cursor-pointer"
+                    required
                   />
                 </div>
               </div>
@@ -342,8 +212,11 @@ export default function AddCarPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full text-white py-4 rounded-2xl text-lg font-bold shadow-lg transition-all transform 
-                  ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200 hover:scale-[1.01] active:scale-[0.99]'}`}
+                className={`w-full text-white py-4 rounded-2xl text-lg font-bold shadow-lg transition-all transform ${
+                  isSubmitting
+                    ? 'bg-blue-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200 hover:scale-[1.01] active:scale-[0.99]'
+                }`}
               >
                 {isSubmitting ? 'Adding...' : 'Add a New Car'}
               </Button>

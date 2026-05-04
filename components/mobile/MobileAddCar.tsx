@@ -7,23 +7,14 @@ import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
 import { Button } from '@/components/UI/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-export type CarData = {
-  make: CarMake;
-  carModel: string;
-  engine: CarEngineType;
-  power: string;
-  carType: CarType;
-  city: CarCity;
-  carLocation: string;
-  firstRegistration: Date | null;
-  images: File[];
-  owner: string;
-  pricePerDay: string;
-  milage: number;
-  averageConsumption: string;
-  description: string;
-};
+import FormInput, {
+  inputClasses,
+  labelClasses,
+} from '@/components/UI/FormInput';
+import FormSelect from '@/components/UI/FormSelect';
+import { CarData } from '@/hooks/useAddCar';
 
 interface MobileAddCarProps {
   carData: CarData;
@@ -43,193 +34,146 @@ export default function MobileAddCar({
   handleDateChange,
 }: MobileAddCarProps) {
   return (
-    <div className="h-full overflow-auto p-4 pb-24 bg-gray-100 rounded-md shadow-md">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="h-full overflow-auto px-4 pt-6 pb-24 bg-white">
+      <header className="mb-6">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-2">
+          Add a New Car
+        </h1>
+        <p className="text-gray-500 text-sm">
+          Enter your vehicle details to create a rental listing
+        </p>
+      </header>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <FormSelect
+          label="Make"
+          name="make"
+          value={carData.make}
+          onChange={handleInputChange}
+          options={Object.values(CarMake)}
+          required
+        />
+        <FormInput
+          label="Model"
+          name="carModel"
+          value={carData.carModel}
+          onChange={handleInputChange}
+          placeholder="e.g. C-Class"
+          required
+        />
+        <FormSelect
+          label="Car Type"
+          name="carType"
+          value={carData.carType}
+          onChange={handleInputChange}
+          options={Object.values(CarType)}
+          required
+        />
+        <FormSelect
+          label="Engine Type"
+          name="engine"
+          value={carData.engine}
+          onChange={handleInputChange}
+          options={Object.values(CarEngineType)}
+          required
+        />
+        <FormInput
+          label="Horsepower (HP)"
+          name="power"
+          value={carData.power}
+          onChange={handleInputChange}
+          placeholder="e.g. 150"
+          required
+        />
+        <FormInput
+          label="Average Consumption"
+          name="averageConsumption"
+          value={carData.averageConsumption}
+          onChange={handleInputChange}
+          placeholder="e.g. 6.5 L/100km"
+          required
+        />
+        <FormSelect
+          label="Car City"
+          name="city"
+          value={carData.city}
+          onChange={handleInputChange}
+          options={Object.values(CarCity)}
+          required
+        />
+        <FormInput
+          label="Car Location"
+          name="carLocation"
+          value={carData.carLocation}
+          onChange={handleInputChange}
+          placeholder="e.g. Liman 3"
+          required
+        />
+
         <div>
-          <label htmlFor="make" className="block mb-1">
-            Make
-          </label>
-          <select
-            id="make"
-            name="make"
-            value={carData.make}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          >
-            {Object.values(CarMake).map((make) => (
-              <option key={make} value={make}>
-                {make}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="carModel" className="block mb-1">
-            Model
-          </label>
-          <input
-            type="text"
-            id="carModel"
-            name="carModel"
-            value={carData.carModel}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="engine" className="block mb-1">
-            Engine
-          </label>
-          <select
-            id="engine"
-            name="engine"
-            value={carData.engine}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          >
-            {Object.values(CarEngineType).map((engineType) => (
-              <option key={engineType} value={engineType}>
-                {engineType}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="power" className="block mb-1">
-            Power
-          </label>
-          <input
-            type="text"
-            id="power"
-            name="power"
-            value={carData.power}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="carType" className="block mb-1">
-            Car Type
-          </label>
-          <select
-            id="carType"
-            name="carType"
-            value={carData.carType}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          >
-            {Object.values(CarType).map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="city" className="block mb-1">
-            Car City
-          </label>
-          <select
-            id="city"
-            name="city"
-            value={carData.city}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          >
-            {Object.values(CarCity).map((city) => (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="carLocation" className="block mb-1">
-            Car Location
-          </label>
-          <input
-            type="text"
-            id="carLocation"
-            name="carLocation"
-            value={carData.carLocation}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="firstRegistration" className="block mb-1">
-            First Registration
-          </label>
+          <label className={labelClasses}>First Registration</label>
           <DatePicker
             selected={carData.firstRegistration}
             onChange={handleDateChange}
-            className="w-full p-2 border rounded"
+            dateFormat="MM/yyyy"
+            showYearDropdown
+            className={inputClasses}
             placeholderText="Select date"
           />
         </div>
+
+        <FormInput
+          label="Price Per Day (€)"
+          name="pricePerDay"
+          type="number"
+          value={carData.pricePerDay}
+          onChange={handleInputChange}
+          placeholder="e.g. 45"
+          required
+        />
+
         <div>
-          <label htmlFor="pricePerDay" className="block mb-1">
-            Price Per Day
-          </label>
-          <input
-            type="number"
-            id="pricePerDay"
-            name="pricePerDay"
-            value={carData.pricePerDay}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="averageConsumption" className="block mb-1">
-            Average Consumption
-          </label>
-          <input
-            type="text"
-            id="averageConsumption"
-            name="averageConsumption"
-            value={carData.averageConsumption}
-            onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="description" className="block mb-1">
-            Description
-          </label>
+          <label className={labelClasses}>Description</label>
           <textarea
-            id="description"
             name="description"
+            rows={4}
             value={carData.description}
             onChange={handleInputChange}
-            required
-            className="w-full p-2 border rounded"
+            placeholder="Tell us more about your car..."
+            className={`${inputClasses} resize-none`}
           />
         </div>
-        <div>
-          <label htmlFor="images" className="block mb-1">
-            Car Images
-          </label>
-          <input
-            type="file"
-            id="images"
-            name="images"
-            onChange={handleInputChange}
-            accept="image/*"
-            multiple
-            className="w-full p-2 border rounded"
-          />
+
+        <div className="space-y-2">
+          <label className={labelClasses}>Car Images</label>
+          <div className="relative group">
+            <div className="w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl flex flex-col items-center justify-center bg-blue-50 transition-colors cursor-pointer">
+              <CloudUploadIcon
+                className="text-blue-500 mb-2"
+                fontSize="large"
+              />
+              <span className="text-sm font-medium text-blue-600">
+                {carData.images.length > 0
+                  ? `${carData.images.length} files selected`
+                  : 'Click to upload photos'}
+              </span>
+            </div>
+            <input
+              type="file"
+              name="images"
+              onChange={handleInputChange}
+              accept="image/*"
+              multiple
+              required
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
         </div>
-        <Button type="submit" className="w-full">
+
+        <Button
+          type="submit"
+          className="w-full text-white py-4 mt-4 rounded-2xl text-lg font-bold shadow-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all"
+        >
           Add Car
         </Button>
       </form>
