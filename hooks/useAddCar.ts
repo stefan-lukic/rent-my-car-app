@@ -117,9 +117,8 @@ export function useAddCar() {
       setCarData({ ...initialCarData, owner: session?.user?.id || '' });
       setShowSuccess(true);
 
-      setTimeout(() => {
-        router.push('/profile/my-profile');
-      }, 2000);
+      setShowSuccess(true);
+      router.push('/profile/my-profile');
     } catch (error) {
       alert('Failed to add car. Please try again.');
       setIsSubmitting(false);

@@ -18,6 +18,7 @@ import { CarData } from '@/hooks/useAddCar';
 
 interface MobileAddCarProps {
   carData: CarData;
+  isSubmitting: boolean;
   handleSubmit: (e: React.FormEvent) => void;
   handleInputChange: (
     e: React.ChangeEvent<
@@ -29,6 +30,7 @@ interface MobileAddCarProps {
 
 export default function MobileAddCar({
   carData,
+  isSubmitting,
   handleSubmit,
   handleInputChange,
   handleDateChange,
@@ -173,8 +175,9 @@ export default function MobileAddCar({
         <Button
           type="submit"
           className="w-full text-white py-4 mt-4 rounded-2xl text-lg font-bold shadow-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all"
+          disabled={isSubmitting}
         >
-          Add Car
+          {isSubmitting ? 'Adding...' : 'Add Car'}
         </Button>
       </form>
     </div>
