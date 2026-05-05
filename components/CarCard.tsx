@@ -1,5 +1,6 @@
+'use client';
+
 import Image from 'next/image';
-import { Button } from './UI/Button';
 import { ICar } from '@/lib/model/car/Car';
 import { useState } from 'react';
 
@@ -11,61 +12,65 @@ interface CarCardProps {
 const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const handleNextImage = () => {
-    if (car.images && currentImageIndex < car.images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
-  };
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-102">
-      <div className="relative h-48 w-full overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
-            alt={`${car.make} ${car.carModel}`}
-            layout="fill"
-            objectFit="contain"
-            className="transition-all duration-300 hover:opacity-90 transform"
-          />
-          {car.images && car.images.length > 1 && (
-            <div className="absolute left-2 right-2 inset-0 flex justify-between items-center">
-              <button
-                className={`text-white p-2 rounded-full hover:bg-gray-700 transition-colors text-xl ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handlePrevImage}
-                disabled={currentImageIndex === 0}
-              >
-                &lt;
-              </button>
-              <button
-                className={`text-white p-2 rounded-full hover:bg-gray-700 transition-colors text-xl ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handleNextImage}
-                disabled={currentImageIndex === car.images.length - 1}
-              >
-                &gt;
-              </button>
-            </div>
-          )}
-        </div>
+    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative h-40 w-full bg-gray-50">
+        <Image
+          src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
+          alt={`${car.make} ${car.carModel}`}
+          fill
+          className="object-cover"
+        />
+
+        {car.images && car.images.length > 1 && (
+          <>
+            <button
+              onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
+              disabled={currentImageIndex === 0}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() =>
+                setCurrentImageIndex((i) =>
+                  Math.min(car.images!.length - 1, i + 1)
+                )
+              }
+              disabled={currentImageIndex === car.images.length - 1}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
+            >
+              ›
+            </button>
+          </>
+        )}
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg text-gray-800">
+
+      <div className="p-3">
+        <h3 className="font-semibold text-gray-900 text-base">
           {car.make} {car.carModel}
         </h3>
-        <p className="text-sm text-gray-600 mb-2">{car.engine}</p>
-        <div className="flex justify-between items-center">
-          <span className="text-green-600 font-semibold">{car.power}</span>
-          <Button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md transition duration-300 ease-in-out"
+
+        <p className="text-gray-700 font-medium text-sm mt-0.5">
+          ${car.pricePerDay} / day
+        </p>
+
+        <div className="flex items-center gap-1 mt-1 mb-3">
+          <span className="text-gray-400 text-xs">📍</span>
+          <span className="text-gray-500 text-xs">{car.city}</span>
+        </div>
+
+        <div className="flex gap-2">
+          <button
             onClick={() => onUpdate(car)}
+            className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Update
-          </Button>
+            ✎ Edit
+          </button>
+          {/* button delete tek treba napraviti */}
+          <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-red-200 rounded-lg text-red-500 hover:bg-red-50 transition-colors">
+            🗑 Delete
+          </button>
         </div>
       </div>
     </div>
