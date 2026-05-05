@@ -27,84 +27,146 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
     }
   };
 
+  const formatText = (text: string) =>
+    text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+
   return (
-    <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 flex flex-col">
-      <div className="relative h-48 overflow-hidden">
+    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
+      <div className="relative h-56 w-full overflow-hidden bg-gray-100">
         <Image
           src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
-          alt={car.carModel}
+          alt={`${car.make} ${car.carModel}`}
           width={500}
           height={300}
-          className="object-cover"
+          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
+
         {car.images && car.images.length > 1 && (
-          <div className="absolute inset-0 flex justify-between items-center">
+          <div className="absolute inset-0 flex justify-between items-center px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
-              className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-2xl ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex items-center justify-center w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition-all ${currentImageIndex === 0 ? 'hidden' : ''}`}
               onClick={handlePrevImage}
               disabled={currentImageIndex === 0}
             >
-              &lt;
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
             </button>
             <button
-              className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-2xl ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex items-center justify-center w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition-all ml-auto ${currentImageIndex === car.images.length - 1 ? 'hidden' : ''}`}
               onClick={handleNextImage}
               disabled={currentImageIndex === car.images.length - 1}
             >
-              &gt;
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
             </button>
           </div>
         )}
+
+        {car.images && car.images.length > 1 && (
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+            {car.images.map((_, index) => (
+              <div
+                key={index}
+                className={`h-1.5 rounded-full transition-all ${index === currentImageIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      <div className="p-4 flex-grow flex flex-col justify-between">
+
+      <div className="p-5 flex-grow flex flex-col justify-between">
         <div>
-          <div className="flex flex-row justify-between align-center items-center">
-            <div className="flex flex-col justify-start align-start items-start">
-              <p className="text-black">Make: </p>
-              <p className="text-black">Model:</p>
-              <p className="text-black">Type:</p>
-              <p className="text-black">Engine:</p>
-              <p className="text-black">Avg/100km:</p>
-              <p className="text-black">City:</p>
-              <p className="text-black">Location:</p>
-              <p className="text-black">Price per day:</p>
+          <div className="flex justify-between items-start mb-2">
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 uppercase">
+                {car.make}{' '}
+                <span className="text-gray-600 lowercase">{car.carModel}</span>
+              </h3>
+
+              <div className="flex items-center text-sm text-gray-500 mt-1">
+                <svg
+                  className="w-4 h-4 text-emerald-500 mr-1 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span className="truncate">
+                  {car.city}, {car.carLocation}
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col">
-              <p className="text-black font-bold">
-                {car.make.charAt(0).toUpperCase() +
-                  car.make.slice(1).toLowerCase()}
-              </p>
-              <p className="text-black font-bold">{car.carModel}</p>
-              <p className="text-black">
-                {car.carType.charAt(0).toUpperCase() +
-                  car.carType.slice(1).toLowerCase()}
-              </p>
-              <p className="text-black">
-                {car.engine.charAt(0).toUpperCase() +
-                  car.engine.slice(1).toLowerCase()}
-              </p>
-              <p className="text-black">{car.averageConsumption} l/100km</p>
-              <p className="text-black">{car.city}</p>
-              <p className="text-black">{car.carLocation}</p>
-              <p className="text-green-500 font-bold">€{car.pricePerDay}/day</p>
+            <div className="text-right">
+              <span className="text-lg font-bold text-gray-900">
+                €{car.pricePerDay}
+              </span>
+              <span className="block text-xs text-gray-500 font-medium">
+                / day
+              </span>
             </div>
           </div>
 
-          <div className="flex space-x-2">
-            <button
-              className="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
-              onClick={onBookNow}
-            >
-              Book
-            </button>
-            <button
-              className="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition-colors whitespace-nowrap"
-              onClick={onViewDetails}
-            >
-              Details
-            </button>
+          <div className="flex flex-wrap gap-2 mt-4 mb-6">
+            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+              {formatText(car.carType)}
+            </span>
+            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+              {formatText(car.engine)}
+            </span>
+            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+              {car.averageConsumption} l/100km
+            </span>
           </div>
+        </div>
+
+        <div className="flex gap-3 mt-auto border-t border-gray-100 pt-4">
+          <button
+            className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors text-sm"
+            onClick={onViewDetails}
+          >
+            Details
+          </button>
+          <button
+            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
+            onClick={onBookNow}
+          >
+            Book Now
+          </button>
         </div>
       </div>
     </div>
