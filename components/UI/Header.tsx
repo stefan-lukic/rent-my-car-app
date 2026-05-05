@@ -4,6 +4,7 @@ import Link from 'next/link';
 import LogoutButton from '../LogoutButton';
 import { useAuth } from '@/hooks/useAuth';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
   className?: string;
@@ -11,6 +12,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const { isAuthenticated, loading } = useAuth();
+  const pathname = usePathname();
+
+  if (pathname === '/sign-in' || pathname === '/sign-up') return null;
 
   return (
     <header
