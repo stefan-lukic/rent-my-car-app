@@ -11,12 +11,14 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
+  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto p-6 flex flex-col gap-4">
-        {/*PLAVI BANNER — ime, profilna, broj */}
         <div className="relative bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl p-6 flex items-center gap-6 overflow-hidden">
-          {/* Avatar */}
           <div className="relative flex-shrink-0">
             <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-200">
               <Image
@@ -30,7 +32,6 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
             </div>
           </div>
 
-          {/* Ime i broj */}
           <div className="flex-1">
             <h1 className="text-2xl font-semibold text-white">{user.name}</h1>
             {/* ovako ce biti kada bude required contancInfo */}
@@ -41,11 +42,7 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
             <div className="flex items-center gap-1 mt-1">
               <span className="text-blue-200 text-xs">✓</span>
               <span className="text-blue-100 text-xs">
-                Member since{' '}
-                {new Date(user.createdAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  year: 'numeric',
-                })}
+                Member since {memberSince}
               </span>
             </div>
           </div>

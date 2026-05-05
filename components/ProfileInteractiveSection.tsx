@@ -33,16 +33,14 @@ const ProfileInteractiveSection = ({
   };
 
   const pageCount = Math.ceil(cars.length / carsPerPage);
-  const currentCars = cars.slice(
-    currentPage * carsPerPage,
-    currentPage * carsPerPage + carsPerPage
-  );
+  const start = currentPage * carsPerPage;
+  const end = start + carsPerPage;
+  const currentCars = cars.slice(start, end);
 
   const rentalPageCount = Math.ceil(initialRentals.length / rentalsPerPage);
-  const currentRentals = initialRentals.slice(
-    currentRentalPage * rentalsPerPage,
-    currentRentalPage * rentalsPerPage + rentalsPerPage
-  );
+  const rentalStartIndex = currentRentalPage * rentalsPerPage;
+  const rentalEndIndex = rentalStartIndex + rentalsPerPage;
+  const currentRentals = initialRentals.slice(rentalStartIndex, rentalEndIndex);
 
   return (
     <div className="flex flex-col gap-4">
