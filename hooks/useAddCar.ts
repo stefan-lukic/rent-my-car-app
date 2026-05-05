@@ -23,7 +23,7 @@ export type CarData = {
   description: string;
 };
 
-const initialCarData: CarData =  {
+const initialCarData: CarData = {
   make: CarMake.MERCEDES,
   carModel: '',
   engine: CarEngineType.PETROL,
@@ -113,7 +113,6 @@ export function useAddCar() {
 
       if (!response.ok) throw new Error('Failed to add car');
 
-     
       setCarData({ ...initialCarData, owner: session?.user?.id || '' });
       setShowSuccess(true);
 

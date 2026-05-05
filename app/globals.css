@@ -52,30 +52,30 @@
 /* PWA specific styles */
 /* Ensure the body covers the entire screen */
 body {
-    margin: 0;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    min-height: 100vh;
-    min-height: -webkit-fill-available; /* Fix for iOS Safari */
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    background-color: #000000; /* Match this with your app's background color */
-  }
-  
-
-.element {
-    height: env(safe-area-inset-top);
-    width: env(safe-area-inset-left);
-    margin: env(safe-area-inset-right);
-    padding: env(safe-area-inset-bottom, 20px);
+  margin: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  min-height: 100vh;
+  min-height: -webkit-fill-available; /* Fix for iOS Safari */
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  background-color: #000000; /* Match this with your app's background color */
 }
 
-  /* Ensure the HTML element covers the entire screen */
-  html {
-    height: 100vh;
-    height: -webkit-fill-available; /* Fix for iOS Safari */
-    background-color: #000000; /* Match this with your app's background color */
-  }
+.element {
+  height: env(safe-area-inset-top);
+  width: env(safe-area-inset-left);
+  margin: env(safe-area-inset-right);
+  padding: env(safe-area-inset-bottom, 20px);
+}
+
+/* Ensure the HTML element covers the entire screen */
+html {
+  height: 100vh;
+  height: -webkit-fill-available; /* Fix for iOS Safari */
+  background-color: #000000; /* Match this with your app's background color */
+}
 
 /* Custom root variables */
 :root {
