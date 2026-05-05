@@ -1,0 +1,64 @@
+language: 'en-US'
+
+early_access: false
+
+reviews:
+  profile: 'assertive'
+
+  high_level_summary: true
+  high_level_summary_placeholder: '@coderabbitai summary'
+
+  auto_review:
+    enabled: true
+
+  review_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: false
+  poem: false
+
+  path_filters:
+    - '!node_modules/**'
+    - '!.next/**'
+    - '!dist/**'
+    - '!build/**'
+    - '!coverage/**'
+
+  path_instructions:
+    - path: 'app/**'
+      instructions: |
+        Review for:
+        - Next.js App Router best practices
+        - Server vs Client component correctness
+        - SEO and metadata issues
+        - Proper loading/error states
+        - Avoid unnecessary client-side rendering
+
+    - path: 'components/**'
+      instructions: |
+        Focus on:
+        - React re-render optimization
+        - Accessibility
+        - Tailwind class readability
+        - Component reusability
+        - Proper TypeScript typing
+
+    - path: 'hooks/**'
+      instructions: |
+        Check for:
+        - React hook rules compliance
+        - Dependency array correctness
+        - Memoization issues
+        - Side effects and cleanup
+
+    - path: 'lib/**'
+      instructions: |
+        Focus on:
+        - Type safety
+        - Error handling
+        - Security concerns
+        - Performance
+        - Clean abstractions
+
+chat:
+  auto_reply: true
