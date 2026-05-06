@@ -1,44 +1,31 @@
-'use client';
-
-type Props = {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-  value: string | number;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-  required: boolean;
-};
+import React, { forwardRef } from 'react';
 
 export const inputClasses =
-  'w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-700';
-export const labelClasses =
-  'block mb-2 text-sm font-semibold text-gray-600 ml-1';
+  'w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors';
 
-const FormInput = ({
-  label,
-  name,
-  type = 'text',
-  placeholder,
-  value,
-  onChange,
-  required,
-}: Props) => (
-  <div>
-    <label htmlFor={name} className={labelClasses}>
-      {label}
-    </label>
-    <input
-      id={name}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className={inputClasses}
-    />
-  </div>
+export const labelClasses = 'mb-2 block text-sm font-semibold text-gray-700';
+
+interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  error?: string;
+}
+
+const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
+  ({ label, error, className = '', ...props }, ref) => {
+    return (
+      <div className="w-full">
+        <label className={labelClasses}>{label}</label>
+        <input
+          ref={ref}
+          className={`${inputClasses} ${className}`}
+          {...props}
+        />
+        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      </div>
+    );
+  }
 );
+
+FormInput.displayName = 'FormInput';
 
 export default FormInput;
