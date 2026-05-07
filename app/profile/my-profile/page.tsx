@@ -3,6 +3,7 @@ import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
+import { redirect } from 'next/navigation';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
@@ -10,29 +11,25 @@ export default async function MyProfilePage() {
   const isMobile = isMobileSSR();
 
   if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    };
+    redirect('/api/auth/signin');
   }
   if (!session.user.email) {
     return null;
   }
-
   const userRes = await fetch(
     `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`
   );
   const user = await userRes.json();
 
-  const carsRes = await fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`);
-  const cars = await carsRes.json();
+  const [carsRes, rentalsRes] = await Promise.all([
+    fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`),
+    fetch(`${baseUrl}/api/my-rentals?userId=${user._id}`),
+  ]);
 
-  const rentalsRes = await fetch(
-    `${baseUrl}/api/my-rentals?userId=${user._id}`
-  );
-  const rentals = await rentalsRes.json();
+  const [cars, rentals] = await Promise.all([
+    carsRes.json(),
+    rentalsRes.json(),
+  ]);
 
   return isMobile ? (
     <MobileProfilePage user={user} cars={cars} rentals={rentals} />
