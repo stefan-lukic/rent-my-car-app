@@ -14,9 +14,9 @@ const safeLocationRegex = /^[\p{L}\p{N}\s\-.,]+$/u;
 
 export const addCarSchema = z.object({
   make: z.nativeEnum(CarMake, { required_error: 'Make is required' }),
-  model: z.string()
+  carModel: z.string()
     .min(1, 'Model is required')
-    .regex(safeTextRegex, 'Nedozvoljeni karakteri u modelu!'),
+    .regex(safeTextRegex, 'Invalid characters in model!'),
   engine: z.nativeEnum(CarEngineType),
   power: z.coerce.number({ invalid_type_error: 'Power must be a number' })
     .positive('Power must be greater than 0'),
@@ -41,6 +41,7 @@ type CarFormValues = z.infer<typeof addCarSchema>;
 export function useAddCar() {
   
   const [uploadImages, setUploadImages] = useState<File[]>([]);
+  const [isSuccess, setIsSuccess] = useState(false); 
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -49,7 +50,7 @@ export function useAddCar() {
     resolver: zodResolver(addCarSchema),
     defaultValues: {
       make: CarMake.MERCEDES,
-      model: '',
+      carModel: '',
       engine: CarEngineType.PETROL,
       carType: CarType.SALOON,
       city: CarCity.NOVI_SAD,
@@ -106,6 +107,7 @@ export function useAddCar() {
 
       if (!response.ok) throw new Error('Failed to add car');
 
+      setIsSuccess(true);
       router.push('/profile/my-profile');
     } catch (err: any) {
     form.setError('root', { message: err.message || 'Failed to add car. Please try again.' }); 
@@ -114,6 +116,7 @@ export function useAddCar() {
 
   return {
     form,
+    isSuccess,
     isSubmitting: form.formState.isSubmitting, 
     uploadImages,
     handleImageChange,

@@ -16,10 +16,17 @@ import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAddCar } from '@/hooks/useAddCar';
+import CustomDatePicker from './UI/CustomDatePicker';
 
 export default function AddCar() {
-  const { form, isSubmitting, uploadImages, handleImageChange, onSubmit } =
-    useAddCar();
+  const {
+    form,
+    isSubmitting,
+    isSuccess,
+    uploadImages,
+    handleImageChange,
+    onSubmit,
+  } = useAddCar();
 
   const {
     control,
@@ -52,8 +59,8 @@ export default function AddCar() {
               <FormInput
                 label="Model"
                 placeholder="e.g. C-Class"
-                error={errors.model?.message}
-                {...register('model')}
+                error={errors.carModel?.message}
+                {...register('carModel')}
               />
 
               <FormSelect
@@ -121,29 +128,12 @@ export default function AddCar() {
                 {...register('carLocation')}
               />
 
-              <div>
-                <label className={labelClasses}>First Registration</label>
-                <Controller
-                  name="firstRegistration"
-                  control={control}
-                  render={({ field }) => (
-                    <DatePicker
-                      selected={field.value ?? null}
-                      onChange={(date) => field.onChange(date)}
-                      dateFormat="MM/yyyy"
-                      showMonthYearPicker
-                      maxDate={new Date()}
-                      className={inputClasses}
-                      placeholderText="Select date"
-                    />
-                  )}
-                />
-                {errors.firstRegistration?.message && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.firstRegistration.message}
-                  </p>
-                )}
-              </div>
+              <CustomDatePicker
+                control={control}
+                name="firstRegistration"
+                label="First Registration"
+                maxDate={new Date()}
+              />
             </div>
 
             <div className="pt-4 border-t border-gray-100">
@@ -205,6 +195,36 @@ export default function AddCar() {
           </form>
         </Form>
       </div>
+      {isSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 transition-opacity">
+          <div className="bg-white rounded-3xl p-8 md:p-12 flex flex-col items-center max-w-sm text-center shadow-2xl animate-in zoom-in duration-300">
+            <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
+              <svg
+                className="w-10 h-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="3"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
+              Success!
+            </h2>
+            <p className="text-gray-500 mb-2">
+              Your car has been successfully added to the platform.
+            </p>
+            <p className="text-sm text-blue-500 font-semibold animate-pulse">
+              Redirecting to your profile...
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
