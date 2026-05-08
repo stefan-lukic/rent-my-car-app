@@ -7,33 +7,56 @@ import { redirect } from 'next/navigation';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
-  const baseUrl = getBaseUrl();
-  const isMobile = isMobileSSR();
 
   if (!session) {
     redirect('/api/auth/signin');
   }
-  if (!session.user.email) {
+
+  if (!session.user?.email) {
     return null;
   }
-  const userRes = await fetch(
-    `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`
-  );
-  const user = await userRes.json();
 
-  const [carsRes, rentalsRes] = await Promise.all([
-    fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`),
-    fetch(`${baseUrl}/api/my-rentals?userId=${user._id}`),
-  ]);
+  const baseUrl = getBaseUrl();
 
-  const [cars, rentals] = await Promise.all([
-    carsRes.json(),
-    rentalsRes.json(),
-  ]);
+  try {
+    const userRes = await fetch(
+      `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`,
+      { cache: 'no-store' }
+    );
 
-  return isMobile ? (
-    <MobileProfilePage user={user} cars={cars} rentals={rentals} />
-  ) : (
-    <ProfilePage user={user} cars={cars} rentals={rentals} />
-  );
+    if (!userRes.ok) {
+      throw new Error('Failed to fetch user');
+    }
+
+    const user = await userRes.json();
+
+    const fetchJson = async (url: string) => {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error();
+      return res.json();
+    };
+
+    const [carsResult, rentalsResult] = await Promise.allSettled([
+      fetchJson(`${baseUrl}/api/cars/my-cars?userId=${user._id}`),
+      fetchJson(`${baseUrl}/api/my-rentals?userId=${user._id}`),
+    ]);
+
+    const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];
+    const rentals =
+      rentalsResult.status === 'fulfilled' ? rentalsResult.value : [];
+
+    const isMobile = isMobileSSR();
+
+    return isMobile ? (
+      <MobileProfilePage user={user} cars={cars} rentals={rentals} />
+    ) : (
+      <ProfilePage user={user} cars={cars} rentals={rentals} />
+    );
+  } catch {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
+        Something went wrong. Please try again later.
+      </div>
+    );
+  }
 }
