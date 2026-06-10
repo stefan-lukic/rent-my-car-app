@@ -9,6 +9,7 @@ import { LucideLoader2 } from 'lucide-react';
 import MobileCarSearchView from '@/components/mobile/MobileCarSearchView';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/UI/Header';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
@@ -17,8 +18,8 @@ export default function Home() {
   const isMobile = isMobileCSR();
 
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push('/sign-in');
+    if (!loading && isAuthenticated) {
+      router.push('/cars/car-list');
     }
   }, [isAuthenticated, loading, router]);
 
@@ -46,12 +47,9 @@ export default function Home() {
     );
   }
 
-  if (!isAuthenticated) {
-    return null; // The redirect will handle this scenario
-  }
-
   return (
     <main className="h-screen flex flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white">
+      <Header className="hidden md:block" />
       {isMobile ? (
         <div className="flex h-full w-full flex-1">
           <MobileCarSearchView />
@@ -72,7 +70,7 @@ export default function Home() {
                   our innovative platform
                 </p>
                 <Link
-                  href="/cars/car-list"
+                  href="/sign-in"
                   className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   Get Started Now
