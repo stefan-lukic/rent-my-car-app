@@ -15,6 +15,7 @@ const safeLocationRegex = /^[\p{L}\p{N}\s\-.,]+$/u;
 export const addCarSchema = z.object({
   make: z.nativeEnum(CarMake, { required_error: 'Make is required' }),
   carModel: z.string()
+  .trim()
     .min(1, 'Model is required')
     .regex(safeTextRegex, 'Invalid characters in model!'),
   engine: z.nativeEnum(CarEngineType),
@@ -23,6 +24,7 @@ export const addCarSchema = z.object({
   carType: z.nativeEnum(CarType),
   city: z.nativeEnum(CarCity),
   carLocation: z.string()
+    .trim()
     .min(1, 'Location is required')
     .regex(safeLocationRegex, 'Invalid characters in location!'),
   firstRegistration: z.date({ required_error: 'Registration date is required' })
@@ -33,7 +35,7 @@ export const addCarSchema = z.object({
     .positive('Consumption must be positive'),
   milage: z.coerce.number({ invalid_type_error: 'Milage must be a number' })
     .nonnegative('Milage cannot be negative'),
-  description: z.string().min(1, 'Description is required'), 
+  description: z.string().trim().min(1, 'Description is required'), 
 });
 
 type CarFormValues = z.infer<typeof addCarSchema>;
@@ -79,6 +81,12 @@ export function useAddCar() {
 
   const processSubmit = async (data: CarFormValues) => { 
 
+    const ownerId = session?.user?.id;
+  if (!ownerId) {
+    form.setError('root', { message: 'Please sign in again before adding a car.' });
+    return;
+  }
+
      if (uploadImages.length === 0) {
     form.setError('root', { message: 'At least one car image is required!' }); 
     return;
@@ -86,7 +94,7 @@ export function useAddCar() {
 
     try {
       const formData = new FormData();
-      formData.append('owner', session?.user?.id || '');
+      formData.append('owner', ownerId);
 
       Object.entries(data).forEach(([key, value]) => {
         if (value instanceof Date) {

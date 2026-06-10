@@ -24,9 +24,13 @@ export default function CustomDatePicker<T extends FieldValues>({
   minDate,
   placeholderText = 'Select date',
 }: CustomDatePickerProps<T>) {
+  const inputId = `${name}-input`;
+
   return (
     <div className="w-full">
-      <label className={labelClasses}>{label}</label>
+      <label htmlFor={inputId} className={labelClasses}>
+        {label}
+      </label>
 
       <Controller
         name={name}
@@ -34,6 +38,7 @@ export default function CustomDatePicker<T extends FieldValues>({
         render={({ field, fieldState }) => (
           <>
             <DatePicker
+              id={inputId}
               selected={field.value ?? null}
               onChange={field.onChange}
               dateFormat="MM/yyyy"

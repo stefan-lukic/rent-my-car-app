@@ -14,10 +14,19 @@ interface FormSelectProps
 
 const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
   ({ label, options, error, className = '', ...props }, ref) => {
+    const selectId =
+      props.id ?? props.name ?? label.toLowerCase().replace(/\s+/g, '-');
     return (
       <div className="w-full">
-        <label className={labelClasses}>{label}</label>
-        <select ref={ref} className={`${inputClasses} ${className}`} {...props}>
+        <label htmlFor={selectId} className={labelClasses}>
+          {label}
+        </label>
+        <select
+          ref={ref}
+          id={selectId}
+          className={`${inputClasses} ${className}`}
+          {...props}
+        >
           {options.map((option) => (
             <option key={option} value={option}>
               {option}

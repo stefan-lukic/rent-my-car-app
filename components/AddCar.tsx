@@ -1,7 +1,5 @@
 'use client';
 
-import { Controller } from 'react-hook-form';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '@/components/UI/Button';
 import { Form } from '@/components/UI/Form';
@@ -137,8 +135,11 @@ export default function AddCar() {
             </div>
 
             <div className="pt-4 border-t border-gray-100">
-              <label className={labelClasses}>Description</label>
+              <label htmlFor="description" className={labelClasses}>
+                Description
+              </label>
               <textarea
+                id="description"
                 rows={4}
                 placeholder="Tell us more about your car..."
                 className={`${inputClasses} resize-none`}
@@ -152,7 +153,9 @@ export default function AddCar() {
             </div>
 
             <div className="space-y-2">
-              <label className={labelClasses}>Car Images</label>
+              <label htmlFor="carImages" className={labelClasses}>
+                Car Images
+              </label>
               <div className="relative group">
                 <div className="w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl flex flex-col items-center justify-center bg-blue-50 cursor-pointer">
                   <CloudUploadIcon
@@ -166,6 +169,7 @@ export default function AddCar() {
                   </span>
                 </div>
                 <input
+                  id="carImages"
                   type="file"
                   multiple
                   accept="image/*"
