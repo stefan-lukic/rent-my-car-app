@@ -9,7 +9,7 @@ export default async function MyProfilePage() {
   const session = await getServerSession();
 
   if (!session) {
-    redirect('/api/auth/signin');
+    redirect('/api/auth/signin?callbackUrl=/profile/my-profile');
   }
 
   if (!session.user?.email) {
@@ -52,7 +52,8 @@ export default async function MyProfilePage() {
     ) : (
       <ProfilePage user={user} cars={cars} rentals={rentals} />
     );
-  } catch {
+  } catch (error) {
+    console.error('Failed to load profile page:', error);
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-500">
         Something went wrong. Please try again later.
