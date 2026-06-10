@@ -164,6 +164,22 @@ export default function AddCar() {
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
             </div>
+            {carData.images.length > 0 && (
+              <div className="grid grid-cols-4 gap-3 mt-3">
+                {carData.images.map((file, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
+                  >
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Car image ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <Button

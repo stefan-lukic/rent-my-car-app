@@ -108,6 +108,22 @@ export default function MobileAddCar() {
             <div className="w-full h-32 border-2 border-dashed rounded-2xl flex items-center justify-center bg-blue-50">
               <CloudUploadIcon />
             </div>
+            {carData.images.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 mt-3">
+                {carData.images.map((file, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
+                  >
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Car image ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
             <input
               type="file"
