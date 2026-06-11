@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
@@ -16,6 +18,7 @@ interface CarDetailsDrawerProps {
   };
   isOpen: boolean;
   onClose: () => void;
+  onBookNow: () => void;
 }
 
 const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
@@ -23,180 +26,189 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   owner,
   isOpen,
   onClose,
+  onBookNow,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for current image index
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleNextImage = () => {
-    if (car && car.images && currentImageIndex < car.images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
-  };
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!car || !isOpen) return null;
 
+  const images = car.images ?? [];
+  const total = images.length;
+
+  const specs = [
+    { icon: '⚡', label: 'Engine', value: car.engine },
+    { icon: '🏎️', label: 'Power', value: `${car.power} HP` },
+    { icon: '🚗', label: 'Type', value: car.carType },
+    car.averageConsumption && {
+      icon: '⛽',
+      label: 'Consumption',
+      value: car.averageConsumption,
+    },
+    car.milage && { icon: '📍', label: 'Mileage', value: `${car.milage} km` },
+    car.firstRegistration && {
+      icon: '📅',
+      label: 'Registration',
+      value: new Date(car.firstRegistration).toLocaleDateString(),
+    },
+  ].filter(Boolean) as { icon: string; label: string; value: string }[];
+
   return (
-    <div className="fixed inset-0 overflow-hidden z-50">
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-          onClick={onClose}
-        ></div>
-        <section className="absolute inset-y-0 right-0 pl-10 max-w-full flex">
-          <div className="w-screen max-w-md">
-            <div className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
-              <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
-                <div className="flex items-start justify-between">
-                  <h2 className="text-lg font-medium text-gray-900">
-                    Car Details
-                  </h2>
-                  <button
-                    type="button"
-                    className="text-gray-400 hover:text-gray-500"
-                    onClick={onClose}
-                  >
-                    <span className="sr-only">Close panel</span>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
+    <>
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      />
 
-                <div className="mt-8">
-                  <div className="relative">
-                    <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                      <Image
-                        src={
-                          car.images?.[currentImageIndex] ||
-                          '/placeholder-car.svg'
-                        }
-                        alt={`${car.make} ${car.carModel}`}
-                        width={500}
-                        height={300}
-                        className="object-center object-cover"
-                      />
-                    </div>
-                    {car.images && car.images.length > 1 && (
-                      <div className="absolute inset-0 flex justify-between items-center">
-                        <button
-                          className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-3xl ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          onClick={handlePrevImage}
-                          disabled={currentImageIndex === 0}
-                        >
-                          <span className="sr-only">Previous</span>
-                          <svg
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M15 19l-7-7 7-7"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          className={`text-white p-4 rounded-full hover:bg-gray-700 transition-colors text-3xl ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          onClick={handleNextImage}
-                          disabled={currentImageIndex === car.images.length - 1}
-                        >
-                          <span className="sr-only">Next</span>
-                          <svg
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-4">
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {car.make} {car.carModel}
-                    </h2>
-                    <ul className="mt-4 space-y-2">
-                      <li>
-                        <strong>Engine:</strong> {car.engine}
-                      </li>
-                      <li>
-                        <strong>Power:</strong> {car.power}
-                      </li>
-                      <li>
-                        <strong>Type:</strong> {car.carType}
-                      </li>
-                      <li>
-                        <strong>City:</strong> {car.city}
-                      </li>
-                      <li>
-                        <strong>First Registration:</strong>{' '}
-                        {car.firstRegistration
-                          ? new Date(car.firstRegistration).toLocaleDateString()
-                          : 'N/A'}
-                      </li>
-                      <li>
-                        <strong>Price per Day:</strong> ${car.pricePerDay}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+      <div
+        className={`fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+          <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+            Car Details
+          </span>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+          >
+            ✕
+          </button>
+        </div>
 
-                <OwnerCard owner={owner} />
+        <div className="flex-1 overflow-y-auto">
+          <div className="relative aspect-[16/9] bg-gray-100">
+            <Image
+              src={images[currentImageIndex] || '/placeholder-car.svg'}
+              alt={`${car.make} ${car.carModel}`}
+              fill
+              className="object-cover"
+            />
+
+            {total > 1 && (
+              <>
+                <div className="absolute bottom-3 w-full flex justify-center gap-1.5">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentImageIndex(i)}
+                      className={`h-1.5 rounded-full transition-all ${
+                        i === currentImageIndex
+                          ? 'w-5 bg-white'
+                          : 'w-1.5 bg-white/50'
+                      }`}
+                    />
+                  ))}
+                </div>
 
                 <button
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                  onClick={handleOpenModal}
+                  onClick={() =>
+                    setCurrentImageIndex((i) => Math.max(i - 1, 0))
+                  }
+                  disabled={currentImageIndex === 0}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
                 >
-                  See How It Works
+                  ‹
                 </button>
+                <button
+                  onClick={() =>
+                    setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
+                  }
+                  disabled={currentImageIndex === total - 1}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
+                >
+                  ›
+                </button>
+              </>
+            )}
+          </div>
 
-                <HowItWorksModal
-                  title="How It Works"
-                  isOpen={isModalOpen}
-                  content={howItWorksContent}
-                  icons={howItWorksIcons}
-                  onClose={handleCloseModal}
-                />
+          <div className="p-5 space-y-5">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {car.make}{' '}
+                  <span className="text-gray-400 font-medium">
+                    {car.carModel}
+                  </span>
+                </h2>
+                <div className="flex items-center gap-1 mt-1 text-gray-500 text-sm">
+                  <span>📍</span>
+                  <span>
+                    {car.city}
+                    {car.carLocation && `, ${car.carLocation}`}
+                  </span>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-blue-600">
+                  €{car.pricePerDay}
+                </div>
+                <div className="text-xs text-gray-400">/ day</div>
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {specs.map(({ icon, label, value }) => (
+                <div key={label} className="bg-gray-50 rounded-xl px-3 py-2.5">
+                  <div className="text-xs text-gray-400 mb-0.5">
+                    {icon} {label}
+                  </div>
+                  <div className="text-sm font-semibold text-gray-800">
+                    {value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {car.description && (
+              <div className="border-t pt-4">
+                <p className="text-xs text-gray-400 uppercase mb-1">
+                  Description
+                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {car.description}
+                </p>
+              </div>
+            )}
+
+            <div className="border-t pt-4">
+              <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
+              <OwnerCard owner={owner} />
+            </div>
           </div>
-        </section>
+        </div>
+
+        {/* Footer */}
+
+        <div className="flex gap-2 p-4 border-t border-gray-100 bg-white sticky bottom-0">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex-1 border border-gray-200 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition"
+          >
+            How it works
+          </button>
+
+          <button
+            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
+            onClick={onBookNow}
+          >
+            Book Now
+          </button>
+        </div>
       </div>
-    </div>
+
+      <HowItWorksModal
+        title="How It Works"
+        isOpen={isModalOpen}
+        content={howItWorksContent}
+        icons={howItWorksIcons}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
 

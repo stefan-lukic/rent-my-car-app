@@ -269,6 +269,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
             setSelectedCar(null);
             setOwner(null);
           }}
+          onBookNow={() => handleBookNow(selectedCar)}
         />
       )}
 

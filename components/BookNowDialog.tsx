@@ -39,7 +39,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
   const totalPrice = calculateTotalPrice();
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg">
         <h2 className="text-2xl font-semibold mb-4">Book {car.carModel}</h2>
         <form onSubmit={handleSubmit}>
