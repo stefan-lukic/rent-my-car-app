@@ -22,6 +22,7 @@ export default function AddCar() {
     handleInputChange,
     handleDateChange,
     handleSubmit,
+    removeImage,
   } = useAddCar();
 
   return (
@@ -150,7 +151,7 @@ export default function AddCar() {
                 />
                 <span className="text-sm font-medium text-blue-600">
                   {carData.images.length > 0
-                    ? `${carData.images.length} files selected`
+                    ? `${carData.images.length} ${carData.images.length === 1 ? 'file' : 'files'} selected`
                     : 'Click to upload photos'}
                 </span>
               </div>
@@ -166,16 +167,23 @@ export default function AddCar() {
             </div>
             {carData.images.length > 0 && (
               <div className="grid grid-cols-4 gap-3 mt-3">
-                {carData.images.map((file, index) => (
+                {carData.images.map(({ file, id }) => (
                   <div
-                    key={index}
+                    key={id}
                     className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
                   >
                     <img
                       src={URL.createObjectURL(file)}
-                      alt={`Car image ${index + 1}`}
+                      alt="Car image"
                       className="w-full h-full object-cover"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(id)}
+                      className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                    >
+                      ✕
+                    </button>
                   </div>
                 ))}
               </div>

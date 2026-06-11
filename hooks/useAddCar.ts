@@ -15,12 +15,17 @@ export type CarData = {
   city: CarCity;
   carLocation: string;
   firstRegistration: Date | null;
-  images: File[];
+  images: CarImage[];
   owner: string;
   pricePerDay: string;
   milage: number;
   averageConsumption: string;
   description: string;
+};
+
+export type CarImage = {
+  file: File;
+  id: string;
 };
 
 const initialCarData: CarData = {
@@ -32,7 +37,7 @@ const initialCarData: CarData = {
   city: CarCity.NOVI_SAD,
   carLocation: '',
   firstRegistration: null as Date | null,
-  images: [] as File[],
+  images: [] as CarImage[],
   owner: '',
   pricePerDay: '',
   milage: 0,
@@ -65,12 +70,19 @@ export function useAddCar() {
     if (type === 'file') {
       const files = (e.target as HTMLInputElement).files;
       if (files) {
-        setCarData((prev) => ({ ...prev, images: Array.from(files) }));
+        setCarData((prev) => ({ ...prev, images: Array.from(files).map((file) => ({ file, id: crypto.randomUUID() })) }));
       }
     } else {
       setCarData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  
+  const removeImage = (id: string) => {
+  setCarData((prev) => ({
+    ...prev,
+    images: prev.images.filter((img) => img.id !== id),
+  }));
+};
 
   const handleDateChange = (date: Date | null) => {
     setCarData((prev) => ({ ...prev, firstRegistration: date }));
@@ -97,7 +109,7 @@ export function useAddCar() {
       Object.entries(carData).forEach(([key, value]) => {
         if (value !== null) {
           if (Array.isArray(value)) {
-            value.forEach((file) => formData.append('images', file));
+            value.forEach((image) => formData.append('images', image.file));
           } else if (value instanceof Date) {
             formData.append(key, value.toISOString());
           } else {
@@ -131,5 +143,6 @@ export function useAddCar() {
     handleInputChange,
     handleDateChange,
     handleSubmit,
+    removeImage,
   };
 }
