@@ -5,10 +5,24 @@ import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarType } from '@/lib/model/car/CarType';
 import { CarCity } from '@/lib/model/car/CarCity';
+import FormInput, {
+  inputClasses,
+  labelClasses,
+} from '@/components/UI/FormInput';
+import FormSelect from '@/components/UI/FormSelect';
 
 type UpdateCarFields = Pick<
   ICar,
-  'make' | 'carModel' | 'engine' | 'power' | 'carType' | 'city'
+  | 'make'
+  | 'carModel'
+  | 'engine'
+  | 'power'
+  | 'carType'
+  | 'city'
+  | 'averageConsumption'
+  | 'carLocation'
+  | 'pricePerDay'
+  | 'description'
 >;
 
 interface UpdateCarModalProps {
@@ -31,10 +45,16 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
     power: car.power,
     carType: car.carType,
     city: car.city,
+    averageConsumption: car.averageConsumption,
+    carLocation: car.carLocation,
+    pricePerDay: car.pricePerDay,
+    description: car.description,
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setUpdatedCar({ ...updatedCar, [name]: value });
@@ -68,139 +88,118 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4">Update Car</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="make"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Make
-            </label>
-            <select
-              id="make"
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <header className="mb-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-1">
+            Update Car
+          </h2>
+          <p className="text-gray-500">Edit your vehicle details</p>
+        </header>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-2 gap-6">
+            <FormSelect
+              label="Make"
               name="make"
               value={updatedCar.make}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              {Object.values(CarMake).map((make) => (
-                <option key={make} value={make}>
-                  {make}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="carModel"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Model
-            </label>
-            <input
-              type="text"
-              id="carModel"
+              options={Object.values(CarMake)}
+            />
+            <FormInput
+              label="Model"
               name="carModel"
               value={updatedCar.carModel}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              placeholder="e.g. C-Class"
+              required
             />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="engine"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Engine
-            </label>
-            <select
-              id="engine"
-              name="engine"
-              value={updatedCar.engine}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              {Object.values(CarEngineType).map((engineType) => (
-                <option key={engineType} value={engineType}>
-                  {engineType}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="power"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Power
-            </label>
-            <input
-              type="text"
-              id="power"
-              name="power"
-              value={updatedCar.power}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="carType"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Type
-            </label>
-            <select
-              id="carType"
+            <FormSelect
+              label="Car Type"
               name="carType"
               value={updatedCar.carType}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              {Object.values(CarType).map((carType) => (
-                <option key={carType} value={carType}>
-                  {carType}
-                </option>
-              ))}
-            </select>
+              options={Object.values(CarType)}
+              required
+            />
+            <FormSelect
+              label="Engine Type"
+              name="engine"
+              value={updatedCar.engine}
+              onChange={handleInputChange}
+              options={Object.values(CarEngineType)}
+              required
+            />
+            <FormInput
+              label="Horsepower (HP)"
+              name="power"
+              value={updatedCar.power}
+              onChange={handleInputChange}
+              placeholder="e.g. 150"
+              required
+            />
+            <FormInput
+              label="Avg. Consumption"
+              name="averageConsumption"
+              value={updatedCar.averageConsumption}
+              onChange={handleInputChange}
+              placeholder="e.g. 6.5 L/100km"
+              required
+            />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="city"
-              className="block text-sm font-medium text-gray-700"
-            >
-              City
-            </label>
-            <select
-              id="city"
+
+          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+            <FormSelect
+              label="City"
               name="city"
               value={updatedCar.city}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              {Object.values(CarCity).map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
+              options={Object.values(CarCity)}
+            />
+            <FormInput
+              label="Car Location"
+              name="carLocation"
+              value={updatedCar.carLocation}
+              onChange={handleInputChange}
+              placeholder="e.g. Liman 3"
+              required
+            />
+            <FormInput
+              label="Price Per Day (€)"
+              name="pricePerDay"
+              type="number"
+              value={updatedCar.pricePerDay}
+              onChange={handleInputChange}
+              placeholder="e.g. 45"
+              required
+            />
           </div>
-          <div className="flex justify-end space-x-2">
+
+          <div className="pt-4 border-t border-gray-100">
+            <label className={labelClasses}>Description</label>
+            <textarea
+              name="description"
+              rows={4}
+              placeholder="Tell us more about your car..."
+              value={updatedCar.description}
+              onChange={handleInputChange}
+              className={`${inputClasses} resize-none`}
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
             <Button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-black"
+              className="px-6 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold transition"
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition"
             >
-              Update
+              Save Changes
             </Button>
           </div>
         </form>
