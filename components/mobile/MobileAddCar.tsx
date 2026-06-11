@@ -22,12 +22,13 @@ export default function MobileAddCar() {
     handleInputChange,
     handleDateChange,
     handleSubmit,
+    removeImage,
   } = useAddCar();
 
   return (
-    <div className="h-full overflow-auto  px-4 pt-6 pb-24 bg-white">
+    <div className="h-full overflow-auto px-4 pb-24 bg-white">
       <header className="mb-6">
-        <h1 className="text-3xl  font-extrabold text-gray-900 mb-2">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-2">
           Add a New Car
         </h1>
       </header>
@@ -104,27 +105,9 @@ export default function MobileAddCar() {
 
         <div className="space-y-2">
           <label className={labelClasses}>Car Images</label>
-          <div className="relative">
-            <div className="w-full h-32 border-2 border-dashed rounded-2xl flex items-center justify-center bg-blue-50">
-              <CloudUploadIcon />
-            </div>
-            {carData.images.length > 0 && (
-              <div className="grid grid-cols-3 gap-2 mt-3">
-                {carData.images.map((file, index) => (
-                  <div
-                    key={index}
-                    className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
-                  >
-                    <img
-                      src={URL.createObjectURL(file)}
-                      alt={`Car image ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
 
+          <div className="relative h-32 border-2 border-dashed rounded-2xl flex items-center justify-center bg-blue-50">
+            <CloudUploadIcon />
             <input
               type="file"
               name="images"
@@ -133,6 +116,30 @@ export default function MobileAddCar() {
               className="absolute inset-0 opacity-0"
             />
           </div>
+
+          {carData.images.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mt-3">
+              {carData.images.map(({ file, id }) => (
+                <div
+                  key={id}
+                  className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
+                >
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="Car Image"
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(id)}
+                    className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <Button
