@@ -20,7 +20,7 @@ const ProfileInteractiveSection = ({
 }: ProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [carToDelete, setCarToDelete] = useState<ICar | null>(null);
+  const [carToDeleteId, setCarToDeleteId] = useState<string | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -87,7 +87,7 @@ const ProfileInteractiveSection = ({
                       setIsUpdateModalOpen(true);
                     }}
                     onDeleteClick={(car) => {
-                      setCarToDelete(car);
+                      setCarToDeleteId(car._id);
                       setIsDeleteModalOpen(true);
                     }}
                   />
@@ -176,14 +176,14 @@ const ProfileInteractiveSection = ({
         />
       )}
 
-      {carToDelete && (
+      {carToDeleteId && (
         <DeleteCarModal
           isOpen={isDeleteModalOpen}
-          carId={carToDelete._id}
+          carId={carToDeleteId}
           onDelete={handleDeleteCar}
           onClose={() => {
             setIsDeleteModalOpen(false);
-            setCarToDelete(null);
+            setCarToDeleteId(null);
           }}
         />
       )}
