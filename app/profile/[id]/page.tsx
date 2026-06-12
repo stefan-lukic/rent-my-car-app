@@ -2,13 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import connectToDatabase from '@/lib/db/mongoose';
-import User from '@/lib/model/User';
+import User, { IUser } from '@/lib/model/User';
 
 async function getOwner(id: string) {
   await connectToDatabase();
-  const user = await User.findById(id).lean();
+  const user = await User.findById(id).lean<IUser>();
   if (!user) return null;
-  const { password, ...userWithoutPassword } = user as any;
+  const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
 
