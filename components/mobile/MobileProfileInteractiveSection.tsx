@@ -51,7 +51,7 @@ const MobileProfileInteractiveSection = ({
                   car={car}
                   onUpdate={() => setSelectedCar(car)}
                   onDeleteClick={(car) => {
-                    setCarToDelete(car._id);
+                    setCarToDelete(car);
                     setIsDeleteModalOpen(true);
                   }}
                 />

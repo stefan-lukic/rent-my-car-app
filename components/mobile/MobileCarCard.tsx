@@ -7,7 +7,7 @@ import { useState } from 'react';
 interface MobileCarCardProps {
   car: ICar;
   onUpdate: (car: ICar) => void;
-  onDeleteClick: (car: ICar) => void;
+  onDeleteClick: (id: string) => void;
 }
 
 const MobileCarCard: React.FC<MobileCarCardProps> = ({
@@ -70,7 +70,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({
             ✎ Edit
           </button>
           <button
-            onClick={() => onDeleteClick(car)}
+            onClick={() => onDeleteClick(car.id)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-red-200 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
           >
             🗑 Delete
