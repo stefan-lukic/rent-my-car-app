@@ -7,7 +7,6 @@ import UpdateCarModal from '../UpdateCarModal';
 import DeleteCarModal from '../DeleteCarModal';
 import MobileCarCard from './MobileCarCard';
 import MobileRentalCard from './MobileRentalCard';
-import { useRouter } from 'next/navigation';
 
 interface MobileProfileInteractiveSectionProps {
   cars: ICar[];
@@ -22,9 +21,8 @@ const MobileProfileInteractiveSection = ({
 }: MobileProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [carToDelete, setCarToDelete] = useState<string | null>(null);
+  const [carIdToDelete, setCarIdToDelete] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const router = useRouter();
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
@@ -50,8 +48,8 @@ const MobileProfileInteractiveSection = ({
                   key={car._id}
                   car={car}
                   onUpdate={() => setSelectedCar(car)}
-                  onDeleteClick={(car) => {
-                    setCarToDelete(car);
+                  onDeleteClick={(carId) => {
+                    setCarIdToDelete(carId);
                     setIsDeleteModalOpen(true);
                   }}
                 />
@@ -86,14 +84,15 @@ const MobileProfileInteractiveSection = ({
         />
       )}
 
-      {carToDelete && (
+      {/* 3. Provera i prosleđivanje prilagođeni novom nazivu stanja */}
+      {carIdToDelete && (
         <DeleteCarModal
           isOpen={isDeleteModalOpen}
-          carId={carToDelete}
+          carId={carIdToDelete}
           onDelete={handleDeleteCar}
           onClose={() => {
             setIsDeleteModalOpen(false);
-            setCarToDelete(null);
+            setCarIdToDelete(null);
           }}
         />
       )}
