@@ -3,6 +3,7 @@ import { CarType } from '../lib/model/car/CarType';
 import { CarMake } from '../lib/model/car/CarMake';
 import { CarEngineType } from '../lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import { selectArrowStyle } from '@/utils/styles';
 
 interface CarFiltersProps {
   filters: CarFilterState;
@@ -18,7 +19,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
   };
 
   const inputClass =
-    'mt-1 block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all cursor-pointer';
+    'mt-1 block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all cursor-pointer appearance-none pr-10';
 
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6">
@@ -64,6 +65,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             name="make"
             value={filters.make}
             onChange={handleInputChange}
+            style={selectArrowStyle}
             className={inputClass}
           >
             <option value="">All Makes</option>
@@ -87,6 +89,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             name="carType"
             value={filters.carType}
             onChange={handleInputChange}
+            style={selectArrowStyle}
             className={inputClass}
           >
             <option value="">All Types</option>
@@ -110,6 +113,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             name="engine"
             value={filters.engine}
             onChange={handleInputChange}
+            style={selectArrowStyle}
             className={inputClass}
           >
             <option value="">All Engine Types</option>
