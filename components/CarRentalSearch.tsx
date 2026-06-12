@@ -6,10 +6,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
+import { IUser } from '@/lib/model/User';
 import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import { useSession } from 'next-auth/react';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
@@ -20,6 +22,8 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
   filters,
   initialCars,
 }) => {
+  const { data: session } = useSession();
+
   const [searchParams, setSearchParams] = useState({
     city: '',
     startDate: null as Date | null,
@@ -33,6 +37,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
   });
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [owner, setOwner] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
@@ -74,8 +79,24 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
     }
   };
 
-  const handleBookNow = (car: ICar) => {
+  const fetchCurrentUser = async () => {
+    if (!session?.user?.email) return;
+    try {
+      const response = await fetch(
+        `/api/users?email=${encodeURIComponent(session.user.email)}`
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setCurrentUser(data);
+      }
+    } catch (error) {
+      console.error('Error fetching current user:', error);
+    }
+  };
+
+  const handleBookNow = async (car: ICar) => {
     setSelectedCar(car);
+    await fetchCurrentUser();
     setIsBookingModalOpen(true);
   };
 
@@ -276,6 +297,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
       {selectedCar && (
         <BookingDialog
           car={selectedCar}
+          user={currentUser}
           isOpen={isBookingModalOpen}
           startDate={searchParams.startDate}
           endDate={searchParams.endDate}

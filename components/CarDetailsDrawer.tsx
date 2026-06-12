@@ -10,11 +10,13 @@ import OwnerCard from './OwnerCard';
 interface CarDetailsDrawerProps {
   car: ICar | null;
   owner: {
+    _id: string;
     name: string;
     email: string;
     contactInfo: string;
     profilePicture: string;
     rating: number;
+    images?: string[];
   };
   isOpen: boolean;
   onClose: () => void;
@@ -110,18 +112,14 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                   }
                   disabled={currentImageIndex === 0}
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                >
-                  ‹
-                </button>
+                ></button>
                 <button
                   onClick={() =>
                     setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
                   }
                   disabled={currentImageIndex === total - 1}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                >
-                  ›
-                </button>
+                ></button>
               </>
             )}
           </div>
@@ -181,8 +179,6 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             </div>
           </div>
         </div>
-
-        {/* Footer */}
 
         <div className="flex gap-2 p-4 border-t border-gray-100 bg-white sticky bottom-0">
           <button
