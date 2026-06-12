@@ -71,9 +71,6 @@ export default function RootLayout({
           `}
         </Script>
         <Providers>
-          {/* Header for desktop only */}
-          <Header className="hidden md:block" />
-
           {/* Main content area */}
           <main className="flex-1 overflow-y-auto">{children}</main>
 
