@@ -6,16 +6,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '../UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { ICar } from '@/lib/model/car/Car';
+import { IUser } from '@/lib/model/User';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import MobileCarSearchResults from './MobileCarSearchResults';
 import BookingDialog from '../BookNowDialog';
 import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
+import { useSession } from 'next-auth/react';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
 }
 
 const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
+  const { data: session } = useSession();
+
   const [searchParams, setSearchParams] = useState({
     city: '',
     startDate: null as Date | null,
@@ -24,6 +28,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
   const [searchResults, setSearchResults] = useState<ICar[]>([]);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [owner, setOwner] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
@@ -42,17 +47,16 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
     setSearchResults(data.cars);
   };
 
-  const handleBookNow = (car: ICar) => {
-    setSelectedCar(car);
-    setIsBookingModalOpen(true);
-  };
-
-  const handleViewDetails = async (carId: string) => {
-    const car = searchResults?.find((car) => car._id === carId);
-    if (car) {
-      setSelectedCar(car);
-      await fetchOwnerDetails(car.owner.toString());
-      setIsDetailsDrawerOpen(true);
+  const fetchCurrentUser = async () => {
+    if (!session?.user?.email) return;
+    try {
+      const response = await fetch(
+        `/api/users?email=${encodeURIComponent(session.user.email)}`
+      );
+      const data = await response.json();
+      if (response.ok) setCurrentUser(data);
+    } catch (error) {
+      console.error('Error fetching current user:', error);
     }
   };
 
@@ -70,6 +74,21 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
     }
   };
 
+  const handleBookNow = async (car: ICar) => {
+    setSelectedCar(car);
+    await fetchCurrentUser();
+    setIsBookingModalOpen(true);
+  };
+
+  const handleViewDetails = async (carId: string) => {
+    const car = searchResults?.find((car) => car._id === carId);
+    if (car) {
+      setSelectedCar(car);
+      await fetchOwnerDetails(car.owner.toString());
+      setIsDetailsDrawerOpen(true);
+    }
+  };
+
   const handleBookingConfirmation = async (
     startDate: Date | null,
     endDate: Date | null
@@ -79,9 +98,7 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
     try {
       const response = await fetch('/api/book-now', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           carId: selectedCar._id,
           carLocation: selectedCar.carLocation,
@@ -164,12 +181,14 @@ const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
             setSelectedCar(null);
             setOwner(null);
           }}
+          onBookNow={() => handleBookNow(selectedCar)}
         />
       )}
 
       {selectedCar && (
         <BookingDialog
           car={selectedCar}
+          user={currentUser}
           isOpen={isBookingModalOpen}
           startDate={searchParams.startDate}
           endDate={searchParams.endDate}
