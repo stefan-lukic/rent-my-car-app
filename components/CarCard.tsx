@@ -7,9 +7,10 @@ import { useState } from 'react';
 interface CarCardProps {
   car: ICar;
   onUpdate: (car: ICar) => void;
+  onDeleteClick: (car: ICar) => void;
 }
 
-const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
+const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   return (
@@ -28,9 +29,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
               onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
               disabled={currentImageIndex === 0}
               className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
-            >
-              ‹
-            </button>
+            ></button>
             <button
               onClick={() =>
                 setCurrentImageIndex((i) =>
@@ -39,9 +38,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
               }
               disabled={currentImageIndex === car.images.length - 1}
               className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
-            >
-              ›
-            </button>
+            ></button>
           </>
         )}
       </div>
@@ -67,8 +64,10 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate }) => {
           >
             ✎ Edit
           </button>
-          {/* button delete tek treba napraviti */}
-          <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-red-200 rounded-lg text-red-500 hover:bg-red-50 transition-colors">
+          <button
+            onClick={() => onDeleteClick(car)}
+            className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-red-200 rounded-lg text-red-500 hover:bg-red-50 transition-colors"
+          >
             🗑 Delete
           </button>
         </div>
