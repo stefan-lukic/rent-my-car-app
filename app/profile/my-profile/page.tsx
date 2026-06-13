@@ -3,40 +3,61 @@ import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
+import { redirect } from 'next/navigation';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
-  const baseUrl = getBaseUrl();
-  const isMobile = isMobileSSR();
 
   if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    };
+    redirect('/api/auth/signin?callbackUrl=/profile/my-profile');
   }
-  if (!session.user.email) {
+
+  if (!session.user?.email) {
     return null;
   }
 
-  const userRes = await fetch(
-    `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`
-  );
-  const user = await userRes.json();
+  const baseUrl = getBaseUrl();
 
-  const carsRes = await fetch(`${baseUrl}/api/cars/my-cars?userId=${user._id}`);
-  const cars = await carsRes.json();
+  try {
+    const userRes = await fetch(
+      `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`,
+      { cache: 'no-store' }
+    );
 
-  const rentalsRes = await fetch(
-    `${baseUrl}/api/my-rentals?userId=${user._id}`
-  );
-  const rentals = await rentalsRes.json();
+    if (!userRes.ok) {
+      throw new Error('Failed to fetch user');
+    }
 
-  return isMobile ? (
-    <MobileProfilePage user={user} cars={cars} rentals={rentals} />
-  ) : (
-    <ProfilePage user={user} cars={cars} rentals={rentals} />
-  );
+    const user = await userRes.json();
+
+    const fetchJson = async (url: string) => {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error();
+      return res.json();
+    };
+
+    const [carsResult, rentalsResult] = await Promise.allSettled([
+      fetchJson(`${baseUrl}/api/cars/my-cars?userId=${user._id}`),
+      fetchJson(`${baseUrl}/api/my-rentals?userId=${user._id}`),
+    ]);
+
+    const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];
+    const rentals =
+      rentalsResult.status === 'fulfilled' ? rentalsResult.value : [];
+
+    const isMobile = isMobileSSR();
+
+    return isMobile ? (
+      <MobileProfilePage user={user} cars={cars} rentals={rentals} />
+    ) : (
+      <ProfilePage user={user} cars={cars} rentals={rentals} />
+    );
+  } catch (error) {
+    console.error('Failed to load profile page:', error);
+    return (
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
+        Something went wrong. Please try again later.
+      </div>
+    );
+  }
 }
