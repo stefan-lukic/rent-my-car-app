@@ -3,66 +3,118 @@
 import Link from 'next/link';
 import LogoutButton from '../LogoutButton';
 import { useAuth } from '@/hooks/useAuth';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { usePathname } from 'next/navigation';
+import { Compass } from 'lucide-react';
 
-interface HeaderProps {
-  className?: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ className }) => {
-  const { isAuthenticated, loading } = useAuth();
+const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
+  const { isAuthenticated, loading, user } = useAuth();
   const pathname = usePathname();
 
   if (pathname === '/sign-in' || pathname === '/sign-up') return null;
 
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 w-full h-20 bg-blue-100 backdrop-blur-md border-b border-blue-100/50 z-50 transition-all ${className}`}
-    >
-      <div className="w-full h-full max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        <div className="flex items-center">
-          <Link
-            href="/"
-            className="text-2xl font-extrabold text-blue-600 tracking-tight hover:text-blue-800 transition-colors duration-300"
-          >
-            RentMyCar
-          </Link>
-        </div>
+  //claude kaze da je bolje bez isMobileCSR()
 
-        <div className="flex items-center gap-6">
-          {!loading && (
-            <>
-              {!isAuthenticated ? (
-                <>
-                  <Link
-                    href="/sign-in"
-                    className="text-gray-600 font-medium hover:text-blue-600 transition-colors duration-200"
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    href="/sign-up"
-                    className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                  >
-                    Sign up
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/profile/my-profile"
-                    className="flex items-center gap-1.5 text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
-                  >
-                    <AccountBoxIcon fontSize="small" />
-                    Profile
-                  </Link>
-                  <LogoutButton />
-                </>
-              )}
-            </>
-          )}
-        </div>
+  return (
+    <header className="sticky top-0 z-40 bg-white/90 md:bg-white/80 backdrop-blur-md border-b border-slate-100">
+      <div className="flex md:hidden items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2 rounded-xl shadow-sm">
+            <Compass className="w-4 h-4" />
+          </div>
+          <span className="text-base font-black text-slate-900 tracking-tight">
+            RentMy<span className="text-blue-600">Car</span>
+          </span>
+        </Link>
+
+        {!loading && (
+          <div>
+            {!isAuthenticated ? (
+              <Link
+                href="/sign-in"
+                className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <div className="flex items-center gap-3">
+                <LogoutButton />
+                <Link href="/profile/my-profile">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center hover:border-blue-400 transition-colors">
+                    <span className="text-slate-500 text-xs font-bold uppercase">
+                      {user?.name?.charAt(0) ?? 'U'}
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="hidden md:flex max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 items-center justify-between py-4">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2.5 rounded-2xl shadow-sm shadow-blue-500/25">
+            <Compass className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-xl font-black text-slate-900 tracking-tight">
+              RentMy<span className="text-blue-600">Car</span>
+            </span>
+            <p className="hidden sm:block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
+              Verified Vehicles. Trusted Owners.
+            </p>
+          </div>
+        </Link>
+
+        <nav className="flex gap-8 text-xs font-semibold text-slate-600">
+          <Link href="/" className="hover:text-blue-600 transition-colors">
+            Catalog
+          </Link>
+          <button
+            onClick={onHowItWorksClick}
+            className="hover:text-blue-600 transition-colors"
+          >
+            How It Works
+          </button>
+          <Link
+            href="/profile/my-profile"
+            className="hover:text-blue-600 transition-colors"
+          >
+            My Profile & Rentals
+          </Link>
+        </nav>
+
+        {!loading && (
+          <div className="flex items-center gap-3">
+            {!isAuthenticated ? (
+              <>
+                <Link
+                  href="/sign-in"
+                  className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition-all shadow-sm"
+                >
+                  Get Started
+                </Link>
+              </>
+            ) : (
+              <>
+                <LogoutButton />
+                <Link href="/profile/my-profile">
+                  <div className="h-9 w-9 bg-slate-100 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-blue-400 transition-colors">
+                    <span className="text-slate-500 text-xs font-bold uppercase">
+                      {user?.name?.charAt(0) ?? 'U'}
+                    </span>
+                  </div>
+                </Link>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );

@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
-import { howItWorksContent, howItWorksIcons } from '@/helper/constants';
 import OwnerCard from '../OwnerCard';
 import HowItWorksModal from '../HowItWorksModal';
 
+export interface IOwner {
+  name: string;
+  email: string;
+  contactInfo: string;
+  profilePicture?: string;
+  rating: number;
+  images?: string[];
+}
+
 interface CarDetailsDrawerProps {
   car: ICar | null;
-  owner: {
-    name: string;
-    email: string;
-    contactInfo: string;
-    profilePicture: string;
-    rating: number;
-    images: string[];
-  };
+  owner: IOwner | null;
   isOpen: boolean;
   onClose: () => void;
+  onBookNow?: () => void;
 }
 
 const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
@@ -24,6 +26,7 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   owner,
   isOpen,
   onClose,
+  onBookNow,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -176,7 +179,11 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               </ul>
             </div>
 
-            <OwnerCard owner={owner} />
+            {owner ? (
+              <OwnerCard owner={owner} />
+            ) : (
+              <div className="mt-4 h-16 bg-gray-100 rounded-lg animate-pulse" />
+            )}
 
             <button
               onClick={handleOpenModal}
@@ -185,13 +192,7 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               See How It Works
             </button>
 
-            <HowItWorksModal
-              title="How It Works"
-              isOpen={isModalOpen}
-              content={howItWorksContent}
-              icons={howItWorksIcons}
-              onClose={handleCloseModal}
-            />
+            <HowItWorksModal isOpen={isModalOpen} onClose={handleCloseModal} />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from './UI/Button';
@@ -10,6 +10,9 @@ import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import { IUser } from '@/lib/model/User';
+import { CarCity } from '@/lib/model/car/CarCity';
+import { MapPin } from 'lucide-react';
 
 export interface CarRentalSearchProps {
   filters: CarFilterState;
@@ -36,22 +39,28 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
-  const handleSearch = async (page = 1) => {
-    if (!searchParams.startDate || !searchParams.endDate) {
-      return;
-    }
-
+  const fetchCars = async (page = 1, params = searchParams) => {
     const queryParams = new URLSearchParams({
-      start: searchParams.startDate.toISOString(),
-      end: searchParams.endDate.toISOString(),
       page: page.toString(),
       limit: '10',
-      city: searchParams.city,
-      ...filters,
     });
+
+    if (params.city) {
+      queryParams.set('city', params.city);
+    }
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) queryParams.set(key, value);
+    });
+
+    if (params.startDate && params.endDate) {
+      queryParams.set('start', params.startDate.toISOString());
+      queryParams.set('end', params.endDate.toISOString());
+    }
 
     const response = await fetch(`/api/cars?${queryParams}`);
     const data = await response.json();
+
     setSearchState({
       results: data.cars,
       currentPage: data.currentPage,
@@ -60,18 +69,17 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
     });
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
+  useEffect(() => {
+    fetchCars();
+  }, [filters]);
+
+  const handleSearch = () => fetchCars(1);
 
   const handlePageChange = async (newPage: number) => {
-    await handleSearch(newPage);
-    const headerElement = document.getElementById('search-results');
-    if (headerElement) {
-      headerElement.scrollIntoView({ behavior: 'smooth' });
-    }
+    await fetchCars(newPage);
+    document
+      .getElementById('search-results')
+      ?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleBookNow = (car: ICar) => {
@@ -92,11 +100,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
     try {
       const response = await fetch(`/api/users/${ownerId}`);
       const data = await response.json();
-      if (response.ok) {
-        setOwner(data);
-      } else {
-        console.error(data.message);
-      }
+      if (response.ok) setOwner(data);
     } catch (error) {
       console.error('Error fetching owner details:', error);
     }
@@ -111,9 +115,7 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
     try {
       const response = await fetch('/api/book-now', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           carId: selectedCar._id,
           carLocation: selectedCar.carLocation,
@@ -154,17 +156,23 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 px-1">
               Location
             </label>
-            <input
-              id="car-search-input"
-              className={inputStyling}
-              type="text"
-              placeholder="Where are you going?"
-              value={searchParams.city}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, city: e.target.value })
-              }
-              onKeyPress={handleKeyPress}
-            />
+            <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <select
+                value={searchParams.city}
+                onChange={(e) =>
+                  setSearchParams({ ...searchParams, city: e.target.value })
+                }
+                className={`${inputStyling} pl-10`}
+              >
+                <option value="">All Cities (Serbia)</option>
+                {Object.values(CarCity).map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="flex-1 flex gap-4">
@@ -182,11 +190,12 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
                 onChange={(date: Date | null) =>
                   setSearchParams({ ...searchParams, startDate: date })
                 }
+                minDate={new Date()}
               />
             </div>
             <div className="w-1/2">
               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 px-1">
-                Drop off
+                Return
               </label>
               <DatePicker
                 className={inputStyling}
@@ -206,10 +215,10 @@ const CarRentalSearch: React.FC<CarRentalSearchProps> = ({
           <div className="lg:w-auto flex items-end">
             <Button
               className="w-full lg:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold flex items-center justify-center transition-colors shadow-sm"
-              onClick={() => handleSearch()}
+              onClick={handleSearch}
             >
               <SearchIcon className="mr-2" fontSize="small" />
-              Search
+              Search Cars
             </Button>
           </div>
         </div>

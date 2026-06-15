@@ -6,7 +6,7 @@ interface OwnerCardProps {
     name: string;
     email: string;
     contactInfo: string;
-    profilePicture: string;
+    profilePicture?: string;
     rating: number;
     images?: string[];
   };
@@ -16,7 +16,9 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ owner }) => {
   return (
     <div className="flex items-center p-4 bg-white shadow-md rounded-lg">
       <Image
-        src={owner.images?.[0] || '/placeholder-car.svg'}
+        src={
+          owner.profilePicture || owner.images?.[0] || '/placeholder-car.svg'
+        }
         alt={owner.name}
         width={80}
         height={80}

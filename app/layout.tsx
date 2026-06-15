@@ -35,7 +35,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover', // Ensures the viewport covers the entire screen, including the notch area
-  themeColor: '#000000', // Match this with your app's theme color
+  themeColor: '#dbeafe', // Match this with your app's theme color
 };
 
 export default function RootLayout({
@@ -50,7 +50,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width; initial-scale=1; viewport-fit=cover"
         />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#dbeafe" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta
