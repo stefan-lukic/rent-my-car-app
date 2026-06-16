@@ -41,8 +41,7 @@ export default function CustomDatePicker<T extends FieldValues>({
               id={inputId}
               selected={field.value ?? null}
               onChange={field.onChange}
-              dateFormat="MM/yyyy"
-              showMonthYearPicker
+              dateFormat="MM/dd/yyyy"
               maxDate={maxDate}
               minDate={minDate}
               className={inputClasses}

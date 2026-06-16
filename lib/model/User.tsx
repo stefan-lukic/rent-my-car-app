@@ -7,13 +7,22 @@ export interface IUser extends Document {
   email: string;
   password: string;
   contactInfo: string;
-  rating: Number;
+  rating: number;
   emailVerified?: Date;
   images?: string[];
   role: Role;
   cars: mongoose.Types.ObjectId[];
   rentals: mongoose.Types.ObjectId[];
   createdAt: Date;
+}
+
+export interface IOwner {
+  name: string;
+  email: string;
+  contactInfo: string;
+  profilePicture?: string;
+  rating: number;
+  images?: string[];
 }
 
 const userSchema: Schema<IUser> = new Schema(
