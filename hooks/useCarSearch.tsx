@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ICar } from '@/lib/model/car/Car';
 import { IOwner } from '@/lib/model/User';
@@ -38,12 +38,14 @@ export function useCarSearchForm({
 
   const [startDate, endDate] = form.watch(['startDate', 'endDate']);
 
-  const daysSelected = useMemo(() => {
-    if (!startDate || !endDate) return 0;
-    return Math.ceil((endDate.getTime() - startDate.getTime()) / 86400000);
-  }, [startDate, endDate]);
+  const daysSelected =
+    startDate && endDate
+      ? Math.ceil((endDate.getTime() - startDate.getTime()) / 86400000)
+      : 0;
 
-  const filtersKey = useMemo(() => JSON.stringify(filters), [filters]);
+  // JSON.stringify stabilizuje referencu filters objekta kao string
+  // kako bi fetchCars bio stabilan između rendera kad se filters nije stvarno promenio
+  const filtersJson = JSON.stringify(filters);
 
   const fetchCars = useCallback(
     async (values: CarSearchFormValues, page = 1, signal?: AbortSignal) => {
@@ -58,8 +60,10 @@ export function useCarSearchForm({
           end: values.endDate.toISOString(),
         });
         if (values.city) query.set('city', values.city);
-        Object.entries(filters).forEach(([k, v]) => {
-          if (v) query.set(k, v);
+
+        const parsedFilters: CarFilterState = JSON.parse(filtersJson);
+        Object.entries(parsedFilters).forEach(([key, value]) => {
+          if (value) query.set(key, value);
         });
 
         const res = await fetch(`/api/cars?${query}`, { signal });
@@ -77,7 +81,7 @@ export function useCarSearchForm({
         setResults((prev) => ({ ...prev, loading: false }));
       }
     },
-    [filtersKey]
+    [filtersJson]
   );
 
   useEffect(() => {
