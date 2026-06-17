@@ -3,22 +3,15 @@ import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
+import { redirect } from 'next/navigation';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
   const baseUrl = getBaseUrl();
   const isMobile = isMobileSSR();
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    };
-  }
-  if (!session.user.email) {
-    return null;
+  if (!session || !session.user?.email) {
+    redirect('/sign-in');
   }
 
   const userRes = await fetch(

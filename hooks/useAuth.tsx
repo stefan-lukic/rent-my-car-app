@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
 interface AuthHook {
@@ -13,20 +12,9 @@ interface AuthHook {
 
 export const useAuth = (): AuthHook => {
   const { data: session, status } = useSession();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (status === 'loading') {
-      setLoading(true);
-    } else if (status === 'authenticated') {
-      setIsAuthenticated(true);
-      setLoading(false);
-    } else {
-      setIsAuthenticated(false);
-      setLoading(false);
-    }
-  }, [status]);
+  const loading = status === 'loading';
+  const isAuthenticated = status === 'authenticated';
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
