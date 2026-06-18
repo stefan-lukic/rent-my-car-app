@@ -7,6 +7,7 @@ import BookingDialog from '../BookNowDialog';
 import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
 import CustomDatePicker from '../UI/CustomDatePicker';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
+import { IUser } from '@/lib/model/User';
 
 const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
   const {
@@ -22,6 +23,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
   } = useCarSearchForm({ filters });
 
   const [modals, setModals] = useState({ booking: false, details: false });
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   const handleBookingConfirm = async () => {
     if (!selectedCar) return;
@@ -139,6 +141,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
             onBookNow={() => setModals({ details: false, booking: true })}
           />
           <BookingDialog
+            user={currentUser}
             car={selectedCar}
             isOpen={modals.booking}
             startDate={form.getValues('startDate')}

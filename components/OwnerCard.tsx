@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface OwnerCardProps {
   owner: {
+    _id: string;
     name: string;
     email: string;
     contactInfo: string;
@@ -14,23 +18,23 @@ interface OwnerCardProps {
 
 const OwnerCard: React.FC<OwnerCardProps> = ({ owner }) => {
   return (
-    <div className="flex items-center p-4 bg-white shadow-md rounded-lg">
-      <Image
-        src={
-          owner.profilePicture || owner.images?.[0] || '/placeholder-car.svg'
-        }
-        alt={owner.name}
-        width={80}
-        height={80}
-        className="object-cover rounded-xl mr-4"
-      />
-      <div>
-        <h3 className="text-lg font-semibold">{owner.name}</h3>
-        <p className="text-gray-600">{owner.email}</p>
-        <p className="text-gray-600">{owner.contactInfo}</p>
-        <p className="text-yellow-500">Rating: {owner.rating} ★</p>
+    <Link href={`/profile/${owner._id}`}>
+      <div className="flex items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+        <Image
+          src={owner.images?.[0] || '/placeholder-car.jpg'}
+          alt={owner.name}
+          width={80}
+          height={80}
+          className="object-cover rounded-xl mr-4"
+        />
+        <div>
+          <h3 className="text-lg font-semibold">{owner.name}</h3>
+          <p className="text-gray-600">{owner.email}</p>
+          <p className="text-gray-600">{owner.contactInfo}</p>
+          <p className="text-yellow-500">Rating: {owner.rating} ★</p>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

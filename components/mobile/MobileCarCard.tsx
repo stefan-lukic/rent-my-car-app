@@ -1,79 +1,80 @@
+'use client';
+
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
 import { useState } from 'react';
-import { Button } from '../UI/Button';
 
 interface MobileCarCardProps {
   car: ICar;
   onUpdate: (car: ICar) => void;
+  onDeleteClick: (id: string) => void;
 }
 
-const MobileCarCard: React.FC<MobileCarCardProps> = ({ car, onUpdate }) => {
+const MobileCarCard: React.FC<MobileCarCardProps> = ({
+  car,
+  onUpdate,
+  onDeleteClick,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const handleNextImage = () => {
-    if (car.images && currentImageIndex < car.images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
-  };
-
   return (
-    <div className="bg-white rounded shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <div className="relative h-40 w-full overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
-            alt={`${car.make} ${car.carModel}`}
-            layout="fill"
-            objectFit="cover"
-            className="transition-opacity duration-300 hover:opacity-90 rounded"
-          />
-          {car.images && car.images.length > 1 && (
-            <div className="absolute left-2 right-2 inset-0 flex justify-between items-center">
-              <button
-                className={`text-white p-1 rounded-full bg-gray-800 hover:bg-gray-600 transition-colors ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handlePrevImage}
-                disabled={currentImageIndex === 0}
-              >
-                &lt;
-              </button>
-              <button
-                className={`text-white p-1 rounded-full bg-gray-800 hover:bg-gray-600 transition-colors ${currentImageIndex === car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handleNextImage}
-                disabled={currentImageIndex === car.images.length - 1}
-              >
-                &gt;
-              </button>
-            </div>
-          )}
-        </div>
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+      <div className="relative h-48 w-full">
+        <Image
+          src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
+          alt={`${car.make} ${car.carModel}`}
+          fill
+          className="object-cover"
+        />
+        {car.images && car.images.length > 1 && (
+          <div className="absolute inset-0 flex justify-between items-center px-2">
+            <button
+              onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
+              disabled={currentImageIndex === 0}
+              className="w-7 h-7 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() =>
+                setCurrentImageIndex((i) =>
+                  Math.min(car.images!.length - 1, i + 1)
+                )
+              }
+              disabled={currentImageIndex === car.images.length - 1}
+              className="w-7 h-7 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30"
+            >
+              ›
+            </button>
+          </div>
+        )}
       </div>
 
-      <div className="p-2">
-        <p className="text-sm text-base text-gray-800 truncate">
+      <div className="p-4">
+        <h3 className="font-bold text-gray-900 text-base">
           {car.make} {car.carModel}
+        </h3>
+        <p className="text-green-500 font-bold text-sm mt-0.5">
+          €{car.pricePerDay} / day
         </p>
-        <div className="flex flex-row gap-2">
-          <p className="text-sm text-gray-600">{car.engine}</p>
-          <p className="text-blue-500 font-medium text-sm">{car.power} hp</p>
+        <div className="flex items-center gap-1 mt-1 mb-3">
+          <span className="text-gray-400 text-xs">📍</span>
+          <span className="text-gray-500 text-xs">{car.city}</span>
         </div>
-        <p className="text-sm text-base text-gray-800 truncate">
-          {car.city}, {car.carLocation}
-        </p>
-        <p className="text-green-500 font-bold">€{car.pricePerDay}/day</p>
-        <div className="flex justify-between items-center mt-1">
-          <Button
-            className="h-8 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition duration-300"
+
+        <div className="flex gap-2">
+          <button
             onClick={() => onUpdate(car)}
+            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Update
-          </Button>
+            ✎ Edit
+          </button>
+          <button
+            onClick={() => onDeleteClick(car.id)}
+            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-red-200 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
+          >
+            🗑 Delete
+          </button>
         </div>
       </div>
     </div>

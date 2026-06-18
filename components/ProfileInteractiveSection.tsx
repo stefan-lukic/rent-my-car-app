@@ -7,6 +7,7 @@ import { RentalWithCar } from '@/types/RentalWithCar';
 import CarCard from './CarCard';
 import RentalCard from './RentalCard';
 import UpdateCarModal from './UpdateCarModal';
+import DeleteCarModal from './DeleteCarModal';
 
 interface ProfileInteractiveSectionProps {
   cars: ICar[];
@@ -19,7 +20,9 @@ const ProfileInteractiveSection = ({
 }: ProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [carToDeleteId, setCarToDeleteId] = useState<string | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
 
@@ -30,6 +33,10 @@ const ProfileInteractiveSection = ({
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
     setIsUpdateModalOpen(false);
+  };
+
+  const handleDeleteCar = (carId: string) => {
+    setCars(cars.filter((car) => car._id !== carId));
   };
 
   const pageCount = Math.ceil(cars.length / carsPerPage);
@@ -44,7 +51,6 @@ const ProfileInteractiveSection = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* ===== MY CARS ===== */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">My Cars</h2>
@@ -62,7 +68,6 @@ const ProfileInteractiveSection = ({
           </p>
         ) : (
           <>
-            {/* Strelice sa strana + kartice */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentPage((p) => p - 1)}
@@ -80,6 +85,10 @@ const ProfileInteractiveSection = ({
                     onUpdate={() => {
                       setSelectedCar(car);
                       setIsUpdateModalOpen(true);
+                    }}
+                    onDeleteClick={(car) => {
+                      setCarToDeleteId(car._id);
+                      setIsDeleteModalOpen(true);
                     }}
                   />
                 ))}
@@ -164,6 +173,18 @@ const ProfileInteractiveSection = ({
           car={selectedCar}
           onUpdate={handleUpdateCar}
           onClose={() => setIsUpdateModalOpen(false)}
+        />
+      )}
+
+      {carToDeleteId && (
+        <DeleteCarModal
+          isOpen={isDeleteModalOpen}
+          carId={carToDeleteId}
+          onDelete={handleDeleteCar}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setCarToDeleteId(null);
+          }}
         />
       )}
     </div>

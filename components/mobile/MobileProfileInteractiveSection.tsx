@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import UpdateCarModal from '../UpdateCarModal';
+import DeleteCarModal from '../DeleteCarModal';
 import MobileCarCard from './MobileCarCard';
 import MobileRentalCard from './MobileRentalCard';
 
@@ -20,18 +21,16 @@ const MobileProfileInteractiveSection = ({
 }: MobileProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [carIdToDelete, setCarIdToDelete] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
-    handleCloseModal();
-  };
-
-  const handleOpenModal = (car: ICar) => {
-    setSelectedCar(car);
-  };
-
-  const handleCloseModal = () => {
     setSelectedCar(null);
+  };
+
+  const handleDeleteCar = (carId: string) => {
+    setCars(cars.filter((car) => car._id !== carId));
   };
 
   return (
@@ -40,7 +39,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {cars.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven`t listed any cars yet.
+              You haven't listed any cars yet.
             </p>
           ) : (
             <div className="space-y-2">
@@ -48,7 +47,11 @@ const MobileProfileInteractiveSection = ({
                 <MobileCarCard
                   key={car._id}
                   car={car}
-                  onUpdate={() => handleOpenModal(car)}
+                  onUpdate={() => setSelectedCar(car)}
+                  onDeleteClick={(carId) => {
+                    setCarIdToDelete(carId);
+                    setIsDeleteModalOpen(true);
+                  }}
                 />
               ))}
             </div>
@@ -60,7 +63,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {initialRentals.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven`t rented any cars yet.
+              You haven't rented any cars yet.
             </p>
           ) : (
             <div className="space-y-2">
@@ -77,7 +80,20 @@ const MobileProfileInteractiveSection = ({
           isOpen={!!selectedCar}
           car={selectedCar}
           onUpdate={handleUpdateCar}
-          onClose={handleCloseModal}
+          onClose={() => setSelectedCar(null)}
+        />
+      )}
+
+      {/* 3. Provera i prosleđivanje prilagođeni novom nazivu stanja */}
+      {carIdToDelete && (
+        <DeleteCarModal
+          isOpen={isDeleteModalOpen}
+          carId={carIdToDelete}
+          onDelete={handleDeleteCar}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setCarIdToDelete(null);
+          }}
         />
       )}
     </div>

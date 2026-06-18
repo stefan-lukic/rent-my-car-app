@@ -9,6 +9,7 @@ import CustomDatePicker from './UI/CustomDatePicker';
 import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
+import { IUser } from '@/lib/model/User';
 
 const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
@@ -25,6 +26,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
   } = useCarSearchForm({ filters, initialCars });
 
   const [modals, setModals] = useState({ booking: false, details: false });
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   const handleBooking = async () => {
     if (!selectedCar) return;
@@ -123,6 +125,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
             onBookNow={() => setModals({ details: false, booking: true })}
           />
           <BookingDialog
+            user={currentUser}
             car={selectedCar}
             isOpen={modals.booking}
             startDate={form.getValues('startDate')}

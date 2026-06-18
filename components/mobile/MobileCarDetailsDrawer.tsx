@@ -26,102 +26,153 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
   if (!car || !isOpen) return null;
 
+  const images = car.images ?? [];
+  const total = images.length;
+
+  const specs = [
+    { label: 'Engine', value: car.engine, icon: '⚡' },
+    { label: 'Power', value: `${car.power} HP`, icon: '🏎️' },
+    {
+      label: 'Type',
+      value: car.carType.charAt(0) + car.carType.slice(1).toLowerCase(),
+      icon: '🚗',
+    },
+    { label: 'City', value: car.city, icon: '📍' },
+    car.milage && { label: 'Mileage', value: `${car.milage} km`, icon: '🛣️' },
+    car.averageConsumption && {
+      label: 'Consumption',
+      value: car.averageConsumption,
+      icon: '⛽',
+    },
+    car.firstRegistration && {
+      label: 'Registration',
+      value: new Date(car.firstRegistration).toLocaleDateString(),
+      icon: '📅',
+    },
+  ].filter(Boolean) as { label: string; value: string; icon: string }[];
+
   return (
-    <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm">
-      <div className="fixed inset-x-0 bottom-0 top-10 bg-white rounded-t-[32px] shadow-2xl flex flex-col animate-in slide-in-from-bottom duration-300">
-        <div className="flex flex-col items-center p-4 border-b border-gray-50">
-          <div className="w-12 h-1.5 bg-gray-200 rounded-full mb-4" />
-          <div className="w-full flex justify-between items-center">
-            <h2 className="text-xl font-extrabold text-gray-900 tracking-tight">
-              Car Details
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-2 bg-gray-100 rounded-full text-gray-500"
-            >
-              &times;
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-5 pb-32">
-          <div className="relative rounded-3xl overflow-hidden aspect-[16/10] shadow-inner bg-gray-50">
-            <Image
-              src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
-              alt="Car"
-              fill
-              className="object-cover"
-            />
-            {(car.images?.length ?? 0) > 1 && (
-              <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between">
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((p) => Math.max(0, p - 1))
-                  }
-                  className="p-3 bg-white/90 rounded-full shadow-lg"
-                >
-                  &larr;
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((p) =>
-                      Math.min((car.images?.length || 0) - 1, p + 1)
-                    )
-                  }
-                  className="p-3 bg-white/90 rounded-full shadow-lg"
-                >
-                  &rarr;
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="mt-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">
-              {car.make} <span className="text-blue-600">{car.carModel}</span>
-            </h2>
-
-            <div className="grid grid-cols-2 gap-4 mt-6">
-              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <p className="text-[10px] uppercase font-bold text-gray-400">
-                  Engine
-                </p>
-                <p className="text-sm font-bold text-gray-700">{car.engine}</p>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <p className="text-[10px] uppercase font-bold text-gray-400">
-                  Price
-                </p>
-                <p className="text-sm font-bold text-blue-600">
-                  ${car.pricePerDay}/day
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8">
-            <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">
-              Owner Information
-            </p>
-            {owner ? (
-              <OwnerCard owner={owner} />
-            ) : (
-              <div className="h-20 bg-gray-50 rounded-2xl animate-pulse" />
-            )}
-          </div>
-
+    <div className="fixed inset-0 z-50 bg-black/50">
+      <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white flex flex-col shadow-2xl">
+        <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+          <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+            Car Details
+          </span>
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-full mt-8 py-4 text-gray-500 font-bold text-sm border-2 border-dashed border-gray-200 rounded-2xl"
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
           >
-            See How It Works
+            ✕
           </button>
         </div>
 
-        <div className="absolute bottom-0 inset-x-0 p-5 bg-white/80 backdrop-blur-md border-t border-gray-100">
+        <div className="flex-1 overflow-y-auto">
+          <div className="relative aspect-[16/9] bg-gray-100">
+            <Image
+              src={images[currentImageIndex] || '/placeholder-car.svg'}
+              alt={`${car.make} ${car.carModel}`}
+              fill
+              className="object-cover"
+            />
+            {total > 1 && (
+              <>
+                <div className="absolute bottom-3 w-full flex justify-center gap-1.5">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentImageIndex(i)}
+                      className={`h-1.5 rounded-full transition-all ${i === currentImageIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/50'}`}
+                    />
+                  ))}
+                </div>
+                <button
+                  onClick={() =>
+                    setCurrentImageIndex((i) => Math.max(i - 1, 0))
+                  }
+                  disabled={currentImageIndex === 0}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
+                ></button>
+                <button
+                  onClick={() =>
+                    setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
+                  }
+                  disabled={currentImageIndex === total - 1}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
+                ></button>
+              </>
+            )}
+          </div>
+
+          <div className="p-5 space-y-5">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {car.make}{' '}
+                  <span className="text-gray-400 font-medium">
+                    {car.carModel}
+                  </span>
+                </h2>
+                <div className="flex items-center gap-1 mt-1 text-gray-500 text-sm">
+                  <span>📍</span>
+                  <span>
+                    {car.city}
+                    {car.carLocation && `, ${car.carLocation}`}
+                  </span>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-blue-600">
+                  €{car.pricePerDay}
+                </div>
+                <div className="text-xs text-gray-400">/ day</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {specs.map(({ icon, label, value }) => (
+                <div key={label} className="bg-gray-50 rounded-xl px-3 py-2.5">
+                  <div className="text-xs text-gray-400 mb-0.5">
+                    {icon} {label}
+                  </div>
+                  <div className="text-sm font-semibold text-gray-800">
+                    {value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {car.description && (
+              <div className="border-t pt-4">
+                <p className="text-xs text-gray-400 uppercase mb-1">
+                  Description
+                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {car.description}
+                </p>
+              </div>
+            )}
+
+            <div className="border-t pt-4">
+              <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
+              {owner ? (
+                <OwnerCard owner={owner} />
+              ) : (
+                <p className="text-sm text-gray-400">No owner info available</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-2 p-4 border-t border-gray-100 bg-white sticky bottom-0">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex-1 border border-gray-200 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition"
+          >
+            How it works
+          </button>
           <button
             onClick={onBookNow}
-            className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-200 active:scale-95 transition-all"
+            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
           >
             Book Now
           </button>
