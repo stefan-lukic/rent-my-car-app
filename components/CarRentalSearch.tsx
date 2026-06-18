@@ -39,6 +39,8 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
     }
   };
 
+  const pages = Array.from({ length: results.totalPages }, (_, i) => i + 1);
+
   return (
     <div className="flex flex-col w-full">
       <form
@@ -114,17 +116,17 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
 
       {results.totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: results.totalPages }, (_, i) => (
+          {pages.map((page) => (
             <button
-              key={i}
-              onClick={() => onPageChange(i + 1)}
+              key={page}
+              onClick={() => onPageChange(page)}
               className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
-                results.currentPage === i + 1
+                results.currentPage === page
                   ? 'bg-blue-600 text-white'
                   : 'border border-gray-200 text-gray-500 hover:border-blue-400'
               }`}
             >
-              {i + 1}
+              {page}
             </button>
           ))}
         </div>
