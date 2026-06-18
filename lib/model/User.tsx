@@ -17,6 +17,7 @@ export interface IUser extends Document {
 }
 
 export interface IOwner {
+  _id: string;
   name: string;
   email: string;
   contactInfo: string;
