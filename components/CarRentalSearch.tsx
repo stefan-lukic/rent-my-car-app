@@ -112,6 +112,24 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         ))}
       </div>
 
+      {results.totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-8">
+          {Array.from({ length: results.totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => onPageChange(i + 1)}
+              className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                results.currentPage === i + 1
+                  ? 'bg-blue-600 text-white'
+                  : 'border border-gray-200 text-gray-500 hover:border-blue-400'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
+
       {selectedCar && (
         <>
           <CarDetailsDrawer
