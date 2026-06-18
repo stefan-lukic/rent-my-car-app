@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { MapPin, Search, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { MapPin, Search, Info, ChevronDown } from 'lucide-react';
 import { CarCity } from '@/lib/model/car/CarCity';
 import MobileCarSearchResults from './MobileCarSearchResults';
 import BookingDialog from '../BookNowDialog';
@@ -8,6 +8,7 @@ import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
 import CustomDatePicker from '../UI/CustomDatePicker';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
 import { IUser } from '@/lib/model/User';
+import { ICar } from '@/lib/model/car/Car';
 
 const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
   const {
@@ -16,6 +17,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
     selectedCar,
     owner,
     onSearch,
+    onPageChange,
     openDetails,
     confirmBooking,
     setSelectedCar,
@@ -24,6 +26,15 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
 
   const [modals, setModals] = useState({ booking: false, details: false });
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [allCars, setAllCars] = useState<ICar[]>([]);
+
+  useEffect(() => {
+    if (results.currentPage === 1) {
+      setAllCars(results.data);
+    } else {
+      setAllCars((prev) => [...prev, ...results.data]);
+    }
+  }, [results.data, results.currentPage]);
 
   const handleBookingConfirm = async () => {
     if (!selectedCar) return;
@@ -37,7 +48,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20">
       <form
         onSubmit={onSearch}
         className="bg-white rounded-3xl border border-gray-100 shadow-xl p-5 space-y-4"
@@ -106,7 +117,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
           Available Cars
         </h2>
         <div className="flex flex-col gap-5">
-          {results.data.map((car) => (
+          {allCars.map((car) => (
             <MobileCarSearchResults
               key={car._id}
               car={car}
@@ -120,12 +131,34 @@ const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
               }}
             />
           ))}
-          {!results.loading && results.data.length === 0 && (
+          {!results.loading && allCars.length === 0 && (
             <p className="text-center text-gray-400 italic py-10">
               No cars found...
             </p>
           )}
         </div>
+
+        {results.currentPage < results.totalPages && (
+          <button
+            onClick={() => onPageChange(results.currentPage + 1)}
+            disabled={results.loading}
+            className="w-full mt-6 py-4 rounded-2xl border border-gray-200 text-sm font-semibold text-gray-600 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-50"
+          >
+            {results.loading ? (
+              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent animate-spin rounded-full" />
+            ) : (
+              <>
+                <ChevronDown size={16} /> Load more
+              </>
+            )}
+          </button>
+        )}
+
+        {results.currentPage >= results.totalPages && allCars.length > 0 && (
+          <p className="text-center text-xs text-gray-400 py-4 italic">
+            All cars loaded
+          </p>
+        )}
       </div>
 
       {selectedCar && (
