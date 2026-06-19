@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import ForgotPasswordForm from '@/components/ForgotPasswordForm';
 import MobileForgotPasswordForm from '@/components/mobile/MobileForgotPasswordForm';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';

@@ -2,7 +2,6 @@ import { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/UI/Header';
 import { Providers } from '@/components/Providers';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';

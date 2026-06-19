@@ -1,5 +1,3 @@
-'use client';
-
 import { ICar } from '@/lib/model/car/Car';
 import { IUser } from '@/lib/model/User';
 import Image from 'next/image';

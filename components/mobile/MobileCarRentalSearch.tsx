@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { MapPin, Search, Info, ChevronDown } from 'lucide-react';
 import { CarCity } from '@/lib/model/car/CarCity';
@@ -9,8 +10,9 @@ import CustomDatePicker from '../UI/CustomDatePicker';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
 import { IUser } from '@/lib/model/User';
 import { ICar } from '@/lib/model/car/Car';
+import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
-const MobileCarRentalSearch = ({ filters }: { filters: any }) => {
+const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
   const {
     form,
     results,

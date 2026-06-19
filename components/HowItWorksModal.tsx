@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 //da li steps staviti u neki utils, helper ili constants fajl ili ostaviti ovde?
