@@ -60,7 +60,7 @@ body {
   overflow: hidden;
   position: fixed;
   width: 100%;
-  background-color: #000000; /* Match this with your app's background color */
+  background-color: #dbeafe; /* Match this with your app's background color */
 }
 
 .element {
@@ -74,7 +74,7 @@ body {
 html {
   height: 100vh;
   height: -webkit-fill-available; /* Fix for iOS Safari */
-  background-color: #000000; /* Match this with your app's background color */
+  background-color: #dbeafe; /* Match this with your app's background color */
 }
 
 /* Custom root variables */

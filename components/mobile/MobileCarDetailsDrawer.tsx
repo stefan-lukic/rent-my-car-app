@@ -1,23 +1,14 @@
 'use client';
-
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
-import HowItWorksModal from '../HowItWorksModal';
-import { howItWorksContent, howItWorksIcons } from '@/helper/constants';
 import OwnerCard from '../OwnerCard';
+import HowItWorksModal from '../HowItWorksModal';
+import { IOwner } from '@/lib/model/User';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
-  owner: {
-    _id: string;
-    name: string;
-    email: string;
-    contactInfo: string;
-    profilePicture: string;
-    rating: number;
-    images?: string[];
-  };
+  owner: IOwner | null;
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
@@ -163,7 +154,11 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
             <div className="border-t pt-4">
               <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
-              <OwnerCard owner={owner} />
+              {owner ? (
+                <OwnerCard owner={owner} />
+              ) : (
+                <p className="text-sm text-gray-400">No owner info available</p>
+              )}
             </div>
           </div>
         </div>
@@ -183,12 +178,8 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           </button>
         </div>
       </div>
-
       <HowItWorksModal
-        title="How It Works"
         isOpen={isModalOpen}
-        content={howItWorksContent}
-        icons={howItWorksIcons}
         onClose={() => setIsModalOpen(false)}
       />
     </div>

@@ -1,4 +1,4 @@
-// DeleteCarModal.tsx
+'use client';
 import { useState } from 'react';
 import { Button } from './UI/Button';
 

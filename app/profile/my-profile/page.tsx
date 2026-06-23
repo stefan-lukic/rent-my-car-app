@@ -8,12 +8,8 @@ import { redirect } from 'next/navigation';
 export default async function MyProfilePage() {
   const session = await getServerSession();
 
-  if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/profile/my-profile');
-  }
-
-  if (!session.user?.email) {
-    return null;
+  if (!session || !session.user?.email) {
+    redirect('/sign-in');
   }
 
   const baseUrl = getBaseUrl();

@@ -1,208 +1,193 @@
 'use client';
 
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Button } from '../UI/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import { ICar } from '@/lib/model/car/Car';
-import { IUser } from '@/lib/model/User';
-import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import React, { useState, useEffect } from 'react';
+import { MapPin, Search, Info, ChevronDown } from 'lucide-react';
+import { CarCity } from '@/lib/model/car/CarCity';
 import MobileCarSearchResults from './MobileCarSearchResults';
 import BookingDialog from '../BookNowDialog';
 import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
-import { useSession } from 'next-auth/react';
+import CustomDatePicker from '../UI/CustomDatePicker';
+import { useCarSearchForm } from '@/hooks/useCarSearch';
+import { IUser } from '@/lib/model/User';
+import { ICar } from '@/lib/model/car/Car';
+import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
-export interface CarRentalSearchProps {
-  filters: CarFilterState;
-}
+const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
+  const {
+    form,
+    results,
+    selectedCar,
+    owner,
+    onSearch,
+    onPageChange,
+    openDetails,
+    confirmBooking,
+    setSelectedCar,
+    daysSelected,
+  } = useCarSearchForm({ filters });
 
-const MobileCarRentalSearch: React.FC<CarRentalSearchProps> = ({ filters }) => {
-  const { data: session } = useSession();
-
-  const [searchParams, setSearchParams] = useState({
-    city: '',
-    startDate: null as Date | null,
-    endDate: null as Date | null,
-  });
-  const [searchResults, setSearchResults] = useState<ICar[]>([]);
-  const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [owner, setOwner] = useState<any>(null);
+  const [modals, setModals] = useState({ booking: false, details: false });
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
+  const [allCars, setAllCars] = useState<ICar[]>([]);
 
-  const handleSearch = async () => {
-    if (!searchParams.startDate || !searchParams.endDate) return;
-
-    const queryParams = new URLSearchParams({
-      city: searchParams.city,
-      start: searchParams.startDate.toISOString(),
-      end: searchParams.endDate.toISOString(),
-      ...filters,
-    });
-
-    const response = await fetch(`/api/cars?${queryParams}`);
-    const data = await response.json();
-    setSearchResults(data.cars);
-  };
-
-  const fetchCurrentUser = async () => {
-    if (!session?.user?.email) return;
-    try {
-      const response = await fetch(
-        `/api/users?email=${encodeURIComponent(session.user.email)}`
-      );
-      const data = await response.json();
-      if (response.ok) setCurrentUser(data);
-    } catch (error) {
-      console.error('Error fetching current user:', error);
+  useEffect(() => {
+    if (results.currentPage === 1) {
+      setAllCars(results.data);
+    } else {
+      setAllCars((prev) => [...prev, ...results.data]);
     }
-  };
+  }, [results.data, results.currentPage]);
 
-  const fetchOwnerDetails = async (ownerId: string) => {
-    try {
-      const response = await fetch(`/api/users/${ownerId}`);
-      const data = await response.json();
-      if (response.ok) {
-        setOwner(data);
-      } else {
-        console.error(data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching owner details:', error);
-    }
-  };
-
-  const handleBookNow = async (car: ICar) => {
-    setSelectedCar(car);
-    await fetchCurrentUser();
-    setIsBookingModalOpen(true);
-  };
-
-  const handleViewDetails = async (carId: string) => {
-    const car = searchResults?.find((car) => car._id === carId);
-    if (car) {
-      setSelectedCar(car);
-      await fetchOwnerDetails(car.owner.toString());
-      setIsDetailsDrawerOpen(true);
-    }
-  };
-
-  const handleBookingConfirmation = async (
-    startDate: Date | null,
-    endDate: Date | null
-  ) => {
+  const handleBookingConfirm = async () => {
     if (!selectedCar) return;
-
-    try {
-      const response = await fetch('/api/book-now', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          carId: selectedCar._id,
-          carLocation: selectedCar.carLocation,
-          startDate,
-          endDate,
-        }),
-      });
-
-      if (response.ok) {
-        alert('Booking successful!');
-        setSearchResults((prevResults) =>
-          prevResults.filter((car) => car._id !== selectedCar._id)
-        );
-      } else {
-        alert('Booking failed. Please login and try again.');
-      }
-    } catch (error) {
-      console.error('Error booking car:', error);
-      alert('An error occurred. Please try again.');
-    } finally {
-      setIsBookingModalOpen(false);
+    const ok = await confirmBooking(selectedCar);
+    if (ok) {
+      setModals({ booking: false, details: false });
       setSelectedCar(null);
+    } else {
+      alert('Reservation failed. Check your connection or login status.');
     }
   };
 
   return (
-    <div className="h-[calc(100vh-85px)] flex flex-col p-2 bg-white overflow-auto">
-      <input
-        type="text"
-        placeholder="City"
-        value={searchParams.city}
-        onChange={(e) =>
-          setSearchParams({ ...searchParams, city: e.target.value })
-        }
-        className="w-full p-2 mb-2 mt-2 border rounded-md"
-      />
-      <div className="w-full p-0 flex flex-col">
-        <DatePicker
-          selected={searchParams.startDate}
-          onChange={(date) =>
-            setSearchParams({ ...searchParams, startDate: date })
-          }
-          placeholderText="Start Date"
-          className="flex flex-col p-2 border mb-2 rounded-md"
-        />
-        <DatePicker
-          selected={searchParams.endDate}
-          onChange={(date) =>
-            setSearchParams({ ...searchParams, endDate: date })
-          }
-          placeholderText="End Date"
-          className="flex p-2 border mb-2 rounded-md"
-        />
-        <Button
-          className="w-full flex items-center justify-center"
-          onClick={handleSearch}
-        >
-          <SearchIcon className="mr-2" /> Search
-        </Button>
-      </div>
+    <div className="space-y-6 pb-20">
+      <form
+        onSubmit={onSearch}
+        className="bg-white rounded-3xl border border-gray-100 shadow-xl p-5 space-y-4"
+      >
+        <div>
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">
+            Location
+          </label>
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
+            <select
+              {...form.register('city')}
+              className="w-full pl-10 px-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm outline-none appearance-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All cities (Serbia)</option>
+              {Object.values(CarCity).map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-      <div className="flex flex-col gap-2">
-        {searchResults.map((car) => (
-          <MobileCarSearchResults
-            key={car._id}
-            car={car}
-            onBookNow={() => handleBookNow(car)}
-            onViewDetails={() => handleViewDetails(car._id)}
+        <div className="grid grid-cols-2 gap-3">
+          <CustomDatePicker
+            name="startDate"
+            control={form.control}
+            label="Pick-up"
+            minDate={new Date()}
           />
-        ))}
-      </div>
+          <CustomDatePicker
+            name="endDate"
+            control={form.control}
+            label="Return"
+            minDate={form.watch('startDate') || new Date()}
+          />
+        </div>
 
-      {selectedCar && owner && (
-        <MobileCarDetailsDrawer
-          car={selectedCar}
-          owner={owner}
-          isOpen={isDetailsDrawerOpen}
-          onClose={() => {
-            setIsDetailsDrawerOpen(false);
-            setSelectedCar(null);
-            setOwner(null);
-          }}
-          onBookNow={() => handleBookNow(selectedCar)}
-        />
-      )}
+        <button
+          type="submit"
+          disabled={results.loading}
+          className="w-full bg-blue-600 text-white font-black py-5 rounded-2xl shadow-lg shadow-blue-100 flex items-center justify-center gap-2 active:scale-95 transition-all"
+        >
+          {results.loading ? (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
+          ) : (
+            <>
+              <Search size={18} /> Search Cars
+            </>
+          )}
+        </button>
+
+        {daysSelected > 0 && (
+          <div className="flex items-center gap-2 bg-blue-50 p-4 rounded-2xl border border-blue-100 animate-pulse">
+            <Info size={16} className="text-blue-600" />
+            <p className="text-xs font-bold text-blue-700">
+              Booking for {daysSelected} days
+            </p>
+          </div>
+        )}
+      </form>
+
+      <div>
+        <h2 className="text-xl font-black text-gray-900 mb-5 px-1">
+          Available Cars
+        </h2>
+        <div className="flex flex-col gap-5">
+          {allCars.map((car) => (
+            <MobileCarSearchResults
+              key={car._id}
+              car={car}
+              onBookNow={() => {
+                setSelectedCar(car);
+                setModals({ booking: true, details: false });
+              }}
+              onViewDetails={() => {
+                openDetails(car);
+                setModals({ booking: false, details: true });
+              }}
+            />
+          ))}
+          {!results.loading && allCars.length === 0 && (
+            <p className="text-center text-gray-400 italic py-10">
+              No cars found...
+            </p>
+          )}
+        </div>
+
+        {results.currentPage < results.totalPages && (
+          <button
+            onClick={() => onPageChange(results.currentPage + 1)}
+            disabled={results.loading}
+            className="w-full mt-6 py-4 rounded-2xl border border-gray-200 text-sm font-semibold text-gray-600 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-50"
+          >
+            {results.loading ? (
+              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent animate-spin rounded-full" />
+            ) : (
+              <>
+                <ChevronDown size={16} /> Load more
+              </>
+            )}
+          </button>
+        )}
+
+        {results.currentPage >= results.totalPages && allCars.length > 0 && (
+          <p className="text-center text-xs text-gray-400 py-4 italic">
+            All cars loaded
+          </p>
+        )}
+      </div>
 
       {selectedCar && (
-        <BookingDialog
-          car={selectedCar}
-          user={currentUser}
-          isOpen={isBookingModalOpen}
-          startDate={searchParams.startDate}
-          endDate={searchParams.endDate}
-          onClose={() => {
-            setIsBookingModalOpen(false);
-            setSelectedCar(null);
-          }}
-          onBook={() =>
-            handleBookingConfirmation(
-              searchParams.startDate,
-              searchParams.endDate
-            )
-          }
-        />
+        <>
+          <MobileCarDetailsDrawer
+            car={selectedCar}
+            owner={owner}
+            isOpen={modals.details}
+            onClose={() => {
+              setModals((p) => ({ ...p, details: false }));
+              setSelectedCar(null);
+            }}
+            onBookNow={() => setModals({ details: false, booking: true })}
+          />
+          <BookingDialog
+            user={currentUser}
+            car={selectedCar}
+            isOpen={modals.booking}
+            startDate={form.getValues('startDate')}
+            endDate={form.getValues('endDate')}
+            onClose={() => {
+              setModals((p) => ({ ...p, booking: false }));
+              setSelectedCar(null);
+            }}
+            onBook={handleBookingConfirm}
+          />
+        </>
       )}
     </div>
   );

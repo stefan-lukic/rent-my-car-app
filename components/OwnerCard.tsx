@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +8,7 @@ interface OwnerCardProps {
     name: string;
     email: string;
     contactInfo: string;
-    profilePicture: string;
+    profilePicture?: string;
     rating: number;
     images?: string[];
   };

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';

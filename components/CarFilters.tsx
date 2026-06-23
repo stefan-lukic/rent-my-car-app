@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CarType } from '../lib/model/car/CarType';
 import { CarMake } from '../lib/model/car/CarMake';

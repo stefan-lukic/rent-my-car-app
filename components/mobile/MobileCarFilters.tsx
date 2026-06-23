@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
+'use client';
+
+import React from 'react';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarType } from '@/lib/model/car/CarType';
-import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
 interface CarFiltersProps {
   filters: CarFilterState;
   setFilters: React.Dispatch<React.SetStateAction<CarFilterState>>;
 }
 
+const capitalize = (str: string) => str.charAt(0) + str.slice(1).toLowerCase();
+
+const labelClass =
+  'block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5';
+const inputClass =
+  'w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none';
+
 const MobileCarFilters: React.FC<CarFiltersProps> = ({
   filters,
   setFilters,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleInputChange = (
+  const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
@@ -24,118 +30,159 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white p-2">
-      <div
-        className="flex items-center justify-between cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <h2 className="text-sm font-semibold">Filters</h2>
-        {isExpanded ? (
-          <ChevronUpIcon className="w-5 h-5 text-gray-500" />
-        ) : (
-          <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-        )}
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+      <div className="flex items-center gap-2">
+        <svg
+          className="w-4 h-4 text-gray-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+          />
+        </svg>
+        <span className="text-xs font-bold text-gray-700 uppercase tracking-widest">
+          Filters
+        </span>
       </div>
 
-      {isExpanded && (
-        <div className="space-y-3 mt-2">
-          <div>
-            <label
-              htmlFor="minPrice"
-              className="block text-xs font-medium text-gray-600"
-            >
-              Price Range (per day)
-            </label>
-            <div className="flex items-center space-x-1">
-              <input
-                type="number"
-                id="minPrice"
-                name="minPrice"
-                value={filters.minPrice}
-                onChange={handleInputChange}
-                placeholder="Min"
-                className="w-1/2 rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-              <span className="text-xs">-</span>
-              <input
-                type="number"
-                id="maxPrice"
-                name="maxPrice"
-                value={filters.maxPrice}
-                onChange={handleInputChange}
-                placeholder="Max"
-                className="w-1/2 rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
-            </div>
+      <div className="border-b border-gray-100" />
+
+      <div>
+        <label className={labelClass}>Price Range (€/day)</label>
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+              €
+            </span>
+            <input
+              type="number"
+              name="minPrice"
+              value={filters.minPrice}
+              onChange={handleChange}
+              placeholder="Min"
+              className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            />
           </div>
-          <div>
-            <label
-              htmlFor="make"
-              className="block text-xs font-medium text-gray-600"
-            >
-              Car Make
-            </label>
-            <select
-              id="make"
-              name="make"
-              value={filters.make}
-              onChange={handleInputChange}
-              className="block w-full mt-1 rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="">All Makes</option>
-              {Object.values(CarMake).map((make) => (
-                <option key={make} value={make}>
-                  {make}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="carType"
-              className="block text-xs font-medium text-gray-600"
-            >
-              Car Type
-            </label>
-            <select
-              id="carType"
-              name="carType"
-              value={filters.carType}
-              onChange={handleInputChange}
-              className="block w-full mt-1 rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="">All Types</option>
-              {Object.values(CarType).map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="engine"
-              className="block text-xs font-medium text-gray-600"
-            >
-              Engine Type
-            </label>
-            <select
-              id="engine"
-              name="engine"
-              value={filters.engine}
-              onChange={handleInputChange}
-              className="block w-full mt-1 rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="">All Engine Types</option>
-              {Object.values(CarEngineType).map((engine) => (
-                <option key={engine} value={engine}>
-                  {engine}
-                </option>
-              ))}
-            </select>
+          <div className="relative flex-1">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+              €
+            </span>
+            <input
+              type="number"
+              name="maxPrice"
+              value={filters.maxPrice}
+              onChange={handleChange}
+              placeholder="Max"
+              className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            />
           </div>
         </div>
-      )}
+      </div>
+
+      <div>
+        <label className={labelClass}>Car Make</label>
+        <div className="relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+          <select
+            name="make"
+            value={filters.make}
+            onChange={handleChange}
+            className={`${inputClass} pl-9`}
+          >
+            <option value="">All Manufacturers</option>
+            {Object.values(CarMake).map((make) => (
+              <option key={make} value={make}>
+                {capitalize(make)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>Car Type</label>
+        <div className="relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+          <select
+            name="carType"
+            value={filters.carType}
+            onChange={handleChange}
+            className={`${inputClass} pl-9`}
+          >
+            <option value="">All Types</option>
+            {Object.values(CarType).map((type) => (
+              <option key={type} value={type}>
+                {capitalize(type)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>Engine Type</label>
+        <div className="relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+          <select
+            name="engine"
+            value={filters.engine}
+            onChange={handleChange}
+            className={`${inputClass} pl-9`}
+          >
+            <option value="">All Engine Types</option>
+            {Object.values(CarEngineType).map((engine) => (
+              <option key={engine} value={engine}>
+                {capitalize(engine)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <p className="text-[10px] text-gray-400 text-center pt-1">
+        Prices in Euros (€) and exclude customized dropoff charges.
+      </p>
     </div>
   );
 };
