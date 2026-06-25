@@ -6,31 +6,58 @@ interface OwnerCardProps {
   owner: {
     _id: string;
     name: string;
-    email: string;
-    contactInfo: string;
-    profilePicture?: string;
     rating: number;
     images?: string[];
+    profilePicture?: string;
   };
 }
 
 const OwnerCard: React.FC<OwnerCardProps> = ({ owner }) => {
+  const getInitials = (name: string) =>
+    name
+      .split(' ')
+      .map((name) => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+  const profileImage = owner.images?.[0] || owner.profilePicture;
+
   return (
     <Link href={`/profile/${owner._id}`}>
-      <div className="flex items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-        <Image
-          src={owner.images?.[0] || '/placeholder-car.jpg'}
-          alt={owner.name}
-          width={80}
-          height={80}
-          className="object-cover rounded-xl mr-4"
-        />
-        <div>
-          <h3 className="text-lg font-semibold">{owner.name}</h3>
-          <p className="text-gray-600">{owner.email}</p>
-          <p className="text-gray-600">{owner.contactInfo}</p>
-          <p className="text-yellow-500">Rating: {owner.rating} ★</p>
+      <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group">
+        <div className="w-12 h-12 relative rounded-lg overflow-hidden bg-gray-200 flex-shrink-0 flex items-center justify-center text-gray-500 font-semibold text-sm">
+          {profileImage ? (
+            <Image
+              src={profileImage}
+              alt={owner.name}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            getInitials(owner.name)
+          )}
         </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-gray-900 text-sm truncate">
+              {owner.name}
+            </p>
+            {owner.rating > 0 && (
+              <span className="flex items-center gap-0.5 text-xs text-yellow-500">
+                <span>★</span>
+                <span className="text-gray-600 font-medium">
+                  {owner.rating.toFixed(1)}
+                </span>
+              </span>
+            )}
+          </div>
+        </div>
+
+        <span className="text-gray-400 text-sm group-hover:translate-x-0.5 transition-transform">
+          →
+        </span>
       </div>
     </Link>
   );

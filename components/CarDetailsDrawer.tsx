@@ -49,31 +49,35 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
   return (
     <>
+      {/* Overlay – isti kao u modalu */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       />
 
+      {/* Drawer – stilizovan kao modal sa strane */}
       <div
         className={`fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
-          <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+        {/* Zaglavlje – isto kao u modalu */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+          <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
             Car Details
           </span>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
           >
             ✕
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto">
+          {/* Slika – isti stil kao u modalu */}
           <div className="relative aspect-[16/9] bg-gray-100">
             <Image
               src={images[currentImageIndex] || '/placeholder-car.svg'}
@@ -104,59 +108,63 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                   }
                   disabled={currentImageIndex === 0}
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                ></button>
+                >
+                  ‹
+                </button>
                 <button
                   onClick={() =>
                     setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
                   }
                   disabled={currentImageIndex === total - 1}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                ></button>
+                >
+                  ›
+                </button>
               </>
             )}
           </div>
 
-          <div className="p-5 space-y-5">
+          <div className="px-6 py-5 space-y-5">
+            {/* Naslov + cena – kao u modalu */}
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {car.make}{' '}
-                  <span className="text-gray-400 font-medium">
-                    {car.carModel}
-                  </span>
+                <h2 className="text-lg font-bold text-gray-900">
+                  {car.make} {car.carModel}
                 </h2>
-                <div className="flex items-center gap-1 mt-1 text-gray-500 text-sm">
-                  <span>📍</span>
-                  <span>
-                    {car.city}
-                    {car.carLocation && `, ${car.carLocation}`}
-                  </span>
-                </div>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  {car.carType} • {car.city}
+                  {car.carLocation && `, ${car.carLocation}`}
+                </p>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-lg font-bold text-blue-500">
                   €{car.pricePerDay}
                 </div>
                 <div className="text-xs text-gray-400">/ day</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            {/* Specifikacije – grid sa istim stilom kao datum polja u modalu */}
+            <div className="grid grid-cols-2 gap-2.5">
               {specs.map(({ icon, label, value }) => (
-                <div key={label} className="bg-gray-50 rounded-xl px-3 py-2.5">
-                  <div className="text-xs text-gray-400 mb-0.5">
-                    {icon} {label}
+                <div
+                  key={label}
+                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5"
+                >
+                  <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <span>{icon}</span> {label}
                   </div>
-                  <div className="text-sm font-semibold text-gray-800">
+                  <div className="text-sm font-medium text-gray-800">
                     {value}
                   </div>
                 </div>
               ))}
             </div>
 
+            {/* Description */}
             {car.description && (
-              <div className="border-t pt-4">
-                <p className="text-xs text-gray-400 uppercase mb-1">
+              <div className="border-t border-gray-100 pt-4">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                   Description
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -165,24 +173,28 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               </div>
             )}
 
-            <div className="border-t pt-4">
-              <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
-              <div className="my-8">{owner && <OwnerCard owner={owner} />}</div>
+            {/* Owner – redizajniran, bez shadow-a, sa borderom kao ostali delovi */}
+            <div className="border-t border-gray-100 pt-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                Owner
+              </p>
+              {owner && <OwnerCard owner={owner} />}
             </div>
           </div>
         </div>
 
-        <div className="flex gap-2 p-4 border-t border-gray-100 bg-white sticky bottom-0">
+        {/* Footer dugmad – isti stil kao u modalu */}
+        <div className="flex gap-3 px-6 py-4 border-t border-gray-100 bg-white">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 border border-gray-200 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
           >
             How it works
           </button>
 
           <button
-            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
             onClick={onBookNow}
+            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
             Book Now
           </button>
