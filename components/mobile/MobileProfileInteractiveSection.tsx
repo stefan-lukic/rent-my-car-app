@@ -16,13 +16,15 @@ interface MobileProfileInteractiveSectionProps {
 
 const MobileProfileInteractiveSection = ({
   cars: initialCars,
-  rentals: initialRentals,
+  rentals,
   activeTab,
 }: MobileProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [carIdToDelete, setCarIdToDelete] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const availableRentals = rentals.filter((rental) => rental.car !== null);
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
@@ -39,7 +41,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {cars.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven't listed any cars yet.
+              You haven&apos;t listed any cars yet.
             </p>
           ) : (
             <div className="space-y-2">
@@ -61,13 +63,13 @@ const MobileProfileInteractiveSection = ({
 
       {activeTab === 'rentals' && (
         <div>
-          {initialRentals.length === 0 ? (
+          {availableRentals.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven't rented any cars yet.
+              You haven&apos;t rented any cars yet.
             </p>
           ) : (
             <div className="space-y-2">
-              {initialRentals.map((rental) => (
+              {availableRentals.map((rental) => (
                 <MobileRentalCard key={rental._id} rental={rental} />
               ))}
             </div>
@@ -84,7 +86,6 @@ const MobileProfileInteractiveSection = ({
         />
       )}
 
-      {/* 3. Provera i prosleđivanje prilagođeni novom nazivu stanja */}
       {carIdToDelete && (
         <DeleteCarModal
           isOpen={isDeleteModalOpen}

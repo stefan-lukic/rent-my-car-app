@@ -7,7 +7,6 @@ import { IUser } from '@/lib/model/User';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
-import { Button } from '../UI/Button';
 
 interface MobileProfilePageProps {
   user: IUser;
@@ -21,34 +20,37 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
 
   return (
     <div className="h-screen pb-2 bg-gray-50 p-2 flex flex-col">
-      <div className="bg-white rounded-md shadow-sm overflow-hidden mb-4">
-        <MobileProfileUserInfoCard user={user} />
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-3">
+        <MobileProfileUserInfoCard
+          user={user}
+          carsCount={cars.length}
+          rentalsCount={rentals.length}
+        />
       </div>
 
-      <Button
+      <button
         onClick={() => router.push('/cars/add-car')}
-        className="bg-blue-500 text-white hover:bg-blue-600"
+        className="w-full bg-blue-600 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors mb-3"
       >
-        Add New
-      </Button>
+        <span className="text-lg leading-none">+</span> Add New Car
+      </button>
 
-      {/* Tabs */}
-      <div className="flex space-x-4 border-b border-gray-300">
+      <div className="flex border-b border-gray-200 bg-white rounded-t-xl">
         <button
-          className={`py-2 px-4 ${
+          className={`flex-1 text-center py-2.5 text-sm font-medium transition-colors ${
             activeTab === 'cars'
-              ? 'border-b-2 border-blue-500 text-blue-500'
-              : 'text-gray-600'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-500'
           }`}
           onClick={() => setActiveTab('cars')}
         >
           My Cars
         </button>
         <button
-          className={`py-2 px-4 ${
+          className={`flex-1 text-center py-2.5 text-sm font-medium transition-colors ${
             activeTab === 'rentals'
-              ? 'border-b-2 border-blue-500 text-blue-500'
-              : 'text-gray-600'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-500'
           }`}
           onClick={() => setActiveTab('rentals')}
         >

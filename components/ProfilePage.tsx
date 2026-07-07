@@ -15,6 +15,23 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
     month: 'short',
     year: 'numeric',
   });
+
+  const StatItem = ({
+    icon,
+    value,
+    label,
+  }: {
+    icon: string;
+    value: string | number;
+    label: string;
+  }) => (
+    <div className="flex flex-col items-center gap-1">
+      <span className="text-lg">{icon}</span>
+      <span className="text-base font-semibold text-gray-900">{value}</span>
+      <span className="text-xs text-gray-500">{label}</span>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto p-6 flex flex-col gap-4">
@@ -51,6 +68,16 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
           <button className="flex-shrink-0 bg-white text-gray-800 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2">
             ✎ Edit Profile
           </button>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 grid grid-cols-3 divide-x divide-gray-100 py-4">
+          <StatItem icon="🚗" value={cars.length} label="Cars" />
+          <StatItem icon="📅" value={rentals.length} label="Rentals" />
+          <StatItem
+            icon="⭐"
+            value={(user.rating ?? 0).toFixed(1)}
+            label="Rating"
+          />
         </div>
 
         <ProfileInteractiveSection cars={cars} rentals={rentals} />

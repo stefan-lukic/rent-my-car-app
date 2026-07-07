@@ -16,11 +16,47 @@ interface MobileRentalCardProps {
   };
 }
 
+const statusStyles: Record<string, string> = {
+  available: 'bg-green-100 text-green-700',
+  rented: 'bg-yellow-100 text-yellow-700',
+  inactive: 'bg-gray-100 text-gray-500',
+};
+
+const statusLabel: Record<string, string> = {
+  available: 'Available',
+  rented: 'Booked',
+  inactive: 'Inactive',
+};
+
 const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  if (!rental.car) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-200 p-4 text-center text-gray-400 text-sm">
+        🚗 Car unavailable
+      </div>
+    );
+  }
+
+  const { car, rentalPeriod, totalCost } = rental;
+  const startDate = new Date(rentalPeriod.startDate);
+  const endDate = new Date(rentalPeriod.endDate);
+
+  const formatDate = (date: Date) =>
+    date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+
+  const carImage =
+    car.images && car.images.length > 0
+      ? car.images[0]
+      : '/placeholder-car.svg';
+
   const handleNextImage = () => {
-    if (rental.car.images && currentImageIndex < rental.car.images.length - 1) {
+    if (car.images && currentImageIndex < car.images.length - 1) {
       setCurrentImageIndex(currentImageIndex + 1);
     }
   };
@@ -32,56 +68,81 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
   };
 
   return (
-    <div className="bg-white rounded shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <div className="relative h-40 w-full overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src={
-              rental.car.images?.[currentImageIndex] || '/placeholder-car.svg'
-            }
-            alt={`${rental.car.make} ${rental.car.carModel}`}
-            layout="fill"
-            objectFit="cover"
-            className="transition-opacity duration-300 hover:opacity-90 rounded"
-          />
-          {rental.car.images && rental.car.images.length > 1 && (
-            <div className="absolute left-2 right-2 inset-0 flex justify-between items-center">
-              <button
-                className={`text-white p-1 rounded-full bg-gray-800 hover:bg-gray-600 transition-colors ${currentImageIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handlePrevImage}
-                disabled={currentImageIndex === 0}
-              >
-                &lt;
-              </button>
-              <button
-                className={`text-white p-1 rounded-full bg-gray-800 hover:bg-gray-600 transition-colors ${currentImageIndex === rental.car.images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handleNextImage}
-                disabled={currentImageIndex === rental.car.images.length - 1}
-              >
-                &gt;
-              </button>
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative h-40 w-full bg-gray-100">
+        <Image
+          src={carImage}
+          alt={`${car.make} ${car.carModel}`}
+          fill
+          className="object-cover"
+        />
+
+        <span
+          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
+            statusStyles[car.status] || statusStyles.available
+          }`}
+        >
+          {statusLabel[car.status] || 'Available'}
+        </span>
+
+        {car.images && car.images.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              disabled={currentImageIndex === 0}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm hover:bg-black/60 transition"
+            >
+              ‹
+            </button>
+            <button
+              onClick={handleNextImage}
+              disabled={currentImageIndex === car.images.length - 1}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm hover:bg-black/60 transition"
+            >
+              ›
+            </button>
+
+            {/* Indikatori */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {car.images.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === currentImageIndex
+                      ? 'w-4 bg-white'
+                      : 'w-1.5 bg-white/50'
+                  }`}
+                />
+              ))}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
-      <div className="p-2">
-        <p className="text-sm text-black-600">
-          <span className="font-bold text-black">Car: </span>
-          {rental.car.make} {rental.car.carModel}
+
+      <div className="p-3">
+        <h3 className="font-semibold text-gray-900 text-base">
+          {car.make} {car.carModel}
+        </h3>
+
+        <p className="text-gray-700 font-medium text-sm mt-0.5">
+          €{car.pricePerDay} / day
         </p>
-        <p className="text-sm text-gray-600">
-          <span className="font-bold text-black">Location: </span>
-          {rental.car.city}, {rental.car.carLocation}
-        </p>
-        <p className="text-sm text-gray-600">
-          <span className="font-bold text-black">Rented from:</span>{' '}
-          {new Date(rental.rentalPeriod.startDate).toLocaleDateString()} -{' '}
-          {new Date(rental.rentalPeriod.endDate).toLocaleDateString()}
-        </p>
-        <p className="text-sm text-red-500">
-          <span className="font-bold text-black">Total Cost:</span> $
-          {rental.totalCost}
-        </p>
+
+        <div className="flex items-center gap-1 mt-1">
+          <span className="text-gray-400 text-xs">📍</span>
+          <span className="text-gray-500 text-xs">{car.city}</span>
+        </div>
+
+        <div className="flex items-center gap-2 mt-2 text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-1.5 border border-gray-100">
+          <span>{formatDate(startDate)}</span>
+          <span className="text-gray-300">→</span>
+          <span>{formatDate(endDate)}</span>
+        </div>
+
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+          <span className="text-xs text-gray-400 font-medium">Total</span>
+          <span className="text-sm font-bold text-gray-900">€{totalCost}</span>
+        </div>
       </div>
     </div>
   );

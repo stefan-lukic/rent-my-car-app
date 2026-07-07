@@ -10,6 +10,18 @@ interface MobileCarCardProps {
   onDeleteClick: (id: string) => void;
 }
 
+const statusStyles: Record<string, string> = {
+  available: 'bg-green-100 text-green-700',
+  rented: 'bg-yellow-100 text-yellow-700',
+  inactive: 'bg-gray-100 text-gray-500',
+};
+
+const statusLabel: Record<string, string> = {
+  available: 'Available',
+  rented: 'Booked',
+  inactive: 'Inactive',
+};
+
 const MobileCarCard: React.FC<MobileCarCardProps> = ({
   car,
   onUpdate,
@@ -26,6 +38,15 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({
           fill
           className="object-cover"
         />
+
+        <span
+          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
+            statusStyles[car.status] || statusStyles.available
+          }`}
+        >
+          {statusLabel[car.status] || 'Available'}
+        </span>
+
         {car.images && car.images.length > 1 && (
           <div className="absolute inset-0 flex justify-between items-center px-2">
             <button
@@ -70,7 +91,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({
             ✎ Edit
           </button>
           <button
-            onClick={() => onDeleteClick(car.id)}
+            onClick={() => onDeleteClick(car._id)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-red-200 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
           >
             🗑 Delete

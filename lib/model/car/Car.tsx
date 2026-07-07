@@ -4,6 +4,8 @@ import { CarMake } from './CarMake';
 import { CarEngineType } from './CarEngineType';
 import { CarCity } from './CarCity';
 
+export type CarStatus = 'available' | 'rented' | 'inactive';
+
 export interface ICar extends Document {
   _id: string;
   make: CarMake;
@@ -19,6 +21,7 @@ export interface ICar extends Document {
   images?: string[];
   pricePerDay: number;
   description?: string;
+  status: CarStatus;
   owner: mongoose.Types.ObjectId;
 }
 
@@ -41,6 +44,12 @@ const carSchema: Schema<ICar> = new Schema(
     images: { type: [String] },
     pricePerDay: { type: Number, required: true },
     description: { type: String, required: false },
+    status: {
+      type: String,
+      enum: ['available', 'rented', 'inactive'],
+      required: true,
+      default: 'available',
+    },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   {
