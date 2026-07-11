@@ -159,14 +159,7 @@ const ProfileInteractiveSection = ({
 
       {activeTab === 'rentals' && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">My Rentals</h2>
-            {availableRentals.length > rentalsPerPage && (
-              <button className="text-sm text-blue-500 hover:underline flex items-center gap-1">
-                View All →
-              </button>
-            )}
-          </div>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">My Rentals</h2>
 
           {availableRentals.length === 0 ? (
             <p className="text-gray-400 italic text-sm">
@@ -174,9 +167,9 @@ const ProfileInteractiveSection = ({
             </p>
           ) : (
             <>
-              <div className="grid grid-cols-3 gap-3">
+               <div className="grid grid-cols-3 gap-3">
                 {currentRentals.map((rental) => (
-                  <RentalCard key={rental._id} rental={rental} />
+                  <RentalCard key={rental._id} rental={rental} showStatus={false} />
                 ))}
               </div>
 

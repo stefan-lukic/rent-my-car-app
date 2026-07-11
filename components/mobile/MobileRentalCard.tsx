@@ -14,6 +14,7 @@ interface MobileRentalCardProps {
     };
     totalCost: number;
   };
+  showStatus?: boolean;
 }
 
 const statusStyles: Record<string, string> = {
@@ -28,7 +29,7 @@ const statusLabel: Record<string, string> = {
   inactive: 'Inactive',
 };
 
-const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
+const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus = true }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!rental.car) {
@@ -77,13 +78,15 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
           className="object-cover"
         />
 
-        <span
-          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
-            statusStyles[car.status] || statusStyles.available
-          }`}
-        >
-          {statusLabel[car.status] || 'Available'}
-        </span>
+        {showStatus && (
+          <span
+            className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
+              statusStyles[car.status] || statusStyles.available
+            }`}
+          >
+            {statusLabel[car.status] || 'Available'}
+          </span>
+        )}
 
         {car.images && car.images.length > 1 && (
           <>
@@ -96,7 +99,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
             </button>
             <button
               onClick={handleNextImage}
-              disabled={currentImageIndex === car.images.length - 1}
+              disabled={currentImageIndex >= car.images.length - 1}
               className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm hover:bg-black/60 transition"
             >
               ›
@@ -108,7 +111,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental }) => {
                 <div
                   key={i}
                   className={`h-1.5 rounded-full transition-all ${
-                    i === currentImageIndex
+                    currentImageIndex === i
                       ? 'w-4 bg-white'
                       : 'w-1.5 bg-white/50'
                   }`}

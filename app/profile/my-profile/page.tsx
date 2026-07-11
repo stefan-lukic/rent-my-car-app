@@ -37,8 +37,6 @@ export default async function MyProfilePage() {
       fetchJson(`${baseUrl}/api/my-rentals?userId=${user._id}`),
     ]);
 
-    console.log('RENTALS RESULT:', JSON.stringify(rentalsResult, null, 2)); // PRIVREMENO - obriši posle debagovanja
-
     const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];
     const rentals =
       rentalsResult.status === 'fulfilled' ? rentalsResult.value : [];

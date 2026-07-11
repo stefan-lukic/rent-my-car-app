@@ -70,7 +70,7 @@ const MobileProfileInteractiveSection = ({
           ) : (
             <div className="space-y-2">
               {availableRentals.map((rental) => (
-                <MobileRentalCard key={rental._id} rental={rental} />
+                <MobileRentalCard key={rental._id} rental={rental} showStatus={false} />
               ))}
             </div>
           )}

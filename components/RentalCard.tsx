@@ -14,6 +14,7 @@ interface RentalCardProps {
     };
     totalCost: number;
   };
+  showStatus?: boolean;
 }
 
 const statusStyles: Record<string, string> = {
@@ -28,7 +29,7 @@ const statusLabel: Record<string, string> = {
   inactive: 'Inactive',
 };
 
-const RentalCard: React.FC<RentalCardProps> = ({ rental }) => {
+const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) => {
   const { car, rentalPeriod, totalCost } = rental;
 
   if (!car) {
@@ -64,13 +65,15 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental }) => {
           className="object-cover"
         />
 
-        <span
-          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
-            statusStyles[car.status] || statusStyles.available
-          }`}
-        >
-          {statusLabel[car.status] || 'Available'}
-        </span>
+        {showStatus && (
+          <span
+            className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
+              statusStyles[car.status] || statusStyles.available
+            }`}
+          >
+            {statusLabel[car.status] || 'Available'}
+          </span>
+        )}
       </div>
 
       <div className="p-3">

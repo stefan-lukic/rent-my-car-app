@@ -3,6 +3,7 @@ import { IUser } from '@/lib/model/User';
 import Image from 'next/image';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import ProfileInteractiveSection from './ProfileInteractiveSection';
+import Header from '@/components/UI/Header';
 
 interface ProfilePageProps {
   user: IUser;
@@ -34,6 +35,7 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="max-w-5xl mx-auto p-6 flex flex-col gap-4">
         <div className="relative bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl p-6 flex items-center gap-6 overflow-hidden">
           <div className="relative flex-shrink-0">
