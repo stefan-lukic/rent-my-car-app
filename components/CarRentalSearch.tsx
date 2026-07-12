@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import React from 'react';
 import { Button } from './UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { MapPin } from 'lucide-react';
@@ -9,7 +10,7 @@ import CustomDatePicker from './UI/CustomDatePicker';
 import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
-import { IUser } from '@/lib/model/User';
+import { useBookingFlow } from '@/hooks/useBookingFlow';
 
 const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
@@ -25,19 +26,16 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
     setSelectedCar,
   } = useCarSearchForm({ filters, initialCars });
 
-  const [modals, setModals] = useState({ booking: false, details: false });
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-
-  const handleBooking = async () => {
-    if (!selectedCar) return;
-    const ok = await confirmBooking(selectedCar);
-    if (ok) {
-      setModals({ booking: false, details: false });
-      setSelectedCar(null);
-    } else {
-      alert('Booking failed. Please check your dates and try again.');
-    }
-  };
+  const {
+    modals,
+    setModals,
+    bookingFailed,
+    isUnauthorized,
+    handleBooking,
+    openBooking,
+    closeBooking,
+    closeDetails,
+  } = useBookingFlow({ confirmBooking, setSelectedCar });
 
   const pages = Array.from({ length: results.totalPages }, (_, i) => i + 1);
 
@@ -102,10 +100,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
           <CarSearchResults
             key={car._id}
             car={car}
-            onBookNow={() => {
-              setSelectedCar(car);
-              setModals({ booking: true, details: false });
-            }}
+            onBookNow={() => openBooking(car)}
             onViewDetails={() => {
               openDetails(car);
               setModals({ booking: false, details: true });
@@ -138,23 +133,18 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
             car={selectedCar}
             renter={renter}
             isOpen={modals.details}
-            onClose={() => {
-              setModals((p) => ({ ...p, details: false }));
-              setSelectedCar(null);
-            }}
+            onClose={closeDetails}
             onBookNow={() => setModals({ details: false, booking: true })}
           />
           <BookingDialog
-            user={currentUser}
             car={selectedCar}
             isOpen={modals.booking}
             startDate={form.getValues('startDate')}
             endDate={form.getValues('endDate')}
-            onClose={() => {
-              setModals((p) => ({ ...p, booking: false }));
-              setSelectedCar(null);
-            }}
-            onBook={handleBooking}
+            isUnauthorized={isUnauthorized}
+            bookingFailed={bookingFailed}
+            onClose={closeBooking}
+            onBook={() => handleBooking(selectedCar)}
           />
         </>
       )}

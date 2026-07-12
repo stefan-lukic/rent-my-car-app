@@ -8,9 +8,9 @@ import BookingDialog from '../BookNowDialog';
 import MobileCarDetailsDrawer from './MobileCarDetailsDrawer';
 import CustomDatePicker from '../UI/CustomDatePicker';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
-import { IUser } from '@/lib/model/User';
 import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import { useBookingFlow } from '@/hooks/useBookingFlow';
 
 const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
   const {
@@ -26,8 +26,17 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
     daysSelected,
   } = useCarSearchForm({ filters });
 
-  const [modals, setModals] = useState({ booking: false, details: false });
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const {
+    modals,
+    setModals,
+    bookingFailed,
+    isUnauthorized,
+    handleBooking,
+    openBooking,
+    closeBooking,
+    closeDetails,
+  } = useBookingFlow({ confirmBooking, setSelectedCar });
+
   const [allCars, setAllCars] = useState<ICar[]>([]);
 
   useEffect(() => {
@@ -37,17 +46,6 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
       setAllCars((prev) => [...prev, ...results.data]);
     }
   }, [results.data, results.currentPage]);
-
-  const handleBookingConfirm = async () => {
-    if (!selectedCar) return;
-    const ok = await confirmBooking(selectedCar);
-    if (ok) {
-      setModals({ booking: false, details: false });
-      setSelectedCar(null);
-    } else {
-      alert('Reservation failed. Check your connection or login status.');
-    }
-  };
 
   return (
     <div className="space-y-6 pb-20">
@@ -123,10 +121,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
             <MobileCarSearchResults
               key={car._id}
               car={car}
-              onBookNow={() => {
-                setSelectedCar(car);
-                setModals({ booking: true, details: false });
-              }}
+              onBookNow={() => openBooking(car)}
               onViewDetails={() => {
                 openDetails(car);
                 setModals({ booking: false, details: true });
@@ -169,23 +164,18 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
             car={selectedCar}
             renter={renter}
             isOpen={modals.details}
-            onClose={() => {
-              setModals((p) => ({ ...p, details: false }));
-              setSelectedCar(null);
-            }}
+            onClose={closeDetails}
             onBookNow={() => setModals({ details: false, booking: true })}
           />
           <BookingDialog
-            user={currentUser}
             car={selectedCar}
             isOpen={modals.booking}
             startDate={form.getValues('startDate')}
             endDate={form.getValues('endDate')}
-            onClose={() => {
-              setModals((p) => ({ ...p, booking: false }));
-              setSelectedCar(null);
-            }}
-            onBook={handleBookingConfirm}
+            isUnauthorized={isUnauthorized}
+            bookingFailed={bookingFailed}
+            onClose={closeBooking}
+            onBook={() => handleBooking(selectedCar)}
           />
         </>
       )}
