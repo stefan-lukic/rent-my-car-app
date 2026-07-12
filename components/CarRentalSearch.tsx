@@ -16,7 +16,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
     form,
     results,
     selectedCar,
-    owner,
+    renter,
     startDate,
     onSearch,
     onPageChange,
@@ -136,7 +136,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         <>
           <CarDetailsDrawer
             car={selectedCar}
-            owner={owner}
+            renter={renter}
             isOpen={modals.details}
             onClose={() => {
               setModals((p) => ({ ...p, details: false }));

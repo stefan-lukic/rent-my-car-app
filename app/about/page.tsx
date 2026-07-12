@@ -6,7 +6,7 @@ export default function About() {
       <h1 className="text-4xl font-bold mb-6 text-gray-900">About RentMyCar</h1>
       <p className="text-lg mb-4 text-gray-700">
         RentMyCar is a leading peer-to-peer car rental platform, connecting car
-        owners with renters to create a seamless and affordable car rental
+        renters with clients to create a seamless and affordable car rental
         experience.
       </p>
       <p className="text-lg mb-4 text-gray-700">
@@ -15,8 +15,8 @@ export default function About() {
         traditional rental companies.
       </p>
       <p className="text-lg mb-8 text-gray-700">
-        We`re committed to building a community of trust, where car owners can
-        earn extra income and renters can find the perfect vehicle for their
+        We`re committed to building a community of trust, where car renters can
+        earn extra income and clients can find the perfect vehicle for their
         needs.
       </p>
       <Link href="/" className="text-blue-600 hover:text-blue-800">

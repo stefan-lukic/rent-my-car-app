@@ -16,7 +16,7 @@ export interface IUser extends Document {
   createdAt: Date;
 }
 
-export interface IOwner {
+export interface IRenter {
   _id: string;
   name: string;
   email: string;

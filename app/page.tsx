@@ -48,7 +48,7 @@ export default function Home() {
 
           <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto mb-8 md:mb-10 px-2">
             Inspect vehicle specifications, calculate real-time day rates, and
-            book from trusted local owners in Novi Sad and Belgrade.
+            book from trusted local renters in Novi Sad and Belgrade.
           </p>
 
           <div className="grid grid-cols-3 gap-2 md:gap-16 max-w-2xl mx-auto">

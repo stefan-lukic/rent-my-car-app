@@ -61,7 +61,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
               RentMy<span className="text-blue-600">Car</span>
             </span>
             <p className="hidden sm:block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
-              Verified Vehicles. Trusted Owners.
+              Verified Vehicles. Trusted Renters.
             </p>
           </div>
         </Link>

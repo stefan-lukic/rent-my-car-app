@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ICar } from '@/lib/model/car/Car';
-import { IOwner } from '@/lib/model/User';
+import { IRenter } from '@/lib/model/User';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 
 export type CarSearchFormValues = {
@@ -30,9 +30,9 @@ export function useCarSearchForm({
   });
 
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [owner, setOwner] = useState<IOwner | null>(null);
-  const [ownerLoading, setOwnerLoading] = useState(false);
-  const ownerAbortRef = useRef<AbortController | null>(null);
+  const [renter, setRenter] = useState<IRenter | null>(null);
+  const [renterLoading, setRenterLoading] = useState(false);
+  const renterAbortRef = useRef<AbortController | null>(null);
 
   const [startDate, endDate] = form.watch(['startDate', 'endDate']);
 
@@ -90,19 +90,19 @@ export function useCarSearchForm({
 
   const openDetails = async (car: ICar) => {
     setSelectedCar(car);
-    setOwner(null);
-    ownerAbortRef.current?.abort();
+    setRenter(null);
+    renterAbortRef.current?.abort();
     const controller = new AbortController();
-    ownerAbortRef.current = controller;
+    renterAbortRef.current = controller;
 
-    setOwnerLoading(true);
+    setRenterLoading(true);
     try {
-      const res = await fetch(`/api/users/${car.owner}`, {
+      const res = await fetch(`/api/users/${car.renter}`, {
         signal: controller.signal,
       });
-      if (res.ok) setOwner((await res.json()) as IOwner);
+      if (res.ok) setRenter((await res.json()) as IRenter);
     } finally {
-      setOwnerLoading(false);
+      setRenterLoading(false);
     }
   };
 
@@ -140,8 +140,8 @@ export function useCarSearchForm({
     form,
     results,
     selectedCar,
-    owner,
-    ownerLoading,
+    renter,
+    renterLoading,
     daysSelected,
     startDate,
     onSearch: form.handleSubmit((v) => fetchCars(v, 1)),

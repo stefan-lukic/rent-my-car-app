@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
-import OwnerCard from '../OwnerCard';
+import RenterCard from '../RenterCard';
 import HowItWorksModal from '../HowItWorksModal';
-import { IOwner } from '@/lib/model/User';
+import { IRenter } from '@/lib/model/User';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
-  owner: IOwner | null;
+  renter: IRenter | null;
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
@@ -16,7 +16,7 @@ interface CarDetailsDrawerProps {
 
 const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   car,
-  owner,
+  renter,
   isOpen,
   onClose,
   onBookNow,
@@ -153,11 +153,13 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             )}
 
             <div className="border-t pt-4">
-              <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
-              {owner ? (
-                <OwnerCard owner={owner} />
+              <p className="text-xs text-gray-400 uppercase mb-2">Renter</p>
+              {renter ? (
+                <RenterCard renter={renter} />
               ) : (
-                <p className="text-sm text-gray-400">No owner info available</p>
+                <p className="text-sm text-gray-400">
+                  No renter info available
+                </p>
               )}
             </div>
           </div>

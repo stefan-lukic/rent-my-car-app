@@ -17,7 +17,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
     form,
     results,
     selectedCar,
-    owner,
+    renter,
     onSearch,
     onPageChange,
     openDetails,
@@ -167,7 +167,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
         <>
           <MobileCarDetailsDrawer
             car={selectedCar}
-            owner={owner}
+            renter={renter}
             isOpen={modals.details}
             onClose={() => {
               setModals((p) => ({ ...p, details: false }));

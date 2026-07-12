@@ -23,8 +23,8 @@ export const authFormSchema = (type: string) =>
     }),
   });
 
-// not used, needs refactor for client
-export const clientSchema = z.object({
+// not used, needs refactor for renter
+export const renterSchema = z.object({
   title: z.string().nonempty('Title is required'),
   description: z.string().nonempty('Description is required'),
   address: z.string().nonempty('Address is required'),
@@ -33,4 +33,4 @@ export const clientSchema = z.object({
   role: z.string().nonempty('Role is required'),
 });
 
-export type ProviderFormSchema = z.infer<typeof clientSchema>;
+export type RenterFormSchema = z.infer<typeof renterSchema>;

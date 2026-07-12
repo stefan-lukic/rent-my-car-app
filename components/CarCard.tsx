@@ -10,6 +10,18 @@ interface CarCardProps {
   onDeleteClick: (car: ICar) => void;
 }
 
+const statusStyles: Record<string, string> = {
+  available: 'bg-green-100 text-green-700',
+  rented: 'bg-yellow-100 text-yellow-700',
+  inactive: 'bg-gray-100 text-gray-500',
+};
+
+const statusLabel: Record<string, string> = {
+  available: 'Available',
+  rented: 'Booked',
+  inactive: 'Inactive',
+};
+
 const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -23,13 +35,23 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
           className="object-cover"
         />
 
+        <span
+          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
+            statusStyles[car.status ?? ''] || statusStyles.available
+          }`}
+        >
+          {            statusLabel[car.status ?? ''] || 'Available'}
+        </span>
+
         {car.images && car.images.length > 1 && (
           <>
             <button
               onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
               disabled={currentImageIndex === 0}
               className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
-            ></button>
+            >
+              ‹
+            </button>
             <button
               onClick={() =>
                 setCurrentImageIndex((i) =>
@@ -38,7 +60,9 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
               }
               disabled={currentImageIndex === car.images.length - 1}
               className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-sm"
-            ></button>
+            >
+              ›
+            </button>
           </>
         )}
       </div>
