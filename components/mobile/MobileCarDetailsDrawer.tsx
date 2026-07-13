@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
-import OwnerCard from '../OwnerCard';
+import RenterCard from '../RenterCard';
 import HowItWorksModal from '../HowItWorksModal';
-import { IOwner } from '@/lib/model/User';
+import { IRenter } from '@/lib/model/User';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
-  owner: IOwner | null;
+  renter: IRenter | null;
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
@@ -16,7 +16,7 @@ interface CarDetailsDrawerProps {
 
 const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   car,
-  owner,
+  renter,
   isOpen,
   onClose,
   onBookNow,
@@ -54,13 +54,13 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black/50">
       <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white flex flex-col shadow-2xl">
-        <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
-          <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+          <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
             Car Details
           </span>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition"
+            className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
           >
             ✕
           </button>
@@ -81,7 +81,11 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     <button
                       key={i}
                       onClick={() => setCurrentImageIndex(i)}
-                      className={`h-1.5 rounded-full transition-all ${i === currentImageIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/50'}`}
+                      className={`h-1.5 rounded-full transition-all ${
+                        i === currentImageIndex
+                          ? 'w-5 bg-white'
+                          : 'w-1.5 bg-white/50'
+                      }`}
                     />
                   ))}
                 </div>
@@ -91,50 +95,54 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                   }
                   disabled={currentImageIndex === 0}
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                ></button>
+                >
+                  ‹
+                </button>
                 <button
                   onClick={() =>
                     setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
                   }
                   disabled={currentImageIndex === total - 1}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                ></button>
+                >
+                  ›
+                </button>
               </>
             )}
           </div>
 
-          <div className="p-5 space-y-5">
+          <div className="px-6 py-5 space-y-5">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-lg font-bold text-gray-900">
                   {car.make}{' '}
                   <span className="text-gray-400 font-medium">
                     {car.carModel}
                   </span>
                 </h2>
-                <div className="flex items-center gap-1 mt-1 text-gray-500 text-sm">
-                  <span>📍</span>
-                  <span>
-                    {car.city}
-                    {car.carLocation && `, ${car.carLocation}`}
-                  </span>
-                </div>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  {car.carType} • {car.city}
+                  {car.carLocation && `, ${car.carLocation}`}
+                </p>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-lg font-bold text-blue-500">
                   €{car.pricePerDay}
                 </div>
                 <div className="text-xs text-gray-400">/ day</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2.5">
               {specs.map(({ icon, label, value }) => (
-                <div key={label} className="bg-gray-50 rounded-xl px-3 py-2.5">
-                  <div className="text-xs text-gray-400 mb-0.5">
-                    {icon} {label}
+                <div
+                  key={label}
+                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5"
+                >
+                  <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <span>{icon}</span> {label}
                   </div>
-                  <div className="text-sm font-semibold text-gray-800">
+                  <div className="text-sm font-medium text-gray-800">
                     {value}
                   </div>
                 </div>
@@ -142,8 +150,8 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             </div>
 
             {car.description && (
-              <div className="border-t pt-4">
-                <p className="text-xs text-gray-400 uppercase mb-1">
+              <div className="border-t border-gray-100 pt-4">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                   Description
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -152,27 +160,31 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               </div>
             )}
 
-            <div className="border-t pt-4">
-              <p className="text-xs text-gray-400 uppercase mb-2">Owner</p>
-              {owner ? (
-                <OwnerCard owner={owner} />
+            <div className="border-t border-gray-100 pt-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                Renter
+              </p>
+              {renter ? (
+                <RenterCard renter={renter} />
               ) : (
-                <p className="text-sm text-gray-400">No owner info available</p>
+                <p className="text-sm text-gray-400">
+                  No renter info available
+                </p>
               )}
             </div>
           </div>
         </div>
 
-        <div className="flex gap-2 p-4 border-t border-gray-100 bg-white sticky bottom-0">
+        <div className="flex gap-3 px-6 py-4 border-t border-gray-100 bg-white">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 border border-gray-200 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
           >
             How it works
           </button>
           <button
             onClick={onBookNow}
-            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
+            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
             Book Now
           </button>

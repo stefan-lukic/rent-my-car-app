@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const rentals = await Rental.find({
-      rentee: new mongoose.Types.ObjectId(userId),
+      client: new mongoose.Types.ObjectId(userId),
     }).populate('car');
     return NextResponse.json(rentals);
   } catch (error) {

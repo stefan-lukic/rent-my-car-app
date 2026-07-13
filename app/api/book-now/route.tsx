@@ -4,7 +4,6 @@ import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
-import { sendBookingEmail } from '@/lib/emailService/sendEmail';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -40,7 +39,8 @@ export async function POST(req: NextRequest) {
 
     const rental = new Rental({
       car: carId,
-      rentee: userId,
+      renter: car.renter,
+      client: userId,
       carLocation: carLocation,
       rentalPeriod: {
         startDate: new Date(startDate),

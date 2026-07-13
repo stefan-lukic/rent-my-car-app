@@ -212,13 +212,13 @@ export const entertainmentProviders = [
 ];
 
 export const howItWorksContent = [
-  'Meet the owner to receive the car keys and get acquainted with the vehicle.',
-  'Schedule a convenient time to meet the owner in person for a smooth handover.',
-  'Communicate with the owner to arrange a suitable time and location for key collection.',
+  'Meet the renter to receive the car keys and get acquainted with the vehicle.',
+  'Schedule a convenient time to meet the renter in person for a smooth handover.',
+  'Communicate with the renter to arrange a suitable time and location for key collection.',
   'Use the app to complete the vehicle inspection process before driving off.',
-  'The owner will guide you through all the essential features and functions of the car.',
-  'Return the car and the keys directly to the owner at the agreed location.',
-  'Follow the owner`s instructions for returning the car to ensure a hassle-free experience.',
+  'The renter will guide you through all the essential features and functions of the car.',
+  'Return the car and the keys directly to the renter at the agreed location.',
+  'Follow the renter`s instructions for returning the car to ensure a hassle-free experience.',
 ];
 
 export const howItWorksIcons = [

@@ -19,7 +19,8 @@ export interface ICar extends Document {
   images?: string[];
   pricePerDay: number;
   description?: string;
-  owner: mongoose.Types.ObjectId;
+  renter: mongoose.Types.ObjectId;
+  status?: string;
 }
 
 const carSchema: Schema<ICar> = new Schema(
@@ -41,7 +42,8 @@ const carSchema: Schema<ICar> = new Schema(
     images: { type: [String] },
     pricePerDay: { type: Number, required: true },
     description: { type: String, required: false },
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    status: { type: String },
   },
   {
     timestamps: true,

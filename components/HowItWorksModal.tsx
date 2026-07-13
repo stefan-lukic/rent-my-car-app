@@ -28,7 +28,7 @@ const steps = [
     number: '2',
     title: 'Reserve Instantly',
     description:
-      'Pick your departure and return schedule. Review fully transparent day-rates, and confirm your holding reservation. The local car host will authorize approval instantly.',
+      'Pick your departure and return schedule. Review fully transparent day-rates, and confirm your holding reservation. The local renter will authorize approval instantly.',
     icon: (
       <svg
         className="w-5 h-5 text-amber-500"
@@ -72,7 +72,7 @@ const steps = [
     number: '4',
     title: 'Embark Safely',
     description:
-      'Travel with comprehensive coverage, full mechanical verification, and active 24/7 client relations assistance. Return easily with a complete fuel status and share a host review.',
+      'Travel with comprehensive coverage, full mechanical verification, and active 24/7 client relations assistance. Return easily with a complete fuel status and share a renter review.',
     icon: (
       <svg
         className="w-5 h-5 text-blue-600"

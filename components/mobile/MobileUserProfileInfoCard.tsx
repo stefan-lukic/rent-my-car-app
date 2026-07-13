@@ -4,36 +4,79 @@ interface UserProfileCardProps {
   user: {
     name: string;
     email: string;
+    contactInfo?: string;
     images?: string[];
     createdAt: Date;
+    rating?: number;
   };
+  carsCount: number;
+  rentalsCount: number;
 }
 
 export default function MobileProfileUserInfoCard({
   user,
+  carsCount,
+  rentalsCount,
 }: UserProfileCardProps) {
+  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+
+  const StatItem = ({
+    icon,
+    value,
+    label,
+  }: {
+    icon: string;
+    value: string | number;
+    label: string;
+  }) => (
+    <div className="flex flex-col items-center gap-0.5">
+      <span className="text-base">{icon}</span>
+      <span className="text-sm font-semibold text-gray-900">{value}</span>
+      <span className="text-[11px] text-gray-500">{label}</span>
+    </div>
+  );
+
   return (
-    <div className="flex flex-row items-center gap-6 p-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-md">
-      <Image
-        className="rounded-full shadow-md mb-1 border-2 border-white"
-        src={user?.images?.[0] || ''}
-        alt={user?.name || 'User'}
-        width={70}
-        height={70}
-        priority={true}
-      />
-      <div className="flex flex-col">
-        <h2 className="text-xs font-semibold text-white text-center truncate w-full">
-          {user.name}
-        </h2>
-        <p className="text-xs text-blue-100 text-center truncate w-full">
-          {user.email}
-        </p>
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center gap-4 p-4 bg-gradient-to-br from-blue-400 to-blue-600">
+        <Image
+          className="rounded-full shadow-md border-2 border-white object-cover"
+          src={user?.images?.[0] || '/placeholder-user.svg'}
+          alt={user?.name || 'User'}
+          width={56}
+          height={56}
+          priority
+        />
+        <div className="flex flex-col flex-1 min-w-0">
+          <h2 className="text-sm font-semibold text-white truncate">
+            {user.name}
+          </h2>
+          <p className="text-xs text-blue-100 truncate">
+            {user.contactInfo || 'No phone number added'}
+          </p>
+          <div className="flex items-center gap-1 mt-0.5">
+            <span className="text-blue-200 text-xs">✓</span>
+            <span className="text-blue-100 text-xs">
+              Member since {memberSince}
+            </span>
+          </div>
+        </div>
+        <button className="flex-shrink-0 bg-white text-gray-800 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          ✎
+        </button>
       </div>
-      <div className="p-2 w-full">
-        <p className="text-xs text-black">
-          Member since: {new Date(user.createdAt).toLocaleDateString()}
-        </p>
+
+      <div className="grid grid-cols-3 divide-x divide-gray-100 py-3">
+        <StatItem icon="🚗" value={carsCount} label="Cars" />
+        <StatItem icon="📅" value={rentalsCount} label="Rentals" />
+        <StatItem
+          icon="⭐"
+          value={(user.rating ?? 0).toFixed(1)}
+          label="Rating"
+        />
       </div>
     </div>
   );

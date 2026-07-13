@@ -13,11 +13,11 @@ export default function CancellationOptions() {
             </h2>
             <p className="text-base text-gray-500 mb-4">
               We understand that plans can change. That`s why we offer flexible
-              cancellation options for both car owners and renters.
+              cancellation options for both car renters and clients.
             </p>
 
             <h3 className="text-md font-medium text-gray-900 mt-6 mb-2">
-              For Renters:
+              For Clients:
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
               <li>
@@ -31,7 +31,7 @@ export default function CancellationOptions() {
             </ul>
 
             <h3 className="text-md font-medium text-gray-900 mt-6 mb-2">
-              For Car Owners:
+              For Car Renters:
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
               <li>

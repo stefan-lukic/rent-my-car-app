@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const cars = await Car.find({
-      owner: new mongoose.Types.ObjectId(userId),
+      renter: new mongoose.Types.ObjectId(userId),
     });
     return NextResponse.json(cars);
   } catch (error) {

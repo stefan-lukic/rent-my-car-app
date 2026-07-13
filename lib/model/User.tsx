@@ -12,11 +12,10 @@ export interface IUser extends Document {
   images?: string[];
   role: Role;
   cars: mongoose.Types.ObjectId[];
-  rentals: mongoose.Types.ObjectId[];
   createdAt: Date;
 }
 
-export interface IOwner {
+export interface IRenter {
   _id: string;
   name: string;
   email: string;
@@ -36,8 +35,7 @@ const userSchema: Schema<IUser> = new Schema(
     emailVerified: { type: Date },
     images: { type: [String] },
     role: { type: String },
-    cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }], // Cars owned by the user
-    rentals: [{ type: Schema.Types.ObjectId, ref: 'Rental' }], // Cars rented by the user
+    cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }],
   },
   {
     timestamps: true,
