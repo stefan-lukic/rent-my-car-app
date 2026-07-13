@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 import connectToDatabase from '@/lib/db/mongoose';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -24,6 +26,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const session = await getServerSession(authOptions);
   await connectToDatabase();
 
   try {
@@ -37,7 +40,9 @@ export async function GET(req: NextRequest) {
     if (carType && carType !== '') filter.carType = carType;
     if (engine && engine !== '') filter.engine = engine;
     if (city && city !== '') filter.city = city;
-
+    if (session?.user?.id) {
+      filter.renter = { $ne: session.user.id };
+    }
     const cars = await Car.find(filter);
 
     const overlappingRentals = await Rental.find({

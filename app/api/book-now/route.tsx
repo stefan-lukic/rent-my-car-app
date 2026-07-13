@@ -37,6 +37,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (car.renter.toString() === userId) {
+      return NextResponse.json(
+        { message: 'You cannot book your own car' },
+        { status: 403 }
+      );
+    }
+
     const rental = new Rental({
       car: carId,
       renter: car.renter,
