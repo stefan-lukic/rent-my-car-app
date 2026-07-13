@@ -8,6 +8,7 @@ import CarCard from './CarCard';
 import RentalCard from './RentalCard';
 import UpdateCarModal from './UpdateCarModal';
 import DeleteCarModal from './DeleteCarModal';
+import l from '@/helper/en';
 
 interface ProfileInteractiveSectionProps {
   cars: ICar[];
@@ -68,7 +69,7 @@ const ProfileInteractiveSection = ({
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          My Cars ({cars.length})
+          {l.profile.myCarsCount(cars.length)}
         </button>
         <button
           onClick={() => setActiveTab('rentals')}
@@ -78,25 +79,25 @@ const ProfileInteractiveSection = ({
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          My Rentals ({availableRentals.length})
+          {l.profile.myRentalsCount(availableRentals.length)}
         </button>
       </div>
 
       {activeTab === 'cars' && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">My Cars</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{l.profile.myCarsHeading}</h2>
             <button
               onClick={() => router.push('/cars/add-car')}
               className="bg-green-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-1"
             >
-              + Add New Car
+              {l.cars.addNewCarBtn}
             </button>
           </div>
 
           {cars.length === 0 ? (
             <p className="text-gray-400 italic text-sm">
-              You haven&apos;t listed any cars yet.
+              {l.profile.noCarsListed}
             </p>
           ) : (
             <>
@@ -159,11 +160,11 @@ const ProfileInteractiveSection = ({
 
       {activeTab === 'rentals' && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">My Rentals</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{l.profile.myRentalsHeading}</h2>
 
           {availableRentals.length === 0 ? (
             <p className="text-gray-400 italic text-sm">
-              You haven&apos;t rented any cars yet.
+              {l.profile.noRentalsYet}
             </p>
           ) : (
             <>

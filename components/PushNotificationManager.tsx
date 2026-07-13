@@ -2,6 +2,7 @@
 
 import { subscribeUser, unsubscribeUser } from '@/app/actions';
 import { useState, useEffect } from 'react';
+import l from '@/helper/en';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -79,31 +80,31 @@ export function PushNotificationManager() {
   }
 
   if (!isSupported) {
-    return <p>Push notifications are not supported in this browser.</p>;
+    return <p>{l.pushNotifications.notSupported}</p>;
   }
 
   return (
     <div>
       {subscription ? (
         <>
-          <p>You are subscribed to push notifications.</p>
-          <button onClick={unsubscribeFromPush}>Unsubscribe</button>
+          <p>{l.pushNotifications.subscribed}</p>
+          <button onClick={unsubscribeFromPush}>{l.pushNotifications.unsubscribe}</button>
           <input
             type="text"
-            placeholder="Enter notification message"
+            placeholder={l.pushNotifications.enterNotificationMsg}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button onClick={sendTestNotification}>Send Test</button>
+          <button onClick={sendTestNotification}>{l.pushNotifications.sendTest}</button>
         </>
       ) : (
         <>
-          <p>You are not subscribed to push notifications.</p>
+          <p>{l.pushNotifications.notSubscribed}</p>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded"
             onClick={subscribeToPush}
           >
-            Subscribe
+            {l.pushNotifications.subscribe}
           </button>
         </>
       )}
@@ -137,12 +138,12 @@ export function InstallPrompt() {
                 <button onClick={() => setIsPopupOpen(false)}>✖</button>
               </div>
 
-              <p>To install this app on your iOS device tap:</p>
+              <p>{l.pushNotifications.iosInstall}</p>
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded"
                 onClick={() => null}
               >
-                Get From App Store
+                {l.pushNotifications.getAppStore}
               </button>
             </div>
           </div>

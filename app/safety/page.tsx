@@ -1,25 +1,25 @@
+import l from '@/helper/en';
+
 export default function Safety() {
   return (
     <main className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Safety First</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">{l.pages.safetyFirst}</h1>
 
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Our Commitment to Your Safety
+              {l.pages.safetyCommitment}
             </h2>
             <p className="text-base text-gray-500 mb-4">
-              At RentMyCar, your safety is our top priority. We`ve implemented
-              several measures to ensure a secure experience for both car renters
-              and clients.
+              {l.pages.safetyDesc}
             </p>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
-              <li>Comprehensive insurance coverage for every rental</li>
-              <li>Thorough background checks on all users</li>
-              <li>24/7 roadside assistance</li>
-              <li>Secure payment processing</li>
-              <li>In-app messaging for safe communication</li>
+              <li>{l.pages.insurance}</li>
+              <li>{l.pages.backgroundChecks}</li>
+              <li>{l.pages.roadsideAssistance}</li>
+              <li>{l.pages.securePayment}</li>
+              <li>{l.pages.inAppMessaging}</li>
             </ul>
           </div>
         </div>
@@ -27,17 +27,16 @@ export default function Safety() {
         <div className="mt-8 bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Safety Tips
+              {l.pages.safetyTips}
             </h3>
             <ul className="list-decimal pl-5 space-y-2 text-base text-gray-500">
-              <li>Always meet in a public place for car handovers</li>
+              <li>{l.pages.meetPublic}</li>
               <li>
-                Thoroughly inspect the vehicle before and after each rental
+                {l.pages.inspectVehicle}
               </li>
-              <li>Keep all communication within our platform</li>
+              <li>{l.pages.keepCommunication}</li>
               <li>
-                Trust your instincts - if something feels off, contact our
-                support team
+                {l.pages.trustInstincts}
               </li>
             </ul>
           </div>

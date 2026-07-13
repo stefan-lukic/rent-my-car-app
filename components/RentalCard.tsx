@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
+import l from '@/helper/en';
 
 interface RentalCardProps {
   rental: {
@@ -24,9 +25,9 @@ const statusStyles: Record<string, string> = {
 };
 
 const statusLabel: Record<string, string> = {
-  available: 'Available',
-  rented: 'Booked',
-  inactive: 'Inactive',
+  available: l.status.available,
+  rented: l.status.booked,
+  inactive: l.status.inactive,
 };
 
 const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) => {
@@ -35,7 +36,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
   if (!car) {
     return (
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm h-full flex items-center justify-center">
-        <span className="text-gray-400 text-sm">Unavailable</span>
+        <span className="text-gray-400 text-sm">{l.common.unavailable}</span>
       </div>
     );
   }
@@ -71,7 +72,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
               statusStyles[car.status ?? ''] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || 'Available'}
+            {            statusLabel[car.status ?? ''] || l.status.available}
           </span>
         )}
       </div>
@@ -82,7 +83,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
         </h3>
 
         <p className="text-gray-700 font-medium text-sm mt-0.5">
-          €{car.pricePerDay} / day
+          €{car.pricePerDay}{l.common.perDay}
         </p>
 
         <div className="flex items-center gap-1 mt-1 mb-3">

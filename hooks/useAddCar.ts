@@ -5,6 +5,7 @@ import { CarType } from '@/lib/model/car/CarType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarCity } from '@/lib/model/car/CarCity';
+import l from '@/helper/en';
 
 export type CarData = {
   make: CarMake;
@@ -93,13 +94,13 @@ export function useAddCar() {
     setIsSubmitting(true);
 
     if (!carData.firstRegistration) {
-      alert('First registration is required!');
+      alert(l.cars.firstRegistrationRequired);
       setIsSubmitting(false);
       return;
     }
 
     if (carData.images.length === 0) {
-      alert('At least one image is required!');
+      alert(l.cars.atLeastOneImage);
       setIsSubmitting(false);
       return;
     }
@@ -131,7 +132,7 @@ export function useAddCar() {
       setShowSuccess(true);
       router.push('/profile/my-profile');
     } catch (error) {
-      alert('Failed to add car. Please try again.');
+      alert(l.cars.failedAddCar);
       setIsSubmitting(false);
     }
   };

@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import { useState } from 'react';
 import { Compass, LucideLoader2 } from 'lucide-react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
@@ -38,24 +39,23 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 text-[10px] md:text-xs font-semibold px-3 py-1.5 rounded-full mb-4 md:mb-6">
             <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-            Premium Marketplace Network in Serbia
+            {l.landing.premiumMarketplace}
           </div>
 
           <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Find and Book Cars Across Serbia{' '}
-            <span className="text-blue-600">Fast, Easy, Trusted</span>
+            {l.landing.findBookCars}{' '}
+            <span className="text-blue-600">{l.landing.fastEasyTrusted}</span>
           </h1>
 
           <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto mb-8 md:mb-10 px-2">
-            Inspect vehicle specifications, calculate real-time day rates, and
-            book from trusted local renters in Novi Sad and Belgrade.
+            {l.landing.landingDesc}
           </p>
 
           <div className="grid grid-cols-3 gap-2 md:gap-16 max-w-2xl mx-auto">
-            {[
-              { value: '150+', label: 'Premium Rides' },
-              { value: '12k+', label: 'Kilometers Logged' },
-              { value: '100%', label: 'Verified Hosts' },
+              {[
+                { value: '150+', label: l.landing.premiumRides },
+                { value: '12k+', label: l.landing.kilometersLogged },
+                { value: '100%', label: l.landing.verifiedHosts },
             ].map(({ value, label }) => (
               <div
                 key={label}
@@ -108,11 +108,11 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-[11px] font-medium text-slate-500">
-            {[
-              'About Us',
-              'Help Center',
-              'Terms of Service',
-              'Privacy Policy',
+              {[
+                l.landing.aboutUs,
+                l.landing.helpCenter,
+                l.landing.termsOfService,
+                l.landing.privacyPolicy,
             ].map((link) => (
               <span
                 key={link}

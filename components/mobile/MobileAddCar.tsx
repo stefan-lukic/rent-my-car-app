@@ -14,6 +14,7 @@ import FormInput, {
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
 import { useAddCar } from '@/hooks/useAddCar';
+import l from '@/helper/en';
 
 export default function MobileAddCar() {
   const {
@@ -29,13 +30,13 @@ export default function MobileAddCar() {
     <div className="h-full overflow-auto px-4 pb-24 bg-white">
       <header className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2">
-          Add a New Car
+          {l.cars.addNewCar}
         </h1>
       </header>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <FormSelect
-          label="Make"
+          label={l.cars.make}
           name="make"
           value={carData.make}
           onChange={handleInputChange}
@@ -43,16 +44,16 @@ export default function MobileAddCar() {
         />
 
         <FormInput
-          label="Model"
+          label={l.cars.model}
           name="carModel"
           value={carData.carModel}
           onChange={handleInputChange}
-          placeholder="e.g. C-Class"
+          placeholder={l.cars.egCClass}
           required
         />
 
         <FormSelect
-          label="Car Type"
+          label={l.cars.carType}
           name="carType"
           value={carData.carType}
           onChange={handleInputChange}
@@ -60,7 +61,7 @@ export default function MobileAddCar() {
         />
 
         <FormSelect
-          label="Engine Type"
+          label={l.cars.engineType}
           name="engine"
           value={carData.engine}
           onChange={handleInputChange}
@@ -68,25 +69,25 @@ export default function MobileAddCar() {
         />
 
         <FormInput
-          label="Horsepower"
+          label={l.cars.horsepowerMobile}
           name="power"
           value={carData.power}
           onChange={handleInputChange}
-          placeholder="e.g. 150"
+          placeholder={l.cars.eg150}
           required
         />
 
         <FormInput
-          label="Avg. Consumption"
+          label={l.cars.avgConsumption}
           name="averageConsumption"
           value={carData.averageConsumption}
           onChange={handleInputChange}
-          placeholder="e.g. 6.5 L/100km"
+          placeholder={l.cars.eg65L}
           required
         />
 
         <FormSelect
-          label="City"
+          label={l.cars.city}
           name="city"
           value={carData.city}
           onChange={handleInputChange}
@@ -94,17 +95,17 @@ export default function MobileAddCar() {
         />
 
         <div>
-          <label className={labelClasses}>First Registration</label>
+          <label className={labelClasses}>{l.cars.firstRegistration}</label>
           <DatePicker
             selected={carData.firstRegistration}
             onChange={handleDateChange}
             className={inputClasses}
-            placeholderText="Select date"
+            placeholderText={l.cars.selectDate}
           />
         </div>
 
         <div className="space-y-2">
-          <label className={labelClasses}>Car Images</label>
+          <label className={labelClasses}>{l.cars.carImages}</label>
 
           <div className="relative h-32 border-2 border-dashed rounded-2xl flex items-center justify-center bg-blue-50">
             <CloudUploadIcon />
@@ -132,10 +133,10 @@ export default function MobileAddCar() {
                   <button
                     type="button"
                     onClick={() => removeImage(id)}
-                    className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                  >
-                    ✕
-                  </button>
+                     className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+              >
+                {l.common.close}
+              </button>
                 </div>
               ))}
             </div>
@@ -147,7 +148,7 @@ export default function MobileAddCar() {
           disabled={isSubmitting}
           className="w-full bg-blue-600 text-white py-4 rounded-2xl"
         >
-          {isSubmitting ? 'Adding...' : 'Add Car'}
+          {isSubmitting ? l.common.adding : l.cars.addCar}
         </Button>
       </form>
     </div>

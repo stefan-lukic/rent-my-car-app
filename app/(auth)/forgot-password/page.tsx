@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import ForgotPasswordForm from '@/components/ForgotPasswordForm';
 import MobileForgotPasswordForm from '@/components/mobile/MobileForgotPasswordForm';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';

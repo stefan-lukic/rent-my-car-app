@@ -5,6 +5,7 @@ import { ICar } from '@/lib/model/car/Car';
 import RenterCard from '../RenterCard';
 import HowItWorksModal from '../HowItWorksModal';
 import { IRenter } from '@/lib/model/User';
+import l from '@/helper/en';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
@@ -30,22 +31,22 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const total = images.length;
 
   const specs = [
-    { label: 'Engine', value: car.engine, icon: '⚡' },
-    { label: 'Power', value: `${car.power} HP`, icon: '🏎️' },
+    { label: l.carSpecs.engine, value: car.engine, icon: '⚡' },
+    { label: l.carSpecs.power, value: `${car.power} HP`, icon: '🏎️' },
     {
-      label: 'Type',
+      label: l.carSpecs.type,
       value: car.carType.charAt(0) + car.carType.slice(1).toLowerCase(),
       icon: '🚗',
     },
-    { label: 'City', value: car.city, icon: '📍' },
-    car.milage && { label: 'Mileage', value: `${car.milage} km`, icon: '🛣️' },
+    { label: l.carSpecs.citySpec, value: car.city, icon: '📍' },
+    car.milage && { label: l.carSpecs.mileage, value: `${car.milage} km`, icon: '🛣️' },
     car.averageConsumption && {
-      label: 'Consumption',
+      label: l.carSpecs.consumption,
       value: car.averageConsumption,
       icon: '⛽',
     },
     car.firstRegistration && {
-      label: 'Registration',
+      label: l.carSpecs.registration,
       value: new Date(car.firstRegistration).toLocaleDateString(),
       icon: '📅',
     },
@@ -56,13 +57,13 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
       <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white flex flex-col shadow-2xl">
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
           <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            Car Details
+            {l.drawer.carDetails}
           </span>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
           >
-            ✕
+            {l.common.close}
           </button>
         </div>
 
@@ -152,7 +153,7 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             {car.description && (
               <div className="border-t border-gray-100 pt-4">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  Description
+                  {l.common.description}
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {car.description}
@@ -162,13 +163,13 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
             <div className="border-t border-gray-100 pt-4">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Renter
+                {l.drawer.renter}
               </p>
               {renter ? (
                 <RenterCard renter={renter} />
               ) : (
                 <p className="text-sm text-gray-400">
-                  No renter info available
+                  {l.drawer.noRenterInfo}
                 </p>
               )}
             </div>
@@ -180,13 +181,13 @@ const MobileCarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             onClick={() => setIsModalOpen(true)}
             className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
           >
-            How it works
+            {l.common.howItWorks}
           </button>
           <button
             onClick={onBookNow}
             className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
-            Book Now
+            {l.common.bookNow}
           </button>
         </div>
       </div>

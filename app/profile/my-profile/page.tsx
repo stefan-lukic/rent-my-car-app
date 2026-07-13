@@ -1,3 +1,4 @@
+import l from '@/helper/en';
 import { getBaseUrl } from '@/app/api/api';
 import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
@@ -21,7 +22,7 @@ export default async function MyProfilePage() {
     );
 
     if (!userRes.ok) {
-      throw new Error('Failed to fetch user');
+      throw new Error(l.errors.errorFetchingUser);
     }
 
     const user = await userRes.json();
@@ -52,7 +53,7 @@ export default async function MyProfilePage() {
     console.error('Failed to load profile page:', error);
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-500">
-        Something went wrong. Please try again later.
+        {l.pages.errorFallback}
       </div>
     );
   }

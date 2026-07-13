@@ -5,6 +5,7 @@ import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarType } from '@/lib/model/car/CarType';
+import l from '@/helper/en';
 
 interface CarFiltersProps {
   filters: CarFilterState;
@@ -46,14 +47,14 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
           />
         </svg>
         <span className="text-xs font-bold text-gray-700 uppercase tracking-widest">
-          Filters
+          {l.search.filters}
         </span>
       </div>
 
       <div className="border-b border-gray-100" />
 
       <div>
-        <label className={labelClass}>Price Range (€/day)</label>
+        <label className={labelClass}>{l.search.priceRangeEur}</label>
         <div className="flex gap-2">
           <div className="relative flex-1">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
@@ -64,7 +65,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
               name="minPrice"
               value={filters.minPrice}
               onChange={handleChange}
-              placeholder="Min"
+              placeholder={l.search.min}
               className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             />
           </div>
@@ -77,7 +78,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
               name="maxPrice"
               value={filters.maxPrice}
               onChange={handleChange}
-              placeholder="Max"
+              placeholder={l.search.max}
               className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             />
           </div>
@@ -85,7 +86,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
       </div>
 
       <div>
-        <label className={labelClass}>Car Make</label>
+        <label className={labelClass}>{l.search.carMake}</label>
         <div className="relative">
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
@@ -106,7 +107,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
             onChange={handleChange}
             className={`${inputClass} pl-9`}
           >
-            <option value="">All Manufacturers</option>
+            <option value="">{l.search.allManufacturers}</option>
             {Object.values(CarMake).map((make) => (
               <option key={make} value={make}>
                 {capitalize(make)}
@@ -117,7 +118,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
       </div>
 
       <div>
-        <label className={labelClass}>Car Type</label>
+        <label className={labelClass}>{l.search.carType}</label>
         <div className="relative">
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
@@ -138,7 +139,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
             onChange={handleChange}
             className={`${inputClass} pl-9`}
           >
-            <option value="">All Types</option>
+            <option value="">{l.search.allTypes}</option>
             {Object.values(CarType).map((type) => (
               <option key={type} value={type}>
                 {capitalize(type)}
@@ -149,7 +150,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
       </div>
 
       <div>
-        <label className={labelClass}>Engine Type</label>
+        <label className={labelClass}>{l.search.engineType}</label>
         <div className="relative">
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
@@ -170,7 +171,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
             onChange={handleChange}
             className={`${inputClass} pl-9`}
           >
-            <option value="">All Engine Types</option>
+            <option value="">{l.search.allEngineTypes}</option>
             {Object.values(CarEngineType).map((engine) => (
               <option key={engine} value={engine}>
                 {capitalize(engine)}
@@ -181,7 +182,7 @@ const MobileCarFilters: React.FC<CarFiltersProps> = ({
       </div>
 
       <p className="text-[10px] text-gray-400 text-center pt-1">
-        Prices in Euros (€) and exclude customized dropoff charges.
+        {l.search.pricesDisclaimer}
       </p>
     </div>
   );

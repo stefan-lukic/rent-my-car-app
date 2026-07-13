@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
 import { useState } from 'react';
+import l from '@/helper/en';
 
 interface CarCardProps {
   car: ICar;
@@ -17,9 +18,9 @@ const statusStyles: Record<string, string> = {
 };
 
 const statusLabel: Record<string, string> = {
-  available: 'Available',
-  rented: 'Booked',
-  inactive: 'Inactive',
+  available: l.status.available,
+  rented: l.status.booked,
+  inactive: l.status.inactive,
 };
 
 const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
@@ -40,7 +41,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
             statusStyles[car.status ?? ''] || statusStyles.available
           }`}
         >
-          {            statusLabel[car.status ?? ''] || 'Available'}
+          {            statusLabel[car.status ?? ''] || l.status.available}
         </span>
 
         {car.images && car.images.length > 1 && (
@@ -73,7 +74,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
         </h3>
 
         <p className="text-gray-700 font-medium text-sm mt-0.5">
-          ${car.pricePerDay} / day
+          €{car.pricePerDay}{l.common.perDay}
         </p>
 
         <div className="flex items-center gap-1 mt-1 mb-3">
@@ -86,13 +87,13 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
             onClick={() => onUpdate(car)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            ✎ Edit
+            {l.common.edit}
           </button>
           <button
             onClick={() => onDeleteClick(car)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-sm border border-red-200 rounded-lg text-red-500 hover:bg-red-50 transition-colors"
           >
-            🗑 Delete
+            {l.common.delete}
           </button>
         </div>
       </div>

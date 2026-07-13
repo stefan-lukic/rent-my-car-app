@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
 import { MapPin, Eye, Zap } from 'lucide-react';
+import l from '@/helper/en';
 
 interface CarSearchResultsProps {
   car: ICar;
@@ -156,14 +157,14 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
-            Specs
+            {l.common.specs}
           </button>
           <button
             onClick={onBookNow}
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200"
           >
             <Zap className="w-3.5 h-3.5" />
-            Book
+            {l.common.bookNow}
           </button>
         </div>
       </div>
