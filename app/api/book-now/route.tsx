@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
 
     const rental = new Rental({
       car: carId,
+      renter: car.renter,
       client: userId,
       carLocation: carLocation,
       rentalPeriod: {

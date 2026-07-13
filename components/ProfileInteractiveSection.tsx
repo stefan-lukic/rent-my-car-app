@@ -167,10 +167,28 @@ const ProfileInteractiveSection = ({
             </p>
           ) : (
             <>
-               <div className="grid grid-cols-3 gap-3">
-                {currentRentals.map((rental) => (
-                  <RentalCard key={rental._id} rental={rental} showStatus={false} />
-                ))}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentRentalPage((p) => p - 1)}
+                  disabled={currentRentalPage === 0}
+                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                >
+                  ‹
+                </button>
+
+                <div className="flex-1 grid grid-cols-3 gap-3">
+                  {currentRentals.map((rental) => (
+                    <RentalCard key={rental._id} rental={rental} showStatus={false} />
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentRentalPage((p) => p + 1)}
+                  disabled={currentRentalPage >= rentalPageCount - 1}
+                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                >
+                  ›
+                </button>
               </div>
 
               {rentalPageCount > 1 && (

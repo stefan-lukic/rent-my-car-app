@@ -15,8 +15,8 @@ export interface IRental extends Document {
 
 const rentalSchema: Schema<IRental> = new Schema(
   {
-    car: { type: Schema.Types.ObjectId, ref: 'Car', required: true },
-    renter: { type: Schema.Types.ObjectId, ref: 'User', required: false }, // the car owner who rents it out
+  car: { type: Schema.Types.ObjectId, ref: 'Car', required: true },
+  renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     carLocation: { type: String, required: true },
     rentalPeriod: {
