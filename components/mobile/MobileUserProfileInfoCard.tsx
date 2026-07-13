@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface UserProfileCardProps {
   user: {
@@ -64,9 +65,12 @@ export default function MobileProfileUserInfoCard({
             </span>
           </div>
         </div>
-        <button className="flex-shrink-0 bg-white text-gray-800 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+        <Link
+          href="/profile/edit"
+          className="flex-shrink-0 bg-white text-gray-800 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+        >
           ✎
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-3 divide-x divide-gray-100 py-3">
