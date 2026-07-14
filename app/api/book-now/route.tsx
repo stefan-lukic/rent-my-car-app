@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
   await connectToDatabase();
 
   try {
-    const body = await req.json();
-    const { carId, startDate, endDate } = body;
+    const bookingPayload = await req.json();
+    const { carId, startDate, endDate } = bookingPayload;
 
     if (!carId || !startDate || !endDate) {
       return NextResponse.json(
