@@ -4,6 +4,7 @@ import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 export default async function MyProfilePage() {
   const session = await getServerSession();
@@ -27,14 +28,17 @@ export default async function MyProfilePage() {
     const user = await userRes.json();
 
     const fetchJson = async (url: string) => {
-      const res = await fetch(url, { cache: 'no-store' });
+      const res = await fetch(url, {
+        cache: 'no-store',
+        headers: { Cookie: cookies().toString() },
+      });
       if (!res.ok) throw new Error();
       return res.json();
     };
 
     const [carsResult, rentalsResult] = await Promise.allSettled([
-      fetchJson(`${baseUrl}/api/cars/my-cars?userId=${user._id}`),
-      fetchJson(`${baseUrl}/api/my-rentals?userId=${user._id}`),
+      fetchJson(`${baseUrl}/api/cars/my-cars`),
+      fetchJson(`${baseUrl}/api/my-rentals`),
     ]);
 
     const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];

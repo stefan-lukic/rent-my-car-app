@@ -1,20 +1,24 @@
 import mongoose from 'mongoose';
 import Rental from '@/lib/model/Rental';
-
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
+import connectToDatabase from '@/lib/db/mongoose';
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
-    return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+  if (!session || !session.user?.id) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
   try {
+    await connectToDatabase();
+
     const rentals = await Rental.find({
-      client: new mongoose.Types.ObjectId(userId),
+      client: new mongoose.Types.ObjectId(session.user.id),
     }).populate('car');
+
     return NextResponse.json(rentals);
   } catch (error) {
     return NextResponse.json(
