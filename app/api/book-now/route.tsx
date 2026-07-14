@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Rental from '@/lib/model/Rental';
 import Car from '@/lib/model/car/Car';
+import mongoose from 'mongoose';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
@@ -13,17 +14,31 @@ export async function POST(req: NextRequest) {
 
   await connectToDatabase();
 
-  const body = await req.json();
-  const { carId, carLocation, startDate, endDate } = body;
-
-  if (!carId || !startDate || !endDate || !carLocation) {
-    return NextResponse.json(
-      { message: 'Missing required fields' },
-      { status: 400 }
-    );
-  }
-
   try {
+    const body = await req.json();
+    const { carId, startDate, endDate } = body;
+
+    if (!carId || !startDate || !endDate) {
+      return NextResponse.json(
+        { message: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(carId)) {
+      return NextResponse.json({ message: 'Invalid car ID' }, { status: 400 });
+    }
+
+    const rentalStartDate = getUtcDate(startDate);
+    const rentalEndDate = getUtcDate(endDate);
+
+    if (!rentalStartDate || !rentalEndDate || rentalEndDate < rentalStartDate) {
+      return NextResponse.json(
+        { message: 'Invalid rental dates' },
+        { status: 400 }
+      );
+    }
+
     const car = await Car.findById(carId);
     if (!car) {
       return NextResponse.json({ message: 'Car not found' }, { status: 404 });
@@ -44,31 +59,78 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const existingRental = await Rental.exists({
+      car: car._id,
+      'rentalPeriod.startDate': { $lte: rentalEndDate },
+      'rentalPeriod.endDate': { $gte: rentalStartDate },
+    });
+
+    if (existingRental) {
+      return NextResponse.json(
+        { message: 'Car is not available for the selected dates' },
+        { status: 409 }
+      );
+    }
+
+    const rentalId = new mongoose.Types.ObjectId();
+
+    const reservedCar = await Car.findOneAndUpdate(
+      {
+        _id: car._id,
+        bookedPeriods: {
+          $not: {
+            $elemMatch: {
+              startDate: { $lte: rentalEndDate },
+              endDate: { $gte: rentalStartDate },
+            },
+          },
+        },
+      },
+      {
+        $push: {
+          bookedPeriods: {
+            rental: rentalId,
+            startDate: rentalStartDate,
+            endDate: rentalEndDate,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!reservedCar) {
+      return NextResponse.json(
+        { message: 'Car is not available for the selected dates' },
+        { status: 409 }
+      );
+    }
+
     const rental = new Rental({
+      _id: rentalId.toString(),
       car: carId,
       renter: car.renter,
       client: userId,
-      carLocation: carLocation,
+      carLocation: car.carLocation,
       rentalPeriod: {
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: rentalStartDate,
+        endDate: rentalEndDate,
       },
       totalCost: calculateTotalCost(
         car.pricePerDay,
-        new Date(startDate),
-        new Date(endDate)
+        rentalStartDate,
+        rentalEndDate
       ),
     });
 
-    await rental.save();
-
-    // TODO implement sendrig or some other mailing service in sendEmail.tsx
-    // await sendBookingEmail(
-    //   session.user.email || '',
-    //   car,
-    //   new Date(startDate),
-    //   new Date(endDate)
-    // );
+    try {
+      await rental.save();
+    } catch (error) {
+      await Car.updateOne(
+        { _id: car._id },
+        { $pull: { bookedPeriods: { rental: rentalId } } }
+      );
+      throw error;
+    }
 
     return NextResponse.json(
       { message: 'Booking successful', rental },
@@ -80,6 +142,17 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function getUtcDate(value: unknown): Date | null {
+  if (typeof value !== 'string') return null;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+
+  return new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
 }
 
 function calculateTotalCost(

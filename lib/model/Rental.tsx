@@ -28,6 +28,12 @@ const rentalSchema: Schema<IRental> = new Schema(
   { timestamps: true }
 );
 
+rentalSchema.index({
+  car: 1,
+  'rentalPeriod.startDate': 1,
+  'rentalPeriod.endDate': 1,
+});
+
 const Rental: Model<IRental> =
   mongoose.models.Rental || mongoose.model<IRental>('Rental', rentalSchema);
 export default Rental;

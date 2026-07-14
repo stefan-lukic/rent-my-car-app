@@ -21,6 +21,11 @@ export interface ICar extends Document {
   description?: string;
   renter: mongoose.Types.ObjectId;
   status?: string;
+  bookedPeriods: {
+    rental: mongoose.Types.ObjectId;
+    startDate: Date;
+    endDate: Date;
+  }[];
 }
 
 const carSchema: Schema<ICar> = new Schema(
@@ -44,6 +49,21 @@ const carSchema: Schema<ICar> = new Schema(
     description: { type: String, required: false },
     renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     status: { type: String },
+    bookedPeriods: {
+      type: [
+        {
+          rental: {
+            type: Schema.Types.ObjectId,
+            ref: 'Rental',
+            required: true,
+          },
+          startDate: { type: Date, required: true },
+          endDate: { type: Date, required: true },
+        },
+      ],
+      default: [],
+      select: false,
+    },
   },
   {
     timestamps: true,
