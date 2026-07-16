@@ -17,7 +17,6 @@ export type CarData = {
   carLocation: string;
   firstRegistration: Date | null;
   images: CarImage[];
-  renter: string;
   pricePerDay: string;
   milage: number;
   averageConsumption: string;
@@ -39,7 +38,6 @@ const initialCarData: CarData = {
   carLocation: '',
   firstRegistration: null as Date | null,
   images: [] as CarImage[],
-  renter: '',
   pricePerDay: '',
   milage: 0,
   averageConsumption: '',
@@ -56,9 +54,9 @@ export function useAddCar() {
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.id) {
-      setCarData((prev) => ({ ...prev, renter: session.user.id }));
+
     } else if (status === 'unauthenticated') {
-      router.push('/login');
+      router.push('/sign-in');
     }
   }, [status, session, router]);
 
@@ -126,9 +124,7 @@ export function useAddCar() {
 
       if (!response.ok) throw new Error('Failed to add car');
 
-      setCarData({ ...initialCarData, renter: session?.user?.id || '' });
-      setShowSuccess(true);
-
+      setCarData(initialCarData);
       setShowSuccess(true);
       router.push('/profile/my-profile');
     } catch (error) {

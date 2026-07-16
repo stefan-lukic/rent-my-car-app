@@ -72,11 +72,21 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
           <button className="flex-shrink-0 bg-white text-gray-800 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2">
             {l.profile.editProfileBtn}
           </button>
+          {/* <a
+            href="/profile/edit"
+            className="flex-shrink-0 bg-white text-gray-800 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2"
+          >
+            ✎ Edit Profile
+          </a> */}
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 grid grid-cols-3 divide-x divide-gray-100 py-4">
           <StatItem icon="🚗" value={cars.length} label={l.profile.cars} />
-          <StatItem icon="📅" value={rentals.length} label={l.profile.rentals} />
+          <StatItem
+            icon="📅"
+            value={rentals.length}
+            label={l.profile.rentals}
+          />
           <StatItem
             icon="⭐"
             value={(user.rating ?? 0).toFixed(1)}

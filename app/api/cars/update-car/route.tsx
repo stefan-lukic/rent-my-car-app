@@ -20,6 +20,14 @@ export async function PUT(req: NextRequest) {
   }
 
   try {
+    const existingCar = await Car.findById(_id);
+    if (!existingCar) {
+      return NextResponse.json({ message: 'Car not found' }, { status: 404 });
+    }
+    if (existingCar.renter.toString() !== session.user.id) {
+      return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
+    }
+
     const updatedCar = await Car.findByIdAndUpdate(_id, updateData, {
       new: true,
       runValidators: true,
