@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     const carData = Object.fromEntries(formData);
+    delete (carData as Record<string, unknown>).renter;
 
     if (
       !carData.make ||
@@ -64,7 +65,6 @@ export async function POST(request: NextRequest) {
       !carData.power ||
       !carData.carType ||
       !carData.city ||
-      !carData.renter ||
       !carData.carLocation ||
       !carData.pricePerDay ||
       !carData.milage ||
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           message:
-            'Make, model, engine, power, car type, city, renter, car location, price per day, milage, average consumption, and description are required',
+            'Make, model, engine, power, car type, city, car location, price per day, milage, average consumption, and description are required',
         },
         { status: 400 }
       );
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
     const newCar = new Car({
       ...carData,
       images: imageBase64Array,
-      renter: carData.renter,
+      renter: session.user.id,
     });
 
     await newCar.save();
