@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 import connectToDatabase from '@/lib/db/mongoose';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -24,6 +26,13 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const startUtc = getUtcDate(start);
+  const endUtc = getUtcDate(end);
+  if (!startUtc || !endUtc || endUtc < startUtc) {
+    return NextResponse.json({ error: 'Invalid dates' }, { status: 400 });
+  }
+
+  const session = await getServerSession(authOptions);
   await connectToDatabase();
 
   try {
@@ -37,43 +46,59 @@ export async function GET(req: NextRequest) {
     if (carType && carType !== '') filter.carType = carType;
     if (engine && engine !== '') filter.engine = engine;
     if (city && city !== '') filter.city = city;
+    if (session?.user?.id) {
+      filter.renter = { $ne: session.user.id };
+    }
 
-    const cars = await Car.find(filter);
+    const cars = await Car.find(filter).select('+bookedPeriods');
 
     const overlappingRentals = await Rental.find({
       car: { $in: cars.map((car) => car._id) },
       $or: [
         {
           'rentalPeriod.startDate': {
-            $lte: new Date(end),
-            $gte: new Date(start),
+            $lte: endUtc,
+            $gte: startUtc,
           },
         },
         {
           'rentalPeriod.endDate': {
-            $lte: new Date(end),
-            $gte: new Date(start),
+            $lte: endUtc,
+            $gte: startUtc,
           },
         },
         {
           $and: [
-            { 'rentalPeriod.startDate': { $lte: new Date(start) } },
-            { 'rentalPeriod.endDate': { $gte: new Date(end) } },
+            { 'rentalPeriod.startDate': { $lte: startUtc } },
+            { 'rentalPeriod.endDate': { $gte: endUtc } },
           ],
         },
       ],
     });
 
-    const availableCars = cars.filter(
-      (car) =>
-        !overlappingRentals.some(
-          (rental) => rental.car.toString() === car._id.toString()
-        )
+    const unavailableCarIds = new Set(
+      overlappingRentals.map((rental) => rental.car.toString())
     );
+
+    const availableCars = cars.filter((car) => {
+      if (unavailableCarIds.has(car._id.toString())) return false;
+
+      const periods = car.bookedPeriods || [];
+      return !periods.some(
+        (period) => period.startDate <= endUtc && period.endDate >= startUtc
+      );
+    });
 
     const totalCars = availableCars.length;
     const totalPages = Math.ceil(totalCars / limit);
-    const paginatedCars = availableCars.slice((page - 1) * limit, page * limit);
+    const paginatedCars = availableCars
+      .slice((page - 1) * limit, page * limit)
+      .map((car) => {
+        const carData = car.toObject() as any;
+        delete carData.bookedPeriods;
+
+        return carData;
+      });
 
     return NextResponse.json({
       cars: paginatedCars,
@@ -88,4 +113,15 @@ export async function GET(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function getUtcDate(value: unknown): Date | null {
+  if (typeof value !== 'string') return null;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+
+  return new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
 }
