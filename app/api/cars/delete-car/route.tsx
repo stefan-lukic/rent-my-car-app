@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Car from '@/lib/model/car/Car';
+import User from '@/lib/model/User';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
@@ -18,12 +19,19 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ message: 'Missing car ID' }, { status: 400 });
   }
 
-  try {
-    const deletedCar = await Car.findByIdAndDelete(_id);
+  const car = await Car.findById(_id);
+  if (!car) {
+    return NextResponse.json({ message: 'Car not found' }, { status: 404 });
+  }
+  if (car.renter.toString() !== session.user.id) {
+    return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
+  }
 
-    if (!deletedCar) {
-      return NextResponse.json({ message: 'Car not found' }, { status: 404 });
-    }
+  try {
+    await Car.findByIdAndDelete(_id);
+    await User.findByIdAndUpdate(car.renter, {
+      $pull: { cars: _id },
+    });
 
     return NextResponse.json(
       { message: 'Car deleted successfully' },
