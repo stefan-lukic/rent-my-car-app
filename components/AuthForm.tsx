@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -40,16 +41,16 @@ const AuthForm = ({ type }: { type: string }) => {
           <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
             {isMobile
               ? type === 'sign-up'
-                ? 'Join Us'
-                : 'Welcome Back'
+                ? l.auth.joinUs
+                : l.auth.welcomeBack
               : type === 'sign-in'
-                ? 'Log in to RentMyCar'
-                : 'Create an Account'}
+                ? l.auth.logInToRentMyCar
+                : l.auth.createAnAccount}
           </h1>
           <p className="text-gray-500 font-medium">
             {type === 'sign-in'
-              ? 'Enter your details to access your ride'
-              : 'Start your journey with us today'}
+              ? l.auth.enterDetails
+              : l.auth.startJourney}
           </p>
         </header>
 
@@ -65,22 +66,22 @@ const AuthForm = ({ type }: { type: string }) => {
           <p className="text-gray-500 font-medium text-sm">
             {type !== 'sign-up' ? (
               <>
-                Don&apos;t have an account?
+                {l.auth.dontHaveAccount}
                 <Link
                   href="/sign-up"
                   className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
                 >
-                  Sign up
+                  {l.common.signUp}
                 </Link>
               </>
             ) : (
               <>
-                Already have an account?
+                {l.auth.alreadyHaveAccount}
                 <Link
                   href="/sign-in"
                   className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
                 >
-                  Log in
+                  {l.common.logIn}
                 </Link>
               </>
             )}

@@ -4,6 +4,8 @@ import MobileAddCar from '@/components/mobile/MobileAddCar';
 import AddCar from '@/components/AddCar';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 
+import l from '@/helper/en';
+
 export default function AddCarPage() {
   const isMobile = isMobileCSR();
   return (

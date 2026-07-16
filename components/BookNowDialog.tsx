@@ -1,6 +1,7 @@
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
 import React from 'react';
+import l from '@/helper/en';
 
 interface BookingDialogProps {
   car: ICar;
@@ -57,14 +58,14 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
           <div>
             <h2 className="text-lg font-bold text-gray-900">
-              Book {car.make} {car.carModel}
+              {l.booking.bookMakeModel(car.make, car.carModel)}
             </h2>
           </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
           >
-            ✕
+            {l.common.close}
           </button>
         </div>
 
@@ -80,7 +81,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                  No photo
+                  {l.common.noPhoto}
                 </div>
               )}
             </div>
@@ -92,7 +93,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                 {capitalize(car.carType)} • {car.city}
               </p>
               <p className="text-sm text-blue-500 font-medium">
-                €{car.pricePerDay} / day
+                €{car.pricePerDay}{l.common.perDay}
               </p>
             </div>
           </div>
@@ -100,7 +101,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                Pick-up Date
+                {l.search.pickUpDate}
               </p>
               <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2.5 bg-gray-50">
                 <span className="text-gray-400 text-sm">📅</span>
@@ -111,7 +112,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             </div>
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                Return Date
+                {l.search.returnDateLabel}
               </p>
               <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2.5 bg-gray-50">
                 <span className="text-gray-400 text-sm">📅</span>
@@ -126,17 +127,17 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Estimated Total
+                {l.common.estimatedTotal}
               </p>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>
-                €{car.pricePerDay} × {days} day{days !== 1 ? 's' : ''}
+                €{car.pricePerDay} × {days} {l.common.days(days)}
               </span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
             <div className="border-t border-gray-200 pt-2 mt-2 flex justify-between font-semibold text-gray-900">
-              <span>Total</span>
+              <span>{l.common.total}</span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
           </div>
@@ -147,14 +148,14 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-amber-500">🔒</span>
               <p className="text-sm text-amber-800 font-medium">
-                Sign in to complete your reservation
+                {l.common.signInToReserve}
               </p>
             </div>
             <a
               href="/sign-in"
               className="text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
             >
-              Sign in
+              {l.common.signIn}
             </a>
           </div>
         )}
@@ -162,7 +163,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         {bookingFailed && (
           <div className="mx-6 mb-3 p-3 bg-red-50 border border-red-200 rounded-xl">
             <p className="text-sm text-red-700 font-medium">
-              Booking failed, please sign in to continue.
+              {l.common.bookingFailed}
             </p>
           </div>
         )}
@@ -172,13 +173,13 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             onClick={onClose}
             className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
           >
-            Cancel
+            {l.common.cancel}
           </button>
           <button
             onClick={onBook}
             className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
-            Confirm Reservation
+            {l.common.confirmReservation}
           </button>
         </div>
       </div>

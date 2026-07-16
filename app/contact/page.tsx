@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import { useState } from 'react';
 
 export default function ContactUs() {
@@ -30,7 +31,7 @@ export default function ContactUs() {
   return (
     <main className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Contact Us</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">{l.pages.contactUs}</h1>
 
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:p-6">
@@ -40,7 +41,7 @@ export default function ContactUs() {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Name
+                  {l.common.name}
                 </label>
                 <input
                   type="text"
@@ -57,7 +58,7 @@ export default function ContactUs() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email
+                  {l.common.email}
                 </label>
                 <input
                   type="email"
@@ -74,7 +75,7 @@ export default function ContactUs() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Message
+                  {l.common.description}
                 </label>
                 <textarea
                   name="message"
@@ -91,7 +92,7 @@ export default function ContactUs() {
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  Send Message
+                  {l.pages.sendMessage}
                 </button>
               </div>
             </form>

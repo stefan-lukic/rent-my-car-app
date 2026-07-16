@@ -10,6 +10,7 @@ import FormInput, {
   labelClasses,
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
+import l from '@/helper/en';
 
 type UpdateCarFields = Pick<
   ICar,
@@ -73,7 +74,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update car');
+        throw new Error(errorData.message || l.cars.updateCarError);
       }
 
       const { car: updatedCarData } = await response.json();
@@ -92,30 +93,30 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
       <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <header className="mb-8">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-1">
-            Update Car
+            {l.cars.updateCar}
           </h2>
-          <p className="text-gray-500">Edit your vehicle details</p>
+          <p className="text-gray-500">{l.cars.editVehicleDesc}</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-2 gap-6">
             <FormSelect
-              label="Make"
+              label={l.cars.make}
               name="make"
               value={updatedCar.make}
               onChange={handleInputChange}
               options={Object.values(CarMake)}
             />
             <FormInput
-              label="Model"
+              label={l.cars.model}
               name="carModel"
               value={updatedCar.carModel}
               onChange={handleInputChange}
-              placeholder="e.g. C-Class"
+              placeholder={l.cars.egCClass}
               required
             />
             <FormSelect
-              label="Car Type"
+              label={l.cars.carType}
               name="carType"
               value={updatedCar.carType}
               onChange={handleInputChange}
@@ -123,7 +124,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               required
             />
             <FormSelect
-              label="Engine Type"
+              label={l.cars.engineType}
               name="engine"
               value={updatedCar.engine}
               onChange={handleInputChange}
@@ -131,56 +132,56 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               required
             />
             <FormInput
-              label="Horsepower (HP)"
+              label={l.cars.horsepower}
               name="power"
               value={updatedCar.power}
               onChange={handleInputChange}
-              placeholder="e.g. 150"
+              placeholder={l.cars.eg150}
               required
             />
             <FormInput
-              label="Avg. Consumption"
+              label={l.cars.avgConsumption}
               name="averageConsumption"
               value={updatedCar.averageConsumption}
               onChange={handleInputChange}
-              placeholder="e.g. 6.5 L/100km"
+              placeholder={l.cars.eg65L}
               required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
             <FormSelect
-              label="City"
+              label={l.cars.city}
               name="city"
               value={updatedCar.city}
               onChange={handleInputChange}
               options={Object.values(CarCity)}
             />
             <FormInput
-              label="Car Location"
+              label={l.cars.carLocation}
               name="carLocation"
               value={updatedCar.carLocation}
               onChange={handleInputChange}
-              placeholder="e.g. Liman 3"
+              placeholder={l.cars.egLiman}
               required
             />
             <FormInput
-              label="Price Per Day (€)"
+              label={l.cars.pricePerDayLabel}
               name="pricePerDay"
               type="number"
               value={updatedCar.pricePerDay}
               onChange={handleInputChange}
-              placeholder="e.g. 45"
+              placeholder={l.cars.eg45}
               required
             />
           </div>
 
           <div className="pt-4 border-t border-gray-100">
-            <label className={labelClasses}>Description</label>
+            <label className={labelClasses}>{l.common.description}</label>
             <textarea
               name="description"
               rows={4}
-              placeholder="Tell us more about your car..."
+              placeholder={l.common.clickToUpload}
               value={updatedCar.description}
               onChange={handleInputChange}
               className={`${inputClasses} resize-none`}
@@ -193,13 +194,13 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               onClick={onClose}
               className="px-6 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold transition"
             >
-              Cancel
+              {l.common.cancel}
             </Button>
             <Button
               type="submit"
               className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition"
             >
-              Save Changes
+              {l.common.save}
             </Button>
           </div>
         </form>

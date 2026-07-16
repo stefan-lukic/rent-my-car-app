@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
+import l from '@/helper/en';
 
 type ForgotPasswordData = {
   email: string;
@@ -24,7 +25,7 @@ export const useForgotPassword = () => {
       });
       if (response.status === 200) {
         setSuccessMessage(
-          'Password reset link has been successfully sent to your email.'
+          l.auth.passwordResetSuccess
         );
       }
     } catch (error: any) {
@@ -32,7 +33,7 @@ export const useForgotPassword = () => {
         type: 'server',
         message:
           error.response?.data?.message ||
-          'Something went wrong. Please try again.',
+          l.auth.somethingWrong,
       });
     }
   };

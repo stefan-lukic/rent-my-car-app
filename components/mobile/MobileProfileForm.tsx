@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { authFormSchema } from '@/lib/utils';
 import { Form } from '../UI/Form';
 import CustomInput from '../UI/CustomInput';
+import l from '@/helper/en';
 
 const MobileProfileForm = ({
   type,
@@ -74,7 +75,7 @@ const MobileProfileForm = ({
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message || 'An error occurred. Please try again.'
+        error.response?.data?.message || l.auth.errorOccurred
       );
     } finally {
       setIsLoading(false);
@@ -105,14 +106,14 @@ const MobileProfileForm = ({
               control={control}
               name="name"
               label=""
-              placeholder="Name"
+              placeholder={l.common.name}
               type="text"
             />
             <label
               htmlFor="images"
               className="justify-center flex px-2 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600"
             >
-              Choose Files
+              {l.cars.chooseFiles}
             </label>
             <input
               type="file"
@@ -127,7 +128,7 @@ const MobileProfileForm = ({
               <span className="text-gray-600">
                 {uploadImages.length === 1
                   ? uploadImages[0].name
-                  : `${uploadImages[0].name} and ${uploadImages.length - 1} more...`}
+                  : `${uploadImages[0].name} ${l.common.andMore(uploadImages.length - 1)}`}
               </span>
             )}
           </div>
@@ -137,7 +138,7 @@ const MobileProfileForm = ({
           control={control}
           name="email"
           label=""
-          placeholder="Email"
+          placeholder={l.common.email}
           type="text"
         />
 
@@ -145,7 +146,7 @@ const MobileProfileForm = ({
           control={control}
           name="password"
           label=""
-          placeholder="Password"
+          placeholder={l.common.password}
           type="password"
         />
 
@@ -158,7 +159,7 @@ const MobileProfileForm = ({
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? l.common.creating : l.auth.createAccount}
             </button>
 
             <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center">
@@ -169,7 +170,7 @@ const MobileProfileForm = ({
                 width={40}
                 height={40}
               />
-              Sign up with Google
+              {l.common.signUpWithGoogle}
             </button>
           </div>
         ) : (
@@ -179,14 +180,14 @@ const MobileProfileForm = ({
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? 'Logging In...' : 'Log In'}
+              {isLoading ? l.common.loggingIn : l.common.logIn}
             </button>
 
             <a
               className="mt-4 text-blue-500 text-sm hover:underline"
               href="/forgot-password"
             >
-              Forgot Password?
+              {l.auth.forgotPassword}
             </a>
           </div>
         )}

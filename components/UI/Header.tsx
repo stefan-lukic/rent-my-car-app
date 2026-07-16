@@ -5,6 +5,7 @@ import LogoutButton from '../LogoutButton';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
 import { Compass } from 'lucide-react';
+import l from '@/helper/en';
 
 const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
   const { isAuthenticated, loading, user } = useAuth();
@@ -33,7 +34,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
                 href="/sign-in"
                 className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
               >
-                Sign In
+                {l.navigation.signIn}
               </Link>
             ) : (
               <div className="flex items-center gap-3">
@@ -41,7 +42,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
                 <Link href="/profile/my-profile">
                   <div className="w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center hover:border-blue-400 transition-colors">
                     <span className="text-slate-500 text-xs font-bold uppercase">
-                      {user?.name?.charAt(0) ?? 'U'}
+                      {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>
                   </div>
                 </Link>
@@ -61,26 +62,26 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
               RentMy<span className="text-blue-600">Car</span>
             </span>
             <p className="hidden sm:block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
-              Verified Vehicles. Trusted Renters.
-            </p>
+               {l.landing.verifiedVehicles}
+             </p>
           </div>
         </Link>
 
         <nav className="flex gap-8 text-xs font-semibold text-slate-600">
           <Link href="/" className="hover:text-blue-600 transition-colors">
-            Catalog
+            {l.navigation.catalog}
           </Link>
           <button
             onClick={onHowItWorksClick}
             className="hover:text-blue-600 transition-colors"
           >
-            How It Works
+            {l.navigation.howItWorksNav}
           </button>
           <Link
             href="/profile/my-profile"
             className="hover:text-blue-600 transition-colors"
           >
-            My Profile & Rentals
+            {l.navigation.myProfileRentals}
           </Link>
         </nav>
 
@@ -92,13 +93,13 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
                   href="/sign-in"
                   className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
                 >
-                  Sign In
+                  {l.navigation.signIn}
                 </Link>
                 <Link
                   href="/sign-up"
                   className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition-all shadow-sm"
                 >
-                  Get Started
+                  {l.common.getStarted}
                 </Link>
               </>
             ) : (
@@ -107,7 +108,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
                 <Link href="/profile/my-profile">
                   <div className="h-9 w-9 bg-slate-100 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-blue-400 transition-colors">
                     <span className="text-slate-500 text-xs font-bold uppercase">
-                      {user?.name?.charAt(0) ?? 'U'}
+                      {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>
                   </div>
                 </Link>

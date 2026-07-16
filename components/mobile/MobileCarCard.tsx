@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
 import { useState } from 'react';
+import l from '@/helper/en';
 
 interface MobileCarCardProps {
   car: ICar;
@@ -17,9 +18,9 @@ const statusStyles: Record<string, string> = {
 };
 
 const statusLabel: Record<string, string> = {
-  available: 'Available',
-  rented: 'Booked',
-  inactive: 'Inactive',
+  available: l.status.available,
+  rented: l.status.booked,
+  inactive: l.status.inactive,
 };
 
 const MobileCarCard: React.FC<MobileCarCardProps> = ({
@@ -44,7 +45,7 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({
             statusStyles[car.status ?? ''] || statusStyles.available
           }`}
         >
-          {            statusLabel[car.status ?? ''] || 'Available'}
+          {            statusLabel[car.status ?? ''] || l.status.available}
         </span>
 
         {car.images && car.images.length > 1 && (
@@ -88,13 +89,13 @@ const MobileCarCard: React.FC<MobileCarCardProps> = ({
             onClick={() => onUpdate(car)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            ✎ Edit
+             ✎ {l.common.edit}
           </button>
           <button
             onClick={() => onDeleteClick(car._id)}
             className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-red-200 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
           >
-            🗑 Delete
+             🗑 {l.common.delete}
           </button>
         </div>
       </div>

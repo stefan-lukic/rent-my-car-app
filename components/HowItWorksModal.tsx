@@ -1,12 +1,11 @@
 import React from 'react';
+import l from '@/helper/en';
 
-//da li steps staviti u neki utils, helper ili constants fajl ili ostaviti ovde?
 const steps = [
   {
     number: '1',
-    title: 'Browse & Match',
-    description:
-      'Discover a curated network of reliable, privately-owned local cars. Filter by make, body style, price, or hybrid/electric engine types to match your exact itinerary style.',
+    title: l.howItWorks.browseMatch,
+    description: l.howItWorks.browseDesc,
     icon: (
       <svg
         className="w-5 h-5 text-blue-500"
@@ -26,9 +25,8 @@ const steps = [
   },
   {
     number: '2',
-    title: 'Reserve Instantly',
-    description:
-      'Pick your departure and return schedule. Review fully transparent day-rates, and confirm your holding reservation. The local renter will authorize approval instantly.',
+    title: l.howItWorks.reserveInstantly,
+    description: l.howItWorks.reserveDesc,
     icon: (
       <svg
         className="w-5 h-5 text-amber-500"
@@ -48,9 +46,8 @@ const steps = [
   },
   {
     number: '3',
-    title: 'Smart Handover',
-    description:
-      'Arrange personal pickup or convenient curbside handling at designated city transfer points in Belgrade, Novi Sad, or local suburbs. Enjoy quick ID check & digital key sign-off.',
+    title: l.howItWorks.smartHandover,
+    description: l.howItWorks.handoverDesc,
     icon: (
       <svg
         className="w-5 h-5 text-emerald-500"
@@ -70,9 +67,8 @@ const steps = [
   },
   {
     number: '4',
-    title: 'Embark Safely',
-    description:
-      'Travel with comprehensive coverage, full mechanical verification, and active 24/7 client relations assistance. Return easily with a complete fuel status and share a renter review.',
+    title: l.howItWorks.embarkSafely,
+    description: l.howItWorks.embarkDesc,
     icon: (
       <svg
         className="w-5 h-5 text-blue-600"
@@ -127,14 +123,14 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
               />
             </svg>
             <h2 className="text-lg font-bold text-gray-900">
-              How RentMyCar Works
+              {l.howItWorks.modalTitle}
             </h2>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
           >
-            ✕
+            {l.common.close}
           </button>
         </div>
 
@@ -163,7 +159,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
             onClick={onClose}
             className="w-full bg-gray-900 text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-colors"
           >
-            Got It, Let&apos;s Ride
+            {l.howItWorks.gotIt}
           </button>
         </div>
       </div>

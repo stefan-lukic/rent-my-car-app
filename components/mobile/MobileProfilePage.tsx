@@ -7,6 +7,7 @@ import { IUser } from '@/lib/model/User';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
+import l from '@/helper/en';
 
 interface MobileProfilePageProps {
   user: IUser;
@@ -32,7 +33,7 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
         onClick={() => router.push('/cars/add-car')}
         className="w-full bg-blue-600 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors mb-3"
       >
-        <span className="text-lg leading-none">+</span> Add New Car
+        <span className="text-lg leading-none">+</span> {l.profile.addNewCar}
       </button>
 
       <div className="flex border-b border-gray-200 bg-white rounded-t-xl">
@@ -44,7 +45,7 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
           }`}
           onClick={() => setActiveTab('cars')}
         >
-          My Cars
+          {l.profile.myCars}
         </button>
         <button
           className={`flex-1 text-center py-2.5 text-sm font-medium transition-colors ${
@@ -54,7 +55,7 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
           }`}
           onClick={() => setActiveTab('rentals')}
         >
-          My Rentals
+          {l.profile.myRentals}
         </button>
       </div>
 

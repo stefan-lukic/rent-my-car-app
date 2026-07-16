@@ -1,32 +1,30 @@
+import l from '@/helper/en';
 import Link from 'next/link';
 
 export default function HelpCenter() {
   return (
     <main className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Help Center</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">{l.pages.helpCenterHeading}</h1>
 
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Frequently Asked Questions
+              {l.pages.faqHeading}
             </h2>
             <dl className="space-y-8">
               {[
                 {
-                  question: 'How do I list my car?',
-                  answer:
-                    "To list your car, log in to your account and click on 'List a Car' in your dashboard. Follow the prompts to add details about your vehicle.",
+                  question: l.pages.faqQ1,
+                  answer: l.pages.faqA1,
                 },
                 {
-                  question: 'What if my car gets damaged?',
-                  answer:
-                    "All rentals include insurance coverage. If your car is damaged, report it immediately through our app or website, and we'll guide you through the claims process.",
+                  question: l.pages.faqQ2,
+                  answer: l.pages.faqA2,
                 },
                 {
-                  question: 'How do I get paid?',
-                  answer:
-                    'Payments are processed automatically after each completed rental. Funds are typically deposited into your linked bank account within 3-5 business days.',
+                  question: l.pages.faqQ3,
+                  answer: l.pages.faqA3,
                 },
               ].map((faq, index) => (
                 <div key={index}>
@@ -42,12 +40,12 @@ export default function HelpCenter() {
 
         <div className="mt-8 text-center">
           <p className="text-base text-gray-500">
-            Can`t find what you`re looking for?
+            {l.pages.cantFind}
             <Link
               href="/contact"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              Contact our support team
+              {l.pages.contactSupport}
             </Link>
           </p>
         </div>

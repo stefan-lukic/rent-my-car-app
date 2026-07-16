@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import { useState } from 'react';
 import CarFilters from '@/components/CarFilters';
 import CarRentalSearch from '@/components/CarRentalSearch';
@@ -22,10 +23,10 @@ export default function CarListPage() {
           <div className="absolute bottom-0 right-20 -mb-10 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
 
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 relative z-10">
-            Find Your Perfect Ride
+            {l.search.findPerfectRide}
           </h1>
           <p className="text-blue-100 text-sm sm:text-base max-w-xl relative z-10">
-            Find, compare, and choose the perfect car for your next trip.
+            {l.search.findCompareChoose}
           </p>
         </div>
 

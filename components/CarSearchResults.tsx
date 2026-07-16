@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
+import l from '@/helper/en';
 
 interface SearchResultsProps {
   car: ICar;
@@ -138,7 +139,7 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
                 €{car.pricePerDay}
               </span>
               <span className="block text-xs text-gray-500 font-medium">
-                / day
+                {l.common.perDay}
               </span>
             </div>
           </div>
@@ -161,13 +162,13 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
             className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors text-sm"
             onClick={onViewDetails}
           >
-            Details
+            {l.common.details}
           </button>
           <button
             className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
             onClick={onBookNow}
           >
-            Book Now
+            {l.common.bookNow}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { Controller, Control, FieldValues, Path } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import l from '@/helper/en';
 
 export const inputClasses =
   'w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors';
@@ -22,7 +23,7 @@ export default function CustomDatePicker<T extends FieldValues>({
   label,
   maxDate,
   minDate,
-  placeholderText = 'Select date',
+  placeholderText = l.cars.selectDate,
 }: CustomDatePickerProps<T>) {
   const inputId = `${name}-input`;
 

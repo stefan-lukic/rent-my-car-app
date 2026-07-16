@@ -1,6 +1,7 @@
 'use client';
 
 import { useForgotPassword } from '@/hooks/useForgotPassword';
+import l from '@/helper/en';
 
 const ForgotPasswordForm = () => {
   const { register, handleSubmit, errors, isSubmitting, successMessage } =
@@ -11,10 +12,10 @@ const ForgotPasswordForm = () => {
       <div className="w-full max-w-md space-y-8 p-10 bg-white">
         <div className="space-y-3">
           <h1 className="text-3xl font-normal text-center">
-            Forgot your password?
+            {l.auth.forgotPasswordHeading}
           </h1>
           <p className="text-gray-600 text-center">
-            Enter your email and we&apos;ll send you a reset link.
+            {l.auth.forgotPasswordDesc}
           </p>
         </div>
 
@@ -22,8 +23,8 @@ const ForgotPasswordForm = () => {
           <div>
             <input
               type="email"
-              placeholder="Enter your email"
-              {...register('email', { required: 'Email is required' })}
+              placeholder={l.auth.enterEmail}
+              {...register('email', { required: l.auth.emailRequired })}
               className="w-full p-4 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
             />
             {errors.email && (
@@ -46,18 +47,18 @@ const ForgotPasswordForm = () => {
             disabled={isSubmitting}
             className="w-full p-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600 disabled:opacity-50"
           >
-            {isSubmitting ? 'Sending...' : 'Send reset link'}
+            {isSubmitting ? l.common.sending : l.auth.sendResetLink}
           </button>
         </form>
 
         <div className="text-center">
           <p className="text-black/[0.6] text-xs">
-            Remembered it?
+            {l.common.rememberedIt}
             <a
               href="/sign-in"
               className="underline underline-offset-[6px] ml-2"
             >
-              Back to Log in
+              {l.common.backToLogin}
             </a>
           </p>
         </div>

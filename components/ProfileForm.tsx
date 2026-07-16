@@ -1,5 +1,6 @@
 'use client';
 
+import l from '@/helper/en';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
@@ -77,7 +78,7 @@ const ProfileForm = ({
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message || 'An error occurred. Please try again.'
+        error.response?.data?.message || l.auth.errorOccurred
       );
     } finally {
       setIsLoading(false);
@@ -111,7 +112,7 @@ const ProfileForm = ({
               control={control}
               name="name"
               label=""
-              placeholder="Name"
+              placeholder={l.common.name}
               type="text"
             />
             <input
@@ -130,7 +131,7 @@ const ProfileForm = ({
           control={control}
           name="email"
           label=""
-          placeholder="Email"
+          placeholder={l.common.email}
           type="text"
         />
 
@@ -138,7 +139,7 @@ const ProfileForm = ({
           control={control}
           name="password"
           label=""
-          placeholder="Password"
+          placeholder={l.common.password}
           type="password"
         />
 
@@ -151,7 +152,7 @@ const ProfileForm = ({
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? l.common.creating : l.auth.createAccount}
             </button>
 
             <button className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center">
@@ -162,7 +163,7 @@ const ProfileForm = ({
                 width={20}
                 height={20}
               />
-              Sign up with Google
+              {l.common.signUpWithGoogle}
             </button>
           </div>
         ) : (
@@ -172,14 +173,14 @@ const ProfileForm = ({
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? 'Logging In...' : 'Log In'}
+              {isLoading ? l.common.loggingIn : l.common.logIn}
             </button>
 
             <a
               className="text-[var(--secondary-2)] hover:underline hover:underline-offset-4"
               href="/forgot-password"
             >
-              Forgot Password?
+              {l.auth.forgotPassword}
             </a>
           </div>
         )}

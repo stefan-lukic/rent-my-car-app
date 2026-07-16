@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button } from './UI/Button';
+import l from '@/helper/en';
 
 interface DeleteCarModalProps {
   isOpen: boolean;
@@ -26,12 +27,12 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
         body: JSON.stringify({ _id: carId }),
       });
 
-      if (!response.ok) throw new Error('Failed to delete car');
+      if (!response.ok) throw new Error(l.cars.deleteCarError);
 
       onDelete(carId);
       onClose();
     } catch (error) {
-      alert('Failed to delete car. Please try again.');
+      alert(l.cars.deleteCarError);
     } finally {
       setIsDeleting(false);
     }
@@ -42,10 +43,9 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-        <h2 className="text-xl font-bold mb-2">Delete Car</h2>
+        <h2 className="text-xl font-bold mb-2">{l.cars.deleteCar}</h2>
         <p className="text-gray-500 mb-6">
-          Are you sure you want to delete this car? This action cannot be
-          undone.
+          {l.cars.deleteCarConfirm}
         </p>
         <div className="flex justify-end gap-2">
           <Button
@@ -53,7 +53,7 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
             onClick={onClose}
             className="bg-gray-300 hover:bg-gray-400 text-black"
           >
-            Cancel
+            {l.common.cancel}
           </Button>
           <Button
             type="button"
@@ -61,7 +61,7 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
             disabled={isDeleting}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            {isDeleting ? 'Deleting...' : 'Delete'}
+            {isDeleting ? l.common.deleting : l.common.delete}
           </Button>
         </div>
       </div>

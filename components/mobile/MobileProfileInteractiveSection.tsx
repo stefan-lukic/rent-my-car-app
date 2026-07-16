@@ -7,6 +7,7 @@ import UpdateCarModal from '../UpdateCarModal';
 import DeleteCarModal from '../DeleteCarModal';
 import MobileCarCard from './MobileCarCard';
 import MobileRentalCard from './MobileRentalCard';
+import l from '@/helper/en';
 
 interface MobileProfileInteractiveSectionProps {
   cars: ICar[];
@@ -41,7 +42,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {cars.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven&apos;t listed any cars yet.
+              {l.profile.noCarsListed}
             </p>
           ) : (
             <div className="space-y-2">
@@ -65,7 +66,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {availableRentals.length === 0 ? (
             <p className="text-gray-600 italic">
-              You haven&apos;t rented any cars yet.
+              {l.profile.noRentalsYet}
             </p>
           ) : (
             <div className="space-y-2">

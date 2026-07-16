@@ -6,6 +6,7 @@ import { CarMake } from '../lib/model/car/CarMake';
 import { CarEngineType } from '../lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { selectArrowStyle } from '@/utils/styles';
+import l from '@/helper/en';
 
 interface CarFiltersProps {
   filters: CarFilterState;
@@ -25,12 +26,12 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
 
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6">
-      <h2 className="text-lg font-bold text-gray-900 mb-6">Filters</h2>
+      <h2 className="text-lg font-bold text-gray-900 mb-6">{l.search.filters}</h2>
 
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Price Range (per day)
+            {l.search.priceRangePerDay}
           </label>
           <div className="flex items-center space-x-3">
             <input
@@ -39,7 +40,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
               name="minPrice"
               value={filters.minPrice}
               onChange={handleInputChange}
-              placeholder="Min $"
+              placeholder={`${l.search.minPlaceholder} $`}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             />
             <span className="text-gray-400 font-medium">-</span>
@@ -49,7 +50,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
               name="maxPrice"
               value={filters.maxPrice}
               onChange={handleInputChange}
-              placeholder="Max $"
+              placeholder={`${l.search.maxPlaceholder} $`}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             />
           </div>
@@ -60,7 +61,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             htmlFor="make"
             className="block text-sm font-semibold text-gray-700 mb-1"
           >
-            Car Make
+            {l.search.carMake}
           </label>
           <select
             id="make"
@@ -70,7 +71,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             style={selectArrowStyle}
             className={inputClass}
           >
-            <option value="">All Makes</option>
+            <option value="">{l.search.allMakes}</option>
             {Object.values(CarMake).map((make) => (
               <option key={make} value={make}>
                 {make}
@@ -84,7 +85,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             htmlFor="carType"
             className="block text-sm font-semibold text-gray-700 mb-1"
           >
-            Car Type
+            {l.search.carType}
           </label>
           <select
             id="carType"
@@ -94,7 +95,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             style={selectArrowStyle}
             className={inputClass}
           >
-            <option value="">All Types</option>
+            <option value="">{l.search.allTypes}</option>
             {Object.values(CarType).map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -108,7 +109,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             htmlFor="engine"
             className="block text-sm font-semibold text-gray-700 mb-1"
           >
-            Engine Type
+            {l.search.engineType}
           </label>
           <select
             id="engine"
@@ -118,7 +119,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ filters, setFilters }) => {
             style={selectArrowStyle}
             className={inputClass}
           >
-            <option value="">All Engine Types</option>
+            <option value="">{l.search.allEngineTypes}</option>
             {Object.values(CarEngineType).map((engine) => (
               <option key={engine} value={engine}>
                 {engine}

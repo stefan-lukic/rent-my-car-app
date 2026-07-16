@@ -7,6 +7,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useAuth } from '@/hooks/useAuth';
 import LogoutButton from '../LogoutButton';
 import { useState } from 'react';
+import l from '@/helper/en';
 
 const MobileFooter = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -26,7 +27,7 @@ const MobileFooter = () => {
               className={`flex items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Home' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
               onClick={() => handleClick('Home')}
             >
-              Home
+              {l.navigation.home}
               <HomeIcon />
             </Link>
             <div className="flex space-x-2">
@@ -39,7 +40,7 @@ const MobileFooter = () => {
                         className={`flex align-items justify-center items-center  gap-1 cursor-pointer transition duration-300 ${activeButton === 'Sign-in' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Sign-in')}
                       >
-                        Sign-in
+                        {l.navigation.signInMobile}
                         <LoginIcon />
                       </Link>
                       <Link
@@ -47,7 +48,7 @@ const MobileFooter = () => {
                         className={`flex align-items justify-center items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Sign-up' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Sign-up')}
                       >
-                        Sign-up
+                        {l.navigation.signUpMobile}
                         <LoginIcon />
                       </Link>
                     </>
@@ -58,7 +59,7 @@ const MobileFooter = () => {
                         className={`flex align-items justify-center items-center gap-1 cursor-pointer transition duration-300 ${activeButton === 'Profile' ? 'bg-blue-500 rounded' : 'hover:bg-blue-600'} p-1 text-xs`}
                         onClick={() => handleClick('Profile')}
                       >
-                        Profile
+                        {l.navigation.profile}
                         <AccountBoxIcon />
                       </Link>
                       <div className="flex align-items justify-center items-center text-xs">

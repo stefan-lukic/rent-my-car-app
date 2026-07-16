@@ -5,30 +5,31 @@ import {
   FaCheckCircle,
   FaCar,
 } from 'react-icons/fa';
+import l from '@/helper/en';
 
 export const sidebarLinks = [
   {
-    label: 'Sport',
+    label: l.sidebar.sport,
     link: '/sport',
     icon: '/icons/apple.svg',
   },
   {
-    label: 'Health',
+    label: l.sidebar.health,
     link: '/health',
     icon: '/icons/apple.svg',
   },
   {
-    label: 'Education',
+    label: l.sidebar.education,
     link: '/education',
     icon: '/icons/apple.svg',
   },
   {
-    label: 'Entertainment',
+    label: l.sidebar.entertainment,
     link: '/entertainment',
     icon: '/icons/apple.svg',
   },
   {
-    label: 'Add provider',
+    label: l.sidebar.addProvider,
     link: '/provider',
     icon: '/icons/apple.svg',
   },
@@ -36,12 +37,12 @@ export const sidebarLinks = [
 
 export const accountDropDownList = [
   {
-    label: 'Manage My Account',
+    label: l.sidebar.manageMyAccount,
     icon: '/icons/apple.svg',
     route: '/account',
   },
   {
-    label: 'Logout',
+    label: l.common.logOut,
     icon: '/icons/apple.svg',
     route: '/sign-in',
   },

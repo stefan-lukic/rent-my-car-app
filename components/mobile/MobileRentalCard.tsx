@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
+import l from '@/helper/en';
 
 interface MobileRentalCardProps {
   rental: {
@@ -24,9 +25,9 @@ const statusStyles: Record<string, string> = {
 };
 
 const statusLabel: Record<string, string> = {
-  available: 'Available',
-  rented: 'Booked',
-  inactive: 'Inactive',
+  available: l.status.available,
+  rented: l.status.booked,
+  inactive: l.status.inactive,
 };
 
 const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus = true }) => {
@@ -35,7 +36,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
   if (!rental.car) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-4 text-center text-gray-400 text-sm">
-        🚗 Car unavailable
+        {l.cars.carUnavailable}
       </div>
     );
   }
@@ -84,7 +85,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
               statusStyles[car.status ?? ''] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || 'Available'}
+            {            statusLabel[car.status ?? ''] || l.status.available}
           </span>
         )}
 
@@ -143,7 +144,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
         </div>
 
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-          <span className="text-xs text-gray-400 font-medium">Total</span>
+          <span className="text-xs text-gray-400 font-medium">{l.common.total}</span>
           <span className="text-sm font-bold text-gray-900">€{totalCost}</span>
         </div>
       </div>

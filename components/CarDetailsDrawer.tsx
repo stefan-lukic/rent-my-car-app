@@ -6,6 +6,7 @@ import { IRenter } from '@/lib/model/User';
 import RenterCard from './RenterCard';
 import HowItWorksModal from './HowItWorksModal';
 import { ICar } from '@/lib/model/car/Car';
+import l from '@/helper/en';
 
 interface CarDetailsDrawerProps {
   car: ICar | null;
@@ -31,18 +32,18 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const total = images.length;
 
   const specs = [
-    { icon: '⚡', label: 'Engine', value: car.engine },
-    { icon: '🏎️', label: 'Power', value: `${car.power} HP` },
-    { icon: '🚗', label: 'Type', value: car.carType },
+    { icon: '⚡', label: l.carSpecs.engine, value: car.engine },
+    { icon: '🏎️', label: l.carSpecs.power, value: `${car.power} HP` },
+    { icon: '🚗', label: l.carSpecs.type, value: car.carType },
     car.averageConsumption && {
       icon: '⛽',
-      label: 'Consumption',
+      label: l.carSpecs.consumption,
       value: car.averageConsumption,
     },
-    car.milage && { icon: '📍', label: 'Mileage', value: `${car.milage} km` },
+    car.milage && { icon: '📍', label: l.carSpecs.mileage, value: `${car.milage} km` },
     car.firstRegistration && {
       icon: '📅',
-      label: 'Registration',
+      label: l.carSpecs.registration,
       value: new Date(car.firstRegistration).toLocaleDateString(),
     },
   ].filter(Boolean) as { icon: string; label: string; value: string }[];
@@ -63,13 +64,13 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
       >
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
           <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            Car Details
+            {l.drawer.carDetails}
           </span>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
           >
-            ✕
+            {l.common.close}
           </button>
         </div>
 
@@ -135,7 +136,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 <div className="text-lg font-bold text-blue-500">
                   €{car.pricePerDay}
                 </div>
-                <div className="text-xs text-gray-400">/ day</div>
+                <div className="text-xs text-gray-400">{l.common.perDay}</div>
               </div>
             </div>
 
@@ -158,7 +159,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             {car.description && (
               <div className="border-t border-gray-100 pt-4">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                  Description
+                  {l.common.description}
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {car.description}
@@ -168,7 +169,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
             <div className="border-t border-gray-100 pt-4">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Renter
+                {l.drawer.renter}
               </p>
               {renter && <RenterCard renter={renter} />}
             </div>
@@ -180,14 +181,14 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             onClick={() => setIsModalOpen(true)}
             className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
           >
-            How it works
+            {l.common.howItWorks}
           </button>
 
           <button
             onClick={onBookNow}
             className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
-            Book Now
+            {l.common.bookNow}
           </button>
         </div>
       </div>

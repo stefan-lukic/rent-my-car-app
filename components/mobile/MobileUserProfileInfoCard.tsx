@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import l from '@/helper/en';
 import Link from 'next/link';
 
 interface UserProfileCardProps {
@@ -56,12 +57,12 @@ export default function MobileProfileUserInfoCard({
             {user.name}
           </h2>
           <p className="text-xs text-blue-100 truncate">
-            {user.contactInfo || 'No phone number added'}
+            {user.contactInfo || l.profile.noPhoneNumber}
           </p>
           <div className="flex items-center gap-1 mt-0.5">
             <span className="text-blue-200 text-xs">✓</span>
             <span className="text-blue-100 text-xs">
-              Member since {memberSince}
+              {l.profile.memberSince(memberSince)}
             </span>
           </div>
         </div>
@@ -74,12 +75,12 @@ export default function MobileProfileUserInfoCard({
       </div>
 
       <div className="grid grid-cols-3 divide-x divide-gray-100 py-3">
-        <StatItem icon="🚗" value={carsCount} label="Cars" />
-        <StatItem icon="📅" value={rentalsCount} label="Rentals" />
+        <StatItem icon="🚗" value={carsCount} label={l.profile.cars} />
+        <StatItem icon="📅" value={rentalsCount} label={l.profile.rentals} />
         <StatItem
           icon="⭐"
           value={(user.rating ?? 0).toFixed(1)}
-          label="Rating"
+          label={l.profile.rating}
         />
       </div>
     </div>

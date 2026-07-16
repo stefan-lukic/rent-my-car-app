@@ -11,6 +11,7 @@ import CarSearchResults from './CarSearchResults';
 import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
+import l from '@/helper/en';
 
 const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
@@ -47,7 +48,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
       >
         <div className="flex-1 w-full">
           <label className="block text-xs font-bold text-gray-500 uppercase mb-1 px-1">
-            Location
+            {l.search.location}
           </label>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -55,7 +56,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
               {...form.register('city')}
               className="w-full pl-10 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none transition-all"
             >
-              <option value="">All Cities (Serbia)</option>
+              <option value="">{l.search.allCities}</option>
               {Object.values(CarCity).map((city) => (
                 <option key={city} value={city}>
                   {city}
@@ -69,13 +70,13 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
           <CustomDatePicker
             name="startDate"
             control={form.control}
-            label="Pick Up"
+            label={l.search.pickUp}
             minDate={new Date()}
           />
           <CustomDatePicker
             name="endDate"
             control={form.control}
-            label="Return"
+            label={l.search.returnDate}
             minDate={startDate ?? new Date()}
           />
         </div>
@@ -89,7 +90,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
           ) : (
             <>
-              <SearchIcon className="mr-2" /> Search
+              <SearchIcon className="mr-2" /> {l.common.search}
             </>
           )}
         </Button>
