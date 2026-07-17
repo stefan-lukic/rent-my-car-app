@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { signIn } from 'next-auth/react';
 import { z } from 'zod';
 import { Form } from './UI/Form';
@@ -44,42 +44,47 @@ const ProfileForm = ({
       if (type === 'sign-up') {
         const formData = new FormData();
 
-        // Append form fields
         Object.entries(data).forEach(([key, value]) => {
           if (value !== null) {
             formData.append(key, value.toString());
           }
         });
 
-        // Append upload images
         uploadImages.forEach((file) => {
           formData.append('uploadImages', file);
         });
 
-        console.log(formData);
         const response = await axios.post('/api/auth/signup', formData);
         if (response.status === 201) {
           router.push(
-            `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`
+            `/verify-email?status=verification-sent`
           );
         }
       } else {
         const result = await signIn('credentials', {
-          redirect: true,
+          redirect: false,
           email: data.email,
           password: data.password,
         });
 
         if (result?.error) {
-          setError(result.error);
+          if (result.error === 'Please verify your email before logging in') {
+            setError(l.auth.emailNotVerified);
+          } else {
+            setError(l.auth.invalidCredentials);
+          }
         } else {
-          router.push('/');
+          router.push(callbackUrl || '/');
         }
       }
-    } catch (error: any) {
-      setError(
-        error.response?.data?.message || l.auth.errorOccurred
-      );
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || l.auth.errorOccurred
+        );
+      } else {
+        setError(l.auth.errorOccurred);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -98,8 +103,6 @@ const ProfileForm = ({
         const filesArray = Array.from(files);
         setUploadImages(filesArray);
       }
-    } else {
-      setUploadImages((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -132,7 +135,7 @@ const ProfileForm = ({
           name="email"
           label=""
           placeholder={l.common.email}
-          type="text"
+          type="email"
         />
 
         <CustomInput
@@ -155,7 +158,7 @@ const ProfileForm = ({
               {isLoading ? l.common.creating : l.auth.createAccount}
             </button>
 
-            <button className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center">
+            <button className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center" type="button">
               <Image
                 className="mr-2"
                 src="/icons/icon-google.svg"

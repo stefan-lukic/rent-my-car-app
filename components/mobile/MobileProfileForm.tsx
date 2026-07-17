@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { signIn } from 'next-auth/react';
 import { z } from 'zod';
 import { authFormSchema } from '@/lib/utils';
@@ -57,26 +57,34 @@ const MobileProfileForm = ({
         const response = await axios.post('/api/auth/signup', formData);
         if (response.status === 201) {
           router.push(
-            `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`
+            `/verify-email?status=verification-sent`
           );
         }
       } else {
         const result = await signIn('credentials', {
-          redirect: true,
+          redirect: false,
           email: data.email,
           password: data.password,
         });
 
         if (result?.error) {
-          setError(result.error);
+          if (result.error === 'Please verify your email before logging in') {
+            setError(l.auth.emailNotVerified);
+          } else {
+            setError(l.auth.invalidCredentials);
+          }
         } else {
-          router.push('/');
+          router.push(callbackUrl || '/');
         }
       }
-    } catch (error: any) {
-      setError(
-        error.response?.data?.message || l.auth.errorOccurred
-      );
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || l.auth.errorOccurred
+        );
+      } else {
+        setError(l.auth.errorOccurred);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -139,7 +147,7 @@ const MobileProfileForm = ({
           name="email"
           label=""
           placeholder={l.common.email}
-          type="text"
+          type="email"
         />
 
         <CustomInput
@@ -162,7 +170,7 @@ const MobileProfileForm = ({
               {isLoading ? l.common.creating : l.auth.createAccount}
             </button>
 
-            <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center">
+            <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center" type="button">
               <Image
                 className="mr-2"
                 src="/icons/icon-google.svg"

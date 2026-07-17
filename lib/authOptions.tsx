@@ -1,7 +1,7 @@
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import bcrypt from 'bcryptjs';
-import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
@@ -15,9 +15,18 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         await connectToDatabase();
 
-        const user = await User.findOne({ email: credentials?.email });
+        const email =
+          typeof credentials?.email === 'string'
+            ? credentials.email.trim().toLowerCase()
+            : '';
+
+        const user = await User.findOne({ email });
         if (!user) {
           throw new Error('No user found');
+        }
+
+        if (!user.emailVerified) {
+          throw new Error('Please verify your email before logging in');
         }
 
         const isValid = await bcrypt.compare(

@@ -9,6 +9,10 @@ export interface IUser extends Document {
   contactInfo: string;
   rating: number;
   emailVerified?: Date;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   images?: string[];
   role: Role;
   cars: mongoose.Types.ObjectId[];
@@ -33,6 +37,10 @@ const userSchema: Schema<IUser> = new Schema(
     contactInfo: { type: String, required: false },
     rating: { type: Number, required: false },
     emailVerified: { type: Date },
+    emailVerificationToken: { type: String, index: true },
+    emailVerificationExpires: { type: Date },
+    passwordResetToken: { type: String, index: true },
+    passwordResetExpires: { type: Date },
     images: { type: [String] },
     role: { type: String },
     cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }],
