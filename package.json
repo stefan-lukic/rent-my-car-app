@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:debug": "NODE_OPTIONS='--inspect' next dev"
+    "dev:debug": "NODE_OPTIONS='--inspect' next dev",
+    "migrate:mark-existing-users-verified": "node --env-file=.env scripts/migrations/mark-existing-users-verified.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

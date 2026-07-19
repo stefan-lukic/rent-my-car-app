@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Rental from '@/lib/model/Rental';
 import Car from '@/lib/model/car/Car';
+import User from '@/lib/model/User';
 import mongoose from 'mongoose';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
+import {
+  sendBookingConfirmationToCustomer,
+  sendBookingNotificationToOwner,
+} from '@/lib/emailService/sendEmail';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -132,13 +137,70 @@ export async function POST(req: NextRequest) {
       throw error;
     }
 
+    const owner = await User.findById(car.renter)
+      .select('name email')
+      .lean()
+      .exec();
+
+    const emailTasks: { label: string; promise: Promise<void> }[] = [];
+
+    if (session.user.email) {
+      emailTasks.push({
+        label: 'customer confirmation',
+        promise: sendBookingConfirmationToCustomer({
+          customerEmail: session.user.email,
+          customerName: session.user.name || 'Customer',
+          carName: `${car.make} ${car.carModel}`,
+          startDate: rentalStartDate,
+          endDate: rentalEndDate,
+          pickupLocation: car.carLocation,
+        }),
+      });
+    } else {
+      console.error(
+        'Customer email missing from session, skipping confirmation email'
+      );
+    }
+
+    if (owner && owner.email) {
+      emailTasks.push({
+        label: 'owner notification',
+        promise: sendBookingNotificationToOwner({
+          email: owner.email,
+          ownerName: owner.name || 'Owner',
+          carName: `${car.make} ${car.carModel}`,
+          customerName: session.user.name || 'Customer',
+          customerEmail: session.user.email || 'N/A',
+          startDate: rentalStartDate,
+          endDate: rentalEndDate,
+        }),
+      });
+    } else {
+      console.error('Owner email missing, skipping notification email');
+    }
+
+    if (emailTasks.length > 0) {
+      const emailResults = await Promise.allSettled(
+        emailTasks.map((task) => task.promise)
+      );
+      emailResults.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          console.error(
+            `Failed to send ${emailTasks[index].label}:`,
+            result.reason
+          );
+        }
+      });
+    }
+
     return NextResponse.json(
       { message: 'Booking successful', rental },
       { status: 201 }
     );
   } catch (error) {
+    console.error('Error creating booking:', error);
     return NextResponse.json(
-      { message: 'Error creating booking', error: (error as Error).message },
+      { message: 'Error creating booking' },
       { status: 500 }
     );
   }

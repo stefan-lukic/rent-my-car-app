@@ -2,6 +2,8 @@ import connectToDatabase from '@/lib/db/mongoose'; // funkcija koja otvara konek
 
 import User from '@/lib/model/User';
 import { NextRequest, NextResponse } from 'next/server';
+import { generateVerificationToken } from '@/lib/emailVerification';
+import { sendPasswordResetEmail } from '@/lib/emailService/sendEmail';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,6 +19,34 @@ export async function POST(req: NextRequest) {
           message: 'User does not exist.',
         },
         { status: 400 }
+      );
+    }
+
+    const appUrl = process.env.APP_URL;
+    if (!appUrl) {
+      return NextResponse.json(
+        { message: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
+
+    const { rawToken, hash, expires } = generateVerificationToken();
+
+    user.passwordResetToken = hash;
+    user.passwordResetExpires = expires;
+    await user.save();
+
+    try {
+      await sendPasswordResetEmail({
+        email: user.email,
+        token: rawToken,
+        appUrl,
+      });
+    } catch (emailError) {
+      console.error('Failed to send password reset email:', emailError);
+      return NextResponse.json(
+        { message: 'Failed to send reset email. Please try again later.' },
+        { status: 500 }
       );
     }
 
