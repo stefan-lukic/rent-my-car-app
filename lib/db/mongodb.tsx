@@ -6,10 +6,6 @@ const options: MongoClientOptions = {};
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your Mongo URI to .env');
-}
-
 declare global {
   // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
