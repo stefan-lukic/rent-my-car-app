@@ -8,7 +8,7 @@ import l from '@/helper/en';
 interface MobileRentalCardProps {
   rental: {
     _id: string;
-    car: ICar | null;
+    car: ICar;
     rentalPeriod: {
       startDate: Date;
       endDate: Date;
@@ -32,7 +32,11 @@ const statusLabel: Record<string, string> = {
   cancelled: l.status.cancelled,
 };
 
-const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus = true, onCancel }) => {
+const MobileRentalCard: React.FC<MobileRentalCardProps> = ({
+  rental,
+  showStatus = true,
+  onCancel,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!rental.car) {
@@ -88,7 +92,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
               statusStyles[status] || statusStyles.available
             }`}
           >
-            {            statusLabel[status] || l.status.available}
+            {statusLabel[status] || l.status.available}
           </span>
         )}
 
@@ -147,7 +151,9 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
         </div>
 
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-          <span className="text-xs text-gray-400 font-medium">{l.common.total}</span>
+          <span className="text-xs text-gray-400 font-medium">
+            {l.common.total}
+          </span>
           <span className="text-sm font-bold text-gray-900">€{totalCost}</span>
         </div>
 

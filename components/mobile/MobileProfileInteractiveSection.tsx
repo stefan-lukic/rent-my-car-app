@@ -40,7 +40,7 @@ const MobileProfileInteractiveSection = ({
     setCars(cars.filter((car) => car._id !== carId));
   };
 
-  const handleCancelRental = (updatedRental: any) => {
+  const handleCancelRental = (updatedRental: RentalWithCar) => {
     setRentalsState((prev) =>
       prev.map((rental) =>
         rental._id === updatedRental._id ? updatedRental : rental
@@ -53,9 +53,7 @@ const MobileProfileInteractiveSection = ({
       {activeTab === 'cars' && (
         <div>
           {cars.length === 0 ? (
-            <p className="text-gray-600 italic">
-              {l.profile.noCarsListed}
-            </p>
+            <p className="text-gray-600 italic">{l.profile.noCarsListed}</p>
           ) : (
             <div className="space-y-2">
               {cars.map((car) => (
@@ -77,9 +75,7 @@ const MobileProfileInteractiveSection = ({
       {activeTab === 'rentals' && (
         <div>
           {availableRentals.length === 0 ? (
-            <p className="text-gray-600 italic">
-              {l.profile.noRentalsYet}
-            </p>
+            <p className="text-gray-600 italic">{l.profile.noRentalsYet}</p>
           ) : (
             <div className="space-y-2">
               {availableRentals.map((rental) => (

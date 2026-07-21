@@ -4,17 +4,18 @@ import React from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
+import { RentalStatus } from '@/types/RentalWithCar';
 
 interface RentalCardProps {
   rental: {
     _id: string;
-    car: ICar | null;
+    car: ICar;
     rentalPeriod: {
       startDate: Date;
       endDate: Date;
     };
     totalCost: number;
-    status?: 'active' | 'cancelled';
+    status?: RentalStatus;
     cancelledAt?: Date;
     cancelledBy?: string;
   };
@@ -32,7 +33,11 @@ const statusLabel: Record<string, string> = {
   cancelled: l.status.cancelled,
 };
 
-const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true, onCancel }) => {
+const RentalCard: React.FC<RentalCardProps> = ({
+  rental,
+  showStatus = true,
+  onCancel,
+}) => {
   const { car, rentalPeriod, totalCost } = rental;
   const status = rental.status ?? 'active';
 
@@ -75,7 +80,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true, onCa
               statusStyles[status] || statusStyles.available
             }`}
           >
-            {            statusLabel[status] || l.status.available}
+            {statusLabel[status] || l.status.available}
           </span>
         )}
       </div>
@@ -86,7 +91,8 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true, onCa
         </h3>
 
         <p className="text-gray-700 font-medium text-sm mt-0.5">
-          €{car.pricePerDay}{l.common.perDay}
+          €{car.pricePerDay}
+          {l.common.perDay}
         </p>
 
         <div className="flex items-center gap-1 mt-1 mb-3">

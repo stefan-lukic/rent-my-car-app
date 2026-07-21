@@ -1,14 +1,19 @@
 import { ICar } from '@/lib/model/car/Car';
 
+export enum RentalStatus {
+  Active = 'active',
+  Cancelled = 'cancelled',
+}
+
 export type RentalWithCar = {
   _id: string;
-  car: ICar | null;
+  car: ICar;
   rentalPeriod: {
     startDate: Date;
     endDate: Date;
   };
   totalCost: number;
-  status?: 'active' | 'cancelled';
+  status?: RentalStatus;
   cancelledAt?: Date;
   cancelledBy?: string;
 };

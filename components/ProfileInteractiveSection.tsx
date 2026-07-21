@@ -22,14 +22,15 @@ const ProfileInteractiveSection = ({
 }: ProfileInteractiveSectionProps) => {
   const [activeTab, setActiveTab] = useState<'cars' | 'rentals'>('cars');
   const [cars, setCars] = useState<ICar[]>(initialCars);
-  const [rentals, setRentals] = useState<RentalWithCar[]>(initialRentals);
-
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [carToDeleteId, setCarToDeleteId] = useState<string | null>(null);
-  const [rentalToCancelId, setRentalToCancelId] = useState<string | null>(null);
-
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
+  const [rentals, setRentals] = useState<RentalWithCar[]>(initialRentals);
+  const [rentalToCancelId, setRentalToCancelId] = useState<string | null>(null);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const carsPerPage = 3;
   const rentalsPerPage = 3;
@@ -39,7 +40,7 @@ const ProfileInteractiveSection = ({
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
-    setSelectedCar(null); // null = zatvori modal
+    setIsUpdateModalOpen(false);
   };
 
   const handleDeleteCar = (carId: string) => {
@@ -49,14 +50,7 @@ const ProfileInteractiveSection = ({
   const handleCancelRental = (updatedRental: RentalWithCar) => {
     setRentals((prev) =>
       prev.map((rental) =>
-        rental._id === updatedRental._id
-          ? {
-              ...rental,
-              status: updatedRental.status,
-              cancelledAt: updatedRental.cancelledAt,
-              cancelledBy: updatedRental.cancelledBy,
-            }
-          : rental
+        rental._id === updatedRental._id ? updatedRental : rental
       )
     );
   };
@@ -133,8 +127,14 @@ const ProfileInteractiveSection = ({
                     <CarCard
                       key={car._id}
                       car={car}
-                      onUpdate={() => setSelectedCar(car)}
-                      onDeleteClick={(car) => setCarToDeleteId(car._id)}
+                      onUpdate={() => {
+                        setSelectedCar(car);
+                        setIsUpdateModalOpen(true);
+                      }}
+                      onDeleteClick={(car) => {
+                        setCarToDeleteId(car._id);
+                        setIsDeleteModalOpen(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -196,7 +196,10 @@ const ProfileInteractiveSection = ({
                     <RentalCard
                       key={rental._id}
                       rental={rental}
-                      onCancel={(rentalId) => setRentalToCancelId(rentalId)}
+                      onCancel={(rentalId) => {
+                        setRentalToCancelId(rentalId);
+                        setIsCancelModalOpen(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -234,28 +237,34 @@ const ProfileInteractiveSection = ({
 
       {selectedCar && (
         <UpdateCarModal
-          isOpen={true}
+          isOpen={isUpdateModalOpen}
           car={selectedCar}
           onUpdate={handleUpdateCar}
-          onClose={() => setSelectedCar(null)}
+          onClose={() => setIsUpdateModalOpen(false)}
         />
       )}
 
       {carToDeleteId && (
         <DeleteCarModal
-          isOpen={true}
+          isOpen={isDeleteModalOpen}
           carId={carToDeleteId}
           onDelete={handleDeleteCar}
-          onClose={() => setCarToDeleteId(null)}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setCarToDeleteId(null);
+          }}
         />
       )}
 
       {rentalToCancelId && (
         <CancelRentalModal
-          isOpen={true}
+          isOpen={isCancelModalOpen}
           rentalId={rentalToCancelId}
           onCancelled={handleCancelRental}
-          onClose={() => setRentalToCancelId(null)}
+          onClose={() => {
+            setIsCancelModalOpen(false);
+            setRentalToCancelId(null);
+          }}
         />
       )}
     </div>
