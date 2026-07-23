@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
+import { RentalStatus } from '@/types/RentalWithCar';
 
 interface RentalCardProps {
   rental: {
@@ -14,24 +15,31 @@ interface RentalCardProps {
       endDate: Date;
     };
     totalCost: number;
+    status?: RentalStatus;
+    cancelledAt?: Date;
+    cancelledBy?: string;
   };
   showStatus?: boolean;
+  onCancel?: (rentalId: string) => void;
 }
 
 const statusStyles: Record<string, string> = {
-  available: 'bg-green-100 text-green-700',
-  rented: 'bg-yellow-100 text-yellow-700',
-  inactive: 'bg-gray-100 text-gray-500',
+  active: 'bg-yellow-100 text-yellow-700',
+  cancelled: 'bg-red-100 text-red-700',
 };
 
 const statusLabel: Record<string, string> = {
-  available: l.status.available,
-  rented: l.status.booked,
-  inactive: l.status.inactive,
+  active: l.status.booked,
+  cancelled: l.status.cancelled,
 };
 
-const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) => {
+const RentalCard: React.FC<RentalCardProps> = ({
+  rental,
+  showStatus = true,
+  onCancel,
+}) => {
   const { car, rentalPeriod, totalCost } = rental;
+  const status = rental.status ?? 'active';
 
   if (!car) {
     return (
@@ -69,10 +77,10 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
         {showStatus && (
           <span
             className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
-              statusStyles[car.status ?? ''] || statusStyles.available
+              statusStyles[status] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || l.status.available}
+            {statusLabel[status] || l.status.available}
           </span>
         )}
       </div>
@@ -83,7 +91,8 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
         </h3>
 
         <p className="text-gray-700 font-medium text-sm mt-0.5">
-          €{car.pricePerDay}{l.common.perDay}
+          €{car.pricePerDay}
+          {l.common.perDay}
         </p>
 
         <div className="flex items-center gap-1 mt-1 mb-3">
@@ -101,6 +110,15 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
             €{totalCost}
           </div>
         </div>
+
+        {status === 'active' && onCancel && (
+          <button
+            onClick={() => onCancel(rental._id)}
+            className="mt-3 w-full py-2 rounded-lg border border-red-200 text-red-600 text-xs font-medium hover:bg-red-50 transition-colors"
+          >
+            {l.booking.cancelReservation}
+          </button>
+        )}
       </div>
     </div>
   );

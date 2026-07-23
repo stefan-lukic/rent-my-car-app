@@ -8,6 +8,7 @@ import CarCard from './CarCard';
 import RentalCard from './RentalCard';
 import UpdateCarModal from './UpdateCarModal';
 import DeleteCarModal from './DeleteCarModal';
+import CancelRentalModal from './CancelRentalModal';
 import l from '@/helper/en';
 
 interface ProfileInteractiveSectionProps {
@@ -27,14 +28,15 @@ const ProfileInteractiveSection = ({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
+  const [rentals, setRentals] = useState<RentalWithCar[]>(initialRentals);
+  const [rentalToCancelId, setRentalToCancelId] = useState<string | null>(null);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const carsPerPage = 3;
-  const rentalsPerPage = 4;
+  const rentalsPerPage = 3;
   const router = useRouter();
 
-  const availableRentals = initialRentals.filter(
-    (rental) => rental.car !== null
-  );
+  const availableRentals = rentals.filter((rental) => rental.car !== null);
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
@@ -43,6 +45,14 @@ const ProfileInteractiveSection = ({
 
   const handleDeleteCar = (carId: string) => {
     setCars(cars.filter((car) => car._id !== carId));
+  };
+
+  const handleCancelRental = (updatedRental: RentalWithCar) => {
+    setRentals((prev) =>
+      prev.map((rental) =>
+        rental._id === updatedRental._id ? updatedRental : rental
+      )
+    );
   };
 
   const pageCount = Math.ceil(cars.length / carsPerPage);
@@ -86,7 +96,9 @@ const ProfileInteractiveSection = ({
       {activeTab === 'cars' && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">{l.profile.myCarsHeading}</h2>
+            <h2 className="text-lg font-semibold text-gray-800">
+              {l.profile.myCarsHeading}
+            </h2>
             <button
               onClick={() => router.push('/cars/add-car')}
               className="bg-green-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-1"
@@ -160,7 +172,9 @@ const ProfileInteractiveSection = ({
 
       {activeTab === 'rentals' && (
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">{l.profile.myRentalsHeading}</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            {l.profile.myRentalsHeading}
+          </h2>
 
           {availableRentals.length === 0 ? (
             <p className="text-gray-400 italic text-sm">
@@ -179,7 +193,14 @@ const ProfileInteractiveSection = ({
 
                 <div className="flex-1 grid grid-cols-3 gap-3">
                   {currentRentals.map((rental) => (
-                    <RentalCard key={rental._id} rental={rental} showStatus={false} />
+                    <RentalCard
+                      key={rental._id}
+                      rental={rental}
+                      onCancel={(rentalId) => {
+                        setRentalToCancelId(rentalId);
+                        setIsCancelModalOpen(true);
+                      }}
+                    />
                   ))}
                 </div>
 
@@ -231,6 +252,18 @@ const ProfileInteractiveSection = ({
           onClose={() => {
             setIsDeleteModalOpen(false);
             setCarToDeleteId(null);
+          }}
+        />
+      )}
+
+      {rentalToCancelId && (
+        <CancelRentalModal
+          isOpen={isCancelModalOpen}
+          rentalId={rentalToCancelId}
+          onCancelled={handleCancelRental}
+          onClose={() => {
+            setIsCancelModalOpen(false);
+            setRentalToCancelId(null);
           }}
         />
       )}

@@ -11,6 +11,9 @@ export interface IRental extends Document {
     endDate: Date;
   };
   totalCost: number;
+  status: 'active' | 'cancelled';
+  cancelledAt?: Date;
+  cancelledBy?: Schema.Types.ObjectId;
 }
 
 const rentalSchema: Schema<IRental> = new Schema(
@@ -24,6 +27,13 @@ const rentalSchema: Schema<IRental> = new Schema(
       endDate: { type: Date, required: true },
     },
     totalCost: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: ['active', 'cancelled'],
+      default: 'active',
+    },
+    cancelledAt: { type: Date },
+    cancelledBy: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );

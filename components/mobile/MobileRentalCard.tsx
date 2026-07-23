@@ -14,23 +14,29 @@ interface MobileRentalCardProps {
       endDate: Date;
     };
     totalCost: number;
+    status?: 'active' | 'cancelled';
+    cancelledAt?: Date;
+    cancelledBy?: string;
   };
   showStatus?: boolean;
+  onCancel?: (rentalId: string) => void;
 }
 
 const statusStyles: Record<string, string> = {
-  available: 'bg-green-100 text-green-700',
-  rented: 'bg-yellow-100 text-yellow-700',
-  inactive: 'bg-gray-100 text-gray-500',
+  active: 'bg-yellow-100 text-yellow-700',
+  cancelled: 'bg-red-100 text-red-700',
 };
 
 const statusLabel: Record<string, string> = {
-  available: l.status.available,
-  rented: l.status.booked,
-  inactive: l.status.inactive,
+  active: l.status.booked,
+  cancelled: l.status.cancelled,
 };
 
-const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus = true }) => {
+const MobileRentalCard: React.FC<MobileRentalCardProps> = ({
+  rental,
+  showStatus = true,
+  onCancel,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!rental.car) {
@@ -42,6 +48,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
   }
 
   const { car, rentalPeriod, totalCost } = rental;
+  const status = rental.status ?? 'active';
   const startDate = new Date(rentalPeriod.startDate);
   const endDate = new Date(rentalPeriod.endDate);
 
@@ -82,10 +89,10 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
         {showStatus && (
           <span
             className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
-              statusStyles[car.status ?? ''] || statusStyles.available
+              statusStyles[status] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || l.status.available}
+            {statusLabel[status] || l.status.available}
           </span>
         )}
 
@@ -144,9 +151,20 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
         </div>
 
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-          <span className="text-xs text-gray-400 font-medium">{l.common.total}</span>
+          <span className="text-xs text-gray-400 font-medium">
+            {l.common.total}
+          </span>
           <span className="text-sm font-bold text-gray-900">€{totalCost}</span>
         </div>
+
+        {status === 'active' && onCancel && (
+          <button
+            onClick={() => onCancel(rental._id)}
+            className="mt-3 w-full py-2 rounded-lg border border-red-200 text-red-600 text-xs font-medium hover:bg-red-50 transition-colors"
+          >
+            {l.booking.cancelReservation}
+          </button>
+        )}
       </div>
     </div>
   );
