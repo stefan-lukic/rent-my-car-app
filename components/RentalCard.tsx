@@ -30,7 +30,10 @@ const statusLabel: Record<string, string> = {
   inactive: l.status.inactive,
 };
 
-const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) => {
+const RentalCard: React.FC<RentalCardProps> = ({
+  rental,
+  showStatus = true,
+}) => {
   const { car, rentalPeriod, totalCost } = rental;
 
   if (!car) {
@@ -72,7 +75,7 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
               statusStyles[car.status ?? ''] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || l.status.available}
+            {statusLabel[car.status ?? ''] || l.status.available}
           </span>
         )}
       </div>
@@ -83,7 +86,8 @@ const RentalCard: React.FC<RentalCardProps> = ({ rental, showStatus = true }) =>
         </h3>
 
         <p className="text-gray-700 font-medium text-sm mt-0.5">
-          €{car.pricePerDay}{l.common.perDay}
+          €{car.pricePerDay}
+          {l.common.perDay}
         </p>
 
         <div className="flex items-center gap-1 mt-1 mb-3">

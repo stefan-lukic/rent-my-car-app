@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 import { CarType } from './CarType';
 import { CarMake } from './CarMake';
 import { CarEngineType } from './CarEngineType';
 import { CarCity } from './CarCity';
 
-export interface ICar extends Document {
+export interface ICar {
   _id: string;
   make: CarMake;
   carModel: string;

@@ -30,7 +30,10 @@ const statusLabel: Record<string, string> = {
   inactive: l.status.inactive,
 };
 
-const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus = true }) => {
+const MobileRentalCard: React.FC<MobileRentalCardProps> = ({
+  rental,
+  showStatus = true,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!rental.car) {
@@ -85,7 +88,7 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
               statusStyles[car.status ?? ''] || statusStyles.available
             }`}
           >
-            {            statusLabel[car.status ?? ''] || l.status.available}
+            {statusLabel[car.status ?? ''] || l.status.available}
           </span>
         )}
 
@@ -144,7 +147,9 @@ const MobileRentalCard: React.FC<MobileRentalCardProps> = ({ rental, showStatus 
         </div>
 
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-          <span className="text-xs text-gray-400 font-medium">{l.common.total}</span>
+          <span className="text-xs text-gray-400 font-medium">
+            {l.common.total}
+          </span>
           <span className="text-sm font-bold text-gray-900">€{totalCost}</span>
         </div>
       </div>
