@@ -1,7 +1,5 @@
 ﻿import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { describe } from 'vitest';
 import CarCard from './CarCard';
 import type { ICar } from '@/lib/model/car/Car';
 import { createNextImageMock } from '@/test-utils/mocks/next-image';

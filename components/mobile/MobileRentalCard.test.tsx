@@ -1,22 +1,4 @@
-﻿/**
- * MobileRentalCard.test.tsx
- *
- * MobileRentalCard component displays a rental card on the mobile screen.
- * Shows car information, rental period, total cost, and status.
- *
- * TEST ARCHITECTURE:
- * - This is a component test - we only test UI elements and
- *   user interactions with the card (image navigation if multiple images).
- * - MobileRentalCard is a "presentational" component - it receives all data
- *   through props and has no external dependencies (except next/image).
- * - We mock only next/image because jsdom doesn't support Next.js Image.
- *
- * WHY THIS PRINCEPS:
- * - MobileRentalCard has no hooks or API calls - it just renders data.
- * - That's why we test: rendering basic info, image navigation, and status display.
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

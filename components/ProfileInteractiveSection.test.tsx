@@ -1,27 +1,3 @@
-/**
- * ProfileInteractiveSection.test.tsx
- *
- * ProfileInteractiveSection komponenta prikazuje listu automobila
- * ili iznajmljivanja korisnika sa paginacijom, Update/Delete modalima,
- * i tab switching-om izmedu 'cars' i 'rentals'.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test � testiraju se UI elementi, tab switching,
- *   paginacija, i otvaranje modala za a�uriranje/brisanje auta.
- * - Child komponente (CarCard, RentalCard, UpdateCarModal, DeleteCarModal)
- *   su mockovane jer su to await komponente sa sopstvenim state-om �
- *   �elimo da testiramo roditeljsku logiku, ne child komponente.
- * - useRouter je mockovan jer ProfileInteractiveSection koristi
- *   router.push() za navigaciju.
- *
- * ZA�TO OVAJ PRINCEPS:
- * - ProfileInteractiveSection je "container" komponenta � ima
- *   vlastiti state (activeTab, pagination) i orchestrira child
- *   komponente.
- * - Zato testiramo: renderovanje tabova, switching, paginacija,
- *   i otvaranje Update/Delete modala.
- */
-
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

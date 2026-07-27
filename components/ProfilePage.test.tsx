@@ -1,30 +1,5 @@
-﻿/**
- * ProfilePage.test.tsx
- *
- * ProfilePage komponenta je glavna stranica profila korisnika.
- * Prikazuje:
- *   - Header navigaciju
- *   - Hero sekciju sa profilnom slikom, imenom, kontaktom i članstvom
- *   - Statistikom (automobila, iznajmljivanja, ocena)
- *   - ProfileInteractiveSection sa tabovima za Cars i Rentals
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se renderovanje
- *   korisničkih podataka, statistika, i child komponenti.
- * - Header i ProfileInteractiveSection su mockovani jer su
- *   kompleksne komponente sa sopstvenim state-om i spoljnim
- *   zavisnostima. Testiramo da li ProfilePage ispravno prosleđuje
- *   props i renderuje svoje UI elemente.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - ProfilePage je "page layout" komponenta — sastoji se od
- *   više child komponenti i prikazuje korisničke podatke.
- * - Zato testiramo: renderovanje user info, statistika, i
- *   prisustvo ProfileInteractiveSection sa prosleđenim propsima.
- */
-
-import React from 'react';
-import {  render, screen } from '@testing-library/react';
+﻿import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ProfilePage from './ProfilePage';
 import l from '@/helper/en';
@@ -134,7 +109,13 @@ describe('ProfilePage', () => {
       contactInfo: '',
     };
 
-    render(<ProfilePage user={userWithoutContact} cars={mockCars} rentals={mockRentals} />);
+    render(
+      <ProfilePage
+        user={userWithoutContact}
+        cars={mockCars}
+        rentals={mockRentals}
+      />
+    );
 
     expect(screen.getByText(l.profile.noPhoneNumber)).toBeInTheDocument();
   });
@@ -160,7 +141,9 @@ describe('ProfilePage', () => {
   it('renders stats with counts', () => {
     render(<ProfilePage {...defaultProps} />);
 
-    const statItems = screen.getAllByText(/1|0|4\.8/).map((el) => el.textContent);
+    const statItems = screen
+      .getAllByText(/1|0|4\.8/)
+      .map((el) => el.textContent);
 
     expect(statItems).toContain('1');
     expect(screen.getByText(l.profile.cars)).toBeInTheDocument();

@@ -1,30 +1,5 @@
-/**
- * MobileProfilePage.test.tsx
- *
- * MobileProfilePage komponenta je glavna stranica profila za mobilne
- * uredaje. Prikazuje:
- *   - User info card (MobileUserProfileInfoCard)
- *   - Dugme za dodavanje novog automobila
- *   - Tabove za Cars / Rentals
- *   - MobileProfileInteractiveSection sa listom automobila ili iznajmljivanja
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i state promene
- *   (activeTab, navigate to add car).
- * - useRouter je mockovan jer MobileProfilePage koristi router.push()
- *   za navigaciju na /cars/add-car.
- * - MobileUserProfileInfoCard i MobileProfileInteractiveSection su
- *   mockovani jer su tovec komponente.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileProfilePage je "container" komponenta — ima sopstveni state
- *   (activeTab) i koristi useRouter za navigaciju.
- * - Zato testiramo: renderovanje osnovnih elemenata, tab switching,
- *   i navigaciju na add car stranu.
- */
-
 import React from 'react';
-import {  render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MobileProfilePage from './MobileProfilePage';
@@ -44,9 +19,7 @@ vi.mock('@/components/mobile/MobileUserProfileInfoCard', () => ({
 vi.mock('./MobileProfileInteractiveSection', () => ({
   __esModule: true,
   default: ({ activeTab }: any) => (
-    <div data-testid="interactive-section">
-      Active tab: {activeTab}
-    </div>
+    <div data-testid="interactive-section">Active tab: {activeTab}</div>
   ),
 }));
 
@@ -160,4 +133,3 @@ describe('MobileProfilePage', () => {
     expect(screen.getByTestId('interactive-section')).toBeInTheDocument();
   });
 });
-

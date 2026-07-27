@@ -1,23 +1,3 @@
-/**
- * ServiceWorkerRegistration.test.tsx
- *
- * ServiceWorkerRegistrar komponenta registruje service worker
- * ('/sw.js') kada se komponenta mount-uje. Ne prikazuje nikakav UI
- * — vraća null. Koristi useEffect za registraciju.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo da li useEffect poziva
- *   navigator.serviceWorker.register() kada je dostupan.
- * - navigator.serviceWorker je mockovan jer testiramo u jsdom-u
- *   koji ne podržava stvarne service worker-e.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - ServiceWorkerRegistrar je "invisible side-effect" komponenta —
- *   nema UI, samo izvršava registraciju prilikom mount-a.
- * - Zato testiramo: da li registracija pozvana sa tačnim argumentima
- *   (scope: '/', updateViaCache: 'none').
- */
-
 import React from 'react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';

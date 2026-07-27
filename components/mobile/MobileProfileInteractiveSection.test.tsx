@@ -1,29 +1,5 @@
-/**
- * MobileProfileInteractiveSection.test.tsx
- *
- * MobileProfileInteractiveSection komponenta prikazuje listu automobila ili
- * iznajmljivanja na mobilnom profilu. Sadrži:
- *   - Listu automobila sa MobileCarCard komponentama
- *   - Listu iznajmljivanja sa MobileRentalCard komponentama
- *   - UpdateCarModal za izmenu automobila
- *   - DeleteCarModal za brisanje automobila
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi, state promene,
- *   i callback-ovi za edit/delete.
- * - useState je testiran kroz interakciju (klik na edit, klik na delete).
- * - UpdateCarModal i DeleteCarModal su mockovani jer su tovec komponente
- *   koje vec imaju svoje testove.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileProfileInteractiveSection je "container" komponenta —
- *   ima sopstveni state (cars, selectedCar, carIdToDelete, isDeleteModalOpen).
- * - Zato testiramo: renderovanje liste, prazan state, edit flow,
- *   delete flow, i tab switching.
- */
-
 import React from 'react';
-import {  render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
@@ -54,7 +30,9 @@ vi.mock('./MobileCarCard', () => ({
   __esModule: true,
   default: ({ car, onUpdate, onDeleteClick }: any) => (
     <div data-testid="mobile-car-card">
-      <span>{car.make} {car.carModel}</span>
+      <span>
+        {car.make} {car.carModel}
+      </span>
       <button onClick={() => onUpdate(car)}>Edit</button>
       <button onClick={() => onDeleteClick(car._id)}>Delete</button>
     </div>
@@ -65,7 +43,9 @@ vi.mock('./MobileRentalCard', () => ({
   __esModule: true,
   default: ({ rental }: any) => (
     <div data-testid="mobile-rental-card">
-      <span>{rental.car.make} {rental.car.carModel}</span>
+      <span>
+        {rental.car.make} {rental.car.carModel}
+      </span>
     </div>
   ),
 }));
@@ -121,16 +101,16 @@ describe('MobileProfileInteractiveSection', () => {
 
   it('renders list of rentals when activeTab is rentals', async () => {
     const user = userEvent.setup();
-    render(<MobileProfileInteractiveSection {...defaultProps} activeTab="rentals" />);
+    render(
+      <MobileProfileInteractiveSection {...defaultProps} activeTab="rentals" />
+    );
 
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
   });
 
   it('shows empty message when no cars are listed', async () => {
     const user = userEvent.setup();
-    render(
-      <MobileProfileInteractiveSection {...defaultProps} cars={[]} />
-    );
+    render(<MobileProfileInteractiveSection {...defaultProps} cars={[]} />);
 
     expect(screen.getByText(l.profile.noCarsListed)).toBeInTheDocument();
   });
@@ -138,7 +118,11 @@ describe('MobileProfileInteractiveSection', () => {
   it('shows empty message when no rentals yet', async () => {
     const user = userEvent.setup();
     render(
-      <MobileProfileInteractiveSection {...defaultProps} rentals={[]} activeTab="rentals" />
+      <MobileProfileInteractiveSection
+        {...defaultProps}
+        rentals={[]}
+        activeTab="rentals"
+      />
     );
 
     expect(screen.getByText(l.profile.noRentalsYet)).toBeInTheDocument();
@@ -191,4 +175,3 @@ describe('MobileProfileInteractiveSection', () => {
     expect(screen.queryByTestId('update-modal')).not.toBeInTheDocument();
   });
 });
-

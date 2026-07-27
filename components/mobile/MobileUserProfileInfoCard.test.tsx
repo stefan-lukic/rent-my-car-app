@@ -1,23 +1,3 @@
-/**
- * MobileUserProfileInfoCard.test.tsx
- *
- * MobileUserProfileInfoCard komponenta prikazuje informacije o korisniku
- * na mobilnom profilu: ime, email, broj automobila, iznajmljivanja i rating.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i props rendering.
- * - MobileUserProfileInfoCard je "presentational" komponenta — prima
- *   sve podatke kroz props i nema spoljnih zavisnosti (osim next/image
- *   i next/link).
- * - Zato mockujemo next/image i next/link.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileUserProfileInfoCard nema hookova ni API poziva — samo
- *   renderuje podatke.
- * - Zato testiramo: renderovanje korisnickih informacija, statistika,
- *   i link za edit profil.
- */
-
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -33,9 +13,7 @@ vi.mock('next/image', () => ({
 
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href }: any) => (
-    <a href={href}>{children}</a>
-  ),
+  default: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
 const mockUser = {

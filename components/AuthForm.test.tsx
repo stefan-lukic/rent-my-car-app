@@ -1,28 +1,3 @@
-/**
- * AuthForm.test.tsx
- *
- * AuthForm komponenta je "wrapper" oko ProfileForm i MobileProfileForm.
- * Ona odlukuje koju formu da prikaže na osnovu:
- *   - Statusa sesije (loading, authenticated, unauthenticated)
- *   - Tipa auth forme (sign-in ili sign-up)
- *   - Da li je korisnik na mobilnom uređaju (isMobileCSR)
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi na osnovu
- *   sesije i tipa forme.
- * - useSession je mockovan da kontrolišemo stanje autentikacije.
- * - useRouter, useSearchParams, isMobileCSR su takodje mockovani.
- * - ProfileForm je "partially mocked" — prikazujemo da AuthForm
- *   ispravno renderuje ProfileForm kad je korisnik unauthenticated.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - AuthForm je "container" komponenta — ne ima sopstvene state logike,
- *   već delegira u ProfileForm ili MobileProfileForm.
- * - Zato testiramo: loading spinner, prazan render za authenticated,
- *   ispravan tekst heading-a, footer linkove, i da ProfileForm
- *   dobija ispravne prop-ove.
- */
-
 import React from 'react';
 
 import { render, screen } from '@testing-library/react';

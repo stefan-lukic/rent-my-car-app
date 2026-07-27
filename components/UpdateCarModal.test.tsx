@@ -1,24 +1,3 @@
-/**
- * UpdateCarModal.test.tsx
- *
- * UpdateCarModal komponenta prikazuje formu za izmenu podataka automobila.
- * Koristi direktan state unutar komponente (useState) i fetch poziv za
- * azuriranje - ne koristi poseban custom hook.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test - testiraju se UI elementi i direktni fetch.
- * - fetch je mockovani global (vi.stubGlobal) da ne bismo pozivali
- *   stvarni API.
- * - alert je takodje mockovan da ne bi prikazivao browser alertove.
- *
- * ZASTO OVAJ PRINCIP:
- * - UpdateCarModal je "thin" komponenta - ima svoju logiku unutar
- *   handleSubmit funkcije.
- * - Zato testiramo direktno fetch poziv i callback-ove (onUpdate, onClose).
- * - Ovo je jednostavnije nego da se pravi poseban hook samo za ovu
- *   jednu akciju.
- */
-
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

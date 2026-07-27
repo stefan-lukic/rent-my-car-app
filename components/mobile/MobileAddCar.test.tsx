@@ -1,25 +1,4 @@
-﻿/**
- * MobileAddCar.test.tsx
- *
- * MobileAddCar komponenta je mobilna verzija forme za dodavanje automobila.
- * Koristi useAddCar hook za upravljanje state-om i submitom.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i njihova interakcija
- *   sa hookom (handleInputChange, handleDateChange, handleSubmit, removeImage).
- * - useAddCar hook je mockovan — vraćamo kontrolisane vrednosti.
- * - react-datepicker je takodje mockovan jer bi inače zahtevao DOM operacije.
- * - Stvarna validacija, fetch i redirect se testiraju u
- *   hooks/useAddCar.test.tsx (hook test).
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - Komponenta test: "Da li se sva polja renderuju i prosleđuju
- *   promene hooku?"
- * - Hook test: "Da li hook ispravno validira, kreira FormData,
- *   zove API i menja state?"
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

@@ -1,24 +1,3 @@
-/**
- * RentalCard.test.tsx
- *
- * RentalCard komponenta prikazuje jedan iznajmljen automobil sa:
- *   - Slikom automobila i status badge-om (Available, Booked, Inactive)
- *   - Markom i modelom automobila
- *   - Cenom po danu i lokacijom
- *   - Periodom iznajmljivanja (start -> end datum) i ukupnom cenom
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo da li se svi elementi
- *   renderuju sa ispravnim podacima i da li se obrađuju edge case-ovi.
- * - next/image je mockovan jer jsdom ne podržava Next.js Image.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - RentalCard je "presentational" komponenta — samo prikazuje
- *   prosleđene podatke bez state-a.
- * - Zato testiramo: renderovanje osnovnih polja, status badge-ovi,
- *   fallback za nedostajući car, fallback za prazne slike.
- */
-
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';

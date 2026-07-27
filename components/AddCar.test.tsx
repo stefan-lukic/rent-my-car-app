@@ -1,27 +1,4 @@
-﻿/**
- * AddCar.test.tsx
- *
- * AddCar komponenta omogućava korisnicima da dodaju novi automobil
- * za iznajmljivanje. Komponenta koristi useAddCar hook za upravljanje
- * kompletnim state-om forme (marka, model, motor, slike, datum, cena, itd.).
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se samo UI elementi i njihova
- *   interakcija sa hookom.
- * - useAddCar hook je mockovan — vraćamo kontrolisane vrednosti.
- * - react-datepicker je takodje mockovan jer bi inače zahtevao DOM
- *   operacije koje ne postoje u jsdom.
- * - Stvarna validacija slika, fetch pozivi i redirect se testiraju
- *   u hooks/useAddCar.test.tsx.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - Komponenta test: "Da li se sva polja renderuju i prosleđuju
- *   promene hooku?"
- * - Hook test: "Da li hook ispravno validira, kreira FormData,
- *   zove API i menja state?"
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

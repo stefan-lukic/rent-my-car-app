@@ -1,29 +1,5 @@
-/**
- * MobileCarRentalSearch.test.tsx
- *
- * MobileCarRentalSearch komponenta je glavna pretraga automobila za mobilne
- * uredaje. Kombinuje:
- *   - Formu za pretragu (lokacija, datumi)
- *   - Rezultate pretrage (MobileCarSearchResults)
- *   - Paginaciju (Load More)
- *   - Booking i details modale (BookingDialog, MobileCarDetailsDrawer)
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i interakcija sa
- *   hookovima (useCarSearchForm, useBookingFlow).
- * - Oba hooka su mockovana da kontrolišemo njihov state.
- * - MobileCarSearchResults, BookingDialog, MobileCarDetailsDrawer su
- *   takodje mockovani jer su tovec komponente.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileCarRentalSearch je "container" komponenta — kombinuje vise
- *   hookova i komponenti.
- * - Zato testiramo: renderovanje forme, rezultata, paginacije,
- *   i otvaranje modala.
- */
-
 import React from 'react';
-import {  render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MobileCarRentalSearch from './MobileCarRentalSearch';
@@ -58,7 +34,9 @@ vi.mock('./MobileCarSearchResults', () => ({
   __esModule: true,
   default: ({ car, onBookNow, onViewDetails }: any) => (
     <div data-testid="car-result">
-      <span>{car.make} {car.carModel}</span>
+      <span>
+        {car.make} {car.carModel}
+      </span>
       <button onClick={onBookNow}>Book</button>
       <button onClick={onViewDetails}>Details</button>
     </div>
@@ -276,4 +254,3 @@ describe('MobileCarRentalSearch', () => {
     expect(setModals).toHaveBeenCalledWith({ booking: false, details: true });
   });
 });
-

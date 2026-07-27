@@ -1,24 +1,3 @@
-/**
- * MobileFooter.test.tsx
- *
- * MobileFooter komponenta prikazuje donji navigacioni bar za mobilne
- * uređaje. U trenutnoj implementaciji, footer se renderuje SAMO kada
- * je korisnik autentifikovan. Za neautentifikovane korisnike se ne
- * prikazuje nista.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi na osnovu
- *   stanja autentikacije.
- * - useAuth je mockovan da kontrolišemo isAuthenticated i loading state.
- * - LogoutButton je takodje mockovan jer je tovec komponenta.
- * - next/link je takodje mockovan jer zahteva Next.js kontekst.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileFooter zavisi od useAuth hook-a za autentikaciju.
- * - Zato mockujemo useAuth i testiramo različite stana:
- *   loading, unauthenticated, authenticated.
- */
-
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -40,9 +19,7 @@ vi.mock('../LogoutButton', () => ({
 
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href }: any) => (
-    <a href={href}>{children}</a>
-  ),
+  default: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
 describe('MobileFooter', () => {

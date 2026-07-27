@@ -1,24 +1,4 @@
-﻿/**
- * MobileProfileForm.test.tsx
- *
- * MobileProfileForm komponenta je mobilna verzija autentikacione forme.
- * Objedinjuje sign-in i sign-up flow, koristi react-hook-form za validaciju,
- * axios za sign-up API poziv i next-auth za sign-in.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i njihova interakcija.
- * - Svi spoljni moduli su mockovani: axios, next-auth, next/navigation,
- *   next/image, react-hook-form (zodResolver).
- * - Stvarni API pozivi i validacija se testiraju u zasebnim testovima
- *   (ProfileForm.test.tsx, useForgotPassword.test.tsx, itd.).
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileProfileForm je "leaf" komponenta sa sopstvenom form logicom.
- * - Zato mockujemo sve spoljne zavisnosti kako bismo izolovali UI.
- * - Koristimo l objekat za sve tekstove (otpornost na promene lokalizacije).
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import MobileProfileForm from './MobileProfileForm';

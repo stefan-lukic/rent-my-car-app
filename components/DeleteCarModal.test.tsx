@@ -1,29 +1,5 @@
-﻿/**
- * DeleteCarModal.test.tsx
- *
- * DeleteCarModal komponenta prikazuje potvrdni dialog za brisanje automobila.
- * Koristi direktno fetch poziv ka /api/cars/delete-car (ne koristi hook).
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i direktni fetch.
- * - fetch je mockovani global (vi.stubGlobal) da ne bismo pozivali
- *   stvarni API.
- * - alert je takodje mockovan da ne bi prikazivao browser alertove.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - DeleteCarModal je "thin" komponenta — ima svoju logiku unutar
- *   handleDelete funkcije, ne koristi poseban hook.
- * - Zato testiramo direktno fetch poziv i callback-ove (onDelete, onClose).
- * - Ovo je jednostavnije nego da se pravi poseban hook samo za ovu
- *   jednu akciju.
- */
-
-import React from 'react';
-import {
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+﻿import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DeleteCarModal from './DeleteCarModal';
@@ -73,9 +49,7 @@ describe('DeleteCarModal', () => {
     const user = userEvent.setup();
     renderModal({ isOpen: false });
 
-    expect(
-      screen.queryByText(l.cars.deleteCar)
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(l.cars.deleteCar)).not.toBeInTheDocument();
   });
 
   /**
@@ -91,9 +65,7 @@ describe('DeleteCarModal', () => {
     renderModal();
 
     expect(screen.getByText(l.cars.deleteCar)).toBeInTheDocument();
-    expect(
-      screen.getByText(l.cars.deleteCarConfirm)
-    ).toBeInTheDocument();
+    expect(screen.getByText(l.cars.deleteCarConfirm)).toBeInTheDocument();
 
     expect(
       screen.getByRole('button', { name: l.common.cancel })
@@ -115,9 +87,7 @@ describe('DeleteCarModal', () => {
     const user = userEvent.setup();
     const props = renderModal();
 
-    await user.click(
-      screen.getByRole('button', { name: l.common.cancel })
-    );
+    await user.click(screen.getByRole('button', { name: l.common.cancel }));
 
     expect(props.onClose).toHaveBeenCalledOnce();
   });
@@ -143,9 +113,7 @@ describe('DeleteCarModal', () => {
 
     const props = renderModal();
 
-    await user.click(
-      screen.getByRole('button', { name: l.common.delete })
-    );
+    await user.click(screen.getByRole('button', { name: l.common.delete }));
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith('/api/cars/delete-car', {
@@ -177,9 +145,7 @@ describe('DeleteCarModal', () => {
 
     renderModal();
 
-    await user.click(
-      screen.getByRole('button', { name: l.common.delete })
-    );
+    await user.click(screen.getByRole('button', { name: l.common.delete }));
 
     expect(
       screen.getByRole('button', { name: l.common.deleting })
@@ -204,9 +170,7 @@ describe('DeleteCarModal', () => {
 
     const props = renderModal();
 
-    await user.click(
-      screen.getByRole('button', { name: l.common.delete })
-    );
+    await user.click(screen.getByRole('button', { name: l.common.delete }));
 
     await waitFor(() => {
       expect(alert).toHaveBeenCalledWith(l.cars.deleteCarError);

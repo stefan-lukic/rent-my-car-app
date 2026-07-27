@@ -1,23 +1,3 @@
-/**
- * SignUpButton.test.tsx
- *
- * SignUpButton komponenta prikazuje CTA dugme "Sign Up Now"
- * samo ako korisnik NIJE ulogovan. Ako je session dostupna,
- *   vraća null.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo conditional render
- *   baziran na useSession hook-u.
- * - next-auth/react je mockovan da ne bismo izvodili stvarnu
- *   autentikaciju.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - SignUpButton je "conditional leaf" komponenta — ima samo
- *   jednu poslovnu logiku (prikazati ili sakriti dugme).
- * - Zato testiramo: prikaz dugmeta za gosta, null za ulogovanog
- *   korisnika, i ispravan href za Sign Up link.
- */
-
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -34,9 +14,13 @@ vi.mock('next-auth/react', () => ({
 
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
-  ),
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>,
 }));
 
 describe('SignUpButton', () => {

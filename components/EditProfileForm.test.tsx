@@ -1,24 +1,3 @@
-/**
- * EditProfileForm.test.tsx
- *
- * EditProfileForm komponenta omogucava korisnicima da izmene svoj profil
- * (ime, kontakt informacije, profilna slika). Komponenta koristi
- * useEditProfile hook za upravljanje state-om, validacijom slike i submitom.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test - testiraju se samo UI elementi i njihova
- *   interakcija sa hookom (handleInputChange, handleSubmit).
- * - useEditProfile hook je mockovan - vracamo kontrolisane vrednosti
- *   za svaki test.
- * - Stvarni fetch pozivi, validacija slike i redirect se testiraju
- *   zasebno u hooks/useEditProfile.test.tsx.
- *
- * ZASTO OVAJ PRINCIP:
- * - Komponenta test: "Da li se UI elementi renderuju i salju eventove hooku?"
- * - Hook test: "Da li hook ispravno validira, zove API i menja state?"
- * - Jasna separacija = lakse debugovanje i odrzavanje.
- */
-
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

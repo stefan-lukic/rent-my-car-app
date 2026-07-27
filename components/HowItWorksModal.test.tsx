@@ -1,28 +1,4 @@
-﻿/**
- * HowItWorksModal.test.tsx
- *
- * HowItWorksModal komponenta prikazuje 4-step proces kako funkcioniše
- * RentMyCar aplikacija. Ima:
- *   - Overlay (backdrop) koji se zatvara na klik
- *   - Modal header sa close dugmetom i ikonom informacije
- *   - Listu 4 koraka sa ikonama, naslovima i opisima
- *   - "Got It" dugme za zatvaranje
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo da li se modal renderuje
- *   samo kada je isOpen=true, i da svi elementi reaguju na akcije.
- * - Komponenta ne zavisi od spoljnih modula, tako da nema potrebe
- *   za mockovima izuzev eventualnih image import-a (ovde nema).
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - HowItWorksModal je "controlled modal" komponenta — prikazuje
- *   se samo kada je isOpen=true i ima onClose callback.
- * - Zato testiramo: null render kada je zatvoren, render svih
- *   4 koraka, i sve tri načine zatvaranja (close button, backdrop,
- *   Got It button).
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

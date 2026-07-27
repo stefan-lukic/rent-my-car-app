@@ -1,25 +1,5 @@
-/**
- * MobileCarSearchView.test.tsx
- *
- * MobileCarSearchView komponenta je "wrapper" koji kombinuje
- * MobileCarFilters i MobileCarRentalSearch. Ona drzi filters state
- * i prosleduje ga obe komponente.
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — testiraju se UI elementi i state flow
- *   izmedju MobileCarFilters i MobileCarRentalSearch.
- * - Obe komponente su mockovane jer su tovec komponente sa svojim
- *   testovima.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - MobileCarSearchView je "thin" wrapper komponenta — ima samo
- *   useState za filters i prosleduje ga dalje.
- * - Zato testiramo: da li se MobileCarFilters i MobileCarRentalSearch
- *   renderuju, i da li su dobijeni ispravni props.
- */
-
 import React from 'react';
-import {  render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MobileCarSearchView from './MobileCarSearchView';
@@ -87,4 +67,3 @@ describe('MobileCarSearchView', () => {
     expect(mainContainer).toBeTruthy();
   });
 });
-
