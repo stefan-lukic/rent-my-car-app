@@ -6,7 +6,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params; // Get the user ID from the route parameters
+  const { id } = params;
 
   if (!id) {
     return NextResponse.json(
@@ -17,17 +17,17 @@ export async function GET(
 
   try {
     await connectToDatabase();
-    const user = await User.findById(id);
+    // Positive projection prevents private fields from ever entering the
+    // response object, even when new sensitive User fields are added later.
+    const user = await User.findById(id).select('name images rating').lean();
 
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    // Remove sensitive information before sending the response
-    const { password, ...userWithoutPassword } = user.toObject();
-
-    return NextResponse.json(userWithoutPassword);
+    return NextResponse.json(user);
   } catch (error) {
+    console.error('Error fetching public user profile:', error);
     return NextResponse.json(
       { message: 'Error fetching user data' },
       { status: 500 }

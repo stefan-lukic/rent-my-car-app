@@ -1,35 +1,29 @@
 /**
- * Footer.test.tsx
+ * Sidebar.test.tsx
  *
- * Footer komponenta renderuje multi-column footer sa:
- *   - Exclusive sekcija sa email subscribtion formom
- *   - Support sekcija sa kontakt informacijama
- *   - Account sekcija sa linkovima
- *   - Quick Link sekcija sa legalnim linkovima
- *   - Download App sekcija sa QR kodom i app store linkovima
- *   - Social media ikone (Facebook, Twitter)
- *   - Copyright bar
+ * Sidebar komponenta renderuje listu navigacionih linkova iz
+ * helper/constants.ts sidebarLinks niza. Svaki link ima label
+ * i opcionu Image ikonu.
  *
  * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo da li se sve sekcije
- *   renderuju sa ispravnim tekstom i linkovima.
- * - next/image je mockovan jer jsdom ne podržava Next.js Image
- *   komponentu.
- * - Helper objekat l za lokalizovane stringove se importuje za
- *   precizne asertacije.
+ * - Ovo je komponenta test — proveravamo da li se svi linkovi
+ *   iz sidebarLinks konfiguracije renderuju.
+ * - next/image je mockovan jer jsdom ne podržava Next.js Image.
+ * - sidebarLinks se importuje iz helper/constants — testiramo
+ *   da su sve stavke prisutne u DOM-u.
  *
  * ZAŠTO OVAJ PRINCEPS:
- * - Footer je "stateless layout" komponenta — prikazuje fiksne
- *   sekcije bez korisničke interakcije.
- * - Zato testiramo: prisustvo svih sekcija, ispravan tekst,
- *   i prisustvo linkova.
+ * - Sidebar je "configuration-driven" komponenta — renderuje
+ *   listu koja dolazi iz vanjske konfiguracije.
+ * - Zato testiramo: da li se svi linkovi renderuju, da li
+ *   su href atributi ispravni, i da li se ikone prikazuju.
  */
 
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Footer from './Footer';
-import l from '@/helper/en';
+import Sidebar from './Sidebar';
+import { sidebarLinks } from '@/helper/constants';
 
 vi.mock('next/image', () => ({
   __esModule: true,
@@ -39,126 +33,94 @@ vi.mock('next/image', () => ({
   },
 }));
 
-describe('Footer', () => {
+describe('Sidebar', () => {
   /**
-   * TEST 1: Osnovni render footera
-   * ZAŠTO: Proveravamo da se main footer element renderuje
-   *   sa crnom pozadinom (bg-black).
-   * KAKO: getByRole('contentinfo') pronazi footer element
-   *   po ARIA ulozi.
+   * TEST 1: Osnovni render sidebar-a
+   * ZAŠTO: Proveravamo da se sidebar container renderuje
+   *   sa ispravnim klasama za layout.
+   * KAKO: getByRole je nepogodan jer Sidebar nema ARIA ulogu,
+   *   koristimo container.querySelector za pronalaženje <div>
+   *   ili <ul> elemenata.
    */
-  it('renders footer with black background', () => {
-    render(<Footer />);
+  it('renders sidebar container', () => {
+    const { container } = render(<Sidebar />);
 
-    const footer = document.querySelector('footer');
+    const sidebar = container.querySelector('.border-r');
 
-    expect(footer).toBeInTheDocument();
-    expect(footer).toHaveClass('bg-black');
+    expect(sidebar).toBeInTheDocument();
   });
 
   /**
-   * TEST 2: Exclusive sekcija
-   * ZAŠFO: Ova sekcija ima naslov, newsletter formu, i input
-   *   field za email. Treba verifikovati da svi elementi postoje.
+   * TEST 2: Renderuje sve sidebar linkove
+   * ZAŠTO: SidebarItems (sidebarLinks) dolaze iz konfiguracije.
+   *   Treba verifikovati da su sve stavke prisutne.
    * KAKO:
-   * 1. Proveravamo naslov 'Exclusive'
-   * 2. Proveravamo subtitle 'Subscribe' / 'Get 10% off'
-   * 3. Proveravamo prisustvo input elementa za email.
+   * 1. Iteriramo kroz sidebarLinks
+   * 2. Proveravamo da svaki item.label postoji u DOM-u
    */
-  it('renders exclusive subscription section', () => {
-    render(<Footer />);
+  it('renders all sidebar links from configuration', () => {
+    render(<Sidebar />);
 
-    expect(screen.getByText(l.footer.exclusive)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.subscribe)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.get10Off)).toBeInTheDocument();
+    for (const link of sidebarLinks) {
+      expect(screen.getByText(link.label)).toBeInTheDocument();
+    }
   });
 
   /**
-   * TEST 3: Support sekcija
-   * ZAŠTO: Support sekcija sadrži adresu, email i telefon.
-   *   Treba verifikovati da su sve tri stavke prisutne.
-   * KAKO: getByText za svaki support link.
+   * TEST 3: Linkovi imaju ispravne href atribute
+   * ZAŠTO: Svaki sidebar link mora da pokazuje na tačnu stranicu.
+   * KAKO: getByRole('link', { name: label }) pronazi <a> element
+   *   i proveravamo href atribut.
    */
-  it('renders support contact links', () => {
-    render(<Footer />);
+  it('links have correct href attributes', () => {
+    render(<Sidebar />);
 
-    expect(screen.getByText(l.footer.support)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.address)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.email)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.phone)).toBeInTheDocument();
+    for (const link of sidebarLinks) {
+      const anchor = screen.getByRole('link', {
+        name: new RegExp(link.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+      });
+
+      expect(anchor).toHaveAttribute('href', link.link);
+    }
   });
 
   /**
-   * TEST 4: Account sekcija
-   * ZAŠTO: Account sekcija ima 5 navigacionih linkova.
-   *   Treba verifikovati da su svi prisutni.
-   * KAKO: getByText za svaki account link.
+   * TEST 4: Ikone se renderuju za stavke koje imaju icon
+   * ZAŠTO: Neki sidebarItems imaju ikone, drugi nemaju.
+   *   Treba verifikovati da se ikone prikazuju gde je definisano.
+   * KAKO: Proveravamo da za svaki item sa icon postoji <img>
+   *   element unutar link-a.
    */
-  it('renders account navigation links', () => {
-    render(<Footer />);
+  it('renders icons for sidebar items that have them', () => {
+    const { container } = render(<Sidebar />);
 
-    expect(screen.getByText(l.footer.account)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.myAccount)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.loginRegister)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.cart)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.wishlist)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.shop)).toBeInTheDocument();
+    const itemsWithIcons = sidebarLinks.filter((item) => item.icon);
+
+    for (const item of itemsWithIcons) {
+      const anchors = screen.getAllByRole('link', {
+        name: new RegExp(item.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+      });
+
+      const anchor = anchors[0];
+
+      const images = anchor.querySelectorAll('img');
+
+      expect(images.length).toBeGreaterThanOrEqual(1);
+    }
   });
 
   /**
-   * TEST 5: Quick Link sekcija
-   * ZAŠTO: Quick Link sekcija sadrži policy i FAQ linkove.
-   * KAKO: Proveravamo naslove i linkove.
+   * TEST 5: Prikazuje ispravan broj linkova
+   * ZAŠTO: sidebarLinks niz ima fiksnu dužinu — ako se
+   *   konfiguracija promeni, ovaj test će uhvatiti nove/obrisane linkove.
+   * KAKO: getByRole('link') vraća sve <a> elemente i poređujemo
+   *   njihov broj sa dužinom sidebarLinks niza.
    */
-  it('renders quick links section', () => {
-    render(<Footer />);
+  it('renders correct number of sidebar links', () => {
+    render(<Sidebar />);
 
-    expect(screen.getByText(l.footer.quickLink)).toBeInTheDocument();
-    expect(screen.getByText(l.landing.privacyPolicy)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.termsOfUse)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.faq)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.contact)).toBeInTheDocument();
-  });
+    const links = screen.getAllByRole('link');
 
-  /**
-   * TEST 6: Download App sekcija
-   * ZAŠTO: Ova sekcija ima QR kôd i app store dugmad.
-   * KAKO: Proveravamo naslov, subtitle, i prisustvo slika
-   *   (mockovane kao img tagovi).
-   */
-  it('renders download app section with QR code and store badges', () => {
-    render(<Footer />);
-
-    expect(screen.getByText(l.footer.downloadApp)).toBeInTheDocument();
-    expect(screen.getByText(l.footer.save3WithApp)).toBeInTheDocument();
-  });
-
-  /**
-   * TEST 7: Social media ikone
-   * ZAŠTO: Footer prikazuje Facebook i Twitter ikone.
-   *   Napomena: u trenutnoj implementaciji Twitter ikona ima
-   *   pogrešan alt="facebook", pa tražimo sve elemente sa
-   *   alt="facebook" i proveravamo da ih je barem 2.
-   * KAKO: Proveravamo prisustvo img elementa sa odgovarajućim
-   *   alt atributima (mockovani Image komponenti imaju alt).
-   */
-  it('renders social media icons', () => {
-    render(<Footer />);
-
-    const icons = screen.getAllByAltText('facebook');
-
-    expect(icons.length).toBeGreaterThanOrEqual(1);
-  });
-
-  /**
-   * TEST 8: Copyright bar
-   * ZAŠTO: Treba verifikovati da se copyright tekst renderuje
-   *   na dnu footera.
-   * KAKO: getByText za copyright string.
-   */
-  it('renders copyright text at the bottom', () => {
-    render(<Footer />);
-
-    expect(screen.getByText(l.footer.copyrightRimel)).toBeInTheDocument();
+    expect(links.length).toBe(sidebarLinks.length);
   });
 });

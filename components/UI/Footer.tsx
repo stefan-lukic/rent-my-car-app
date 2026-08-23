@@ -7,11 +7,11 @@ const Footer = () => {
       <div className="mx-auto">
         <div className="flex justify-between flex-wrap py-8">
           <div className="text-white space-y-4 max-w-[20%]">
-            <h2 className="text-2xl font-bold tracking-wider">{l.footer.exclusive}</h2>
+            <h2 className="text-2xl font-bold tracking-wider">
+              {l.footer.exclusive}
+            </h2>
             <h3 className="text-xl font-medium">{l.footer.subscribe}</h3>
-            <p className="text-base font-normal">
-              {l.footer.get10Off}
-            </p>
+            <p className="text-base font-normal">{l.footer.get10Off}</p>
             <div className="flex xl:w-44 max-xl:w-full bg-black px-3 py-2 rounded border border-[#FAFAFA] outline outline-transparent focus-within:outline-[#007bff] focus-within:bg-transparent">
               <input
                 type="text"
@@ -125,7 +125,7 @@ const Footer = () => {
                   src="/icons/twitter.svg"
                   width={24}
                   height={24}
-                  alt="facebook"
+                  alt="twitter"
                   className="h-full w-full bg-black"
                 />
               </div>

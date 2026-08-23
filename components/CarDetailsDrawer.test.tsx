@@ -62,8 +62,7 @@ describe('CarDetailsDrawer', () => {
   });
 
   it('does not show renter card when renter is missing', async () => {
-    const { renter, ...propsWithoutRenter } = defaultProps;
-    render(<CarDetailsDrawer {...propsWithoutRenter} />);
+    render(<CarDetailsDrawer {...defaultProps} renter={null} />);
     expect(screen.queryByText('Marko Markovic')).not.toBeInTheDocument();
   });
 

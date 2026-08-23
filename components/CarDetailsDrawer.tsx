@@ -9,8 +9,8 @@ import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
 
 export interface CarDetailsDrawerProps {
-  car?: ICar;
-  renter?: IRenter;
+  car: ICar | null;
+  renter: IRenter | null;
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;

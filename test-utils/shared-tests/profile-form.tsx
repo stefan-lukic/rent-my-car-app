@@ -54,13 +54,6 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     expect(screen.queryByText(l.auth.forgotPassword)).not.toBeInTheDocument();
   });
 
-  it('shows error message when present', async () => {
-    const user = userEvent.setup();
-    render(<Component type="sign-in" callbackUrl="/" />);
-    const errorEl = document.querySelector('.text-red-500');
-    expect(errorEl).toBeDefined();
-  });
-
   it('signs in and redirects after successful credentials response', async () => {
     const user = userEvent.setup();
     mocks.signIn.mockResolvedValue({

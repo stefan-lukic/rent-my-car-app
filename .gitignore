@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/.npm-cache
+/test-output*.txt
 /.pnp
 .pnp.js
 .yarn/install-state.gz

@@ -31,8 +31,7 @@ export const runCarDetailsDrawerSharedTests = (
   });
 
   it('renders nothing when car is missing', async () => {
-    const { car, ...propsWithoutCar } = defaultProps;
-    render(<Component {...propsWithoutCar} isOpen={true} />);
+    render(<Component {...defaultProps} car={null} />);
     expect(screen.queryByText('Car Details')).not.toBeInTheDocument();
   });
 
