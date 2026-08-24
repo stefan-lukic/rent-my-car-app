@@ -263,6 +263,20 @@ describe('ProfileInteractiveSection', () => {
     expect(mockPush).toHaveBeenCalledWith('/cars/add-car');
   });
 
+  it('navigates to car search when Browse Cars is clicked', async () => {
+    const user = userEvent.setup();
+    render(<ProfileInteractiveSection {...defaultProps} />);
+
+    await user.click(
+      screen.getByRole('tab', {
+        name: l.profile.myRentalsCount(defaultProps.rentals.length),
+      })
+    );
+    await user.click(screen.getByRole('button', { name: 'Browse Cars' }));
+
+    expect(mockPush).toHaveBeenCalledWith('/#car-search');
+  });
+
   /**
    * TEST 11: Prikazuje paginaciju kada postoji vi�e od 1 stranice
    * ZA�TO: Page number buttons trebaju biti vidljivi samo
