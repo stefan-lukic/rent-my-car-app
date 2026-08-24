@@ -8,7 +8,7 @@ import HowItWorksModal from './HowItWorksModal';
 import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
 
-interface CarDetailsDrawerProps {
+export interface CarDetailsDrawerProps {
   car: ICar | null;
   renter: IRenter | null;
   isOpen: boolean;
@@ -40,7 +40,11 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
       label: l.carSpecs.consumption,
       value: car.averageConsumption,
     },
-    car.milage && { icon: '📍', label: l.carSpecs.mileage, value: `${car.milage} km` },
+    car.milage && {
+      icon: '📍',
+      label: l.carSpecs.mileage,
+      value: `${car.milage} km`,
+    },
     car.firstRegistration && {
       icon: '📅',
       label: l.carSpecs.registration,

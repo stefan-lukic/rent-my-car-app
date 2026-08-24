@@ -17,6 +17,8 @@ export async function GET(
 
   try {
     await connectToDatabase();
+    // Positive projection prevents private fields from ever entering the
+    // response object, even when new sensitive User fields are added later.
     const user = await User.findById(id).select('name images rating').lean();
 
     if (!user) {
@@ -25,6 +27,7 @@ export async function GET(
 
     return NextResponse.json(user);
   } catch (error) {
+    console.error('Error fetching public user profile:', error);
     return NextResponse.json(
       { message: 'Error fetching user data' },
       { status: 500 }
