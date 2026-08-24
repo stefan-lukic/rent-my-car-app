@@ -165,6 +165,14 @@ const l = {
     missingRequiredFields: 'Missing required fields',
     carNotFound: 'Car not found',
     userNotFoundSession: 'User ID not found in session',
+    cancelReservation: 'Cancel Reservation',
+    cancelReservationConfirm:
+      'Are you sure you want to cancel this reservation? The car will become available again for these dates.',
+    keepReservation: 'Keep Reservation',
+    cancellingReservation: 'Cancelling...',
+    reservationCancelled: 'Reservation cancelled successfully',
+    reservationAlreadyCancelled: 'This reservation is already cancelled',
+    cannotCancelReservation: 'You are not authorized to cancel this reservation',
   },
 
   profile: {
@@ -272,14 +280,14 @@ const l = {
     trustInstincts: 'Trust your instincts - if something feels off, contact our support team',
     cancellationOptions: 'Cancellation Options',
     flexiblePolicy: 'Our Flexible Cancellation Policy',
-    cancellationDesc: 'We understand that plans can change. That\'s why we offer flexible cancellation options for both car renters and clients.',
+    cancellationDesc: 'We understand that plans can change. You can cancel your reservation at any time through your profile.',
     forClients: 'For Clients:',
     freeCancellationClient: 'Free cancellation up to 24 hours before the rental start time',
-    partialRefund: '50% refund for cancellations made less than 24 hours before the rental start time',
-    noRefund: 'No refund for cancellations after the rental has started',
+    partialRefund: 'No automated refunds are processed through the app',
+    noRefund: 'Contact the owner directly for any refund discussions',
     forRenters: 'For Car Renters:',
     freeCancellationRenter: 'Free cancellation up to 48 hours before the rental start time',
-    penaltyCancellation: 'Cancellations made less than 48 hours before the rental start time may incur a penalty',
+    penaltyCancellation: 'Cancellations made less than 48 hours before the rental start time may affect your listing\'s visibility',
     repeatedCancellations: 'Repeated cancellations may affect your listing\'s visibility',
     howToCancel: 'How to Cancel a Reservation',
     stepLogin: 'Log in to your RentMyCar account',
@@ -320,6 +328,7 @@ const l = {
     available: 'Available',
     booked: 'Booked',
     inactive: 'Inactive',
+    cancelled: 'Cancelled',
   },
 
   pushNotifications: {

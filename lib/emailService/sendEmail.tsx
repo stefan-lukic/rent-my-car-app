@@ -278,6 +278,107 @@ export async function sendEmailVerification({
   });
 }
 
+export async function sendCancellationNotificationToCustomer({
+  customerEmail,
+  customerName,
+  carName,
+  startDate,
+  endDate,
+  cancelledByName,
+}: {
+  customerEmail: string;
+  customerName: string;
+  carName: string;
+  startDate: Date;
+  endDate: Date;
+  cancelledByName: string;
+}): Promise<void> {
+  const safeCustomerName = escapeHtml(customerName);
+  const safeCarName = escapeHtml(carName);
+  const safeCancelledByName = escapeHtml(cancelledByName);
+  const formattedStart = formatUtcDate(startDate);
+  const formattedEnd = formatUtcDate(endDate);
+
+  const text =
+    `Hi ${customerName},\n\n` +
+    `Your reservation for ${carName} has been cancelled by ${cancelledByName}.\n\n` +
+    `Pickup Date: ${formattedStart}\n` +
+    `Return Date: ${formattedEnd}\n\n` +
+    `The reservation has been cancelled.\n\n` +
+    `If you have any questions, please contact us.`;
+
+  const html = `
+    <h1>Reservation Cancelled</h1>
+    <p>Hi ${safeCustomerName},</p>
+    <p>Your reservation for <strong>${safeCarName}</strong> has been <strong>cancelled</strong> by ${safeCancelledByName}.</p>
+    <ul>
+      <li><strong>Pickup Date:</strong> ${formattedStart}</li>
+      <li><strong>Return Date:</strong> ${formattedEnd}</li>
+    </ul>
+    <p>The reservation has been cancelled.</p>
+    <p>If you have any questions, please contact us.</p>
+  `;
+
+  await sendMail({
+    to: customerEmail,
+    subject: `Reservation Cancelled: ${carName}`,
+    html,
+    text,
+  });
+}
+
+export async function sendCancellationNotificationToOwner({
+  email,
+  ownerName,
+  carName,
+  customerName,
+  startDate,
+  endDate,
+  cancelledByName,
+}: {
+  email: string;
+  ownerName: string;
+  carName: string;
+  customerName: string;
+  startDate: Date;
+  endDate: Date;
+  cancelledByName: string;
+}): Promise<void> {
+  const safeOwnerName = escapeHtml(ownerName);
+  const safeCarName = escapeHtml(carName);
+  const safeCustomerName = escapeHtml(customerName);
+  const safeCancelledByName = escapeHtml(cancelledByName);
+  const formattedStart = formatUtcDate(startDate);
+  const formattedEnd = formatUtcDate(endDate);
+
+  const text =
+    `Hi ${ownerName},\n\n` +
+    `A reservation for ${carName} has been cancelled by ${cancelledByName}.\n\n` +
+    `Customer: ${customerName}\n` +
+    `Start Date: ${formattedStart}\n` +
+    `End Date: ${formattedEnd}\n\n` +
+    `The reservation has been cancelled.`;
+
+  const html = `
+    <h1>Reservation Cancelled</h1>
+    <p>Hi ${safeOwnerName},</p>
+    <p>A reservation for <strong>${safeCarName}</strong> has been <strong>cancelled</strong> by ${safeCancelledByName}.</p>
+    <ul>
+      <li><strong>Customer:</strong> ${safeCustomerName}</li>
+      <li><strong>Start Date:</strong> ${formattedStart}</li>
+      <li><strong>End Date:</strong> ${formattedEnd}</li>
+    </ul>
+    <p>The reservation has been cancelled.</p>
+  `;
+
+  await sendMail({
+    to: email,
+    subject: `Reservation Cancelled: ${carName}`,
+    html,
+    text,
+  });
+}
+
 export async function sendPasswordResetEmail({
   email,
   token,

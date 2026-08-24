@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
 
     const overlappingRentals = await Rental.find({
       car: { $in: cars.map((car) => car._id) },
+      status: { $ne: 'cancelled' },
       $or: [
         {
           'rentalPeriod.startDate': {

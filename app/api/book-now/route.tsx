@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
 
     const existingRental = await Rental.exists({
       car: car._id,
+      status: { $ne: 'cancelled' },
       'rentalPeriod.startDate': { $lte: rentalEndDate },
       'rentalPeriod.endDate': { $gte: rentalStartDate },
     });
