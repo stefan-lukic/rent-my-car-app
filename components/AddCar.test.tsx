@@ -68,8 +68,7 @@ describe('AddCar', () => {
     });
   });
 
-  it('renders form heading and current field values', async () => {
-    const user = userEvent.setup();
+  it('renders form heading and current field values', () => {
     render(<AddCar />);
 
     expect(
@@ -80,9 +79,9 @@ describe('AddCar', () => {
     expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue('150');
     expect(screen.getByLabelText(l.cars.carLocation)).toHaveValue('Liman 3');
     expect(screen.getByLabelText(/Price Per Day/)).toHaveValue(45);
-    expect(
-      screen.getByPlaceholderText('Tell us more about your car...')
-    ).toHaveValue('Reliable car.');
+    expect(screen.getByLabelText(l.common.description)).toHaveValue(
+      'Reliable car.'
+    );
   });
 
   it('renders selected images and removes an image on click', async () => {
@@ -110,14 +109,14 @@ describe('AddCar', () => {
 
     render(<AddCar />);
 
-    expect(screen.getByText('1 file selected')).toBeInTheDocument();
+    expect(screen.getByText(l.cars.selectedPhotos)).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
 
-    expect(screen.getByRole('img', { name: 'Car image' })).toHaveAttribute(
-      'src',
-      'blob:car-image'
-    );
+    expect(
+      screen.getByRole('img', { name: l.cars.carImagePreview })
+    ).toHaveAttribute('src', 'blob:car-image');
 
-    await user.click(screen.getByRole('button', { name: '✕' }));
+    await user.click(screen.getByRole('button', { name: l.cars.removeImage }));
 
     expect(removeImage).toHaveBeenCalledWith('image-1');
   });

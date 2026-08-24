@@ -15,7 +15,6 @@ describe('DeleteCarModal', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubGlobal('fetch', vi.fn());
-    vi.stubGlobal('alert', vi.fn());
   });
 
   /**
@@ -45,8 +44,7 @@ describe('DeleteCarModal', () => {
    * KAKO: queryByText vraća null ako element ne postoji, pa
    * not.toBeInTheDocument() proverava da element nije prisutan.
    */
-  it('does not render when closed', async () => {
-    const user = userEvent.setup();
+  it('does not render when closed', () => {
     renderModal({ isOpen: false });
 
     expect(screen.queryByText(l.cars.deleteCar)).not.toBeInTheDocument();
@@ -60,8 +58,7 @@ describe('DeleteCarModal', () => {
    * dugmad. Koristimo l.cars.deleteCar i l.cars.deleteCarConfirm
    * za tekstove iz lokalizacije.
    */
-  it('renders confirmation content when open', async () => {
-    const user = userEvent.setup();
+  it('renders confirmation content when open', () => {
     renderModal();
 
     expect(screen.getByText(l.cars.deleteCar)).toBeInTheDocument();
@@ -152,28 +149,24 @@ describe('DeleteCarModal', () => {
     ).toBeDisabled();
   });
 
-  /**
-   * TEST 6: Error alert kada fetch ne uspe
-   * ZAŠTO: Kada fetch vrati ok: false, treba da prikažemo alert
-   * sa greškom i ne smemo da pozovemo onDelete ili onClose.
-   * KAKO:
-   * 1. Mockujemo fetch da vrati ok: false
-   * 2. Kliknemo na Delete dugme
-   * 3. Čekamo da alert bude pozvan sa tačnom greškom
-   * 4. Proveravamo da onDelete i onClose nisu pozvani
-   */
-  it('shows error alert when delete request fails', async () => {
+  // API errors stay in the modal so the user keeps context and can retry.
+  it('shows an inline error when delete request fails', async () => {
     const user = userEvent.setup();
-    vi.mocked(fetch).mockResolvedValue({
-      ok: false,
-    } as Response);
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify({}), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
 
     const props = renderModal();
 
     await user.click(screen.getByRole('button', { name: l.common.delete }));
 
     await waitFor(() => {
-      expect(alert).toHaveBeenCalledWith(l.cars.deleteCarError);
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        l.cars.deleteCarError
+      );
     });
 
     expect(props.onDelete).not.toHaveBeenCalled();

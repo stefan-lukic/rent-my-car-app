@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ComponentType } from 'react';
+import l from '@/helper/en';
 
 interface AddCarSharedConfig {
   Component: ComponentType<{}>;
@@ -60,11 +61,11 @@ export const runAddCarSharedTests = (config: AddCarSharedConfig) => {
     expect(handleInputChange).toHaveBeenCalled();
   });
 
-  it('submits form when Add Car button is clicked', async () => {
+  it('submits form when Publish Car button is clicked', async () => {
     const user = userEvent.setup();
     render(<Component />);
 
-    await user.click(screen.getByRole('button', { name: /add car/i }));
+    await user.click(screen.getByRole('button', { name: l.cars.publishCar }));
 
     expect(handleSubmit).toHaveBeenCalled();
   });
@@ -82,6 +83,8 @@ export const runAddCarSharedTests = (config: AddCarSharedConfig) => {
 
     render(<Component />);
 
-    expect(screen.getByRole('button', { name: /adding/i })).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: l.common.adding })
+    ).toBeDisabled();
   });
 };
