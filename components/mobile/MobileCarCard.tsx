@@ -1,9 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { ICar } from '@/lib/model/car/Car';
-import { useState } from 'react';
-import l from '@/helper/en';
+import CarCard from '../CarCard';
 
 interface MobileCarCardProps {
   car: ICar;
@@ -11,96 +9,16 @@ interface MobileCarCardProps {
   onDeleteClick: (id: string) => void;
 }
 
-const statusStyles: Record<string, string> = {
-  available: 'bg-green-100 text-green-700',
-  rented: 'bg-yellow-100 text-yellow-700',
-  inactive: 'bg-gray-100 text-gray-500',
-};
-
-const statusLabel: Record<string, string> = {
-  available: l.status.available,
-  rented: l.status.booked,
-  inactive: l.status.inactive,
-};
-
-const MobileCarCard: React.FC<MobileCarCardProps> = ({
+const MobileCarCard = ({
   car,
   onUpdate,
   onDeleteClick,
-}) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-      <div className="relative h-48 w-full">
-        <Image
-          src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
-          alt={`${car.make} ${car.carModel}`}
-          fill
-          className="object-cover"
-        />
-
-        <span
-          className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded-md ${
-            statusStyles[car.status ?? ''] || statusStyles.available
-          }`}
-        >
-          {            statusLabel[car.status ?? ''] || l.status.available}
-        </span>
-
-        {car.images && car.images.length > 1 && (
-          <div className="absolute inset-0 flex justify-between items-center px-2">
-            <button
-              onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
-              disabled={currentImageIndex === 0}
-              className="w-7 h-7 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30"
-            >
-              ‹
-            </button>
-            <button
-              onClick={() =>
-                setCurrentImageIndex((i) =>
-                  Math.min(car.images!.length - 1, i + 1)
-                )
-              }
-              disabled={currentImageIndex === car.images.length - 1}
-              className="w-7 h-7 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30"
-            >
-              ›
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4">
-        <h3 className="font-bold text-gray-900 text-base">
-          {car.make} {car.carModel}
-        </h3>
-        <p className="text-green-500 font-bold text-sm mt-0.5">
-          €{car.pricePerDay} / day
-        </p>
-        <div className="flex items-center gap-1 mt-1 mb-3">
-          <span className="text-gray-400 text-xs">📍</span>
-          <span className="text-gray-500 text-xs">{car.city}</span>
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={() => onUpdate(car)}
-            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-             ✎ {l.common.edit}
-          </button>
-          <button
-            onClick={() => onDeleteClick(car._id)}
-            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm border border-red-200 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
-          >
-             🗑 {l.common.delete}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+}: MobileCarCardProps) => (
+  <CarCard
+    car={car}
+    onUpdate={onUpdate}
+    onDeleteClick={(selectedCar) => onDeleteClick(selectedCar._id)}
+  />
+);
 
 export default MobileCarCard;

@@ -2,6 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  CalendarDays,
+  CarFront,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Search,
+} from 'lucide-react';
 import { ICar } from '@/lib/model/car/Car';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import CarCard from './CarCard';
@@ -16,113 +24,211 @@ interface ProfileInteractiveSectionProps {
   rentals: RentalWithCar[];
 }
 
+interface PaginationButtonProps {
+  direction: 'previous' | 'next';
+  disabled: boolean;
+  onClick: () => void;
+  label: string;
+}
+
+const PaginationButton = ({
+  direction,
+  disabled,
+  onClick,
+  label,
+}: PaginationButtonProps) => {
+  const Icon = direction === 'previous' ? ChevronLeft : ChevronRight;
+
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
+      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-blue-300 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-30"
+    >
+      <Icon className="h-5 w-5" />
+    </button>
+  );
+};
+
+const PageNumbers = ({
+  count,
+  current,
+  onChange,
+}: {
+  count: number;
+  current: number;
+  onChange: (page: number) => void;
+}) =>
+  count > 1 ? (
+    <div className="mt-5 flex justify-center gap-2">
+      {Array.from({ length: count }, (_, index) => (
+        <button
+          type="button"
+          key={index}
+          onClick={() => onChange(index)}
+          className={`h-9 w-9 rounded-lg text-sm font-semibold transition-colors ${
+            current === index
+              ? 'bg-blue-600 text-white'
+              : 'border border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-600'
+          }`}
+        >
+          {index + 1}
+        </button>
+      ))}
+    </div>
+  ) : null;
+
 const ProfileInteractiveSection = ({
   cars: initialCars,
   rentals: initialRentals,
 }: ProfileInteractiveSectionProps) => {
   const [activeTab, setActiveTab] = useState<'cars' | 'rentals'>('cars');
   const [cars, setCars] = useState<ICar[]>(initialCars);
+  const [rentals, setRentals] = useState<RentalWithCar[]>(initialRentals);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [carToDeleteId, setCarToDeleteId] = useState<string | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentRentalPage, setCurrentRentalPage] = useState(0);
-  const [rentals, setRentals] = useState<RentalWithCar[]>(initialRentals);
   const [rentalToCancelId, setRentalToCancelId] = useState<string | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRentalPage, setCurrentRentalPage] = useState(0);
+  const router = useRouter();
 
   const carsPerPage = 3;
   const rentalsPerPage = 3;
-  const router = useRouter();
-
   const availableRentals = rentals.filter((rental) => rental.car !== null);
+  const pageCount = Math.ceil(cars.length / carsPerPage);
+  const rentalPageCount = Math.ceil(availableRentals.length / rentalsPerPage);
+  const currentCars = cars.slice(
+    currentPage * carsPerPage,
+    currentPage * carsPerPage + carsPerPage
+  );
+  const currentRentals = availableRentals.slice(
+    currentRentalPage * rentalsPerPage,
+    currentRentalPage * rentalsPerPage + rentalsPerPage
+  );
 
   const handleUpdateCar = (updatedCar: ICar) => {
-    setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
+    setCars((currentCars) =>
+      currentCars.map((car) => (car._id === updatedCar._id ? updatedCar : car))
+    );
     setIsUpdateModalOpen(false);
   };
 
   const handleDeleteCar = (carId: string) => {
-    setCars(cars.filter((car) => car._id !== carId));
+    setCars((currentCars) => currentCars.filter((car) => car._id !== carId));
   };
 
   const handleCancelRental = (updatedRental: RentalWithCar) => {
-    setRentals((prev) =>
-      prev.map((rental) =>
+    setRentals((currentRentals) =>
+      currentRentals.map((rental) =>
         rental._id === updatedRental._id ? updatedRental : rental
       )
     );
   };
 
-  const pageCount = Math.ceil(cars.length / carsPerPage);
-  const start = currentPage * carsPerPage;
-  const end = start + carsPerPage;
-  const currentCars = cars.slice(start, end);
-
-  const rentalPageCount = Math.ceil(availableRentals.length / rentalsPerPage);
-  const rentalStartIndex = currentRentalPage * rentalsPerPage;
-  const rentalEndIndex = rentalStartIndex + rentalsPerPage;
-  const currentRentals = availableRentals.slice(
-    rentalStartIndex,
-    rentalEndIndex
-  );
-
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl w-full max-w-xs">
-        <button
-          onClick={() => setActiveTab('cars')}
-          className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-            activeTab === 'cars'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-blue-600">
+            Your garage
+          </p>
+          <h2 className="mt-1 text-xl font-bold text-slate-950">
+            Manage your activity
+          </h2>
+        </div>
+
+        <div
+          role="tablist"
+          aria-label="Profile activity"
+          className="flex gap-1 rounded-xl bg-slate-100 p-1"
         >
-          {l.profile.myCarsCount(cars.length)}
-        </button>
-        <button
-          onClick={() => setActiveTab('rentals')}
-          className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-            activeTab === 'rentals'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          {l.profile.myRentalsCount(availableRentals.length)}
-        </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'cars'}
+            onClick={() => setActiveTab('cars')}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              activeTab === 'cars'
+                ? 'bg-white text-slate-950 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <CarFront className="h-4 w-4" />
+            {l.profile.myCarsCount(cars.length)}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'rentals'}
+            onClick={() => setActiveTab('rentals')}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              activeTab === 'rentals'
+                ? 'bg-white text-slate-950 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <CalendarDays className="h-4 w-4" />
+            {l.profile.myRentalsCount(availableRentals.length)}
+          </button>
+        </div>
       </div>
 
-      {activeTab === 'cars' && (
-        <div className="bg-white rounded-2xl p-6 border border-gray-100">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">
-              {l.profile.myCarsHeading}
-            </h2>
+      {activeTab === 'cars' ? (
+        <div className="p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">
+                {l.profile.myCarsHeading}
+              </h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Update your listings, availability and vehicle details.
+              </p>
+            </div>
             <button
+              type="button"
               onClick={() => router.push('/cars/add-car')}
-              className="bg-green-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center gap-1"
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
             >
+              <Plus className="h-4 w-4" />
               {l.cars.addNewCarBtn}
             </button>
           </div>
 
           {cars.length === 0 ? (
-            <p className="text-gray-400 italic text-sm">
-              {l.profile.noCarsListed}
-            </p>
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                <CarFront className="h-6 w-6" />
+              </span>
+              <p className="mt-4 font-semibold text-slate-800">
+                {l.profile.noCarsListed}
+              </p>
+              <p className="mt-1 max-w-sm text-sm text-slate-500">
+                Create your first listing and make your car available to local
+                renters.
+              </p>
+              <button
+                type="button"
+                onClick={() => router.push('/cars/add-car')}
+                className="mt-5 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-blue-700"
+              >
+                {l.cars.addNewCarBtn}
+              </button>
+            </div>
           ) : (
             <>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentPage((p) => p - 1)}
+              <div className="flex items-center gap-3">
+                <PaginationButton
+                  direction="previous"
+                  label="Previous cars page"
                   disabled={currentPage === 0}
-                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-                >
-                  ‹
-                </button>
-
-                <div className="flex-1 grid grid-cols-3 gap-3">
+                  onClick={() => setCurrentPage((page) => page - 1)}
+                />
+                <div className="grid flex-1 grid-cols-3 gap-4">
                   {currentCars.map((car) => (
                     <CarCard
                       key={car._id}
@@ -131,67 +237,68 @@ const ProfileInteractiveSection = ({
                         setSelectedCar(car);
                         setIsUpdateModalOpen(true);
                       }}
-                      onDeleteClick={(car) => {
-                        setCarToDeleteId(car._id);
+                      onDeleteClick={(selectedCar) => {
+                        setCarToDeleteId(selectedCar._id);
                         setIsDeleteModalOpen(true);
                       }}
                     />
                   ))}
                 </div>
-
-                <button
-                  onClick={() => setCurrentPage((p) => p + 1)}
+                <PaginationButton
+                  direction="next"
+                  label="Next cars page"
                   disabled={currentPage >= pageCount - 1}
-                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-                >
-                  ›
-                </button>
+                  onClick={() => setCurrentPage((page) => page + 1)}
+                />
               </div>
-
-              {pageCount > 1 && (
-                <div className="flex justify-center gap-2 mt-4">
-                  {Array.from({ length: pageCount }, (_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentPage(i)}
-                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === i
-                          ? 'bg-green-500 text-white'
-                          : 'border border-gray-200 text-gray-500 hover:border-green-400'
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <PageNumbers
+                count={pageCount}
+                current={currentPage}
+                onChange={setCurrentPage}
+              />
             </>
           )}
         </div>
-      )}
-
-      {activeTab === 'rentals' && (
-        <div className="bg-white rounded-2xl p-6 border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            {l.profile.myRentalsHeading}
-          </h2>
+      ) : (
+        <div className="p-6">
+          <div className="mb-5">
+            <h3 className="text-lg font-bold text-slate-900">
+              {l.profile.myRentalsHeading}
+            </h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Review your reservations, dates and current rental status.
+            </p>
+          </div>
 
           {availableRentals.length === 0 ? (
-            <p className="text-gray-400 italic text-sm">
-              {l.profile.noRentalsYet}
-            </p>
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                <Search className="h-6 w-6" />
+              </span>
+              <p className="mt-4 font-semibold text-slate-800">
+                {l.profile.noRentalsYet}
+              </p>
+              <p className="mt-1 text-sm text-slate-500">
+                Browse available cars and reserve one for your next trip.
+              </p>
+              <button
+                type="button"
+                onClick={() => router.push('/#car-search')}
+                className="mt-5 rounded-xl border border-blue-200 bg-white px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-50"
+              >
+                Browse cars
+              </button>
+            </div>
           ) : (
             <>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentRentalPage((p) => p - 1)}
+              <div className="flex items-center gap-3">
+                <PaginationButton
+                  direction="previous"
+                  label="Previous rentals page"
                   disabled={currentRentalPage === 0}
-                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-                >
-                  ‹
-                </button>
-
-                <div className="flex-1 grid grid-cols-3 gap-3">
+                  onClick={() => setCurrentRentalPage((page) => page - 1)}
+                />
+                <div className="grid flex-1 grid-cols-3 gap-4">
                   {currentRentals.map((rental) => (
                     <RentalCard
                       key={rental._id}
@@ -203,33 +310,18 @@ const ProfileInteractiveSection = ({
                     />
                   ))}
                 </div>
-
-                <button
-                  onClick={() => setCurrentRentalPage((p) => p + 1)}
+                <PaginationButton
+                  direction="next"
+                  label="Next rentals page"
                   disabled={currentRentalPage >= rentalPageCount - 1}
-                  className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-green-500 text-white text-xl hover:bg-green-600 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-                >
-                  ›
-                </button>
+                  onClick={() => setCurrentRentalPage((page) => page + 1)}
+                />
               </div>
-
-              {rentalPageCount > 1 && (
-                <div className="flex justify-center gap-2 mt-4">
-                  {Array.from({ length: rentalPageCount }, (_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentRentalPage(i)}
-                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
-                        currentRentalPage === i
-                          ? 'bg-green-500 text-white'
-                          : 'border border-gray-200 text-gray-500 hover:border-green-400'
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <PageNumbers
+                count={rentalPageCount}
+                current={currentRentalPage}
+                onChange={setCurrentRentalPage}
+              />
             </>
           )}
         </div>
@@ -243,7 +335,6 @@ const ProfileInteractiveSection = ({
           onClose={() => setIsUpdateModalOpen(false)}
         />
       )}
-
       {carToDeleteId && (
         <DeleteCarModal
           isOpen={isDeleteModalOpen}
@@ -255,7 +346,6 @@ const ProfileInteractiveSection = ({
           }}
         />
       )}
-
       {rentalToCancelId && (
         <CancelRentalModal
           isOpen={isCancelModalOpen}
@@ -267,7 +357,7 @@ const ProfileInteractiveSection = ({
           }}
         />
       )}
-    </div>
+    </section>
   );
 };
 

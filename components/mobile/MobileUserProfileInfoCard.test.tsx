@@ -13,7 +13,11 @@ vi.mock('next/image', () => ({
 
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href }: any) => <a href={href}>{children}</a>,
+  default: ({ children, href, ...props }: any) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 const mockUser = {
@@ -85,7 +89,7 @@ describe('MobileUserProfileInfoCard', () => {
 
   it('renders edit profile link', () => {
     render(<MobileProfileUserInfoCard {...defaultProps} />);
-    expect(screen.getByRole('link', { name: '✎' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Edit Profile' })).toHaveAttribute(
       'href',
       '/profile/edit'
     );

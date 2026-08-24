@@ -39,7 +39,9 @@ describe('MobileCarCard', () => {
       <MobileCarCard car={mockCar} onUpdate={vi.fn()} onDeleteClick={vi.fn()} />
     );
 
-    const rightArrow = screen.getByText('›');
+    const rightArrow = screen.getByRole('button', {
+      name: 'Next car image',
+    });
     await user.click(rightArrow);
 
     expect(screen.getByRole('img', { name: 'BMW X5' })).toHaveAttribute(
@@ -54,10 +56,14 @@ describe('MobileCarCard', () => {
       <MobileCarCard car={mockCar} onUpdate={vi.fn()} onDeleteClick={vi.fn()} />
     );
 
-    const rightArrow = screen.getByText('›');
+    const rightArrow = screen.getByRole('button', {
+      name: 'Next car image',
+    });
     await user.click(rightArrow);
 
-    const leftArrow = screen.getByText('‹');
+    const leftArrow = screen.getByRole('button', {
+      name: 'Previous car image',
+    });
     await user.click(leftArrow);
 
     expect(screen.getByRole('img', { name: 'BMW X5' })).toHaveAttribute(
@@ -72,7 +78,9 @@ describe('MobileCarCard', () => {
       <MobileCarCard car={mockCar} onUpdate={vi.fn()} onDeleteClick={vi.fn()} />
     );
 
-    const leftArrow = screen.getByText('‹');
+    const leftArrow = screen.getByRole('button', {
+      name: 'Previous car image',
+    });
     expect(leftArrow).toBeDisabled();
   });
 
@@ -82,7 +90,9 @@ describe('MobileCarCard', () => {
       <MobileCarCard car={mockCar} onUpdate={vi.fn()} onDeleteClick={vi.fn()} />
     );
 
-    const rightArrow = screen.getByText('›');
+    const rightArrow = screen.getByRole('button', {
+      name: 'Next car image',
+    });
     await user.click(rightArrow);
     await user.click(rightArrow);
     await user.click(rightArrow);

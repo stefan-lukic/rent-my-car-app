@@ -8,6 +8,7 @@ import { RentalWithCar } from '@/types/RentalWithCar';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
 import l from '@/helper/en';
+import { CalendarDays, CarFront, Plus } from 'lucide-react';
 
 interface MobileProfilePageProps {
   user: IUser;
@@ -20,53 +21,66 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
   const router = useRouter();
 
   return (
-    <div className="h-screen pb-2 bg-gray-50 p-2 flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-3">
+    <main className="min-h-screen bg-slate-50 px-4 pb-24 pt-4">
+      <div className="mx-auto max-w-xl space-y-4">
         <MobileProfileUserInfoCard
           user={user}
           carsCount={cars.length}
           rentalsCount={rentals.length}
         />
-      </div>
-
-      <button
-        onClick={() => router.push('/cars/add-car')}
-        className="w-full bg-blue-600 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors mb-3"
-      >
-        <span className="text-lg leading-none">+</span> {l.profile.addNewCar}
-      </button>
-
-      <div className="flex border-b border-gray-200 bg-white rounded-t-xl">
         <button
-          className={`flex-1 text-center py-2.5 text-sm font-medium transition-colors ${
-            activeTab === 'cars'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-500'
-          }`}
-          onClick={() => setActiveTab('cars')}
+          type="button"
+          onClick={() => router.push('/cars/add-car')}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
         >
-          {l.profile.myCars}
+          <Plus className="h-4 w-4" />
+          {l.profile.addNewCar}
         </button>
-        <button
-          className={`flex-1 text-center py-2.5 text-sm font-medium transition-colors ${
-            activeTab === 'rentals'
-              ? 'text-blue-600 border-b-2 border-blue-600'
-              : 'text-gray-500'
-          }`}
-          onClick={() => setActiveTab('rentals')}
-        >
-          {l.profile.myRentals}
-        </button>
-      </div>
 
-      <div className="h-full flex-1 overflow-auto pb-12">
-        <MobileProfileInteractiveSection
-          cars={cars}
-          rentals={rentals}
-          activeTab={activeTab}
-        />
+        <div
+          role="tablist"
+          aria-label="Profile activity"
+          className="flex gap-1 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'cars'}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${
+              activeTab === 'cars'
+                ? 'bg-blue-50 text-blue-700'
+                : 'text-slate-500'
+            }`}
+            onClick={() => setActiveTab('cars')}
+          >
+            <CarFront className="h-4 w-4" />
+            {l.profile.myCars}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'rentals'}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${
+              activeTab === 'rentals'
+                ? 'bg-blue-50 text-blue-700'
+                : 'text-slate-500'
+            }`}
+            onClick={() => setActiveTab('rentals')}
+          >
+            <CalendarDays className="h-4 w-4" />
+            {l.profile.myRentals}
+          </button>
+        </div>
+
+        <div>
+          <MobileProfileInteractiveSection
+            cars={cars}
+            rentals={rentals}
+            activeTab={activeTab}
+          />
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
