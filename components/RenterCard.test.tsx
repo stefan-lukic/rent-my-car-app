@@ -126,7 +126,7 @@ describe('RenterCard', () => {
   it('renders rating when greater than 0', () => {
     render(<RenterCard renter={mockRenterWithImage} />);
 
-    expect(screen.getByText('★')).toBeInTheDocument();
+    expect(screen.getByLabelText('Rating')).toBeInTheDocument();
     expect(screen.getByText('4.5')).toBeInTheDocument();
   });
 
@@ -140,7 +140,7 @@ describe('RenterCard', () => {
     render(<RenterCard renter={mockRenterWithoutImage} />);
 
     expect(screen.queryByText('0.0')).not.toBeInTheDocument();
-    expect(screen.queryByText('★')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Rating')).not.toBeInTheDocument();
   });
 
   /**
