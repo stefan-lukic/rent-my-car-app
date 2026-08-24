@@ -60,15 +60,16 @@ const l = {
     createAnAccount: 'Create an Account',
     enterDetails: 'Enter your details to access your ride',
     startJourney: 'Start your journey with us today',
-    dontHaveAccount: 'Don\'t have an account?',
+    dontHaveAccount: "Don't have an account?",
     alreadyHaveAccount: 'Already have an account?',
     forgotPassword: 'Forgot Password?',
     forgotPasswordHeading: 'Forgot your password?',
-    forgotPasswordDesc: 'Enter your email and we\'ll send you a reset link.',
+    forgotPasswordDesc: "Enter your email and we'll send you a reset link.",
     emailRequired: 'Email is required',
     enterEmail: 'Enter your email',
     sendResetLink: 'Send reset link',
-    passwordResetSuccess: 'Password reset link has been successfully sent to your email.',
+    passwordResetSuccess:
+      'Password reset link has been successfully sent to your email.',
     resetPasswordHeading: 'Reset your password',
     resetPasswordDesc: 'Enter and confirm your new password.',
     newPassword: 'New password',
@@ -86,10 +87,13 @@ const l = {
     createAccount: 'Create Account',
     errorOccurred: 'An error occurred. Please try again.',
     verifyEmailHeading: 'Verify your email',
-    verificationSent: 'We sent a verification link to your email. Please check your inbox and click the link to verify your account.',
-    checkYourInbox: 'Please check your inbox and click the verification link to verify your email address.',
+    verificationSent:
+      'We sent a verification link to your email. Please check your inbox and click the link to verify your account.',
+    checkYourInbox:
+      'Please check your inbox and click the verification link to verify your email address.',
     verificationSuccess: 'Your email has been verified successfully!',
-    verificationFailed: 'Verification failed. The link may be invalid or expired.',
+    verificationFailed:
+      'Verification failed. The link may be invalid or expired.',
     verifyButton: 'Verify Email',
     verifying: 'Verifying...',
     backToLogin: 'Back to Login',
@@ -137,7 +141,8 @@ const l = {
     editVehicleDesc: 'Edit your vehicle details',
     saveChanges: 'Save Changes',
     deleteCar: 'Delete Car',
-    deleteCarConfirm: 'Are you sure you want to delete this car? This action cannot be undone.',
+    deleteCarConfirm:
+      'Are you sure you want to delete this car? This action cannot be undone.',
     deleteCarError: 'Failed to delete car. Please try again.',
     updateCarError: 'Failed to update car',
     firstRegistrationRequired: 'First registration is required!',
@@ -176,14 +181,27 @@ const l = {
     allTypes: 'All Types',
     engineType: 'Engine Type',
     allEngineTypes: 'All Engine Types',
-    pricesDisclaimer: 'Prices in Euros (€) and exclude customized dropoff charges.',
+    pricesDisclaimer:
+      'Prices in Euros (€) and exclude customized dropoff charges.',
     availableCars: 'Available Cars',
     noCarsFound: 'No cars found...',
     findPerfectRide: 'Find Your Perfect Ride',
-    findCompareChoose: 'Find, compare, and choose the perfect car for your next trip.',
+    findCompareChoose:
+      'Find, compare, and choose the perfect car for your next trip.',
     bookingForDays: (n: number) => `Booking for ${n} days`,
     pickUpDate: 'Pick-up Date',
     returnDateLabel: 'Return Date',
+    selectDatesFirst:
+      'Select pick-up and return dates to search for available cars.',
+    searchFailed: 'We could not load available cars. Please try again.',
+    startSearchTitle: 'Choose your dates to start searching',
+    startSearchDescription:
+      'Available cars will appear here after you select your trip dates.',
+    carsFound: (n: number) => `${n} ${n === 1 ? 'car' : 'cars'} available`,
+    showFilters: 'Show filters',
+    hideFilters: 'Hide filters',
+    clearFilters: 'Clear filters',
+    tryDifferentSearch: 'Try different dates, another city, or fewer filters.',
   },
 
   booking: {
@@ -201,7 +219,8 @@ const l = {
     cancellingReservation: 'Cancelling...',
     reservationCancelled: 'Reservation cancelled successfully',
     reservationAlreadyCancelled: 'This reservation is already cancelled',
-    cannotCancelReservation: 'You are not authorized to cancel this reservation',
+    cannotCancelReservation:
+      'You are not authorized to cancel this reservation',
   },
 
   profile: {
@@ -212,8 +231,8 @@ const l = {
     myCarsHeading: 'My Cars',
     myRentalsHeading: 'My Rentals',
     addNewCar: 'Add New Car',
-    noCarsListed: 'You haven\'t listed any cars yet.',
-    noRentalsYet: 'You haven\'t rented any cars yet.',
+    noCarsListed: "You haven't listed any cars yet.",
+    noRentalsYet: "You haven't rented any cars yet.",
     memberSince: (date: string) => `Member since ${date}`,
     noPhoneNumber: 'No phone number added',
     cars: 'Cars',
@@ -235,11 +254,15 @@ const l = {
     reserveInstantly: 'Reserve Instantly',
     smartHandover: 'Smart Handover',
     embarkSafely: 'Embark Safely',
-    browseDesc: 'Discover a curated network of reliable, privately-owned local cars. Filter by make, body style, price, or hybrid/electric engine types to match your exact itinerary style.',
-    reserveDesc: 'Pick your departure and return schedule. Review fully transparent day-rates, and confirm your holding reservation. The local renter will authorize approval instantly.',
-    handoverDesc: 'Arrange personal pickup or convenient curbside handling at designated city transfer points in Belgrade, Novi Sad, or local suburbs. Enjoy quick ID check & digital key sign-off.',
-    embarkDesc: 'Travel with comprehensive coverage, full mechanical verification, and active 24/7 client relations assistance. Return easily with a complete fuel status and share a renter review.',
-    gotIt: 'Got It, Let\'s Ride',
+    browseDesc:
+      'Choose a city and travel dates, then narrow the results by price, make, body style, or engine type.',
+    reserveDesc:
+      'Open a listing to review the vehicle and daily price, then confirm your reservation for the selected dates.',
+    handoverDesc:
+      'Use the owner information provided with the listing to agree on the pickup location and handover details.',
+    embarkDesc:
+      'Keep your reservation details in your profile and contact the owner if the trip arrangements change.',
+    gotIt: "Got It, Let's Ride",
   },
 
   navigation: {
@@ -257,7 +280,8 @@ const l = {
     premiumMarketplace: 'Premium Marketplace Network in Serbia',
     findBookCars: 'Find and Book Cars Across Serbia',
     fastEasyTrusted: 'Fast, Easy, Trusted',
-    landingDesc: 'Inspect vehicle specifications, calculate real-time day rates, and book from trusted local renters in Novi Sad and Belgrade.',
+    landingDesc:
+      'Inspect vehicle specifications, calculate real-time day rates, and book from trusted local renters in Novi Sad and Belgrade.',
     premiumRides: 'Premium Rides',
     kilometersLogged: 'Kilometers Logged',
     verifiedHosts: 'Verified Hosts',
@@ -269,34 +293,71 @@ const l = {
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
     verifiedVehicles: 'Verified Vehicles. Trusted Renters.',
+    localCarMarketplace: 'Peer-to-peer car rental in Serbia',
+    heroTitle: 'Your next car is closer than you think.',
+    heroHighlight: 'Find it locally.',
+    heroDescription:
+      'Choose your city and travel dates, compare local cars, and reserve the one that fits your trip. Have a car? List it and put it to work.',
+    jumpToSearch: 'Jump to car search',
+    browseCars: 'Browse local cars',
+    newToRentMyCar: 'New to RentMyCar?',
+    howItWorksDescription:
+      'See how searching, booking, and meeting the car owner works before you reserve.',
+    findACar: 'Find a car',
+    listYourCar: 'List your car',
+    forCarOwners: 'For car owners',
+    putYourCarToWork: 'Own a car? Put it to work.',
+    ownerDescription:
+      'Create a listing, set your daily price, and make your car available to local renters when it suits you.',
+    addYourCar: 'Add your car',
+    createListing: 'Create your listing',
+    createListingDescription:
+      'Add the vehicle details and photos renters need to see.',
+    setYourPrice: 'Set your daily price',
+    setYourPriceDescription:
+      'Choose the daily rate that works for you and your car.',
+    chooseAvailability: 'Receive reservations',
+    chooseAvailabilityDescription:
+      'Your car appears in searches for available rental dates.',
   },
 
   pages: {
     aboutHeading: 'About RentMyCar',
-    aboutDesc1: 'RentMyCar is a leading peer-to-peer car rental platform, connecting car renters with clients to create a seamless and affordable car rental experience.',
-    aboutDesc2: 'Founded in 2024, our mission is to revolutionize the car rental industry by providing a secure, flexible, and cost-effective alternative to traditional rental companies.',
-    aboutDesc3: 'We\'re committed to building a community of trust, where car renters can earn extra income and clients can find the perfect vehicle for their needs.',
+    aboutDesc1:
+      'RentMyCar is a leading peer-to-peer car rental platform, connecting car renters with clients to create a seamless and affordable car rental experience.',
+    aboutDesc2:
+      'Founded in 2024, our mission is to revolutionize the car rental industry by providing a secure, flexible, and cost-effective alternative to traditional rental companies.',
+    aboutDesc3:
+      "We're committed to building a community of trust, where car renters can earn extra income and clients can find the perfect vehicle for their needs.",
     contactUs: 'Contact Us',
     sendMessage: 'Send Message',
     helpCenterHeading: 'Help Center',
     faqHeading: 'Frequently Asked Questions',
     faqQ1: 'How do I list my car?',
-    faqA1: 'To list your car, log in to your account and click on \'List a Car\' in your dashboard. Follow the prompts to add details about your vehicle.',
+    faqA1:
+      "To list your car, log in to your account and click on 'List a Car' in your dashboard. Follow the prompts to add details about your vehicle.",
     faqQ2: 'What if my car gets damaged?',
-    faqA2: 'All rentals include insurance coverage. If your car is damaged, report it immediately through our app or website, and we\'ll guide you through the claims process.',
+    faqA2:
+      "All rentals include insurance coverage. If your car is damaged, report it immediately through our app or website, and we'll guide you through the claims process.",
     faqQ3: 'How do I get paid?',
-    faqA3: 'Payments are processed automatically after each completed rental. Funds are typically deposited into your linked bank account within 3-5 business days.',
-    cantFind: 'Can\'t find what you\'re looking for?',
+    faqA3:
+      'Payments are processed automatically after each completed rental. Funds are typically deposited into your linked bank account within 3-5 business days.',
+    cantFind: "Can't find what you're looking for?",
     contactSupport: 'Contact our support team',
     termsHeading: 'Terms of Service',
-    termsDesc: 'Welcome to RentMyCar. By using our services, you agree to comply with and be bound by the following terms and conditions.',
+    termsDesc:
+      'Welcome to RentMyCar. By using our services, you agree to comply with and be bound by the following terms and conditions.',
     privacyHeading: 'Privacy Policy',
-    privacyDesc1: 'At RentMyCar, we are committed to protecting your privacy and ensuring the security of your personal information.',
-    privacyDesc2: 'We collect information you provide directly to us, such as when you create an account, list a car, or make a reservation.',
-    privacyDesc3: 'We use the information we collect to provide, maintain, and improve our services, as well as to communicate with you.',
+    privacyDesc1:
+      'At RentMyCar, we are committed to protecting your privacy and ensuring the security of your personal information.',
+    privacyDesc2:
+      'We collect information you provide directly to us, such as when you create an account, list a car, or make a reservation.',
+    privacyDesc3:
+      'We use the information we collect to provide, maintain, and improve our services, as well as to communicate with you.',
     safetyFirst: 'Safety First',
     safetyCommitment: 'Our Commitment to Your Safety',
-    safetyDesc: 'At RentMyCar, your safety is our top priority. We\'ve implemented several measures to ensure a secure experience for both car renters and clients.',
+    safetyDesc:
+      "At RentMyCar, your safety is our top priority. We've implemented several measures to ensure a secure experience for both car renters and clients.",
     safetyTips: 'Safety Tips',
     insurance: 'Comprehensive insurance coverage for every rental',
     backgroundChecks: 'Thorough background checks on all users',
@@ -304,26 +365,34 @@ const l = {
     securePayment: 'Secure payment processing',
     inAppMessaging: 'In-app messaging for safe communication',
     meetPublic: 'Always meet in a public place for car handovers',
-    inspectVehicle: 'Thoroughly inspect the vehicle before and after each rental',
+    inspectVehicle:
+      'Thoroughly inspect the vehicle before and after each rental',
     keepCommunication: 'Keep all communication within our platform',
-    trustInstincts: 'Trust your instincts - if something feels off, contact our support team',
+    trustInstincts:
+      'Trust your instincts - if something feels off, contact our support team',
     cancellationOptions: 'Cancellation Options',
     flexiblePolicy: 'Our Flexible Cancellation Policy',
-    cancellationDesc: 'We understand that plans can change. You can cancel your reservation at any time through your profile.',
+    cancellationDesc:
+      'We understand that plans can change. You can cancel your reservation at any time through your profile.',
     forClients: 'For Clients:',
-    freeCancellationClient: 'Free cancellation up to 24 hours before the rental start time',
+    freeCancellationClient:
+      'Free cancellation up to 24 hours before the rental start time',
     partialRefund: 'No automated refunds are processed through the app',
     noRefund: 'Contact the owner directly for any refund discussions',
     forRenters: 'For Car Renters:',
-    freeCancellationRenter: 'Free cancellation up to 48 hours before the rental start time',
-    penaltyCancellation: 'Cancellations made less than 48 hours before the rental start time may affect your listing\'s visibility',
-    repeatedCancellations: 'Repeated cancellations may affect your listing\'s visibility',
+    freeCancellationRenter:
+      'Free cancellation up to 48 hours before the rental start time',
+    penaltyCancellation:
+      "Cancellations made less than 48 hours before the rental start time may affect your listing's visibility",
+    repeatedCancellations:
+      "Repeated cancellations may affect your listing's visibility",
     howToCancel: 'How to Cancel a Reservation',
     stepLogin: 'Log in to your RentMyCar account',
     stepGoToReservations: 'Go to `My Reservations` in your dashboard',
     stepFindReservation: 'Find the reservation you want to cancel',
     stepClickCancel: 'Click on `Cancel Reservation` and follow the prompts',
-    stepConfirmation: 'You\'ll receive a confirmation email once the cancellation is processed',
+    stepConfirmation:
+      "You'll receive a confirmation email once the cancellation is processed",
     notFound: '404 Not Found',
     pageNotFound: 'Your visited page not found. You may go home page.',
     errorFallback: 'Something went wrong. Please try again later.',

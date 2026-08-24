@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { CarMake } from '@/lib/model/car/CarMake';
@@ -12,180 +13,167 @@ interface CarFiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<CarFilterState>>;
 }
 
-const capitalize = (str: string) => str.charAt(0) + str.slice(1).toLowerCase();
+const emptyFilters: CarFilterState = {
+  minPrice: '',
+  maxPrice: '',
+  make: '',
+  carType: '',
+  engine: '',
+};
 
-const labelClass =
-  'block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5';
+const labelClass = 'mb-1.5 block text-xs font-bold text-slate-600';
 const inputClass =
-  'w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none';
+  'w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100';
 
-const MobileCarFilters: React.FC<CarFiltersProps> = ({
+export default function MobileCarFilters({
   filters,
   setFilters,
-}) => {
+}: CarFiltersProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    const { name, value } = event.target;
+    setFilters((current) => ({ ...current, [name]: value }));
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-      <div className="flex items-center gap-2">
-        <svg
-          className="w-4 h-4 text-gray-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
-          />
-        </svg>
-        <span className="text-xs font-bold text-gray-700 uppercase tracking-widest">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        aria-expanded={isOpen}
+        className="flex w-full items-center justify-between px-4 py-3.5 text-left"
+      >
+        <span className="flex items-center gap-2 text-sm font-bold text-slate-800">
+          <SlidersHorizontal className="h-4 w-4 text-blue-600" />
           {l.search.filters}
+          {activeFilterCount > 0 && (
+            <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] text-white">
+              {activeFilterCount}
+            </span>
+          )}
+          <span className="sr-only">
+            {isOpen ? l.search.hideFilters : l.search.showFilters}
+          </span>
         </span>
-      </div>
+        <ChevronDown
+          className={`h-4 w-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
 
-      <div className="border-b border-gray-100" />
-
-      <div>
-        <label className={labelClass}>{l.search.priceRangeEur}</label>
-        <div className="flex gap-2">
-          <div className="relative flex-1">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              €
-            </span>
-            <input
-              type="number"
-              name="minPrice"
-              value={filters.minPrice}
-              onChange={handleChange}
-              placeholder={l.search.min}
-              className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-            />
+      {isOpen && (
+        <div className="space-y-4 border-t border-slate-100 px-4 pb-4 pt-4">
+          <div>
+            <label className={labelClass}>{l.search.priceRangeEur}</label>
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="number"
+                min="0"
+                name="minPrice"
+                value={filters.minPrice}
+                onChange={handleChange}
+                placeholder={l.search.min}
+                className={inputClass}
+                aria-label={l.search.minPlaceholder}
+              />
+              <input
+                type="number"
+                min="0"
+                name="maxPrice"
+                value={filters.maxPrice}
+                onChange={handleChange}
+                placeholder={l.search.max}
+                className={inputClass}
+                aria-label={l.search.maxPlaceholder}
+              />
+            </div>
           </div>
-          <div className="relative flex-1">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              €
-            </span>
-            <input
-              type="number"
-              name="maxPrice"
-              value={filters.maxPrice}
-              onChange={handleChange}
-              placeholder={l.search.max}
-              className="w-full pl-7 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-            />
-          </div>
-        </div>
-      </div>
 
-      <div>
-        <label className={labelClass}>{l.search.carMake}</label>
-        <div className="relative">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-          <select
+          <MobileSelect
+            label={l.search.carMake}
             name="make"
             value={filters.make}
             onChange={handleChange}
-            className={`${inputClass} pl-9`}
-          >
-            <option value="">{l.search.allManufacturers}</option>
-            {Object.values(CarMake).map((make) => (
-              <option key={make} value={make}>
-                {capitalize(make)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label className={labelClass}>{l.search.carType}</label>
-        <div className="relative">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-          <select
+            placeholder={l.search.allMakes}
+            options={Object.values(CarMake)}
+          />
+          <MobileSelect
+            label={l.search.carType}
             name="carType"
             value={filters.carType}
             onChange={handleChange}
-            className={`${inputClass} pl-9`}
-          >
-            <option value="">{l.search.allTypes}</option>
-            {Object.values(CarType).map((type) => (
-              <option key={type} value={type}>
-                {capitalize(type)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label className={labelClass}>{l.search.engineType}</label>
-        <div className="relative">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-          <select
+            placeholder={l.search.allTypes}
+            options={Object.values(CarType)}
+          />
+          <MobileSelect
+            label={l.search.engineType}
             name="engine"
             value={filters.engine}
             onChange={handleChange}
-            className={`${inputClass} pl-9`}
-          >
-            <option value="">{l.search.allEngineTypes}</option>
-            {Object.values(CarEngineType).map((engine) => (
-              <option key={engine} value={engine}>
-                {capitalize(engine)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+            placeholder={l.search.allEngineTypes}
+            options={Object.values(CarEngineType)}
+          />
 
-      <p className="text-[10px] text-gray-400 text-center pt-1">
-        {l.search.pricesDisclaimer}
-      </p>
+          {activeFilterCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setFilters(emptyFilters)}
+              className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-100 py-3 text-sm font-bold text-slate-600"
+            >
+              <X className="h-4 w-4" /> {l.search.clearFilters}
+            </button>
+          )}
+          <p className="text-center text-[10px] leading-4 text-slate-400">
+            {l.search.pricesDisclaimer}
+          </p>
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default MobileCarFilters;
+interface MobileSelectProps {
+  label: string;
+  name: keyof CarFilterState;
+  value: string;
+  placeholder: string;
+  options: string[];
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+function MobileSelect({
+  label,
+  name,
+  value,
+  placeholder,
+  options,
+  onChange,
+}: MobileSelectProps) {
+  return (
+    <div>
+      <label htmlFor={`mobile-${name}`} className={labelClass}>
+        {label}
+      </label>
+      <div className="relative">
+        <select
+          id={`mobile-${name}`}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`${inputClass} pr-9`}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      </div>
+    </div>
+  );
+}

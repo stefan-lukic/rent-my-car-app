@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MobileCarRentalSearch from './MobileCarRentalSearch';
@@ -97,6 +96,8 @@ describe('MobileCarRentalSearch', () => {
       selectedCar: null,
       renter: null,
       daysSelected: 0,
+      hasSearched: true,
+      searchError: '',
       onSearch: vi.fn(),
       onPageChange: vi.fn(),
       openDetails: vi.fn(),
@@ -116,8 +117,7 @@ describe('MobileCarRentalSearch', () => {
     });
   });
 
-  it('renders search form with location, dates and search button', async () => {
-    const user = userEvent.setup();
+  it('renders search form with location, dates and search button', () => {
     render(<MobileCarRentalSearch filters={mockFilters} />);
 
     expect(screen.getByText(l.search.location)).toBeInTheDocument();
@@ -126,15 +126,13 @@ describe('MobileCarRentalSearch', () => {
     expect(screen.getByText(l.common.searchCars)).toBeInTheDocument();
   });
 
-  it('renders car results', async () => {
-    const user = userEvent.setup();
+  it('renders car results', () => {
     render(<MobileCarRentalSearch filters={mockFilters} />);
 
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
   });
 
-  it('calls onSearch when search button is clicked', async () => {
-    const user = userEvent.setup();
+  it('calls onSearch when search button is clicked', () => {
     const onSearch = vi.fn();
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),
@@ -143,13 +141,13 @@ describe('MobileCarRentalSearch', () => {
 
     render(<MobileCarRentalSearch filters={mockFilters} />);
 
-    await user.click(screen.getByText(l.common.searchCars));
+    const searchButton = screen.getByText(l.common.searchCars);
+    fireEvent.submit(searchButton.closest('form') as HTMLFormElement);
 
     expect(onSearch).toHaveBeenCalled();
   });
 
-  it('shows Load More button when more pages exist', async () => {
-    const user = userEvent.setup();
+  it('shows Load More button when more pages exist', () => {
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),
       results: {
@@ -166,8 +164,7 @@ describe('MobileCarRentalSearch', () => {
     expect(screen.getByText(l.common.loadMore)).toBeInTheDocument();
   });
 
-  it('shows all cars loaded message on last page', async () => {
-    const user = userEvent.setup();
+  it('shows all cars loaded message on last page', () => {
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),
       results: {
@@ -184,8 +181,7 @@ describe('MobileCarRentalSearch', () => {
     expect(screen.getByText(l.common.allCarsLoaded)).toBeInTheDocument();
   });
 
-  it('shows no cars found message when results are empty', async () => {
-    const user = userEvent.setup();
+  it('shows no cars found message when results are empty', () => {
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),
       results: {
@@ -202,8 +198,7 @@ describe('MobileCarRentalSearch', () => {
     expect(screen.getByText(l.search.noCarsFound)).toBeInTheDocument();
   });
 
-  it('shows days selected info when dates are selected', async () => {
-    const user = userEvent.setup();
+  it('shows days selected info when dates are selected', () => {
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),
       daysSelected: 3,
