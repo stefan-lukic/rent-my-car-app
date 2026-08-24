@@ -198,6 +198,24 @@ describe('MobileCarRentalSearch', () => {
     expect(screen.getByText(l.search.noCarsFound)).toBeInTheDocument();
   });
 
+  it('shows result skeletons instead of an empty state while loading', () => {
+    mocks.useCarSearchForm.mockReturnValue({
+      ...mocks.useCarSearchForm(),
+      results: {
+        data: [],
+        total: 0,
+        totalPages: 0,
+        currentPage: 1,
+        loading: true,
+      },
+    });
+
+    render(<MobileCarRentalSearch filters={mockFilters} />);
+
+    expect(screen.getByTestId('car-results-skeleton')).toBeInTheDocument();
+    expect(screen.queryByText(l.search.noCarsFound)).not.toBeInTheDocument();
+  });
+
   it('shows days selected info when dates are selected', () => {
     mocks.useCarSearchForm.mockReturnValue({
       ...mocks.useCarSearchForm(),

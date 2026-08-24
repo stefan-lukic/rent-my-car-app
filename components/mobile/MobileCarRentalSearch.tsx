@@ -19,6 +19,7 @@ import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
+import { CarResultsSkeleton } from '../UI/LoadingSkeletons';
 
 interface MobileCarRentalSearchProps {
   filters: CarFilterState;
@@ -168,32 +169,36 @@ const MobileCarRentalSearch = ({
           </div>
         )}
 
-        <div className="flex flex-col gap-5">
-          {allCars.map((car) => (
-            <MobileCarSearchResults
-              key={car._id}
-              car={car}
-              onBookNow={() => openBooking(car)}
-              onViewDetails={() => {
-                openDetails(car);
-                setModals({ booking: false, details: true });
-              }}
-            />
-          ))}
-          {hasSearched &&
-            !results.loading &&
-            !searchError &&
-            allCars.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-                <p className="font-bold text-slate-800">
-                  {l.search.noCarsFound}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">
-                  {l.search.tryDifferentSearch}
-                </p>
-              </div>
-            )}
-        </div>
+        {results.loading && allCars.length === 0 ? (
+          <CarResultsSkeleton mobile />
+        ) : (
+          <div className="flex flex-col gap-5">
+            {allCars.map((car) => (
+              <MobileCarSearchResults
+                key={car._id}
+                car={car}
+                onBookNow={() => openBooking(car)}
+                onViewDetails={() => {
+                  openDetails(car);
+                  setModals({ booking: false, details: true });
+                }}
+              />
+            ))}
+            {hasSearched &&
+              !results.loading &&
+              !searchError &&
+              allCars.length === 0 && (
+                <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
+                  <p className="font-bold text-slate-800">
+                    {l.search.noCarsFound}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {l.search.tryDifferentSearch}
+                  </p>
+                </div>
+              )}
+          </div>
+        )}
 
         {results.currentPage < results.totalPages && (
           <button

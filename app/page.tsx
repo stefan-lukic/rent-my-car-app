@@ -10,7 +10,6 @@ import {
   CarFront,
   Compass,
   KeyRound,
-  LucideLoader2,
 } from 'lucide-react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useAuth } from '@/hooks/useAuth';
@@ -20,6 +19,7 @@ import CarFilters from '@/components/CarFilters';
 import CarRentalSearch from '@/components/CarRentalSearch';
 import MobileCarFilters from '@/components/mobile/MobileCarFilters';
 import MobileCarRentalSearch from '@/components/mobile/MobileCarRentalSearch';
+import { HomePageSkeleton } from '@/components/UI/LoadingSkeletons';
 
 const initialFilters: CarFilterState = {
   minPrice: '',
@@ -35,12 +35,7 @@ export default function Home() {
   const [filters, setFilters] = useState<CarFilterState>(initialFilters);
 
   if (loading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-50">
-        <LucideLoader2 className="animate-spin text-blue-600" />
-        <span className="sr-only">{l.common.loading}</span>
-      </div>
-    );
+    return <HomePageSkeleton />;
   }
 
   return (

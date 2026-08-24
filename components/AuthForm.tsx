@@ -8,6 +8,7 @@ import ProfileForm from './ProfileForm';
 import { isMobileCSR } from '@/utils/deviceDetectionCSR';
 import MobileProfileForm from './mobile/MobileProfileForm';
 import Link from 'next/link';
+import { AuthFormSkeleton } from './UI/LoadingSkeletons';
 
 const AuthForm = ({ type }: { type: string }) => {
   const { data: session, status } = useSession();
@@ -23,11 +24,7 @@ const AuthForm = ({ type }: { type: string }) => {
   }, [status, router, callbackUrl]);
 
   if (status === 'loading') {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <AuthFormSkeleton />;
   }
 
   if (status === 'authenticated') {
@@ -48,9 +45,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 : l.auth.createAnAccount}
           </h1>
           <p className="text-gray-500 font-medium">
-            {type === 'sign-in'
-              ? l.auth.enterDetails
-              : l.auth.startJourney}
+            {type === 'sign-in' ? l.auth.enterDetails : l.auth.startJourney}
           </p>
         </header>
 

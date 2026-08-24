@@ -11,6 +11,7 @@ import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
+import { CarResultsSkeleton } from './UI/LoadingSkeletons';
 
 const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
@@ -129,19 +130,23 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
-        {results.data.map((car) => (
-          <CarSearchResults
-            key={car._id}
-            car={car}
-            onBookNow={() => openBooking(car)}
-            onViewDetails={() => {
-              openDetails(car);
-              setModals({ booking: false, details: true });
-            }}
-          />
-        ))}
-      </div>
+      {results.loading && results.data.length === 0 ? (
+        <CarResultsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+          {results.data.map((car) => (
+            <CarSearchResults
+              key={car._id}
+              car={car}
+              onBookNow={() => openBooking(car)}
+              onViewDetails={() => {
+                openDetails(car);
+                setModals({ booking: false, details: true });
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {hasSearched &&
         !results.loading &&

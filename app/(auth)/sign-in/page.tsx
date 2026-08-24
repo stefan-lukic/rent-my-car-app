@@ -1,11 +1,11 @@
-import l from '@/helper/en';
 import React, { Suspense } from 'react';
 import AuthForm from '@/components/AuthForm';
 import { InstallPrompt } from '@/components/PushNotificationManager';
+import { AuthFormSkeleton } from '@/components/UI/LoadingSkeletons';
 
 const SignInPage = () => {
   return (
-    <Suspense fallback={<div>{l.common.loading}</div>}>
+    <Suspense fallback={<AuthFormSkeleton />}>
       <AuthForm type="sign-in" />
       <InstallPrompt />
     </Suspense>
