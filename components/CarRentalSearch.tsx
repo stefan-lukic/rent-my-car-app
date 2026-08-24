@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { Button } from './UI/Button';
 import SearchIcon from '@mui/icons-material/Search';
-import { MapPin } from 'lucide-react';
+import { AlertCircle, CalendarSearch, MapPin } from 'lucide-react';
 import { CarCity } from '@/lib/model/car/CarCity';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
 import CustomDatePicker from './UI/CustomDatePicker';
@@ -21,6 +20,8 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
     selectedCar,
     renter,
     startDate,
+    hasSearched,
+    searchError,
     onSearch,
     onPageChange,
     openDetails,
@@ -42,20 +43,20 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
   const pages = Array.from({ length: results.totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <form
         onSubmit={onSearch}
-        className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col lg:flex-row gap-4 items-end"
+        className="mb-6 grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid-cols-[1fr_1.4fr_auto] lg:items-end"
       >
         <div className="flex-1 w-full">
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1 px-1">
+          <label className="mb-2 block text-sm font-semibold text-slate-700">
             {l.search.location}
           </label>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <select
               {...form.register('city')}
-              className="w-full pl-10 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none appearance-none transition-all"
+              className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
             >
               <option value="">{l.search.allCities}</option>
               {Object.values(CarCity).map((city) => (
@@ -85,7 +86,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         <Button
           type="submit"
           disabled={results.loading}
-          className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold shadow-sm hover:bg-blue-700 transition-all flex items-center justify-center min-w-[160px]"
+          className="flex min-w-[150px] items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {results.loading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
@@ -97,10 +98,42 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         </Button>
       </form>
 
+      {searchError && (
+        <div
+          role="alert"
+          className="mb-6 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+          <span>{searchError}</span>
+        </div>
+      )}
+
+      {!hasSearched && !results.loading && (
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 text-center">
+          <div className="mb-4 rounded-2xl bg-blue-50 p-3 text-blue-600">
+            <CalendarSearch className="h-6 w-6" />
+          </div>
+          <h3 className="font-bold text-slate-900">
+            {l.search.startSearchTitle}
+          </h3>
+          <p className="mt-1 max-w-sm text-sm text-slate-500">
+            {l.search.startSearchDescription}
+          </p>
+        </div>
+      )}
+
+      {hasSearched && !results.loading && !searchError && (
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm font-bold text-slate-800">
+            {l.search.carsFound(results.total)}
+          </p>
+        </div>
+      )}
+
       {results.loading && results.data.length === 0 ? (
         <CarResultsSkeleton />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
           {results.data.map((car) => (
             <CarSearchResults
               key={car._id}
@@ -114,6 +147,18 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
           ))}
         </div>
       )}
+
+      {hasSearched &&
+        !results.loading &&
+        !searchError &&
+        results.data.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+            <p className="font-bold text-slate-800">{l.search.noCarsFound}</p>
+            <p className="mt-1 text-sm text-slate-500">
+              {l.search.tryDifferentSearch}
+            </p>
+          </div>
+        )}
 
       {results.totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-8">

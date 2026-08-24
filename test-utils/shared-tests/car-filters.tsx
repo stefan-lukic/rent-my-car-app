@@ -24,6 +24,7 @@ export interface CarFiltersSharedConfig {
   carTypeOptionText?: string;
   engineOptionText?: string;
   disclaimerText?: string;
+  collapsible?: boolean;
 }
 
 export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
@@ -44,7 +45,12 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     carTypeOptionText,
     engineOptionText,
     disclaimerText,
+    collapsible,
   } = config;
+
+  const expandFilters = async (user: ReturnType<typeof userEvent.setup>) => {
+    if (collapsible) await user.click(screen.getByText(headingText));
+  };
 
   const defaultFilters: CarFilterState = {
     minPrice: '',
@@ -54,8 +60,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     engine: '',
   };
 
-  it('renders filter heading', async () => {
-    const user = userEvent.setup();
+  it('renders filter heading', () => {
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
     expect(screen.getByText(headingText)).toBeInTheDocument();
@@ -65,6 +70,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     expect(screen.getByPlaceholderText(minPlaceholder)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(maxPlaceholder)).toBeInTheDocument();
   });
@@ -73,6 +79,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     expect(screen.getByText(makeLabel)).toBeInTheDocument();
     expect(screen.getByText(carTypeLabel)).toBeInTheDocument();
     expect(screen.getByText(engineLabel)).toBeInTheDocument();
@@ -82,6 +89,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     await user.type(screen.getByPlaceholderText(minPlaceholder), '50');
     expect(setFilters).toHaveBeenCalled();
   });
@@ -90,6 +98,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     await user.type(screen.getByPlaceholderText(maxPlaceholder), '200');
     expect(setFilters).toHaveBeenCalled();
   });
@@ -98,6 +107,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     await user.selectOptions(screen.getByDisplayValue(makeDisplayValue), 'BMW');
     expect(setFilters).toHaveBeenCalled();
   });
@@ -106,6 +116,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     await user.selectOptions(
       screen.getByDisplayValue(carTypeDisplayValue),
       carTypeOption
@@ -117,9 +128,10 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     const user = userEvent.setup();
     const setFilters = vi.fn();
     render(<Component filters={defaultFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     await user.selectOptions(
       screen.getByDisplayValue(engineDisplayValue),
-      'DIESEL'
+      engineOption
     );
     expect(setFilters).toHaveBeenCalled();
   });
@@ -135,6 +147,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       engine: 'Electric',
     };
     render(<Component filters={filledFilters} setFilters={setFilters} />);
+    await expandFilters(user);
     expect(screen.getByPlaceholderText(minPlaceholder)).toHaveValue(30);
     expect(screen.getByPlaceholderText(maxPlaceholder)).toHaveValue(150);
   });
@@ -144,6 +157,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       const user = userEvent.setup();
       const setFilters = vi.fn();
       render(<Component filters={defaultFilters} setFilters={setFilters} />);
+      await expandFilters(user);
       expect(screen.getByText(makeOptionText)).toBeInTheDocument();
     });
   }
@@ -153,6 +167,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       const user = userEvent.setup();
       const setFilters = vi.fn();
       render(<Component filters={defaultFilters} setFilters={setFilters} />);
+      await expandFilters(user);
       expect(screen.getByText(carTypeOptionText)).toBeInTheDocument();
     });
   }
@@ -162,6 +177,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       const user = userEvent.setup();
       const setFilters = vi.fn();
       render(<Component filters={defaultFilters} setFilters={setFilters} />);
+      await expandFilters(user);
       expect(screen.getByText(engineOptionText)).toBeInTheDocument();
     });
   }
@@ -171,6 +187,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       const user = userEvent.setup();
       const setFilters = vi.fn();
       render(<Component filters={defaultFilters} setFilters={setFilters} />);
+      await expandFilters(user);
       expect(screen.getByText(disclaimerText)).toBeInTheDocument();
     });
   }

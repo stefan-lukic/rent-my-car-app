@@ -6,6 +6,7 @@ import l from '@/helper/en';
 import { createNextImageMock } from '@/test-utils/mocks/next-image';
 import { createMockRental } from '@/test-utils/fixtures/rental';
 import { createMockCar } from '@/test-utils/fixtures/car';
+import { RentalStatus } from '@/types/RentalWithCar';
 createNextImageMock();
 
 const mockRental = createMockRental();
@@ -42,66 +43,45 @@ describe('RentalCard', () => {
     expect(screen.getByText('Belgrade')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 3: Renderuje status badge za 'available' status
-   * ZAŠTO: Status badge pomaže korisniku da vidi da li je auto
-   *   trenutno dostupan za novu rezervaciju.
-   * KAKO: getByText('Available') za status 'available'.
-   */
-  it('shows Available badge for available car', () => {
-    const availableRental = createMockRental({
-      car: createMockCar({ status: 'available' }),
-    });
+  // RentalCard describes an existing rental, so its badge follows rental.status.
+  it('shows Booked badge for an active rental', () => {
+    const activeRental = createMockRental({ status: RentalStatus.Active });
 
-    render(<RentalCard {...defaultProps} rental={availableRental} />);
+    render(<RentalCard {...defaultProps} rental={activeRental} />);
 
-    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 4: Renderuje status badge za 'rented' status
-   * ZAŠTO: Kada je auto iznajmljen, badge treba da prikaže 'Booked'.
-   * KAKO: getByText('Booked') za status 'rented'.
-   */
-  it('shows Booked badge for rented car', () => {
-    const rentedRental = createMockRental({
-      car: createMockCar({ status: 'rented' }),
+  it('shows Cancelled badge for a cancelled rental', () => {
+    const cancelledRental = createMockRental({
+      status: RentalStatus.Cancelled,
     });
 
-    render(<RentalCard {...defaultProps} rental={rentedRental} />);
+    render(<RentalCard {...defaultProps} rental={cancelledRental} />);
 
-    expect(screen.getByText('Booked')).toBeInTheDocument();
+    expect(screen.getByText(l.status.cancelled)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 5: Renderuje status badge za 'inactive' status
-   * ZAŠTO: Neaktivni automobili treba da imaju 'Inactive' badge.
-   * KAKO: getByText('Inactive') za status 'inactive'.
-   */
-  it('shows Inactive badge for inactive car', () => {
-    const inactiveRental = createMockRental({
+  it('uses rental status instead of car availability status', () => {
+    const activeRentalWithInactiveCar = createMockRental({
+      status: RentalStatus.Active,
       car: createMockCar({ status: 'inactive' }),
     });
 
-    render(<RentalCard {...defaultProps} rental={inactiveRental} />);
+    render(
+      <RentalCard {...defaultProps} rental={activeRentalWithInactiveCar} />
+    );
 
-    expect(screen.getByText('Inactive')).toBeInTheDocument();
+    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
+    expect(screen.queryByText('Inactive')).not.toBeInTheDocument();
   });
 
-  /**
-   * TEST 6: Default status je Available kada status nedostaje
-   * ZAŠTO: Ako car.status nije definisan (undefined), treba
-   *   prikazati podrazumevani 'available' badge.
-   * KAKO: car bez statusa, proveravamo da je badge 'Available'.
-   */
-  it('defaults to Available badge when car status is missing', () => {
-    const noStatusRental = createMockRental({
-      car: createMockCar({ status: undefined }),
-    });
+  it('defaults to Booked badge when rental status is missing', () => {
+    const noStatusRental = createMockRental({ status: undefined });
 
     render(<RentalCard {...defaultProps} rental={noStatusRental} />);
 
-    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
   });
 
   /**

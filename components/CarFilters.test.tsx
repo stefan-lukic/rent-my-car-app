@@ -1,18 +1,8 @@
-﻿import React from 'react';
-import { describe, expect, it, vi, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import CarFilters from './CarFilters';
-import { CarFilterState } from '@/lib/model/car/CarFilterState';
-import { runCarFiltersSharedTests } from '@/test-utils/shared-tests/car-filters';
+import { cleanup } from '@testing-library/react';
+import { afterEach, describe } from 'vitest';
 
-const defaultFilters: CarFilterState = {
-  minPrice: '',
-  maxPrice: '',
-  make: '',
-  carType: '',
-  engine: '',
-};
+import CarFilters from './CarFilters';
+import { runCarFiltersSharedTests } from '@/test-utils/shared-tests/car-filters';
 
 describe('CarFilters', () => {
   afterEach(cleanup);
@@ -20,8 +10,8 @@ describe('CarFilters', () => {
   runCarFiltersSharedTests({
     Component: CarFilters,
     headingText: 'Filters',
-    minPlaceholder: 'Min $',
-    maxPlaceholder: 'Max $',
+    minPlaceholder: 'Min',
+    maxPlaceholder: 'Max',
     makeLabel: 'Car Make',
     carTypeLabel: 'Car Type',
     engineLabel: 'Engine Type',
