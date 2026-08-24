@@ -83,15 +83,21 @@ describe('MobileRentalCard', () => {
   it('renders navigation arrows when multiple images exist', async () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} />);
-    expect(screen.getByText('‹')).toBeInTheDocument();
-    expect(screen.getByText('›')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Previous rental car image' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Next rental car image' })
+    ).toBeInTheDocument();
   });
 
   it('disables left arrow on first image', async () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} />);
 
-    const leftArrow = screen.getByText('‹');
+    const leftArrow = screen.getByRole('button', {
+      name: 'Previous rental car image',
+    });
     expect(leftArrow).toBeDisabled();
   });
 
@@ -99,13 +105,19 @@ describe('MobileRentalCard', () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} />);
 
-    const rightArrow = screen.getByText('›');
+    const rightArrow = screen.getByRole('button', {
+      name: 'Next rental car image',
+    });
     await user.click(rightArrow);
 
-    const rightArrowAgain = screen.getAllByText('›')[0];
+    const rightArrowAgain = screen.getByRole('button', {
+      name: 'Next rental car image',
+    });
     await user.click(rightArrowAgain);
 
-    const rightArrowFinal = screen.getAllByText('›')[0];
+    const rightArrowFinal = screen.getByRole('button', {
+      name: 'Next rental car image',
+    });
     expect(rightArrowFinal).toBeDisabled();
   });
 
@@ -113,10 +125,14 @@ describe('MobileRentalCard', () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} />);
 
-    const rightArrow = screen.getByText('›');
+    const rightArrow = screen.getByRole('button', {
+      name: 'Next rental car image',
+    });
     await user.click(rightArrow);
     await user.click(rightArrow);
 
-    expect(screen.getByText('›')).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Next rental car image' })
+    ).toBeDisabled();
   });
 });

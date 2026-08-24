@@ -225,7 +225,7 @@ const l = {
 
   profile: {
     editProfile: 'Edit Profile',
-    editProfileBtn: '✎ Edit Profile',
+    editProfileBtn: 'Edit Profile',
     myCars: 'My Cars',
     myRentals: 'My Rentals',
     myCarsHeading: 'My Cars',
