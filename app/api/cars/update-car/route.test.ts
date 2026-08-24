@@ -24,6 +24,21 @@ vi.mock('@/lib/model/car/Car', () => ({
 
 import { PUT } from './route';
 
+const carId = '507f1f77bcf86cd799439011';
+const validUpdate = {
+  _id: carId,
+  make: 'MERCEDES',
+  carModel: 'E-Class',
+  engine: 'PETROL',
+  power: '190',
+  carType: 'SALOON',
+  city: 'Belgrade',
+  averageConsumption: '7.2 L/100km',
+  carLocation: 'City center',
+  pricePerDay: 65,
+  description: 'Comfortable and well maintained.',
+};
+
 const createRequest = (body: unknown) =>
   ({ json: vi.fn().mockResolvedValue(body) }) as never;
 
@@ -35,7 +50,7 @@ describe('PUT /api/cars/update-car', () => {
   it('rejects unauthenticated requests before touching the database', async () => {
     mocks.getServerSession.mockResolvedValue(null);
 
-    const response = await PUT(createRequest({ _id: 'car-1' }));
+    const response = await PUT(createRequest({ _id: carId }));
 
     expect(response.status).toBe(401);
     expect(mocks.connectToDatabase).not.toHaveBeenCalled();
@@ -45,35 +60,42 @@ describe('PUT /api/cars/update-car', () => {
   it('does not let another user update the car', async () => {
     mocks.getServerSession.mockResolvedValue({ user: { id: 'user-b' } });
     mocks.findById.mockResolvedValue({
-      _id: 'car-1',
+      _id: carId,
       renter: { toString: () => 'user-a' },
     });
 
-    const response = await PUT(
-      createRequest({ _id: 'car-1', carModel: 'Changed' })
-    );
+    const response = await PUT(createRequest(validUpdate));
 
     expect(response.status).toBe(403);
     expect(mocks.findByIdAndUpdate).not.toHaveBeenCalled();
   });
 
   it('updates an owned car with Mongoose validation enabled', async () => {
-    const updatedCar = { _id: 'car-1', carModel: 'E-Class' };
+    const updatedCar = { _id: carId, carModel: 'E-Class' };
     mocks.getServerSession.mockResolvedValue({ user: { id: 'user-a' } });
     mocks.findById.mockResolvedValue({
-      _id: 'car-1',
+      _id: carId,
       renter: { toString: () => 'user-a' },
     });
     mocks.findByIdAndUpdate.mockResolvedValue(updatedCar);
 
-    const response = await PUT(
-      createRequest({ _id: 'car-1', carModel: 'E-Class' })
-    );
+    const response = await PUT(createRequest(validUpdate));
 
     expect(response.status).toBe(200);
     expect(mocks.findByIdAndUpdate).toHaveBeenCalledWith(
-      'car-1',
-      { carModel: 'E-Class' },
+      carId,
+      {
+        make: 'MERCEDES',
+        carModel: 'E-Class',
+        engine: 'PETROL',
+        power: '190',
+        carType: 'SALOON',
+        city: 'Belgrade',
+        averageConsumption: '7.2 L/100km',
+        carLocation: 'City center',
+        pricePerDay: 65,
+        description: 'Comfortable and well maintained.',
+      },
       { new: true, runValidators: true }
     );
   });

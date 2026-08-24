@@ -68,8 +68,7 @@ describe('MobileAddCar', () => {
     });
   });
 
-  it('renders form heading and mobile-specific field values', async () => {
-    const user = userEvent.setup();
+  it('renders form heading and mobile-specific field values', () => {
     render(<MobileAddCar />);
 
     expect(
@@ -109,12 +108,11 @@ describe('MobileAddCar', () => {
 
     render(<MobileAddCar />);
 
-    expect(screen.getByRole('img', { name: 'Car Image' })).toHaveAttribute(
-      'src',
-      'blob:car-image'
-    );
+    expect(
+      screen.getByRole('img', { name: l.cars.carImagePreview })
+    ).toHaveAttribute('src', 'blob:car-image');
 
-    await user.click(screen.getByText(l.common.close));
+    await user.click(screen.getByRole('button', { name: l.cars.removeImage }));
 
     expect(removeImage).toHaveBeenCalledWith('image-1');
   });
