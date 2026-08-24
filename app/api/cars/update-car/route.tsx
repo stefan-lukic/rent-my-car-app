@@ -1,8 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
+import { z } from 'zod';
+
 import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
+import { CarCity } from '@/lib/model/car/CarCity';
+import { CarEngineType } from '@/lib/model/car/CarEngineType';
+import { CarMake } from '@/lib/model/car/CarMake';
+import { CarType } from '@/lib/model/car/CarType';
+
+const updateCarSchema = z
+  .object({
+    _id: z.string().refine(mongoose.Types.ObjectId.isValid, {
+      message: 'Invalid car ID',
+    }),
+    make: z.nativeEnum(CarMake),
+    carModel: z.string().trim().min(1).max(100),
+    engine: z.nativeEnum(CarEngineType),
+    power: z.string().trim().min(1).max(50),
+    carType: z.nativeEnum(CarType),
+    city: z.nativeEnum(CarCity),
+    averageConsumption: z.string().trim().min(1).max(50),
+    carLocation: z.string().trim().min(1).max(200),
+    pricePerDay: z.coerce.number().positive().max(100000),
+    description: z.string().trim().max(2000).optional(),
+  })
+  .strict();
 
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -10,16 +35,22 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  await connectToDatabase();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ message: 'Invalid request' }, { status: 400 });
+  }
 
-  const body = await req.json();
-  const { _id, ...updateData } = body;
-
-  if (!_id) {
-    return NextResponse.json({ message: 'Missing car ID' }, { status: 400 });
+  const parsedBody = updateCarSchema.safeParse(body);
+  if (!parsedBody.success) {
+    return NextResponse.json({ message: 'Invalid car data' }, { status: 400 });
   }
 
   try {
+    await connectToDatabase();
+
+    const { _id, ...allowedUpdates } = parsedBody.data;
     const existingCar = await Car.findById(_id);
     if (!existingCar) {
       return NextResponse.json({ message: 'Car not found' }, { status: 404 });
@@ -28,7 +59,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
     }
 
-    const updatedCar = await Car.findByIdAndUpdate(_id, updateData, {
+    const updatedCar = await Car.findByIdAndUpdate(_id, allowedUpdates, {
       new: true,
       runValidators: true,
     });
