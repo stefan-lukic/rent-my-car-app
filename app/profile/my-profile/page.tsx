@@ -19,7 +19,10 @@ export default async function MyProfilePage() {
   try {
     const userRes = await fetch(
       `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`,
-      { cache: 'no-store' }
+      {
+        cache: 'no-store',
+        headers: { Cookie: cookies().toString() },
+      }
     );
 
     if (!userRes.ok) {
