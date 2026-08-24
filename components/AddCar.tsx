@@ -1,19 +1,33 @@
 'use client';
 
-import { Button } from '@/components/UI/Button';
+import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { CarType } from '@/lib/model/car/CarType';
-import { CarMake } from '@/lib/model/car/CarMake';
-import { CarEngineType } from '@/lib/model/car/CarEngineType';
-import { CarCity } from '@/lib/model/car/CarCity';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {
+  ArrowLeft,
+  CarFront,
+  Check,
+  ImagePlus,
+  MapPin,
+  ShieldCheck,
+  X,
+} from 'lucide-react';
+
+import { Button } from '@/components/UI/Button';
 import FormInput, {
   inputClasses,
   labelClasses,
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
+import l from '@/helper/en';
 import { useAddCar } from '@/hooks/useAddCar';
+import { CarCity } from '@/lib/model/car/CarCity';
+import { CarEngineType } from '@/lib/model/car/CarEngineType';
+import { CarMake } from '@/lib/model/car/CarMake';
+import { CarType } from '@/lib/model/car/CarType';
+
+const sectionClasses =
+  'rounded-3xl border border-slate-200/80 bg-white p-7 shadow-sm';
 
 export default function AddCar() {
   const {
@@ -26,182 +40,271 @@ export default function AddCar() {
   } = useAddCar();
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
-      <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 p-8 md:p-12">
-        <header className="mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Add a New Car
-          </h1>
-          <p className="text-gray-500">
-            Add your vehicle details to create a rental listing
-          </p>
-        </header>
-
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-2 gap-6">
-            <FormSelect
-              label="Make"
-              name="make"
-              value={carData.make}
-              onChange={handleInputChange}
-              options={Object.values(CarMake)}
-            />
-            <FormInput
-              label="Model"
-              name="carModel"
-              value={carData.carModel}
-              onChange={handleInputChange}
-              placeholder="e.g. C-Class"
-              required
-            />
-            <FormSelect
-              label="Car Type"
-              name="carType"
-              value={carData.carType}
-              onChange={handleInputChange}
-              options={Object.values(CarType)}
-              required
-            />
-            <FormSelect
-              label="Engine Type"
-              name="engine"
-              value={carData.engine}
-              onChange={handleInputChange}
-              options={Object.values(CarEngineType)}
-              required
-            />
-            <FormInput
-              label="Horsepower (HP)"
-              name="power"
-              value={carData.power}
-              onChange={handleInputChange}
-              placeholder="e.g. 150"
-              required
-            />
-            <FormInput
-              label="Avg. Consumption"
-              name="averageConsumption"
-              value={carData.averageConsumption}
-              onChange={handleInputChange}
-              placeholder="e.g. 6.5 L/100km"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
-            <FormSelect
-              label="City"
-              name="city"
-              value={carData.city}
-              onChange={handleInputChange}
-              options={Object.values(CarCity)}
-            />
-
-            <FormInput
-              label="Car Location"
-              name="carLocation"
-              value={carData.carLocation}
-              onChange={handleInputChange}
-              placeholder="e.g. Liman 3"
-              required
-            />
-
+    <div className="mx-auto w-full max-w-7xl px-6 py-10 lg:px-8 lg:py-12">
+      <div className="mb-8 flex items-end justify-between gap-8">
+        <div>
+          <Link
+            href="/profile/my-profile"
+            className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-blue-600"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {l.cars.backToMyCars}
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="rounded-2xl bg-blue-600 p-3 text-white shadow-lg shadow-blue-200">
+              <CarFront className="h-7 w-7" />
+            </div>
             <div>
-              <label className={labelClasses}>First Registration</label>
-              <DatePicker
-                selected={carData.firstRegistration}
-                onChange={handleDateChange}
-                dateFormat="MM/yyyy"
-                showYearDropdown
-                className={inputClasses}
-                placeholderText="Select date"
+              <h1 className="text-3xl font-black tracking-tight text-slate-950">
+                {l.cars.addNewCar}
+              </h1>
+              <p className="mt-1 text-sm text-slate-500">
+                {l.cars.addVehicleDesc}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-700 lg:flex">
+          <ShieldCheck className="h-4 w-4" />
+          {l.cars.secureListing}
+        </div>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_360px]"
+      >
+        <div className="space-y-7">
+          <section className={sectionClasses}>
+            <SectionHeading
+              icon={<CarFront className="h-5 w-5" />}
+              title={l.cars.vehicleDetails}
+              description={l.cars.vehicleDetailsDesc}
+              color="blue"
+            />
+            <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+              <FormSelect
+                label={l.cars.make}
+                name="make"
+                value={carData.make}
+                onChange={handleInputChange}
+                options={Object.values(CarMake)}
+              />
+              <FormInput
+                label={l.cars.model}
+                name="carModel"
+                value={carData.carModel}
+                onChange={handleInputChange}
+                placeholder={l.cars.egCClass}
+                required
+              />
+              <FormSelect
+                label={l.cars.carType}
+                name="carType"
+                value={carData.carType}
+                onChange={handleInputChange}
+                options={Object.values(CarType)}
+                required
+              />
+              <FormSelect
+                label={l.cars.engineType}
+                name="engine"
+                value={carData.engine}
+                onChange={handleInputChange}
+                options={Object.values(CarEngineType)}
+                required
+              />
+              <FormInput
+                label={l.cars.horsepower}
+                name="power"
+                value={carData.power}
+                onChange={handleInputChange}
+                placeholder={l.cars.eg150}
+                required
+              />
+              <FormInput
+                label={l.cars.avgConsumption}
+                name="averageConsumption"
+                value={carData.averageConsumption}
+                onChange={handleInputChange}
+                placeholder={l.cars.eg65L}
+                required
               />
             </div>
+          </section>
 
-            <FormInput
-              label="Price Per Day (€)"
-              name="pricePerDay"
-              type="number"
-              value={carData.pricePerDay}
-              onChange={handleInputChange}
-              placeholder="e.g. 45"
-              required
+          <section className={sectionClasses}>
+            <SectionHeading
+              icon={<MapPin className="h-5 w-5" />}
+              title={l.cars.rentalDetails}
+              description={l.cars.rentalDetailsDesc}
+              color="violet"
             />
-          </div>
-
-          <div className="pt-4 border-t border-gray-100">
-            <label className={labelClasses}>Description</label>
-            <textarea
-              name="description"
-              rows={4}
-              placeholder="Tell us more about your car..."
-              value={carData.description}
-              onChange={handleInputChange}
-              className={`${inputClasses} resize-none`}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className={labelClasses}>Car Images</label>
-            <div className="relative group">
-              <div className="w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl flex flex-col items-center justify-center bg-blue-50 cursor-pointer">
-                <CloudUploadIcon
-                  className="text-blue-500 mb-2"
-                  fontSize="large"
+            <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+              <FormSelect
+                label={l.cars.city}
+                name="city"
+                value={carData.city}
+                onChange={handleInputChange}
+                options={Object.values(CarCity)}
+              />
+              <FormInput
+                label={l.cars.carLocation}
+                name="carLocation"
+                value={carData.carLocation}
+                onChange={handleInputChange}
+                placeholder={l.cars.egLiman}
+                required
+              />
+              <div>
+                <label htmlFor="first-registration" className={labelClasses}>
+                  {l.cars.firstRegistration}
+                </label>
+                <DatePicker
+                  id="first-registration"
+                  selected={carData.firstRegistration}
+                  onChange={handleDateChange}
+                  dateFormat="MM/yyyy"
+                  showMonthYearPicker
+                  maxDate={new Date()}
+                  className={inputClasses}
+                  placeholderText={l.cars.selectDate}
                 />
-                <span className="text-sm font-medium text-blue-600">
-                  {carData.images.length > 0
-                    ? `${carData.images.length} ${carData.images.length === 1 ? 'file' : 'files'} selected`
-                    : 'Click to upload photos'}
-                </span>
               </div>
+              <FormInput
+                label={l.cars.pricePerDayLabel}
+                name="pricePerDay"
+                type="number"
+                min="1"
+                value={carData.pricePerDay}
+                onChange={handleInputChange}
+                placeholder={l.cars.eg45}
+                required
+              />
+              <div className="col-span-2">
+                <label htmlFor="car-description" className={labelClasses}>
+                  {l.common.description}
+                </label>
+                <textarea
+                  id="car-description"
+                  name="description"
+                  rows={5}
+                  placeholder={l.cars.descriptionPlaceholder}
+                  value={carData.description}
+                  onChange={handleInputChange}
+                  className={`${inputClasses} resize-none`}
+                />
+              </div>
+            </div>
+          </section>
+        </div>
 
+        <aside className="space-y-5 lg:sticky lg:top-24">
+          <section className={sectionClasses}>
+            <h2 className="font-bold text-slate-900">{l.cars.carImages}</h2>
+            <p className="mb-5 mt-1 text-sm text-slate-500">
+              {l.cars.carImagesDesc}
+            </p>
+            <label className="group relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50/60 px-6 text-center transition hover:border-blue-400 hover:bg-blue-50">
+              <span className="mb-3 rounded-2xl bg-white p-3 text-blue-600 shadow-sm transition group-hover:-translate-y-0.5">
+                <ImagePlus className="h-6 w-6" />
+              </span>
+              <span className="text-sm font-bold text-slate-800">
+                {l.common.clickToUpload}
+              </span>
+              <span className="mt-1 text-xs text-slate-500">
+                {l.cars.imageHint}
+              </span>
               <input
                 type="file"
                 name="images"
                 multiple
                 onChange={handleInputChange}
                 accept="image/*"
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 cursor-pointer opacity-0"
               />
-            </div>
-            {carData.images.length > 0 && (
-              <div className="grid grid-cols-4 gap-3 mt-3">
-                {carData.images.map(({ file, id }) => (
-                  <div
-                    key={id}
-                    className="relative aspect-square rounded-xl overflow-hidden border border-gray-200"
-                  >
-                    <img
-                      src={URL.createObjectURL(file)}
-                      alt="Car image"
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(id)}
-                      className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+            </label>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full text-white py-4 rounded-2xl text-lg font-bold transition ${
-              isSubmitting
-                ? 'bg-blue-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700'
-            }`}
-          >
-            {isSubmitting ? 'Adding...' : 'Add Car'}
-          </Button>
-        </form>
+            {carData.images.length > 0 ? (
+              <div className="mt-4">
+                <div className="mb-3 flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-700">
+                    {l.cars.selectedPhotos}
+                  </span>
+                  <span className="rounded-full bg-blue-50 px-2.5 py-1 font-bold text-blue-600">
+                    {carData.images.length}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {carData.images.map(({ file, id }) => (
+                    <div
+                      key={id}
+                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                    >
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={l.cars.carImagePreview}
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(id)}
+                        aria-label={l.cars.removeImage}
+                        className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950/75 text-white transition hover:bg-red-500"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </section>
+
+          <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-200">
+            <div className="mb-5 flex gap-3">
+              <span className="mt-0.5 rounded-full bg-emerald-400/15 p-1 text-emerald-300">
+                <Check className="h-4 w-4" />
+              </span>
+              <p className="text-sm leading-6 text-slate-300">
+                {l.cars.publishHint}
+              </p>
+            </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="h-12 w-full rounded-xl bg-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-950/40 hover:bg-blue-500"
+            >
+              {isSubmitting ? l.common.adding : l.cars.publishCar}
+            </Button>
+          </section>
+        </aside>
+      </form>
+    </div>
+  );
+}
+
+function SectionHeading({
+  icon,
+  title,
+  description,
+  color,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  color: 'blue' | 'violet';
+}) {
+  const iconClasses =
+    color === 'blue'
+      ? 'bg-blue-50 text-blue-600'
+      : 'bg-violet-50 text-violet-600';
+  return (
+    <div className="mb-6 flex items-start gap-3">
+      <div className={`rounded-xl p-2.5 ${iconClasses}`}>{icon}</div>
+      <div>
+        <h2 className="font-bold text-slate-900">{title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{description}</p>
       </div>
     </div>
   );

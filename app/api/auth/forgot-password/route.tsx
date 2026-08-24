@@ -1,40 +1,75 @@
-import connectToDatabase from '@/lib/db/mongoose'; // funkcija koja otvara konekciju ka MongoDB bazi
-
-import User from '@/lib/model/User';
 import { NextRequest, NextResponse } from 'next/server';
-import { generateVerificationToken } from '@/lib/emailVerification';
+import { z } from 'zod';
+
+import connectToDatabase from '@/lib/db/mongoose';
+import {
+  generateVerificationToken,
+  PASSWORD_RESET_EXPIRATION_MS,
+} from '@/lib/emailVerification';
 import { sendPasswordResetEmail } from '@/lib/emailService/sendEmail';
+import User from '@/lib/model/User';
+
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .email()
+    .max(254)
+    .transform((email) => email.toLowerCase()),
+});
+
+const genericSuccessMessage =
+  'If an account exists for this email, a password reset link has been sent.';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
-
-    await connectToDatabase();
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return NextResponse.json(
-        {
-          message: 'User does not exist.',
-        },
-        { status: 400 }
-      );
-    }
-
     const appUrl = process.env.APP_URL;
     if (!appUrl) {
+      console.error('APP_URL is not configured for password reset emails.');
       return NextResponse.json(
-        { message: 'Server configuration error' },
+        { message: 'Unable to process password reset right now.' },
         { status: 500 }
       );
     }
 
-    const { rawToken, hash, expires } = generateVerificationToken();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { message: 'Invalid request.' },
+        { status: 400 }
+      );
+    }
 
-    user.passwordResetToken = hash;
-    user.passwordResetExpires = expires;
-    await user.save();
+    const parsedBody = forgotPasswordSchema.safeParse(body);
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        { message: 'Please enter a valid email address.' },
+        { status: 400 }
+      );
+    }
+
+    await connectToDatabase();
+
+    const user = await User.findOne({ email: parsedBody.data.email });
+    if (!user) {
+      return NextResponse.json({ message: genericSuccessMessage });
+    }
+
+    const { rawToken, hash, expires } = generateVerificationToken(
+      PASSWORD_RESET_EXPIRATION_MS
+    );
+
+    await User.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          passwordResetToken: hash,
+          passwordResetExpires: expires,
+        },
+      }
+    );
 
     try {
       await sendPasswordResetEmail({
@@ -44,21 +79,19 @@ export async function POST(req: NextRequest) {
       });
     } catch (emailError) {
       console.error('Failed to send password reset email:', emailError);
-      return NextResponse.json(
-        { message: 'Failed to send reset email. Please try again later.' },
-        { status: 500 }
+
+      // Remove only this request's token because a newer request may replace it.
+      await User.updateOne(
+        { _id: user._id, passwordResetToken: hash },
+        { $unset: { passwordResetToken: 1, passwordResetExpires: 1 } }
       );
     }
 
-    return NextResponse.json(
-      {
-        message: 'Password reset link has been sent to your email.',
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: genericSuccessMessage });
   } catch (error) {
+    console.error('Forgot password request failed:', error);
     return NextResponse.json(
-      { message: 'An error occurred. Please try again.' },
+      { message: 'Unable to process password reset right now.' },
       { status: 500 }
     );
   }
