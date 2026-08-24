@@ -38,22 +38,19 @@ describe('MobileCarSearchResults', () => {
     onViewDetails: vi.fn(),
   };
 
-  it('renders car make and model', async () => {
-    const user = userEvent.setup();
+  it('renders car make and model', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
     expect(screen.getByText('Mercedes')).toBeInTheDocument();
     expect(screen.getByText('C-Class')).toBeInTheDocument();
   });
 
-  it('renders price per day', async () => {
-    const user = userEvent.setup();
+  it('renders price per day', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
     expect(screen.getByText('€50')).toBeInTheDocument();
     expect(screen.getByText('/ DAY')).toBeInTheDocument();
   });
 
-  it('renders car type, engine and consumption', async () => {
-    const user = userEvent.setup();
+  it('renders car type, engine and consumption', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
     expect(screen.getByText('Sedan')).toBeInTheDocument();
     expect(screen.getByText('Petrol')).toBeInTheDocument();
@@ -78,21 +75,18 @@ describe('MobileCarSearchResults', () => {
     expect(onBookNow).toHaveBeenCalledTimes(1);
   });
 
-  it('shows year from firstRegistration', async () => {
-    const user = userEvent.setup();
+  it('shows year from firstRegistration', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
     expect(screen.getByText('(2020)')).toBeInTheDocument();
   });
 
-  it('shows rating badge', async () => {
-    const user = userEvent.setup();
+  it('does not show a rating when rating data is unavailable', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
-    expect(screen.getByText('4.80')).toBeInTheDocument();
-    expect(screen.getByText('(12)')).toBeInTheDocument();
+    expect(screen.queryByText('4.80')).not.toBeInTheDocument();
+    expect(screen.queryByText('(12)')).not.toBeInTheDocument();
   });
 
-  it('shows city badge', async () => {
-    const user = userEvent.setup();
+  it('shows city badge', () => {
     render(<MobileCarSearchResults {...defaultProps} />);
     expect(screen.getByText('Belgrade')).toBeInTheDocument();
   });

@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { MapPin, Search, Info, ChevronDown } from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
+import {
+  AlertCircle,
+  CalendarSearch,
+  MapPin,
+  Search,
+  Info,
+  ChevronDown,
+} from 'lucide-react';
 import { CarCity } from '@/lib/model/car/CarCity';
 import MobileCarSearchResults from './MobileCarSearchResults';
 import BookingDialog from '../BookNowDialog';
@@ -13,7 +20,15 @@ import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
 
-const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
+interface MobileCarRentalSearchProps {
+  filters: CarFilterState;
+  filtersSlot?: ReactNode;
+}
+
+const MobileCarRentalSearch = ({
+  filters,
+  filtersSlot,
+}: MobileCarRentalSearchProps) => {
   const {
     form,
     results,
@@ -25,6 +40,8 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
     confirmBooking,
     setSelectedCar,
     daysSelected,
+    hasSearched,
+    searchError,
   } = useCarSearchForm({ filters });
 
   const {
@@ -49,10 +66,10 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
   }, [results.data, results.currentPage]);
 
   return (
-    <div className="space-y-6 pb-20">
+    <div className="space-y-4 pb-10">
       <form
         onSubmit={onSearch}
-        className="bg-white rounded-3xl border border-gray-100 shadow-xl p-5 space-y-4"
+        className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
       >
         <div>
           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">
@@ -92,7 +109,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
         <button
           type="submit"
           disabled={results.loading}
-          className="w-full bg-blue-600 text-white font-black py-5 rounded-2xl shadow-lg shadow-blue-100 flex items-center justify-center gap-2 active:scale-95 transition-all"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 py-4 font-bold text-white shadow-sm transition active:scale-[0.98] disabled:opacity-60"
         >
           {results.loading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
@@ -104,7 +121,7 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
         </button>
 
         {daysSelected > 0 && (
-          <div className="flex items-center gap-2 bg-blue-50 p-4 rounded-2xl border border-blue-100 animate-pulse">
+          <div className="flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50 p-3">
             <Info size={16} className="text-blue-600" />
             <p className="text-xs font-bold text-blue-700">
               {l.search.bookingForDays(daysSelected)}
@@ -113,10 +130,44 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
         )}
       </form>
 
+      {searchError && (
+        <div
+          role="alert"
+          className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+          <span>{searchError}</span>
+        </div>
+      )}
+
+      {filtersSlot}
+
       <div>
-        <h2 className="text-xl font-black text-gray-900 mb-5 px-1">
-          {l.search.availableCars}
-        </h2>
+        {hasSearched && !results.loading && !searchError && (
+          <div className="mb-4 flex items-center justify-between px-1">
+            <h2 className="text-lg font-black text-slate-900">
+              {l.search.availableCars}
+            </h2>
+            <span className="text-xs font-semibold text-slate-500">
+              {l.search.carsFound(results.total)}
+            </span>
+          </div>
+        )}
+
+        {!hasSearched && !results.loading && (
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 text-center">
+            <div className="mb-3 rounded-xl bg-blue-50 p-3 text-blue-600">
+              <CalendarSearch className="h-5 w-5" />
+            </div>
+            <h3 className="text-sm font-bold text-slate-900">
+              {l.search.startSearchTitle}
+            </h3>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              {l.search.startSearchDescription}
+            </p>
+          </div>
+        )}
+
         <div className="flex flex-col gap-5">
           {allCars.map((car) => (
             <MobileCarSearchResults
@@ -129,11 +180,19 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
               }}
             />
           ))}
-          {!results.loading && allCars.length === 0 && (
-            <p className="text-center text-gray-400 italic py-10">
-               {l.search.noCarsFound}
-            </p>
-          )}
+          {hasSearched &&
+            !results.loading &&
+            !searchError &&
+            allCars.length === 0 && (
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
+                <p className="font-bold text-slate-800">
+                  {l.search.noCarsFound}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {l.search.tryDifferentSearch}
+                </p>
+              </div>
+            )}
         </div>
 
         {results.currentPage < results.totalPages && (

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { ICar } from '@/lib/model/car/Car';
 import { IRenter } from '@/lib/model/User';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import l from '@/helper/en';
 
 export type CarSearchFormValues = {
   city: string;
@@ -20,6 +21,7 @@ export function useCarSearchForm({
   const form = useForm<CarSearchFormValues>({
     defaultValues: { city: '', startDate: null, endDate: null },
   });
+  const getValues = form.getValues;
 
   const [results, setResults] = useState({
     data: initialCars ?? [],
@@ -30,6 +32,8 @@ export function useCarSearchForm({
   });
 
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchError, setSearchError] = useState('');
   const [renter, setRenter] = useState<IRenter | null>(null);
   const [renterLoading, setRenterLoading] = useState(false);
   const renterAbortRef = useRef<AbortController | null>(null);
@@ -49,6 +53,8 @@ export function useCarSearchForm({
     async (values: CarSearchFormValues, page = 1, signal?: AbortSignal) => {
       if (!values.startDate || !values.endDate) return;
 
+      setHasSearched(true);
+      setSearchError('');
       setResults((prev) => ({ ...prev, loading: true }));
       try {
         const query = new URLSearchParams({
@@ -65,6 +71,7 @@ export function useCarSearchForm({
         });
 
         const res = await fetch(`/api/cars?${query}`, { signal });
+        if (res.ok === false) throw new Error('Search request failed');
         const data = await res.json();
 
         setResults({
@@ -76,6 +83,7 @@ export function useCarSearchForm({
         });
       } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') return;
+        setSearchError(l.search.searchFailed);
         setResults((prev) => ({ ...prev, loading: false }));
       }
     },
@@ -84,9 +92,9 @@ export function useCarSearchForm({
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchCars(form.getValues(), 1, controller.signal);
+    fetchCars(getValues(), 1, controller.signal);
     return () => controller.abort();
-  }, [fetchCars]);
+  }, [fetchCars, getValues]);
 
   const openDetails = async (car: ICar) => {
     setSelectedCar(car);
@@ -143,9 +151,17 @@ export function useCarSearchForm({
     renter,
     renterLoading,
     daysSelected,
+    hasSearched,
+    searchError,
     startDate,
-    onSearch: form.handleSubmit((v) => fetchCars(v, 1)),
-    onPageChange: (p: number) => fetchCars(form.getValues(), p),
+    onSearch: form.handleSubmit((values) => {
+      if (!values.startDate || !values.endDate) {
+        setSearchError(l.search.selectDatesFirst);
+        return;
+      }
+      fetchCars(values, 1);
+    }),
+    onPageChange: (p: number) => fetchCars(getValues(), p),
     openDetails,
     confirmBooking,
     setSelectedCar,
