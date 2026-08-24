@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ProfilePage from './ProfilePage';
 import l from '@/helper/en';
@@ -192,5 +192,23 @@ describe('ProfilePage', () => {
     const zeroValues = screen.getAllByText('0');
 
     expect(zeroValues.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('counts only rentals that can be displayed', () => {
+    const rentalWithoutCar = { ...mockRentals[0], _id: 'rental-2', car: null };
+
+    render(
+      <ProfilePage
+        user={mockUser}
+        cars={mockCars}
+        rentals={[...mockRentals, rentalWithoutCar]}
+      />
+    );
+
+    const statistics = screen.getByRole('region', {
+      name: 'Profile statistics',
+    });
+
+    expect(within(statistics).getAllByText('1')).toHaveLength(2);
   });
 });

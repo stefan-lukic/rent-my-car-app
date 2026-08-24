@@ -13,7 +13,9 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/components/mobile/MobileUserProfileInfoCard', () => ({
   __esModule: true,
-  default: () => <div data-testid="user-info-card">User Info</div>,
+  default: ({ rentalsCount }: any) => (
+    <div data-testid="user-info-card">Rentals count: {rentalsCount}</div>
+  ),
 }));
 
 vi.mock('./MobileProfileInteractiveSection', () => ({
@@ -92,6 +94,15 @@ describe('MobileProfilePage', () => {
     expect(mockPush).toHaveBeenCalledWith('/cars/add-car');
   });
 
+  it('navigates to car search when Browse Cars is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MobileProfilePage {...defaultProps} />);
+
+    await user.click(screen.getByRole('button', { name: 'Browse Cars' }));
+
+    expect(mockPush).toHaveBeenCalledWith('/#car-search');
+  });
+
   it('renders My Cars and My Rentals tabs', async () => {
     const user = userEvent.setup();
     render(<MobileProfilePage {...defaultProps} />);
@@ -131,5 +142,20 @@ describe('MobileProfilePage', () => {
     render(<MobileProfilePage {...defaultProps} />);
 
     expect(screen.getByTestId('interactive-section')).toBeInTheDocument();
+  });
+
+  it('counts only rentals that can be displayed', () => {
+    const rentalWithoutCar = { ...mockRentals[0], _id: 'rental-2', car: null };
+
+    render(
+      <MobileProfilePage
+        {...defaultProps}
+        rentals={[...mockRentals, rentalWithoutCar]}
+      />
+    );
+
+    expect(screen.getByTestId('user-info-card')).toHaveTextContent(
+      'Rentals count: 1'
+    );
   });
 });

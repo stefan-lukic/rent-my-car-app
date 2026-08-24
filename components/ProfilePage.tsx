@@ -27,10 +27,17 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
     month: 'short',
     year: 'numeric',
   });
+  const visibleRentalsCount = rentals.filter(
+    (rental) => rental.car !== null
+  ).length;
 
   const stats = [
     { icon: CarFront, value: cars.length, label: l.profile.cars },
-    { icon: CalendarDays, value: rentals.length, label: l.profile.rentals },
+    {
+      icon: CalendarDays,
+      value: visibleRentalsCount,
+      label: l.profile.rentals,
+    },
     {
       icon: Star,
       value: (user.rating ?? 0).toFixed(1),

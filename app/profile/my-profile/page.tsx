@@ -1,12 +1,11 @@
 import l from '@/helper/en';
-import { getBaseUrl } from '@/app/api/api';
 import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 
@@ -16,8 +15,6 @@ export default async function MyProfilePage() {
   if (!session?.user?.id) {
     redirect('/sign-in');
   }
-
-  const baseUrl = getBaseUrl();
 
   try {
     await connectToDatabase();
@@ -31,13 +28,23 @@ export default async function MyProfilePage() {
     }
 
     const user = JSON.parse(JSON.stringify(userDocument));
+    const requestHeaders = headers();
+    const host = requestHeaders.get('host');
+    const forwardedProtocol = requestHeaders.get('x-forwarded-proto');
+    const protocol =
+      forwardedProtocol || (host?.startsWith('localhost') ? 'http' : 'https');
+    const baseUrl = host
+      ? `${protocol}://${host}`
+      : process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
     const fetchJson = async (url: string) => {
       const res = await fetch(url, {
         cache: 'no-store',
         headers: { Cookie: cookies().toString() },
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        throw new Error(`Profile request failed with status ${res.status}`);
+      }
       return res.json();
     };
 

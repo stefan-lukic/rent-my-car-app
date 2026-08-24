@@ -261,13 +261,23 @@ const ProfileInteractiveSection = ({
         </div>
       ) : (
         <div className="p-6">
-          <div className="mb-5">
-            <h3 className="text-lg font-bold text-slate-900">
-              {l.profile.myRentalsHeading}
-            </h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Review your reservations, dates and current rental status.
-            </p>
+          <div className="mb-5 flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">
+                {l.profile.myRentalsHeading}
+              </h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Review your reservations, dates and current rental status.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => router.push('/#car-search')}
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+            >
+              <Search className="h-4 w-4" />
+              Browse Cars
+            </button>
           </div>
 
           {availableRentals.length === 0 ? (
@@ -281,13 +291,6 @@ const ProfileInteractiveSection = ({
               <p className="mt-1 text-sm text-slate-500">
                 Browse available cars and reserve one for your next trip.
               </p>
-              <button
-                type="button"
-                onClick={() => router.push('/#car-search')}
-                className="mt-5 rounded-xl border border-blue-200 bg-white px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-50"
-              >
-                Browse cars
-              </button>
             </div>
           ) : (
             <>

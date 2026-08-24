@@ -8,7 +8,7 @@ import { RentalWithCar } from '@/types/RentalWithCar';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
 import l from '@/helper/en';
-import { CalendarDays, CarFront, Plus } from 'lucide-react';
+import { CalendarDays, CarFront, Plus, Search } from 'lucide-react';
 
 interface MobileProfilePageProps {
   user: IUser;
@@ -19,6 +19,9 @@ interface MobileProfilePageProps {
 const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
   const [activeTab, setActiveTab] = useState<'cars' | 'rentals'>('cars');
   const router = useRouter();
+  const visibleRentalsCount = rentals.filter(
+    (rental) => rental.car !== null
+  ).length;
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 pb-24 pt-4">
@@ -26,16 +29,26 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
         <MobileProfileUserInfoCard
           user={user}
           carsCount={cars.length}
-          rentalsCount={rentals.length}
+          rentalsCount={visibleRentalsCount}
         />
-        <button
-          type="button"
-          onClick={() => router.push('/cars/add-car')}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
-        >
-          <Plus className="h-4 w-4" />
-          {l.profile.addNewCar}
-        </button>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => router.push('/cars/add-car')}
+            className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-3 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+          >
+            <Plus className="h-4 w-4" />
+            {l.profile.addNewCar}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push('/#car-search')}
+            className="flex items-center justify-center gap-2 rounded-2xl border border-blue-200 bg-white px-3 py-3.5 text-sm font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
+          >
+            <Search className="h-4 w-4" />
+            Browse Cars
+          </button>
+        </div>
 
         <div
           role="tablist"
