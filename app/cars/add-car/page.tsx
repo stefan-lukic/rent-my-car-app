@@ -1,16 +1,12 @@
-'use client';
-
 import MobileAddCar from '@/components/mobile/MobileAddCar';
 import AddCar from '@/components/AddCar';
-import { isMobileCSR } from '@/utils/deviceDetectionCSR';
-
-import l from '@/helper/en';
+import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 
 export default function AddCarPage() {
-  const isMobile = isMobileCSR();
+  const isMobile = isMobileSSR();
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white md:pt-24 pb-12 relative">
-      {isMobile ? <MobileAddCar /> : <AddCar />}
-    </main>
+    <div className="h-screen overflow-y-auto bg-slate-50">
+      <main>{isMobile ? <MobileAddCar /> : <AddCar />}</main>
+    </div>
   );
 }
