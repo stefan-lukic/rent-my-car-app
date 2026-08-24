@@ -5,6 +5,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
+import { AuthActionSkeleton } from '@/components/UI/LoadingSkeletons';
 
 function VerifyEmailForm() {
   const searchParams = useSearchParams();
@@ -22,9 +23,7 @@ function VerifyEmailForm() {
       setIsSuccess(true);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || l.auth.verificationFailed
-        );
+        setError(err.response?.data?.message || l.auth.verificationFailed);
       } else {
         setError(l.auth.verificationFailed);
       }
@@ -92,7 +91,7 @@ function VerifyEmailForm() {
 
 const VerifyEmailPage = () => {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-[400px]">{l.common.loading}</div>}>
+    <Suspense fallback={<AuthActionSkeleton />}>
       <VerifyEmailForm />
     </Suspense>
   );

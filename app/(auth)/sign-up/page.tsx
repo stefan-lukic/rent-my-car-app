@@ -1,10 +1,10 @@
-import l from '@/helper/en';
 import React, { Suspense } from 'react';
 import AuthForm from '@/components/AuthForm';
+import { AuthFormSkeleton } from '@/components/UI/LoadingSkeletons';
 
 const SignUpPage = () => {
   return (
-    <Suspense fallback={<div>{l.common.loading}</div>}>
+    <Suspense fallback={<AuthFormSkeleton />}>
       <AuthForm type="sign-up" />
     </Suspense>
   );

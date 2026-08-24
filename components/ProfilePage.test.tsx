@@ -153,15 +153,16 @@ describe('ProfilePage', () => {
   });
 
   /**
-   * TEST 6: Prikazuje Edit Profile dugme
-   * ZAŠTO: Dugme za uređivanje profila treba biti vidljivo
-   *   (za sada je dekorativno, ali treba da postoji).
-   * KAKO: getByText(l.profile.editProfileBtn).
+   * TEST 6: Edit Profile vodi na stranicu za uređivanje profila
+   * ZAŠTO: Desktop akcija mora imati isti funkcionalni tok kao mobile link.
+   * KAKO: Proveravamo accessible name i href odredište.
    */
-  it('renders Edit Profile button', () => {
+  it('links to the Edit Profile page', () => {
     render(<ProfilePage {...defaultProps} />);
 
-    expect(screen.getByText(l.profile.editProfileBtn)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: l.profile.editProfileBtn })
+    ).toHaveAttribute('href', '/profile/edit');
   });
 
   /**

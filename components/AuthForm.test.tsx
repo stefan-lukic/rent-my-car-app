@@ -72,7 +72,7 @@ describe('AuthForm', () => {
    * KAKO: Mockujemo useSession da vrati status: 'loading', zatim
    * proveravamo da postoji element sa klasom .animate-spin.
    */
-  it('renders loading spinner while session is loading', () => {
+  it('renders an accessible skeleton while session is loading', () => {
     mocks.useSession.mockReturnValue({
       data: null,
       status: 'loading',
@@ -80,7 +80,8 @@ describe('AuthForm', () => {
 
     render(<AuthForm type="sign-in" />);
 
-    expect(document.querySelector('.animate-spin')).toBeTruthy();
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.getByRole('status')).toHaveAccessibleName(l.common.loading);
   });
 
   /**

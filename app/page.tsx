@@ -2,7 +2,7 @@
 
 import l from '@/helper/en';
 import { useState } from 'react';
-import { Compass, LucideLoader2 } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/UI/Header';
@@ -11,6 +11,7 @@ import CarFilters from '@/components/CarFilters';
 import CarRentalSearch from '@/components/CarRentalSearch';
 import MobileCarFilters from '@/components/mobile/MobileCarFilters';
 import MobileCarRentalSearch from '@/components/mobile/MobileCarRentalSearch';
+import { HomePageSkeleton } from '@/components/UI/LoadingSkeletons';
 
 export default function Home() {
   const { loading } = useAuth();
@@ -24,11 +25,7 @@ export default function Home() {
   });
 
   if (loading) {
-    return (
-      <div className="fixed inset-0 flex justify-center items-center bg-white z-50">
-        <LucideLoader2 className="animate-spin text-blue-600" />
-      </div>
-    );
+    return <HomePageSkeleton />;
   }
 
   return (
@@ -52,10 +49,10 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-3 gap-2 md:gap-16 max-w-2xl mx-auto">
-              {[
-                { value: '150+', label: l.landing.premiumRides },
-                { value: '12k+', label: l.landing.kilometersLogged },
-                { value: '100%', label: l.landing.verifiedHosts },
+            {[
+              { value: '150+', label: l.landing.premiumRides },
+              { value: '12k+', label: l.landing.kilometersLogged },
+              { value: '100%', label: l.landing.verifiedHosts },
             ].map(({ value, label }) => (
               <div
                 key={label}
@@ -108,11 +105,11 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-[11px] font-medium text-slate-500">
-              {[
-                l.landing.aboutUs,
-                l.landing.helpCenter,
-                l.landing.termsOfService,
-                l.landing.privacyPolicy,
+            {[
+              l.landing.aboutUs,
+              l.landing.helpCenter,
+              l.landing.termsOfService,
+              l.landing.privacyPolicy,
             ].map((link) => (
               <span
                 key={link}

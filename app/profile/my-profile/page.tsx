@@ -4,32 +4,33 @@ import MobileProfilePage from '@/components/mobile/MobileProfilePage';
 import ProfilePage from '@/components/ProfilePage';
 import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import connectToDatabase from '@/lib/db/mongoose';
+import User from '@/lib/model/User';
 
 export default async function MyProfilePage() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
-  if (!session || !session.user?.email) {
+  if (!session?.user?.id) {
     redirect('/sign-in');
   }
 
   const baseUrl = getBaseUrl();
 
   try {
-    const userRes = await fetch(
-      `${baseUrl}/api/users?email=${encodeURIComponent(session.user.email)}`,
-      {
-        cache: 'no-store',
-        headers: { Cookie: cookies().toString() },
-      }
-    );
+    await connectToDatabase();
 
-    if (!userRes.ok) {
+    const userDocument = await User.findById(session.user.id)
+      .select('name email contactInfo images rating createdAt')
+      .lean();
+
+    if (!userDocument) {
       throw new Error(l.errors.errorFetchingUser);
     }
 
-    const user = await userRes.json();
+    const user = JSON.parse(JSON.stringify(userDocument));
 
     const fetchJson = async (url: string) => {
       const res = await fetch(url, {

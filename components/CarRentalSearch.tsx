@@ -12,6 +12,7 @@ import BookingDialog from './BookNowDialog';
 import CarDetailsDrawer from './CarDetailsDrawer';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
+import { CarResultsSkeleton } from './UI/LoadingSkeletons';
 
 const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
@@ -96,19 +97,23 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
         </Button>
       </form>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {results.data.map((car) => (
-          <CarSearchResults
-            key={car._id}
-            car={car}
-            onBookNow={() => openBooking(car)}
-            onViewDetails={() => {
-              openDetails(car);
-              setModals({ booking: false, details: true });
-            }}
-          />
-        ))}
-      </div>
+      {results.loading && results.data.length === 0 ? (
+        <CarResultsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {results.data.map((car) => (
+            <CarSearchResults
+              key={car._id}
+              car={car}
+              onBookNow={() => openBooking(car)}
+              onViewDetails={() => {
+                openDetails(car);
+                setModals({ booking: false, details: true });
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {results.totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-8">

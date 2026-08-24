@@ -12,6 +12,7 @@ import { ICar } from '@/lib/model/car/Car';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
+import { CarResultsSkeleton } from '../UI/LoadingSkeletons';
 
 const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
   const {
@@ -117,24 +118,28 @@ const MobileCarRentalSearch = ({ filters }: { filters: CarFilterState }) => {
         <h2 className="text-xl font-black text-gray-900 mb-5 px-1">
           {l.search.availableCars}
         </h2>
-        <div className="flex flex-col gap-5">
-          {allCars.map((car) => (
-            <MobileCarSearchResults
-              key={car._id}
-              car={car}
-              onBookNow={() => openBooking(car)}
-              onViewDetails={() => {
-                openDetails(car);
-                setModals({ booking: false, details: true });
-              }}
-            />
-          ))}
-          {!results.loading && allCars.length === 0 && (
-            <p className="text-center text-gray-400 italic py-10">
-               {l.search.noCarsFound}
-            </p>
-          )}
-        </div>
+        {results.loading && allCars.length === 0 ? (
+          <CarResultsSkeleton mobile />
+        ) : (
+          <div className="flex flex-col gap-5">
+            {allCars.map((car) => (
+              <MobileCarSearchResults
+                key={car._id}
+                car={car}
+                onBookNow={() => openBooking(car)}
+                onViewDetails={() => {
+                  openDetails(car);
+                  setModals({ booking: false, details: true });
+                }}
+              />
+            ))}
+            {!results.loading && allCars.length === 0 && (
+              <p className="text-center text-gray-400 italic py-10">
+                {l.search.noCarsFound}
+              </p>
+            )}
+          </div>
+        )}
 
         {results.currentPage < results.totalPages && (
           <button
