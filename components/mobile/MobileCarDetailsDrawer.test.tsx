@@ -51,30 +51,27 @@ describe('MobileCarDetailsDrawer', () => {
   };
 
   it('renders car details when open', async () => {
-    const user = userEvent.setup();
     render(<MobileCarDetailsDrawer {...defaultProps} />);
     expect(screen.getByText('Car Details')).toBeInTheDocument();
-    expect(screen.getByText('Mercedes')).toBeInTheDocument();
-    expect(screen.getByText('C-Class')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Mercedes C-Class' })
+    ).toBeInTheDocument();
   });
 
   it('renders specifications', async () => {
-    const user = userEvent.setup();
     render(<MobileCarDetailsDrawer {...defaultProps} />);
     expect(screen.getByText('Petrol')).toBeInTheDocument();
     expect(screen.getByText('150 HP')).toBeInTheDocument();
     expect(screen.getByText('Sedan')).toBeInTheDocument();
-    expect(screen.getByText('Belgrade')).toBeInTheDocument();
+    expect(screen.getByText(/Belgrade/)).toBeInTheDocument();
   });
 
   it('shows renter info when renter is provided', async () => {
-    const user = userEvent.setup();
     render(<MobileCarDetailsDrawer {...defaultProps} />);
     expect(screen.getByText('Marko Markovic')).toBeInTheDocument();
   });
 
   it('shows no renter info when renter is null', async () => {
-    const user = userEvent.setup();
     render(<MobileCarDetailsDrawer {...defaultProps} renter={null} />);
     expect(screen.getByText('No renter info available')).toBeInTheDocument();
   });

@@ -1,11 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import {
+  CalendarDays,
+  CarFront,
+  ChevronLeft,
+  ChevronRight,
+  Fuel,
+  Gauge,
+  MapPin,
+  Route,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import { IRenter } from '@/lib/model/User';
-import RenterCard from './RenterCard';
-import HowItWorksModal from './HowItWorksModal';
 import { ICar } from '@/lib/model/car/Car';
+import HowItWorksModal from './HowItWorksModal';
+import RenterCard from './RenterCard';
 import l from '@/helper/en';
 
 export interface CarDetailsDrawerProps {
@@ -14,6 +26,12 @@ export interface CarDetailsDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
+}
+
+interface CarSpec {
+  icon: LucideIcon;
+  label: string;
+  value: string;
 }
 
 const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
@@ -26,176 +44,236 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [car?._id]);
+
   if (!car || !isOpen) return null;
 
   const images = car.images ?? [];
-  const total = images.length;
-
-  const specs = [
-    { icon: '⚡', label: l.carSpecs.engine, value: car.engine },
-    { icon: '🏎️', label: l.carSpecs.power, value: `${car.power} HP` },
-    { icon: '🚗', label: l.carSpecs.type, value: car.carType },
-    car.averageConsumption && {
-      icon: '⛽',
-      label: l.carSpecs.consumption,
-      value: car.averageConsumption,
-    },
-    car.milage && {
-      icon: '📍',
+  const totalImages = images.length;
+  const location = [car.city, car.carLocation].filter(Boolean).join(', ');
+  const specs: CarSpec[] = [
+    { icon: Fuel, label: l.carSpecs.engine, value: car.engine },
+    { icon: Gauge, label: l.carSpecs.power, value: `${car.power} HP` },
+    { icon: CarFront, label: l.carSpecs.type, value: car.carType },
+    {
+      icon: Route,
       label: l.carSpecs.mileage,
       value: `${car.milage} km`,
     },
-    car.firstRegistration && {
-      icon: '📅',
-      label: l.carSpecs.registration,
-      value: new Date(car.firstRegistration).toLocaleDateString(),
-    },
-  ].filter(Boolean) as { icon: string; label: string; value: string }[];
+    ...(car.averageConsumption
+      ? [
+          {
+            icon: Gauge,
+            label: l.carSpecs.consumption,
+            value: car.averageConsumption,
+          },
+        ]
+      : []),
+    ...(car.firstRegistration
+      ? [
+          {
+            icon: CalendarDays,
+            label: l.carSpecs.registration,
+            value: new Date(car.firstRegistration).toLocaleDateString(),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
       <div
+        aria-hidden="true"
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-[2px]"
       />
 
-      <div
-        className={`fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="car-details-title"
+        className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:w-[500px] lg:w-[540px]"
       >
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-          <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            {l.drawer.carDetails}
-          </span>
+        <header className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">
+              {l.drawer.carDetails}
+            </p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Review the vehicle before booking
+            </p>
+          </div>
           <button
+            type="button"
+            aria-label="Close car details"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            {l.common.close}
+            <X className="h-5 w-5" />
           </button>
-        </div>
+        </header>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="relative aspect-[16/9] bg-gray-100">
+          <section className="relative aspect-[16/10] overflow-hidden bg-slate-100">
             <Image
               src={images[currentImageIndex] || '/placeholder-car.svg'}
               alt={`${car.make} ${car.carModel}`}
               fill
+              sizes="(max-width: 640px) 100vw, 540px"
               className="object-cover"
+              priority
             />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/65 to-transparent" />
 
-            {total > 1 && (
+            {totalImages > 0 && (
+              <span className="absolute bottom-4 right-4 rounded-full bg-slate-950/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                {currentImageIndex + 1} / {totalImages}
+              </span>
+            )}
+
+            {totalImages > 1 && (
               <>
-                <div className="absolute bottom-3 w-full flex justify-center gap-1.5">
-                  {images.map((_, i) => (
+                <button
+                  type="button"
+                  aria-label="Previous car image"
+                  onClick={() =>
+                    setCurrentImageIndex((index) => Math.max(index - 1, 0))
+                  }
+                  disabled={currentImageIndex === 0}
+                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next car image"
+                  onClick={() =>
+                    setCurrentImageIndex((index) =>
+                      Math.min(index + 1, totalImages - 1)
+                    )
+                  }
+                  disabled={currentImageIndex === totalImages - 1}
+                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+
+                <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
+                  {images.map((image, index) => (
                     <button
-                      key={i}
-                      onClick={() => setCurrentImageIndex(i)}
+                      type="button"
+                      key={`${image}-${index}`}
+                      aria-label={`Show image ${index + 1}`}
+                      onClick={() => setCurrentImageIndex(index)}
                       className={`h-1.5 rounded-full transition-all ${
-                        i === currentImageIndex
-                          ? 'w-5 bg-white'
-                          : 'w-1.5 bg-white/50'
+                        index === currentImageIndex
+                          ? 'w-6 bg-white'
+                          : 'w-1.5 bg-white/60 hover:bg-white'
                       }`}
                     />
                   ))}
                 </div>
-
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((i) => Math.max(i - 1, 0))
-                  }
-                  disabled={currentImageIndex === 0}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                >
-                  ‹
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((i) => Math.min(i + 1, total - 1))
-                  }
-                  disabled={currentImageIndex === total - 1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 text-white rounded-full flex items-center justify-center disabled:opacity-30 text-lg"
-                >
-                  ›
-                </button>
               </>
             )}
-          </div>
+          </section>
 
-          <div className="px-6 py-5 space-y-5">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">
+          <div className="space-y-6 px-5 py-6 sm:px-6">
+            <section className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <p className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+                  Available for rent
+                </p>
+                <h2
+                  id="car-details-title"
+                  className="text-2xl font-bold tracking-tight text-slate-950"
+                >
                   {car.make} {car.carModel}
                 </h2>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  {car.carType} • {car.city}
-                  {car.carLocation && `, ${car.carLocation}`}
+                <p className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
+                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
+                  <span>{location}</span>
                 </p>
               </div>
-              <div className="text-right">
-                <div className="text-lg font-bold text-blue-500">
-                  €{car.pricePerDay}
-                </div>
-                <div className="text-xs text-gray-400">{l.common.perDay}</div>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-2.5">
-              {specs.map(({ icon, label, value }) => (
-                <div
-                  key={label}
-                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5"
-                >
-                  <div className="text-xs text-gray-400 flex items-center gap-1">
-                    <span>{icon}</span> {label}
+              <div className="flex-shrink-0 rounded-2xl bg-blue-50 px-4 py-3 text-right">
+                <p className="text-xl font-bold text-blue-600">
+                  €{car.pricePerDay}
+                </p>
+                <p className="text-xs font-medium text-slate-500">
+                  {l.common.perDay}
+                </p>
+              </div>
+            </section>
+
+            <section>
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+                Vehicle overview
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {specs.map(({ icon: Icon, label, value }) => (
+                  <div
+                    key={label}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-3.5"
+                  >
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                      {label}
+                    </p>
+                    <p className="mt-0.5 truncate text-sm font-semibold text-slate-800">
+                      {value}
+                    </p>
                   </div>
-                  <div className="text-sm font-medium text-gray-800">
-                    {value}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </section>
 
             {car.description && (
-              <div className="border-t border-gray-100 pt-4">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+              <section className="rounded-2xl border border-slate-200 bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                   {l.common.description}
-                </p>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
                   {car.description}
                 </p>
-              </div>
+              </section>
             )}
 
-            <div className="border-t border-gray-100 pt-4">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                {l.drawer.renter}
-              </p>
-              {renter && <RenterCard renter={renter} />}
-            </div>
+            <section>
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+                Listed by
+              </h3>
+              {renter ? (
+                <RenterCard renter={renter} />
+              ) : (
+                <p className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                  {l.drawer.noRenterInfo}
+                </p>
+              )}
+            </section>
           </div>
         </div>
 
-        <div className="flex gap-3 px-6 py-4 border-t border-gray-100 bg-white">
+        <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 py-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6">
           <button
+            type="button"
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             {l.common.howItWorks}
           </button>
-
           <button
+            type="button"
             onClick={onBookNow}
-            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+            className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             {l.common.bookNow}
           </button>
-        </div>
-      </div>
+        </footer>
+      </aside>
 
       <HowItWorksModal
         isOpen={isModalOpen}
