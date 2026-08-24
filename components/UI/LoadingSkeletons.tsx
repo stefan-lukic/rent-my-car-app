@@ -172,15 +172,44 @@ export function ProfilePageSkeleton() {
 export function OwnerProfileSkeleton() {
   return (
     <LoadingRegion>
-      <div className="min-h-screen bg-white px-4 py-12">
-        <div className="mx-auto max-w-3xl space-y-8">
-          <Skeleton className="h-4 w-28" />
-          <div className="flex flex-col items-center gap-6 border-b border-slate-100 pb-8 sm:flex-row sm:items-start">
-            <Skeleton className="h-24 w-24 shrink-0 rounded-full" />
-            <div className="flex w-full flex-col items-center gap-3 sm:items-start">
-              <Skeleton className="h-7 w-44" />
-              <Skeleton className="h-4 w-56 max-w-full" />
-              <Skeleton className="h-4 w-36" />
+      <div className="min-h-screen bg-slate-50">
+        <div className="border-b border-slate-100 bg-white px-4 py-4">
+          <Skeleton className="mx-auto h-10 max-w-7xl" />
+        </div>
+        <div className="bg-slate-950 px-4 pb-20 pt-7">
+          <div className="mx-auto max-w-5xl space-y-9">
+            <Skeleton className="h-5 w-36 bg-slate-700" />
+            <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-end">
+              <Skeleton className="h-28 w-28 shrink-0 rounded-3xl bg-slate-700 md:h-32 md:w-32" />
+              <div className="flex w-full flex-col items-center gap-3 sm:items-start">
+                <Skeleton className="h-6 w-28 rounded-full bg-blue-900" />
+                <Skeleton className="h-9 w-48 bg-slate-700" />
+                <Skeleton className="h-4 w-full max-w-md bg-slate-700" />
+              </div>
+              <Skeleton className="h-16 w-32 bg-slate-800" />
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto -mt-7 max-w-5xl px-4">
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+            <Skeleton className="h-4 w-28 bg-blue-100" />
+            <Skeleton className="mt-3 h-7 w-52" />
+            <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              {[0, 1, 2, 3].map((item) => (
+                <Skeleton key={item} className="h-28 w-full" />
+              ))}
+            </div>
+            <div className="my-8 border-t border-slate-200" />
+            <div className="grid gap-7 lg:grid-cols-[0.75fr_1.25fr]">
+              <div className="space-y-3">
+                <Skeleton className="h-6 w-44" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-20 w-full bg-blue-100" />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-40 w-full" />
+              </div>
             </div>
           </div>
         </div>
