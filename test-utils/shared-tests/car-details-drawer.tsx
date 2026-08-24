@@ -39,7 +39,7 @@ export const runCarDetailsDrawerSharedTests = (
     const user = userEvent.setup();
     const onClose = vi.fn();
     render(<Component {...defaultProps} onClose={onClose} />);
-    await user.click(screen.getByText('✕'));
+    await user.click(screen.getByRole('button', { name: 'Close car details' }));
     expect(onClose).toHaveBeenCalled();
   });
 

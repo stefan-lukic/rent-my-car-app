@@ -28,9 +28,9 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
   return (
     <Link
       href={`/profile/${renter._id}`}
-      className="group flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-950 p-3.5 shadow-sm transition hover:border-blue-500 hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="group flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-3.5 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     >
-      <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-700 bg-slate-800 text-sm font-bold text-blue-200">
+      <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-blue-200 bg-white text-sm font-bold text-blue-700 shadow-sm">
         {profileImage ? (
           <Image
             src={profileImage}
@@ -45,25 +45,29 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate text-sm font-bold text-white">{renter.name}</p>
+          <p className="truncate text-sm font-bold text-slate-900">
+            {renter.name}
+          </p>
           {renter.rating > 0 && (
             <span
               aria-label={l.profile.rating}
-              className="flex items-center gap-1 text-xs text-amber-400"
+              className="flex items-center gap-1 text-xs text-amber-500"
             >
               <Star className="h-3.5 w-3.5 fill-current" />
-              <span className="font-semibold text-slate-300">
+              <span className="font-semibold text-slate-600">
                 {renter.rating.toFixed(1)}
               </span>
             </span>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-slate-400">
+        <p className="mt-0.5 text-xs text-slate-500">
           {l.profile.viewOwnerProfile}
         </p>
       </div>
 
-      <ArrowRight className="h-4 w-4 text-blue-400 transition-transform group-hover:translate-x-0.5" />
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-blue-600 shadow-sm transition group-hover:translate-x-0.5">
+        <ArrowRight className="h-4 w-4" />
+      </span>
     </Link>
   );
 };
