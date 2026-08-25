@@ -4,8 +4,7 @@ import { authOptions } from '@/lib/authOptions';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import EditProfileForm from '@/components/EditProfileForm';
-import MobileEditProfileForm from '@/components/mobile/MobileEditProfileForm';
-import { isMobileSSR } from '@/utils/deviceDetectionSSR';
+import Header from '@/components/UI/Header';
 
 export default async function EditProfilePage() {
   const session = await getServerSession(authOptions);
@@ -29,17 +28,12 @@ export default async function EditProfilePage() {
     profileImage: user.images?.[0] || '',
   };
 
-  const isMobile = isMobileSSR();
-
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="mx-auto max-w-xl">
-        {isMobile ? (
-          <MobileEditProfileForm initialProfile={initialProfile} />
-        ) : (
-          <EditProfileForm initialProfile={initialProfile} />
-        )}
+    <div className="min-h-screen bg-slate-50 pb-24 md:pb-12">
+      <div className="hidden md:block">
+        <Header />
       </div>
-    </main>
+      <EditProfileForm initialProfile={initialProfile} />
+    </div>
   );
 }

@@ -51,6 +51,7 @@ const l = {
     profileInitial: 'U',
     perDay: '/ day',
     andMore: (n: number) => `and ${n} more...`,
+    saving: 'Saving...',
   },
 
   auth: {
@@ -263,6 +264,25 @@ const l = {
       'In-app messaging is planned. Until then, use the available contact details to reach the owner.',
     myCarsCount: (n: number) => `My Cars (${n})`,
     myRentalsCount: (n: number) => `My Rentals (${n})`,
+    backToProfile: 'Back to My Profile',
+    accountSettingsTag: 'Account settings',
+    editProfileHeroTitle: 'Make your profile feel like you.',
+    editProfileHeroDesc:
+      'Keep your photo and contact details current so owners and renters know who they are connecting with.',
+    profilePhoto: 'Profile photo',
+    publicIdentity: 'Your public identity',
+    chooseNewPhoto: 'Choose new photo',
+    photoFileHint: 'JPG, PNG or WebP. Maximum file size is 5 MB.',
+    photoTrustHint:
+      'A clear, recent photo helps build trust when arranging vehicle pickup and return.',
+    personalDetails: 'Personal details',
+    howPeopleReachYou: 'How people can reach you',
+    fullName: 'Full Name',
+    fullNamePlaceholder: 'e.g. Srdjan Markovic',
+    phoneOrContact: 'Phone or Contact',
+    phoneOrContactPlaceholder: 'e.g. +381 60 123 4567',
+    emailLockedHint:
+      'Email is used for sign-in and cannot be changed from this screen.',
   },
 
   drawer: {

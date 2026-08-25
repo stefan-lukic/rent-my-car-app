@@ -8,8 +8,6 @@ import EditProfileForm from './EditProfileForm';
  * back: mock za router.back() - koristi se za "Cancel" dugme.
  * Znacaj: EditProfileForm poziva router.back() kada korisnik odustane.
  */
-const back = vi.fn();
-
 /**
  * handleInputChange: mock za hook-ovu funkciju koja azurira profileData.
  * Znacaj: Svi input change event-ovi u formi moraju da produ kroz ovu
@@ -38,10 +36,6 @@ const useEditProfileMock = vi.fn();
  * Znacaj: EditProfileForm koristi router.back() za Cancel dugme.
  * Mockujemo da ne bismo izvodili stvarni browser history.
  */
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ back }),
-}));
-
 /**
  * Mockujemo useEditProfile hook.
  * Znacaj: Testiramo komponentu, ne hook. Zato vracamo kontrolisane
@@ -97,7 +91,9 @@ describe('EditProfileForm', () => {
     render(<EditProfileForm initialProfile={initialProfile} />);
 
     expect(
-      screen.getByRole('heading', { name: 'Edit Profile' })
+      screen.getByRole('heading', {
+        name: 'Make your profile feel like you.',
+      })
     ).toBeInTheDocument();
 
     expect(screen.getByLabelText('Full Name')).toHaveValue('Marko Markovic');
@@ -227,12 +223,12 @@ describe('EditProfileForm', () => {
   /**
    * TEST 7: Cancel dugme poziva router.back()
    */
-  it('returns to the previous page when Cancel is clicked', async () => {
-    const user = userEvent.setup();
+  it('links back to My Profile when Cancel is clicked', async () => {
     render(<EditProfileForm initialProfile={initialProfile} />);
 
-    await user.click(screen.getByRole('button', { name: 'Cancel' }));
-
-    expect(back).toHaveBeenCalledOnce();
+    expect(screen.getByRole('link', { name: 'Cancel' })).toHaveAttribute(
+      'href',
+      '/profile/my-profile'
+    );
   });
 });

@@ -221,16 +221,36 @@ export function OwnerProfileSkeleton() {
 export function EditProfileSkeleton() {
   return (
     <LoadingRegion>
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-sm">
-          <Skeleton className="h-8 w-48" />
-          <div className="flex justify-center">
-            <Skeleton className="h-24 w-24 rounded-full" />
+      <main className="min-h-screen bg-slate-50 px-4 py-5 sm:px-6 md:py-8">
+        <div className="mx-auto max-w-6xl">
+          <Skeleton className="mb-5 h-5 w-40" />
+          <div className="rounded-3xl bg-slate-900 px-6 py-8">
+            <Skeleton className="h-6 w-36 bg-slate-700" />
+            <Skeleton className="mt-5 h-10 w-3/5 bg-slate-700" />
+            <Skeleton className="mt-4 h-5 w-2/3 bg-slate-700" />
           </div>
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full bg-blue-200" />
+          <div className="mt-5 grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6">
+              <Skeleton className="h-6 w-36" />
+              <div className="mt-10 flex justify-center">
+                <Skeleton className="h-36 w-36 rounded-3xl" />
+              </div>
+              <Skeleton className="mx-auto mt-6 h-11 w-44 bg-blue-200" />
+              <Skeleton className="mt-8 h-20 w-full" />
+            </div>
+            <div className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6">
+              <Skeleton className="h-6 w-48" />
+              <div className="grid gap-5 sm:grid-cols-2">
+                <Skeleton className="h-16 w-full" />
+                <Skeleton className="h-16 w-full" />
+              </div>
+              <Skeleton className="h-28 w-full" />
+              <div className="flex justify-end gap-3 pt-6">
+                <Skeleton className="h-11 w-28" />
+                <Skeleton className="h-11 w-36 bg-blue-200" />
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </LoadingRegion>
