@@ -138,6 +138,11 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
           <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
             {car.averageConsumption} l/100km
           </span>
+          {car.seats ? (
+            <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
+              {car.seats} {l.carSpecs.seats.toLowerCase()}
+            </span>
+          ) : null}
         </div>
 
         <div className="flex gap-2 pt-1 border-t border-slate-100">

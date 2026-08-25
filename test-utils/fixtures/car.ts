@@ -21,6 +21,7 @@ export const createMockCar = (overrides?: MockCarOverrides): ICar =>
     images: ['/car1.jpg', '/car2.jpg'],
     engine: CarEngineType.PETROL,
     power: '150',
+    seats: 5,
     averageConsumption: '6.5',
     milage: 50000,
     firstRegistration: new Date('2020-01-01'),

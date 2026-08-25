@@ -70,6 +70,7 @@ const mockFilters = {
   make: '',
   carType: '',
   engine: '',
+  minSeats: '',
 };
 
 describe('MobileCarRentalSearch', () => {

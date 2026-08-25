@@ -132,6 +132,7 @@ const l = {
     engineType: 'Engine Type',
     horsepower: 'Horsepower (HP)',
     horsepowerMobile: 'Horsepower',
+    seats: 'Seats',
     avgConsumption: 'Avg. Consumption',
     city: 'City',
     carLocation: 'Car Location',
@@ -183,6 +184,8 @@ const l = {
     allTypes: 'All Types',
     engineType: 'Engine Type',
     allEngineTypes: 'All Engine Types',
+    minimumSeats: 'Minimum Seats',
+    anyNumberOfSeats: 'Any number of seats',
     pricesDisclaimer:
       'Prices in Euros (€) and exclude customized dropoff charges.',
     availableCars: 'Available Cars',
@@ -463,6 +466,7 @@ const l = {
     mileage: 'Mileage',
     consumption: 'Consumption',
     registration: 'Registration',
+    seats: 'Seats',
   },
 
   status: {

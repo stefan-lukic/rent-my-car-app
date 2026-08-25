@@ -4,4 +4,5 @@ export interface CarFilterState {
   make: string;
   carType: string;
   engine: string;
+  minSeats: string;
 }

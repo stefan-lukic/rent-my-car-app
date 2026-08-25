@@ -20,6 +20,7 @@ const emptyFilters: CarFilterState = {
   make: '',
   carType: '',
   engine: '',
+  minSeats: '',
 };
 
 const labelClass = 'mb-2 block text-xs font-bold text-slate-600';
@@ -109,6 +110,14 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
           onChange={handleInputChange}
           placeholder={l.search.allEngineTypes}
           options={Object.values(CarEngineType)}
+        />
+        <FilterSelect
+          label={l.search.minimumSeats}
+          name="minSeats"
+          value={filters.minSeats}
+          onChange={handleInputChange}
+          placeholder={l.search.anyNumberOfSeats}
+          options={['2', '4', '5', '6', '7', '8', '9']}
         />
       </div>
     </div>

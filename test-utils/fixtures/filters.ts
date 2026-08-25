@@ -4,6 +4,7 @@ export interface MockFiltersOverrides {
   make?: string;
   carType?: string;
   engine?: string;
+  minSeats?: string;
 }
 
 export const createMockFilters = (overrides?: MockFiltersOverrides) => ({
@@ -12,5 +13,6 @@ export const createMockFilters = (overrides?: MockFiltersOverrides) => ({
   make: '',
   carType: '',
   engine: '',
+  minSeats: '',
   ...overrides,
 });

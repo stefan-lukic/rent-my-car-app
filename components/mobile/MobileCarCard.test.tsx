@@ -18,6 +18,7 @@ const mockCar = {
   make: 'BMW',
   carModel: 'X5',
   pricePerDay: 80,
+  seats: 5,
   city: 'Belgrade',
   carLocation: 'New Belgrade',
   images: ['/car1.jpg', '/car2.jpg', '/car3.jpg'],

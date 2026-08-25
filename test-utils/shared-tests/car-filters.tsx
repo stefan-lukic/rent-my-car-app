@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ComponentType, Dispatch, SetStateAction } from 'react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
+import l from '@/helper/en';
 
 export interface CarFiltersSharedConfig {
   Component: ComponentType<{
@@ -58,6 +59,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     make: '',
     carType: '',
     engine: '',
+    minSeats: '',
   };
 
   it('renders filter heading', () => {
@@ -83,6 +85,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
     expect(screen.getByText(makeLabel)).toBeInTheDocument();
     expect(screen.getByText(carTypeLabel)).toBeInTheDocument();
     expect(screen.getByText(engineLabel)).toBeInTheDocument();
+    expect(screen.getByText(l.search.minimumSeats)).toBeInTheDocument();
   });
 
   it('requests filter update when min price changes', async () => {
@@ -145,6 +148,7 @@ export const runCarFiltersSharedTests = (config: CarFiltersSharedConfig) => {
       make: 'Audi',
       carType: 'Hatchback',
       engine: 'Electric',
+      minSeats: '5',
     };
     render(<Component filters={filledFilters} setFilters={setFilters} />);
     await expandFilters(user);

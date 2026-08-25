@@ -2,14 +2,16 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ICar } from '@/lib/model/car/Car';
 import { useCarSearchForm } from './useCarSearch';
+import type { CarFilterState } from '@/lib/model/car/CarFilterState';
 
-const filters = {
+const filters: CarFilterState = {
   minPrice: '',
   maxPrice: '',
   make: '',
   carType: '',
   engine: '',
-} as any;
+  minSeats: '',
+};
 
 const car = {
   _id: 'car-1',
@@ -71,6 +73,7 @@ describe('useCarSearchForm', () => {
           ...filters,
           make: 'BMW',
           minPrice: '40',
+          minSeats: '5',
         },
       })
     );
@@ -105,6 +108,7 @@ describe('useCarSearchForm', () => {
     expect(requestUrl).toContain('city=Belgrade');
     expect(requestUrl).toContain('make=BMW');
     expect(requestUrl).toContain('minPrice=40');
+    expect(requestUrl).toContain('minSeats=5');
 
     expect(result.current.results.data).toEqual([car]);
     expect(result.current.results.total).toBe(1);

@@ -124,6 +124,17 @@ export default function AddCar() {
                 required
               />
               <FormInput
+                label={l.cars.seats}
+                name="seats"
+                type="number"
+                min="1"
+                max="9"
+                step="1"
+                value={carData.seats}
+                onChange={handleInputChange}
+                required
+              />
+              <FormInput
                 label={l.cars.avgConsumption}
                 name="averageConsumption"
                 value={carData.averageConsumption}

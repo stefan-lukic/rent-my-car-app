@@ -43,6 +43,7 @@ const carData = {
   carModel: 'C-Class',
   engine: 'PETROL',
   power: '150',
+  seats: 5,
   carType: 'SALOON',
   city: 'NOVI_SAD',
   carLocation: 'Liman 3',
@@ -77,6 +78,7 @@ describe('AddCar', () => {
 
     expect(screen.getByLabelText(l.cars.model)).toHaveValue('C-Class');
     expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue('150');
+    expect(screen.getByLabelText(l.cars.seats)).toHaveValue(5);
     expect(screen.getByLabelText(l.cars.carLocation)).toHaveValue('Liman 3');
     expect(screen.getByLabelText(/Price Per Day/)).toHaveValue(45);
     expect(screen.getByLabelText(l.common.description)).toHaveValue(

@@ -38,6 +38,8 @@ describe('CarDetailsDrawer', () => {
     render(<CarDetailsDrawer {...defaultProps} />);
     expect(screen.getByText('PETROL')).toBeInTheDocument();
     expect(screen.getByText('150 HP')).toBeInTheDocument();
+    expect(screen.getByText('Seats')).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('SEDAN')).toBeInTheDocument();
     expect(screen.getByText(/Belgrade/)).toBeInTheDocument();
     expect(screen.getByText('6.5')).toBeInTheDocument();

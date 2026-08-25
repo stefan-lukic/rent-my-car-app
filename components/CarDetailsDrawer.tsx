@@ -10,6 +10,7 @@ import {
   Fuel,
   Gauge,
   MapPin,
+  Users,
   Route,
   X,
   type LucideIcon,
@@ -56,6 +57,9 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const specs: CarSpec[] = [
     { icon: Fuel, label: l.carSpecs.engine, value: car.engine },
     { icon: Gauge, label: l.carSpecs.power, value: `${car.power} HP` },
+    ...(car.seats
+      ? [{ icon: Users, label: l.carSpecs.seats, value: String(car.seats) }]
+      : []),
     { icon: CarFront, label: l.carSpecs.type, value: car.carType },
     {
       icon: Route,

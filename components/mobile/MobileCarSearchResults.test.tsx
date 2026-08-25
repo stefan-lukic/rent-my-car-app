@@ -23,6 +23,7 @@ const mockCar = {
   images: ['/car1.jpg', '/car2.jpg'],
   engine: 'Petrol',
   power: '150',
+  seats: 5,
   averageConsumption: '6.5',
   milage: 50000,
   firstRegistration: new Date('2020-01-01'),
@@ -55,6 +56,7 @@ describe('MobileCarSearchResults', () => {
     expect(screen.getByText('Sedan')).toBeInTheDocument();
     expect(screen.getByText('Petrol')).toBeInTheDocument();
     expect(screen.getByText('6.5 l/100km')).toBeInTheDocument();
+    expect(screen.getByText('5 seats')).toBeInTheDocument();
   });
 
   it('calls onViewDetails when Specs button is clicked', async () => {

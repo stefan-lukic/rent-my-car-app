@@ -10,6 +10,7 @@ export interface ICar {
   carModel: string;
   engine: CarEngineType;
   power: string;
+  seats?: number;
   carType: CarType;
   city: CarCity;
   carLocation: string;
@@ -38,6 +39,7 @@ const carSchema: Schema<ICar> = new Schema(
       enum: Object.values(CarEngineType),
     },
     power: { type: String, required: true },
+    seats: { type: Number, required: true, min: 1, max: 9 },
     carType: { type: String, required: true, enum: Object.values(CarType) },
     city: { type: String, required: true, enum: Object.values(CarCity) },
     carLocation: { type: String, required: true },
