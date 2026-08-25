@@ -7,8 +7,8 @@ import l from '@/helper/en';
 vi.mock('next/image', () => ({
   __esModule: true,
   default: (props: any) => {
-    const { src, alt, width, height, ...rest } = props || {};
-    return React.createElement('img', { src, alt, width, height, ...rest });
+    const { src, alt, width, height } = props || {};
+    return React.createElement('img', { src, alt, width, height });
   },
 }));
 
@@ -23,6 +23,13 @@ vi.mock('./ProfileInteractiveSection', () => ({
     <div data-testid="profile-interactive">
       Cars: {cars.length}, Rentals: {rentals.length}
     </div>
+  ),
+}));
+
+vi.mock('./IncomingBookingsSection', () => ({
+  __esModule: true,
+  default: ({ bookings }: any) => (
+    <div data-testid="incoming-bookings">Bookings: {bookings.length}</div>
   ),
 }));
 
@@ -63,6 +70,8 @@ describe('ProfilePage', () => {
     user: mockUser,
     cars: mockCars,
     rentals: mockRentals,
+    ownerBookings: [{ _id: 'booking-1' }] as any,
+    currentDate: '2026-08-25',
   };
 
   beforeEach(() => {
@@ -98,6 +107,8 @@ describe('ProfilePage', () => {
         user={userWithoutContact}
         cars={mockCars}
         rentals={mockRentals}
+        ownerBookings={defaultProps.ownerBookings}
+        currentDate={defaultProps.currentDate}
       />
     );
 
@@ -141,8 +152,24 @@ describe('ProfilePage', () => {
     expect(interactiveSection).toHaveTextContent('Rentals: 1');
   });
 
+  it('shows bookings made for the owner cars', () => {
+    render(<ProfilePage {...defaultProps} />);
+
+    expect(screen.getByTestId('incoming-bookings')).toHaveTextContent(
+      'Bookings: 1'
+    );
+  });
+
   it('renders zero stats when user has no cars and rentals', () => {
-    render(<ProfilePage user={mockUser} cars={[]} rentals={[]} />);
+    render(
+      <ProfilePage
+        user={mockUser}
+        cars={[]}
+        rentals={[]}
+        ownerBookings={[]}
+        currentDate={defaultProps.currentDate}
+      />
+    );
 
     const zeroValues = screen.getAllByText('0');
 
@@ -157,6 +184,8 @@ describe('ProfilePage', () => {
         user={mockUser}
         cars={mockCars}
         rentals={[...mockRentals, rentalWithoutCar]}
+        ownerBookings={[]}
+        currentDate={defaultProps.currentDate}
       />
     );
 

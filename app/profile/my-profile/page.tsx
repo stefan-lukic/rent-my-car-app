@@ -48,21 +48,40 @@ export default async function MyProfilePage() {
       return res.json();
     };
 
-    const [carsResult, rentalsResult] = await Promise.allSettled([
-      fetchJson(`${baseUrl}/api/cars/my-cars`),
-      fetchJson(`${baseUrl}/api/my-rentals`),
-    ]);
+    const [carsResult, rentalsResult, ownerBookingsResult] =
+      await Promise.allSettled([
+        fetchJson(`${baseUrl}/api/cars/my-cars`),
+        fetchJson(`${baseUrl}/api/my-rentals`),
+        fetchJson(`${baseUrl}/api/owner-bookings`),
+      ]);
 
     const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];
     const rentals =
       rentalsResult.status === 'fulfilled' ? rentalsResult.value : [];
+    const ownerBookings =
+      ownerBookingsResult.status === 'fulfilled'
+        ? ownerBookingsResult.value
+        : [];
+    const currentDate = new Date().toISOString().slice(0, 10);
 
     const isMobile = isMobileSSR();
 
     return isMobile ? (
-      <MobileProfilePage user={user} cars={cars} rentals={rentals} />
+      <MobileProfilePage
+        user={user}
+        cars={cars}
+        rentals={rentals}
+        ownerBookings={ownerBookings}
+        currentDate={currentDate}
+      />
     ) : (
-      <ProfilePage user={user} cars={cars} rentals={rentals} />
+      <ProfilePage
+        user={user}
+        cars={cars}
+        rentals={rentals}
+        ownerBookings={ownerBookings}
+        currentDate={currentDate}
+      />
     );
   } catch (error) {
     console.error('Failed to load profile page:', error);
