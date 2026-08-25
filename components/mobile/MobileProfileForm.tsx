@@ -32,6 +32,7 @@ const MobileProfileForm = ({
       name: '',
       email: '',
       password: '',
+      phoneNumber: '',
     },
   });
 
@@ -112,6 +113,13 @@ const MobileProfileForm = ({
               label=""
               placeholder={l.common.name}
               type="text"
+            />
+            <CustomInput
+              control={control}
+              name="phoneNumber"
+              label=""
+              placeholder={l.common.phoneNumber}
+              type="tel"
             />
             <label
               htmlFor="images"

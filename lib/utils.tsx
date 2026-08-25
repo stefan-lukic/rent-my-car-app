@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 import l from '@/helper/en';
+import { isValidPhoneNumber } from './phoneNumber';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,6 +23,16 @@ export const authFormSchema = (type: string) =>
           ? l.validation.invalidPassword
           : l.validation.passwordMinLength,
     }),
+    phoneNumber:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z
+            .string()
+            .trim()
+            .min(1, { message: l.validation.phoneNumberRequired })
+            .refine(isValidPhoneNumber, {
+              message: l.validation.invalidPhoneNumber,
+            }),
   });
 
 export const renterSchema = z.object({

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
+import { isValidPhoneNumber, normalizePhoneNumber } from '@/lib/phoneNumber';
 
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -12,8 +13,6 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    await connectToDatabase();
-
     const formData = await request.formData();
     const images: File[] = Array.from(formData.getAll('image')) as File[];
 
@@ -49,20 +48,33 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    const profileData = Object.fromEntries(formData);
+    const name = formData.get('name');
+    const contactInfo = formData.get('contactInfo');
+    const nameStr = typeof name === 'string' ? name.trim() : '';
+    const contactInfoStr =
+      typeof contactInfo === 'string' ? contactInfo.trim() : '';
 
-    if (!profileData.name) {
+    if (!nameStr) {
       return NextResponse.json(
         { message: 'Name is required' },
         { status: 400 }
       );
     }
 
+    if (!contactInfoStr || !isValidPhoneNumber(contactInfoStr)) {
+      return NextResponse.json(
+        { message: 'A valid phone number is required' },
+        { status: 400 }
+      );
+    }
+
     const updateData = {
-      name: profileData.name,
-      contactInfo: profileData.contactInfo || '',
+      name: nameStr,
+      contactInfo: normalizePhoneNumber(contactInfoStr),
       ...(imageBase64Array.length > 0 && { images: imageBase64Array }),
     };
+
+    await connectToDatabase();
 
     const user = await User.findByIdAndUpdate(session.user.id, updateData, {
       new: true,

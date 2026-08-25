@@ -41,6 +41,7 @@ vi.mock('@/lib/utils', () => ({
       name: z.string().optional(),
       email: z.string().email().optional(),
       password: z.string().optional(),
+      phoneNumber: z.string().optional(),
     }),
   cn: (...args: any[]) => args.join(' '),
 }));

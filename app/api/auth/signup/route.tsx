@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateVerificationToken } from '@/lib/emailVerification';
 import { sendEmailVerification } from '@/lib/emailService/sendEmail';
+import { isValidPhoneNumber, normalizePhoneNumber } from '@/lib/phoneNumber';
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -27,11 +28,14 @@ export async function POST(req: NextRequest) {
     const name = formData.get('name');
     const email = formData.get('email');
     const password = formData.get('password') as string;
+    const phoneNumber = formData.get('phoneNumber');
 
     const nameStr = typeof name === 'string' ? name.trim() : '';
     const emailStr =
       typeof email === 'string' ? email.trim().toLowerCase() : '';
     const passwordStr = typeof password === 'string' ? password : '';
+    const phoneNumberStr =
+      typeof phoneNumber === 'string' ? phoneNumber.trim() : '';
 
     if (!nameStr || nameStr.length < 3) {
       return NextResponse.json(
@@ -50,6 +54,13 @@ export async function POST(req: NextRequest) {
     if (!passwordStr || passwordStr.length < 8) {
       return NextResponse.json(
         { message: 'Password must be at least 8 characters' },
+        { status: 400 }
+      );
+    }
+
+    if (!phoneNumberStr || !isValidPhoneNumber(phoneNumberStr)) {
+      return NextResponse.json(
+        { message: 'A valid phone number is required' },
         { status: 400 }
       );
     }
@@ -103,6 +114,7 @@ export async function POST(req: NextRequest) {
       name: nameStr,
       email: emailStr,
       password: hashedPassword,
+      contactInfo: normalizePhoneNumber(phoneNumberStr),
       images: imageBase64Array,
       emailVerificationToken: hash,
       emailVerificationExpires: expires,

@@ -53,8 +53,13 @@ describe('EditProfileForm', () => {
 
     expect(screen.getByLabelText('Full Name')).toHaveValue('Marko Markovic');
 
-    expect(screen.getByLabelText('Phone or Contact')).toHaveValue(
+    expect(screen.getByLabelText('Phone number')).toHaveValue(
       '+381 60 123 4567'
+    );
+    expect(screen.getByLabelText('Phone number')).toBeRequired();
+    expect(screen.getByLabelText('Phone number')).toHaveAttribute(
+      'type',
+      'tel'
     );
 
     expect(screen.getByLabelText('Email')).toHaveValue('marko@example.com');

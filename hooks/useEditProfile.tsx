@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { isValidPhoneNumber, normalizePhoneNumber } from '@/lib/phoneNumber';
 
 export type EditProfileData = {
   name: string;
@@ -67,13 +68,21 @@ export function useEditProfile(initialProfile: InitialProfileData) {
       return;
     }
 
+    if (!isValidPhoneNumber(profileData.contactInfo)) {
+      setError('Enter a valid phone number.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const formData = new FormData();
 
       formData.append('name', profileData.name);
-      formData.append('contactInfo', profileData.contactInfo);
+      formData.append(
+        'contactInfo',
+        normalizePhoneNumber(profileData.contactInfo)
+      );
 
       if (profileData.image) {
         formData.append('image', profileData.image);

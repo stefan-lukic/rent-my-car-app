@@ -150,12 +150,14 @@ export default function EditProfileForm({
               <div className="relative">
                 <Phone className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-slate-400" />
                 <FormInput
-                  label={l.profile.phoneOrContact}
+                  label={l.common.phoneNumber}
                   name="contactInfo"
+                  type="tel"
                   value={profileData.contactInfo}
                   onChange={handleInputChange}
-                  placeholder={l.profile.phoneOrContactPlaceholder}
-                  maxLength={100}
+                  placeholder={l.profile.phoneNumberPlaceholder}
+                  required
+                  maxLength={25}
                   className="pl-11"
                 />
               </div>

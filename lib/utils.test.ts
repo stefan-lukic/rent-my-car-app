@@ -13,6 +13,7 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      phoneNumber: '+381 60 123 4567',
     });
 
     expect(result.success).toBe(true);
@@ -23,6 +24,7 @@ describe('authFormSchema', () => {
       name: 'Mi',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      phoneNumber: '+381 60 123 4567',
     });
 
     expect(result.success).toBe(false);
@@ -32,9 +34,32 @@ describe('authFormSchema', () => {
     const result = authFormSchema('sign-in').safeParse({
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      phoneNumber: '+381 60 123 4567',
     });
 
     expect(result.success).toBe(true);
+  });
+
+  it('zahteva broj telefona pri registraciji', () => {
+    const result = authFormSchema('sign-up').safeParse({
+      name: 'Marko Markovic',
+      email: 'marko@example.com',
+      password: 'sigurna-lozinka',
+      phoneNumber: '',
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it('odbija neispravan broj telefona pri registraciji', () => {
+    const result = authFormSchema('sign-up').safeParse({
+      name: 'Marko Markovic',
+      email: 'marko@example.com',
+      password: 'sigurna-lozinka',
+      phoneNumber: 'telefon',
+    });
+
+    expect(result.success).toBe(false);
   });
 
   it('odbija email koji nema ispravan format', () => {
@@ -60,6 +85,7 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'neispravan-email',
       password: 'sigurna-lozinka',
+      phoneNumber: '+381601234567',
     });
 
     expect(result.success).toBe(false);
