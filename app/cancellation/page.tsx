@@ -21,12 +21,8 @@ export default function CancellationOptions() {
               {l.pages.forClients}
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
-              <li>
-                {l.pages.freeCancellationClient}
-              </li>
-              <li>
-                {l.pages.partialRefund}
-              </li>
+              <li>{l.pages.freeCancellationClient}</li>
+              <li>{l.pages.partialRefund}</li>
               <li>{l.pages.noRefund}</li>
             </ul>
 
@@ -34,15 +30,9 @@ export default function CancellationOptions() {
               {l.pages.forRenters}
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
-              <li>
-                {l.pages.freeCancellationRenter}
-              </li>
-              <li>
-                {l.pages.penaltyCancellation}
-              </li>
-              <li>
-                {l.pages.repeatedCancellations}
-              </li>
+              <li>{l.pages.freeCancellationRenter}</li>
+              <li>{l.pages.penaltyCancellation}</li>
+              <li>{l.pages.repeatedCancellations}</li>
             </ul>
           </div>
         </div>
@@ -57,9 +47,7 @@ export default function CancellationOptions() {
               <li>{l.pages.stepGoToReservations}</li>
               <li>{l.pages.stepFindReservation}</li>
               <li>{l.pages.stepClickCancel}</li>
-              <li>
-                {l.pages.stepConfirmation}
-              </li>
+              <li>{l.pages.stepConfirmation}</li>
             </ol>
           </div>
         </div>

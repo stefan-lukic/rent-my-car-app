@@ -55,7 +55,9 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[110]">
       <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-        <h2 className="text-xl font-bold mb-2">{l.booking.cancelReservation}</h2>
+        <h2 className="text-xl font-bold mb-2">
+          {l.booking.cancelReservation}
+        </h2>
         <p className="text-gray-500 mb-6">
           {l.booking.cancelReservationConfirm}
         </p>
@@ -74,7 +76,9 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
             disabled={isCancelling}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            {isCancelling ? l.booking.cancellingReservation : l.booking.cancelReservation}
+            {isCancelling
+              ? l.booking.cancellingReservation
+              : l.booking.cancelReservation}
           </Button>
         </div>
       </div>

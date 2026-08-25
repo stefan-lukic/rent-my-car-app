@@ -10,7 +10,11 @@ export const createNextNavigationMock = () => {
   }));
 
   vi.mock('next/navigation', () => ({
-    useRouter: () => ({ push: mocks.push, back: mocks.back, refresh: mocks.refresh }),
+    useRouter: () => ({
+      push: mocks.push,
+      back: mocks.back,
+      refresh: mocks.refresh,
+    }),
     usePathname: mocks.mockUsePathname,
     useSearchParams: () => ({ get: mocks.mockUseSearchParams }),
   }));

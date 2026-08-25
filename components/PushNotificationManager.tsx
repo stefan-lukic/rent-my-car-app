@@ -88,14 +88,18 @@ export function PushNotificationManager() {
       {subscription ? (
         <>
           <p>{l.pushNotifications.subscribed}</p>
-          <button onClick={unsubscribeFromPush}>{l.pushNotifications.unsubscribe}</button>
+          <button onClick={unsubscribeFromPush}>
+            {l.pushNotifications.unsubscribe}
+          </button>
           <input
             type="text"
             placeholder={l.pushNotifications.enterNotificationMsg}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button onClick={sendTestNotification}>{l.pushNotifications.sendTest}</button>
+          <button onClick={sendTestNotification}>
+            {l.pushNotifications.sendTest}
+          </button>
         </>
       ) : (
         <>

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -6,24 +6,11 @@ import DeleteCarModal from './DeleteCarModal';
 import l from '@/helper/en';
 
 describe('DeleteCarModal', () => {
-  /**
-   * beforeEach: Restartujemo mockove i postavljamo globalne mockove.
-   * Značaj: DeleteCarModal koristi direktno fetch i alert, zato ih
-   * mockujemo na globalnom nivou. Ovo osigurava da svaki test počne
-   * sa čistim stanjem.
-   */
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubGlobal('fetch', vi.fn());
   });
 
-  /**
-   * renderModal: Helper funkcija za renderovanje modala sa zadatim props.
-   * Značaj: Uspostavlja konzistentan setup za sve testove, pruža
-   * pristup props-ima za proveru callback-ova.
-   * @param overrides - Opcioni props koji override-uju defaultne vrednosti
-   * @returns props objekat za proveru callback-ova u testovima
-   */
   const renderModal = (overrides = {}) => {
     const props = {
       isOpen: true,
@@ -37,27 +24,12 @@ describe('DeleteCarModal', () => {
     return props;
   };
 
-  /**
-   * TEST 1: Modal se ne renderuje kada je zatvoren
-   * ZAŠTO: DeleteCarModal ima if (!isOpen) return null; — mora da
-   * renderuje null kada je isOpen=false.
-   * KAKO: queryByText vraća null ako element ne postoji, pa
-   * not.toBeInTheDocument() proverava da element nije prisutan.
-   */
   it('does not render when closed', () => {
     renderModal({ isOpen: false });
 
     expect(screen.queryByText(l.cars.deleteCar)).not.toBeInTheDocument();
   });
 
-  /**
-   * TEST 2: Renderovanje sadržaja modala kada je otvoren
-   * ZAŠTO: Treba verifikovati da se prikažu svi elementi: heading,
-   * confirmation tekst, Cancel i Delete dugmad.
-   * KAKO: getByText za tekstualne elemente, getByRole('button') za
-   * dugmad. Koristimo l.cars.deleteCar i l.cars.deleteCarConfirm
-   * za tekstove iz lokalizacije.
-   */
   it('renders confirmation content when open', () => {
     renderModal();
 
@@ -73,13 +45,6 @@ describe('DeleteCarModal', () => {
     ).toBeInTheDocument();
   });
 
-  /**
-   * TEST 3: Cancel dugme poziva onClose callback
-   * ZAŠTO: Kada korisnik odustane od brisanja, modal treba da se
-   * zatvori. DeleteCarModal poziva onClose() na Cancel klik.
-   * KAKO: fireEvent.click na Cancel button, zatim provera da
-   * props.onClose nije prazan.
-   */
   it('calls onClose when Cancel is clicked', async () => {
     const user = userEvent.setup();
     const props = renderModal();
@@ -89,19 +54,6 @@ describe('DeleteCarModal', () => {
     expect(props.onClose).toHaveBeenCalledOnce();
   });
 
-  /**
-   * TEST 4: Uspešno brisanje i zatvaranje modala
-   * ZAŠTO: Ključni flow — korisnik klikne Delete, fetch uspe,
-   * pozivaju se onDelete i onClose callback-ovi.
-   * KAKO:
-   * 1. Mockujemo fetch da vrati ok: true (uspešan DELETE zahtev)
-   * 2. Kliknemo na Delete dugme
-   * 3. Čekamo da fetch bude pozvan sa tačnim argumentima
-   *    (method: DELETE, body sa carId)
-   * 4. Proveravamo da su onDelete(carId) i onClose() pozvani
-   *
-   * Značaj: Koristimo waitFor jer fetch je async operacija.
-   */
   it('deletes the selected car and closes after successful response', async () => {
     const user = userEvent.setup();
     vi.mocked(fetch).mockResolvedValue({
@@ -126,16 +78,6 @@ describe('DeleteCarModal', () => {
     expect(props.onClose).toHaveBeenCalledOnce();
   });
 
-  /**
-   * TEST 5: Disabled Delete dugme dok se šalje request
-   * ZAŠTO: Kada je fetch u toku, dugme treba da bude disabled da
-   * korisnik ne može da klikne više puta. Tekst treba da bude "Deleting...".
-   * KAKO:
-   * 1. Mockujemo fetch da vrati Promise koji nikad ne resolve-uje
-   *    (simuliramo pending request)
-   * 2. Kliknemo na Delete dugme
-   * 3. Proveravamo da je dugme sa tekstom "Deleting..." disabled
-   */
   it('disables delete button while delete request is pending', async () => {
     const user = userEvent.setup();
     vi.mocked(fetch).mockReturnValue(new Promise(() => {}));
@@ -149,7 +91,6 @@ describe('DeleteCarModal', () => {
     ).toBeDisabled();
   });
 
-  // API errors stay in the modal so the user keeps context and can retry.
   it('shows an inline error when delete request fails', async () => {
     const user = userEvent.setup();
     vi.mocked(fetch).mockResolvedValue(

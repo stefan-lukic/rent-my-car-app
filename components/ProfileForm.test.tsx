@@ -1,29 +1,4 @@
-﻿/**
- * ProfileForm.test.tsx
- *
- * ProfileForm komponenta predstavlja glavnu autentikacionu formu za aplikaciju.
- * Ona objedinjuje dva scenarija:
- *   - Sign-in (prijavu) sa emailom i lozinkom
- *   - Sign-up (registraciju) sa imenom, emailom, lozinkom i opcionalnim slikama
- *
- * ZBOG ČEGA TESTIRAMO OVAKO:
- * - ProfileForm je "leaf" komponenta koja koristi react-hook-form za validaciju,
- *   axios za sign-up API poziv i next-auth za sign-in.
- * - Zato mockujemo sve spoljne zavisnosti (axios, next-auth, next/navigation, next/image)
- *   kako bismo izolovali samo UI ponašanje i interakciju korisnika sa formom.
- * - Koristimo "l" objekt za sve tekstove kako bi testovi bili otporni na promene
- *   u lokalizaciji (en.tsx fajlu).
- *
- * KOJE MOCKOVE KORISTIMO I ZAŠTO:
- * - vi.hoisted() za cross-module mockove (push, signIn, axiosPost) jer je to
- *   sigurniji pristup od običnog vi.fn() jer omogućava bolju type safety.
- * - next/image: mora da se mockuje jer u jsdom okruženju nema podrške za Next.js Image komponentu.
- * - next/navigation: mora da se mockuje jer useRouter() zahteva Next.js kontekst.
- * - axios: mockujemo da ne bismo pozivali stvarni API tokom testiranja.
- * - next-auth/react: mockujemo signIn da ne bismo izvodili stvarnu autentikaciju.
- */
-
-import React from 'react';
+﻿import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { render, screen, waitFor } from '@testing-library/react';

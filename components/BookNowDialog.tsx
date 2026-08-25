@@ -93,7 +93,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                 {capitalize(car.carType)} • {car.city}
               </p>
               <p className="text-sm text-blue-500 font-medium">
-                €{car.pricePerDay}{l.common.perDay}
+                €{car.pricePerDay}
+                {l.common.perDay}
               </p>
             </div>
           </div>

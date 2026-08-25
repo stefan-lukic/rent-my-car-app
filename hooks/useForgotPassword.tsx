@@ -24,16 +24,12 @@ export const useForgotPassword = () => {
         email: data.email,
       });
       if (response.status === 200) {
-        setSuccessMessage(
-          l.auth.passwordResetSuccess
-        );
+        setSuccessMessage(l.auth.passwordResetSuccess);
       }
     } catch (error: any) {
       setError('root', {
         type: 'server',
-        message:
-          error.response?.data?.message ||
-          l.auth.somethingWrong,
+        message: error.response?.data?.message || l.auth.somethingWrong,
       });
     }
   };

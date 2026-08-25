@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ProfilePage from './ProfilePage';
@@ -69,34 +69,18 @@ describe('ProfilePage', () => {
     vi.clearAllMocks();
   });
 
-  /**
-   * TEST 1: Renderuje Header komponentu
-   * ZAŠTO: Svaka stranica profila treba da ima navigation header.
-   * KAKO: getByTestId('header') pronazi mockovani Header.
-   */
   it('renders Header component', () => {
     render(<ProfilePage {...defaultProps} />);
 
     expect(screen.getByTestId('header')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 2: Renderuje ime korisnika u hero sekciji
-   * ZAŠTO: Ime je najvažnija informacija u hero sekciji.
-   * KAKO: getByText('Marko Markovic').
-   */
   it('renders user name in hero section', () => {
     render(<ProfilePage {...defaultProps} />);
 
     expect(screen.getByText('Marko Markovic')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 3: Renderuje kontakt info ili fallback poruku
-   * ZAŠTO: Ako je contactInfo dostupan, prikaži ga; ako ne,
-   *   prikaži "No phone number".
-   * KAKO: Oba slučaja — sa contactInfo i bez.
-   */
   it('renders contact info when available', () => {
     render(<ProfilePage {...defaultProps} />);
 
@@ -120,24 +104,12 @@ describe('ProfilePage', () => {
     expect(screen.getByText(l.profile.noPhoneNumber)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 4: Renderuje member since informaciju
-   * ZAŠTO: Članstvo od određenog datuma je bitna za trust.
-   * KAKO: Proveravamo prisustvo member since teksta (format zavisi
-   * od toLocaleDateString, ali proveravamo da sadrži datum).
-   */
   it('renders member since information', () => {
     render(<ProfilePage {...defaultProps} />);
 
     expect(screen.getByText(/Member since/)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 5: Prikazuje stats (automobila, iznajmljivanja, ocena)
-   * ZAŠTO: Statistika treba biti vidljiva i ažurna sa brojem
-   *   automobila i iznajmljivanja.
-   * KAKO: getByText za brojeve i labele.
-   */
   it('renders stats with counts', () => {
     render(<ProfilePage {...defaultProps} />);
 
@@ -152,11 +124,6 @@ describe('ProfilePage', () => {
     expect(screen.getByText(l.profile.rating)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 6: Edit Profile vodi na stranicu za uređivanje profila
-   * ZAŠTO: Desktop akcija mora imati isti funkcionalni tok kao mobile link.
-   * KAKO: Proveravamo accessible name i href odredište.
-   */
   it('links to the Edit Profile page', () => {
     render(<ProfilePage {...defaultProps} />);
 
@@ -165,13 +132,6 @@ describe('ProfilePage', () => {
     ).toHaveAttribute('href', '/profile/edit');
   });
 
-  /**
-   * TEST 7: Prosleđuje cars i rentals ProfileInteractiveSection
-   * ZAŠTO: ProfilePage je wrapper — mora da prosledi podatke
-   *   child komponenti.
-   * KAKO: getByTestId('profile-interactive') — mockovana
-   *   komponenta prikazuje broj elemenata.
-   */
   it('passes cars and rentals data to ProfileInteractiveSection', () => {
     render(<ProfilePage {...defaultProps} />);
 
@@ -181,11 +141,6 @@ describe('ProfilePage', () => {
     expect(interactiveSection).toHaveTextContent('Rentals: 1');
   });
 
-  /**
-   * TEST 8: Prikazuje 0 automobila i iznajmljivanja kada ih nema
-   * ZAŠTO: Edge case — korisnik sa praznim profilom.
-   * KAKO: Prazni nizovi, proveravamo da su stats 0.
-   */
   it('renders zero stats when user has no cars and rentals', () => {
     render(<ProfilePage user={mockUser} cars={[]} rentals={[]} />);
 
