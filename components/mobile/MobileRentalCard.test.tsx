@@ -35,6 +35,7 @@ describe('MobileRentalCard', () => {
   const defaultProps = {
     rental: mockRental,
     showStatus: true,
+    currentDate: '2026-07-25',
   };
 
   it('renders car make and model', async () => {
@@ -71,13 +72,13 @@ describe('MobileRentalCard', () => {
   it('renders status badge when showStatus is true', async () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} />);
-    expect(screen.getByText('Booked')).toBeInTheDocument();
+    expect(screen.getByText('Upcoming')).toBeInTheDocument();
   });
 
   it('does not render status badge when showStatus is false', async () => {
     const user = userEvent.setup();
     render(<MobileRentalCard {...defaultProps} showStatus={false} />);
-    expect(screen.queryByText('Booked')).not.toBeInTheDocument();
+    expect(screen.queryByText('Upcoming')).not.toBeInTheDocument();
   });
 
   it('renders navigation arrows when multiple images exist', async () => {

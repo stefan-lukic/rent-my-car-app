@@ -18,10 +18,17 @@ import UpdateCarModal from './UpdateCarModal';
 import DeleteCarModal from './DeleteCarModal';
 import CancelRentalModal from './CancelRentalModal';
 import l from '@/helper/en';
+import RentalStatusFilter from './RentalStatusFilter';
+import {
+  getRentalLifecycleStatus,
+  RentalLifecycleStatus,
+  RentalStatusFilterValue,
+} from '@/lib/rentalLifecycle';
 
 interface ProfileInteractiveSectionProps {
   cars: ICar[];
   rentals: RentalWithCar[];
+  currentDate: string;
 }
 
 interface PaginationButtonProps {
@@ -83,6 +90,7 @@ const PageNumbers = ({
 const ProfileInteractiveSection = ({
   cars: initialCars,
   rentals: initialRentals,
+  currentDate,
 }: ProfileInteractiveSectionProps) => {
   const [activeTab, setActiveTab] = useState<'cars' | 'rentals'>('cars');
   const [cars, setCars] = useState<ICar[]>(initialCars);
@@ -95,18 +103,40 @@ const ProfileInteractiveSection = ({
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRentalPage, setCurrentRentalPage] = useState(0);
+  const [rentalStatusFilter, setRentalStatusFilter] =
+    useState<RentalStatusFilterValue>('all');
   const router = useRouter();
 
   const carsPerPage = 3;
   const rentalsPerPage = 3;
   const availableRentals = rentals.filter((rental) => rental.car !== null);
+  const rentalCounts = availableRentals.reduce(
+    (counts, rental) => {
+      const status = getRentalLifecycleStatus(rental, currentDate);
+      counts.all += 1;
+      counts[status] += 1;
+      return counts;
+    },
+    {
+      all: 0,
+      [RentalLifecycleStatus.Upcoming]: 0,
+      [RentalLifecycleStatus.Ongoing]: 0,
+      [RentalLifecycleStatus.Completed]: 0,
+      [RentalLifecycleStatus.Cancelled]: 0,
+    }
+  );
+  const filteredRentals = availableRentals.filter(
+    (rental) =>
+      rentalStatusFilter === 'all' ||
+      getRentalLifecycleStatus(rental, currentDate) === rentalStatusFilter
+  );
   const pageCount = Math.ceil(cars.length / carsPerPage);
-  const rentalPageCount = Math.ceil(availableRentals.length / rentalsPerPage);
+  const rentalPageCount = Math.ceil(filteredRentals.length / rentalsPerPage);
   const currentCars = cars.slice(
     currentPage * carsPerPage,
     currentPage * carsPerPage + carsPerPage
   );
-  const currentRentals = availableRentals.slice(
+  const currentRentals = filteredRentals.slice(
     currentRentalPage * rentalsPerPage,
     currentRentalPage * rentalsPerPage + rentalsPerPage
   );
@@ -128,6 +158,7 @@ const ProfileInteractiveSection = ({
         rental._id === updatedRental._id ? updatedRental : rental
       )
     );
+    setCurrentRentalPage(0);
   };
 
   return (
@@ -294,37 +325,57 @@ const ProfileInteractiveSection = ({
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-3">
-                <PaginationButton
-                  direction="previous"
-                  label="Previous rentals page"
-                  disabled={currentRentalPage === 0}
-                  onClick={() => setCurrentRentalPage((page) => page - 1)}
-                />
-                <div className="grid flex-1 grid-cols-3 gap-4">
-                  {currentRentals.map((rental) => (
-                    <RentalCard
-                      key={rental._id}
-                      rental={rental}
-                      onCancel={(rentalId) => {
-                        setRentalToCancelId(rentalId);
-                        setIsCancelModalOpen(true);
-                      }}
-                    />
-                  ))}
-                </div>
-                <PaginationButton
-                  direction="next"
-                  label="Next rentals page"
-                  disabled={currentRentalPage >= rentalPageCount - 1}
-                  onClick={() => setCurrentRentalPage((page) => page + 1)}
+              <div className="mb-5">
+                <RentalStatusFilter
+                  value={rentalStatusFilter}
+                  counts={rentalCounts}
+                  label="Filter my rentals by status"
+                  onChange={(status) => {
+                    setRentalStatusFilter(status);
+                    setCurrentRentalPage(0);
+                  }}
                 />
               </div>
-              <PageNumbers
-                count={rentalPageCount}
-                current={currentRentalPage}
-                onChange={setCurrentRentalPage}
-              />
+              {filteredRentals.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-sm text-slate-500">
+                  No reservations match this status.
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3">
+                    <PaginationButton
+                      direction="previous"
+                      label="Previous rentals page"
+                      disabled={currentRentalPage === 0}
+                      onClick={() => setCurrentRentalPage((page) => page - 1)}
+                    />
+                    <div className="grid flex-1 grid-cols-3 gap-4">
+                      {currentRentals.map((rental) => (
+                        <RentalCard
+                          key={rental._id}
+                          rental={rental}
+                          currentDate={currentDate}
+                          onCancel={(rentalId) => {
+                            setRentalToCancelId(rentalId);
+                            setIsCancelModalOpen(true);
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <PaginationButton
+                      direction="next"
+                      label="Next rentals page"
+                      disabled={currentRentalPage >= rentalPageCount - 1}
+                      onClick={() => setCurrentRentalPage((page) => page + 1)}
+                    />
+                  </div>
+                  <PageNumbers
+                    count={rentalPageCount}
+                    current={currentRentalPage}
+                    onChange={setCurrentRentalPage}
+                  />
+                </>
+              )}
             </>
           )}
         </div>

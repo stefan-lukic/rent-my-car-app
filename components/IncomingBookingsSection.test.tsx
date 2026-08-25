@@ -46,7 +46,7 @@ describe('IncomingBookingsSection', () => {
 
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
     expect(screen.getByText('Ana Jovanovic')).toBeInTheDocument();
-    expect(screen.getByText('Upcoming')).toBeInTheDocument();
+    expect(screen.getAllByText('Upcoming')).toHaveLength(2);
     expect(screen.getByText('01 Sept 2026')).toBeInTheDocument();
     expect(screen.getByText('05 Sept 2026')).toBeInTheDocument();
     expect(screen.getByText('€400')).toBeInTheDocument();
@@ -140,8 +140,33 @@ describe('IncomingBookingsSection', () => {
       />
     );
 
-    expect(screen.getByText('Cancelled')).toBeInTheDocument();
+    expect(screen.getAllByText('Cancelled')).toHaveLength(2);
     expect(screen.queryByText('1 active')).not.toBeInTheDocument();
+  });
+
+  it('filters bookings by their calculated lifecycle status', async () => {
+    const user = userEvent.setup();
+    const completedBooking = {
+      ...booking,
+      _id: 'booking-completed',
+      car: { ...booking.car, _id: 'car-completed', carModel: 'M3' },
+      rentalPeriod: {
+        startDate: '2026-08-01T00:00:00.000Z',
+        endDate: '2026-08-05T00:00:00.000Z',
+      },
+    };
+
+    render(
+      <IncomingBookingsSection
+        bookings={[booking, completedBooking]}
+        currentDate={currentDate}
+      />
+    );
+
+    await user.click(screen.getByRole('tab', { name: /Completed/ }));
+
+    expect(screen.getByText('BMW M3')).toBeInTheDocument();
+    expect(screen.queryByText('BMW X5')).not.toBeInTheDocument();
   });
 
   it('does not expose incomplete bookings with a missing car or customer', () => {

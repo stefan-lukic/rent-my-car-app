@@ -470,8 +470,12 @@ const l = {
   },
 
   status: {
+    all: 'All',
     available: 'Available',
     booked: 'Booked',
+    upcoming: 'Upcoming',
+    ongoing: 'Ongoing',
+    completed: 'Completed',
     inactive: 'Inactive',
     cancelled: 'Cancelled',
   },

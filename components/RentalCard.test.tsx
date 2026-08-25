@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import RentalCard from './RentalCard';
 import l from '@/helper/en';
 import { createNextImageMock } from '@/test-utils/mocks/next-image';
@@ -15,6 +16,7 @@ describe('RentalCard', () => {
   const defaultProps = {
     rental: mockRental,
     showStatus: true,
+    currentDate: '2024-07-25',
   };
 
   it('renders car make and model', () => {
@@ -32,12 +34,12 @@ describe('RentalCard', () => {
     expect(screen.getByText('Belgrade')).toBeInTheDocument();
   });
 
-  it('shows Booked badge for an active rental', () => {
+  it('shows Upcoming badge for a future active rental', () => {
     const activeRental = createMockRental({ status: RentalStatus.Active });
 
     render(<RentalCard {...defaultProps} rental={activeRental} />);
 
-    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
+    expect(screen.getByText(l.status.upcoming)).toBeInTheDocument();
   });
 
   it('shows Cancelled badge for a cancelled rental', () => {
@@ -60,16 +62,16 @@ describe('RentalCard', () => {
       <RentalCard {...defaultProps} rental={activeRentalWithInactiveCar} />
     );
 
-    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
+    expect(screen.getByText(l.status.upcoming)).toBeInTheDocument();
     expect(screen.queryByText('Inactive')).not.toBeInTheDocument();
   });
 
-  it('defaults to Booked badge when rental status is missing', () => {
+  it('derives the lifecycle when the persisted status is missing', () => {
     const noStatusRental = createMockRental({ status: undefined });
 
     render(<RentalCard {...defaultProps} rental={noStatusRental} />);
 
-    expect(screen.getByText(l.status.booked)).toBeInTheDocument();
+    expect(screen.getByText(l.status.upcoming)).toBeInTheDocument();
   });
 
   it('renders total rental cost', () => {
@@ -121,5 +123,31 @@ describe('RentalCard', () => {
 
     expect(screen.getByText('01 Aug 2024')).toBeInTheDocument();
     expect(screen.getByText('05 Aug 2024')).toBeInTheDocument();
+  });
+
+  it('allows an upcoming reservation to be cancelled', async () => {
+    const user = userEvent.setup();
+    const onCancel = vi.fn();
+
+    render(<RentalCard {...defaultProps} onCancel={onCancel} />);
+
+    await user.click(
+      screen.getByRole('button', { name: l.booking.cancelReservation })
+    );
+    expect(onCancel).toHaveBeenCalledWith(mockRental._id);
+  });
+
+  it('does not offer cancellation after a reservation has started', () => {
+    render(
+      <RentalCard
+        {...defaultProps}
+        currentDate="2024-08-01"
+        onCancel={vi.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole('button', { name: l.booking.cancelReservation })
+    ).not.toBeInTheDocument();
   });
 });

@@ -139,7 +139,11 @@ const ProfilePage = ({
           currentDate={currentDate}
         />
 
-        <ProfileInteractiveSection cars={cars} rentals={rentals} />
+        <ProfileInteractiveSection
+          cars={cars}
+          rentals={rentals}
+          currentDate={currentDate}
+        />
       </main>
     </div>
   );

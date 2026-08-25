@@ -72,6 +72,7 @@ describe('ProfileInteractiveSection', () => {
   const defaultProps = {
     cars: [mockCar],
     rentals: [mockRental],
+    currentDate: '2024-07-25',
   };
 
   beforeEach(() => {
@@ -108,14 +109,26 @@ describe('ProfileInteractiveSection', () => {
 
   it('shows empty message when no cars are listed', async () => {
     const user = userEvent.setup();
-    render(<ProfileInteractiveSection cars={[]} rentals={[]} />);
+    render(
+      <ProfileInteractiveSection
+        cars={[]}
+        rentals={[]}
+        currentDate={defaultProps.currentDate}
+      />
+    );
 
     expect(screen.getByText(l.profile.noCarsListed)).toBeInTheDocument();
   });
 
   it('shows empty message when no rentals exist', async () => {
     const user = userEvent.setup();
-    render(<ProfileInteractiveSection cars={[]} rentals={[]} />);
+    render(
+      <ProfileInteractiveSection
+        cars={[]}
+        rentals={[]}
+        currentDate={defaultProps.currentDate}
+      />
+    );
 
     expect(screen.getByText(l.profile.myRentalsCount(0))).toBeInTheDocument();
 
@@ -130,7 +143,13 @@ describe('ProfileInteractiveSection', () => {
       createMockCar({ _id: `car-${i}` })
     );
 
-    render(<ProfileInteractiveSection cars={manyCars} rentals={[]} />);
+    render(
+      <ProfileInteractiveSection
+        cars={manyCars}
+        rentals={[]}
+        currentDate={defaultProps.currentDate}
+      />
+    );
 
     const carCards = screen.getAllByTestId('car-card');
 
@@ -211,7 +230,13 @@ describe('ProfileInteractiveSection', () => {
       createMockCar({ _id: `car-${i}` })
     );
 
-    render(<ProfileInteractiveSection cars={manyCars} rentals={[]} />);
+    render(
+      <ProfileInteractiveSection
+        cars={manyCars}
+        rentals={[]}
+        currentDate={defaultProps.currentDate}
+      />
+    );
 
     expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument();
   });

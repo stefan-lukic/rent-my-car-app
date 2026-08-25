@@ -10,17 +10,25 @@ import MobileCarCard from './MobileCarCard';
 import MobileRentalCard from './MobileRentalCard';
 import l from '@/helper/en';
 import { CarFront, Search } from 'lucide-react';
+import RentalStatusFilter from '../RentalStatusFilter';
+import {
+  getRentalLifecycleStatus,
+  RentalLifecycleStatus,
+  RentalStatusFilterValue,
+} from '@/lib/rentalLifecycle';
 
 interface MobileProfileInteractiveSectionProps {
   cars: ICar[];
   rentals: RentalWithCar[];
   activeTab: string;
+  currentDate: string;
 }
 
 const MobileProfileInteractiveSection = ({
   cars: initialCars,
   rentals,
   activeTab,
+  currentDate,
 }: MobileProfileInteractiveSectionProps) => {
   const [cars, setCars] = useState<ICar[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
@@ -29,8 +37,30 @@ const MobileProfileInteractiveSection = ({
   const [rentalsState, setRentalsState] = useState<RentalWithCar[]>(rentals);
   const [rentalToCancelId, setRentalToCancelId] = useState<string | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [rentalStatusFilter, setRentalStatusFilter] =
+    useState<RentalStatusFilterValue>('all');
 
   const availableRentals = rentalsState.filter((rental) => rental.car !== null);
+  const rentalCounts = availableRentals.reduce(
+    (counts, rental) => {
+      const status = getRentalLifecycleStatus(rental, currentDate);
+      counts.all += 1;
+      counts[status] += 1;
+      return counts;
+    },
+    {
+      all: 0,
+      [RentalLifecycleStatus.Upcoming]: 0,
+      [RentalLifecycleStatus.Ongoing]: 0,
+      [RentalLifecycleStatus.Completed]: 0,
+      [RentalLifecycleStatus.Cancelled]: 0,
+    }
+  );
+  const filteredRentals = availableRentals.filter(
+    (rental) =>
+      rentalStatusFilter === 'all' ||
+      getRentalLifecycleStatus(rental, currentDate) === rentalStatusFilter
+  );
 
   const handleUpdateCar = (updatedCar: ICar) => {
     setCars(cars.map((car) => (car._id === updatedCar._id ? updatedCar : car)));
@@ -99,10 +129,22 @@ const MobileProfileInteractiveSection = ({
             </div>
           ) : (
             <div className="space-y-4">
-              {availableRentals.map((rental) => (
+              <RentalStatusFilter
+                value={rentalStatusFilter}
+                counts={rentalCounts}
+                label="Filter my rentals by status"
+                onChange={setRentalStatusFilter}
+              />
+              {filteredRentals.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center text-sm text-slate-500">
+                  No reservations match this status.
+                </div>
+              ) : null}
+              {filteredRentals.map((rental) => (
                 <MobileRentalCard
                   key={rental._id}
                   rental={rental}
+                  currentDate={currentDate}
                   onCancel={(rentalId) => {
                     setRentalToCancelId(rentalId);
                     setIsCancelModalOpen(true);
