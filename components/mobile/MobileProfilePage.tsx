@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { ICar } from '@/lib/model/car/Car';
 import { IUser } from '@/lib/model/User';
 import { RentalWithCar } from '@/types/RentalWithCar';
+import { OwnerBooking } from '@/types/OwnerBooking';
 import MobileProfileInteractiveSection from './MobileProfileInteractiveSection';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
+import IncomingBookingsSection from '../IncomingBookingsSection';
 import l from '@/helper/en';
 import { CalendarDays, CarFront, Plus, Search } from 'lucide-react';
 
@@ -14,9 +16,17 @@ interface MobileProfilePageProps {
   user: IUser;
   cars: ICar[];
   rentals: RentalWithCar[];
+  ownerBookings: OwnerBooking[];
+  currentDate: string;
 }
 
-const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
+const MobileProfilePage = ({
+  user,
+  cars,
+  rentals,
+  ownerBookings,
+  currentDate,
+}: MobileProfilePageProps) => {
   const [activeTab, setActiveTab] = useState<'cars' | 'rentals'>('cars');
   const router = useRouter();
   const visibleRentalsCount = rentals.filter(
@@ -49,6 +59,11 @@ const MobileProfilePage = ({ user, cars, rentals }: MobileProfilePageProps) => {
             Browse Cars
           </button>
         </div>
+
+        <IncomingBookingsSection
+          bookings={ownerBookings}
+          currentDate={currentDate}
+        />
 
         <div
           role="tablist"

@@ -12,7 +12,9 @@ import {
 import { ICar } from '@/lib/model/car/Car';
 import { IUser } from '@/lib/model/User';
 import { RentalWithCar } from '@/types/RentalWithCar';
+import { OwnerBooking } from '@/types/OwnerBooking';
 import ProfileInteractiveSection from './ProfileInteractiveSection';
+import IncomingBookingsSection from './IncomingBookingsSection';
 import Header from '@/components/UI/Header';
 import l from '@/helper/en';
 
@@ -20,9 +22,17 @@ interface ProfilePageProps {
   user: IUser;
   cars: ICar[];
   rentals: RentalWithCar[];
+  ownerBookings: OwnerBooking[];
+  currentDate: string;
 }
 
-const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
+const ProfilePage = ({
+  user,
+  cars,
+  rentals,
+  ownerBookings,
+  currentDate,
+}: ProfilePageProps) => {
   const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
     month: 'short',
     year: 'numeric',
@@ -123,6 +133,11 @@ const ProfilePage = ({ user, cars, rentals }: ProfilePageProps) => {
             </div>
           ))}
         </section>
+
+        <IncomingBookingsSection
+          bookings={ownerBookings}
+          currentDate={currentDate}
+        />
 
         <ProfileInteractiveSection cars={cars} rentals={rentals} />
       </main>

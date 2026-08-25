@@ -25,6 +25,13 @@ vi.mock('./MobileProfileInteractiveSection', () => ({
   ),
 }));
 
+vi.mock('../IncomingBookingsSection', () => ({
+  __esModule: true,
+  default: ({ bookings }: any) => (
+    <div data-testid="incoming-bookings">Bookings: {bookings.length}</div>
+  ),
+}));
+
 const mockUser = {
   _id: 'user-1',
   name: 'Marko Markovic',
@@ -67,6 +74,8 @@ describe('MobileProfilePage', () => {
     user: mockUser,
     cars: mockCars,
     rentals: mockRentals,
+    ownerBookings: [{ _id: 'booking-1' }] as any,
+    currentDate: '2026-08-25',
   };
 
   beforeEach(() => {
@@ -142,6 +151,14 @@ describe('MobileProfilePage', () => {
     render(<MobileProfilePage {...defaultProps} />);
 
     expect(screen.getByTestId('interactive-section')).toBeInTheDocument();
+  });
+
+  it('shows bookings made for the owner cars', () => {
+    render(<MobileProfilePage {...defaultProps} />);
+
+    expect(screen.getByTestId('incoming-bookings')).toHaveTextContent(
+      'Bookings: 1'
+    );
   });
 
   it('counts only rentals that can be displayed', () => {
