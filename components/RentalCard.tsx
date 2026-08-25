@@ -5,6 +5,10 @@ import Image from 'next/image';
 import { CalendarDays, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { ICar } from '@/lib/model/car/Car';
 import { RentalStatus } from '@/types/RentalWithCar';
+import {
+  getRentalLifecycleStatus,
+  RentalLifecycleStatus,
+} from '@/lib/rentalLifecycle';
 import l from '@/helper/en';
 
 interface RentalCardProps {
@@ -22,15 +26,20 @@ interface RentalCardProps {
   };
   showStatus?: boolean;
   onCancel?: (rentalId: string) => void;
+  currentDate: string;
 }
 
 const statusStyles: Record<string, string> = {
-  active: 'bg-amber-100 text-amber-700',
+  upcoming: 'bg-blue-100 text-blue-700',
+  ongoing: 'bg-emerald-100 text-emerald-700',
+  completed: 'bg-slate-100 text-slate-600',
   cancelled: 'bg-red-100 text-red-700',
 };
 
 const statusLabel: Record<string, string> = {
-  active: l.status.booked,
+  upcoming: l.status.upcoming,
+  ongoing: l.status.ongoing,
+  completed: l.status.completed,
   cancelled: l.status.cancelled,
 };
 
@@ -38,6 +47,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
   rental,
   showStatus = true,
   onCancel,
+  currentDate,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -50,7 +60,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
   }
 
   const { car, rentalPeriod, totalCost } = rental;
-  const status = rental.status ?? 'active';
+  const status = getRentalLifecycleStatus(rental, currentDate);
   const images = car.images ?? [];
   const formatDate = (date: Date) =>
     new Date(date).toLocaleDateString('en-GB', {
@@ -72,10 +82,10 @@ const RentalCard: React.FC<RentalCardProps> = ({
         {showStatus && (
           <span
             className={`absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-bold shadow-sm ${
-              statusStyles[status] || statusStyles.active
+              statusStyles[status]
             }`}
           >
-            {statusLabel[status] || l.status.booked}
+            {statusLabel[status]}
           </span>
         )}
 
@@ -143,7 +153,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
           </div>
         </div>
 
-        {status === 'active' && onCancel && (
+        {status === RentalLifecycleStatus.Upcoming && onCancel && (
           <button
             type="button"
             onClick={() => onCancel(rental._id)}

@@ -7,6 +7,7 @@ interface MobileRentalCardProps {
   rental: RentalWithCar;
   showStatus?: boolean;
   onCancel?: (rentalId: string) => void;
+  currentDate: string;
 }
 
 const MobileRentalCard = (props: MobileRentalCardProps) => (

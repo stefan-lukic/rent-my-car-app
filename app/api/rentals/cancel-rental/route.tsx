@@ -10,6 +10,10 @@ import {
   sendCancellationNotificationToCustomer,
   sendCancellationNotificationToOwner,
 } from '@/lib/emailService/sendEmail';
+import {
+  getRentalLifecycleStatus,
+  RentalLifecycleStatus,
+} from '@/lib/rentalLifecycle';
 
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -50,6 +54,16 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json(
         { message: 'Not authorized to cancel this reservation' },
         { status: 403 }
+      );
+    }
+
+    if (
+      getRentalLifecycleStatus(rental, new Date()) !==
+      RentalLifecycleStatus.Upcoming
+    ) {
+      return NextResponse.json(
+        { message: 'A reservation cannot be cancelled after it has started' },
+        { status: 409 }
       );
     }
 

@@ -105,6 +105,7 @@ const MobileProfilePage = ({
             cars={cars}
             rentals={rentals}
             activeTab={activeTab}
+            currentDate={currentDate}
           />
         </div>
       </div>

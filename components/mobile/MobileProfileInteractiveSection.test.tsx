@@ -89,6 +89,7 @@ describe('MobileProfileInteractiveSection', () => {
     cars: mockCars,
     rentals: mockRentals,
     activeTab: 'cars',
+    currentDate: '2026-07-25',
   };
 
   it('renders list of cars when activeTab is cars', async () => {
