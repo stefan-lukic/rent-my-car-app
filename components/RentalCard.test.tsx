@@ -17,12 +17,6 @@ describe('RentalCard', () => {
     showStatus: true,
   };
 
-  /**
-   * TEST 1: Renderuje make i model automobila
-   * ZAŠTO: Osnovna informacija o automobilu mora biti vidljiva.
-   * KAKO: getByText pronalazi tekst "MERCEDES C-Class" (enum vrednost
-   *   je velikim slovima, komponenta je ne menja).
-   */
   it('renders car make and model', () => {
     render(<RentalCard {...defaultProps} />);
 
@@ -30,11 +24,6 @@ describe('RentalCard', () => {
     expect(screen.getByText(/C-Class/)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 2: Renderuje cenu po danu i lokaciju
-   * ZAŠTO: Korisnik treba da vidi koliko košta i gde je auto.
-   * KAKO: getByText za €50 i lokaciju.
-   */
   it('renders price per day and city', () => {
     render(<RentalCard {...defaultProps} />);
 
@@ -43,7 +32,6 @@ describe('RentalCard', () => {
     expect(screen.getByText('Belgrade')).toBeInTheDocument();
   });
 
-  // RentalCard describes an existing rental, so its badge follows rental.status.
   it('shows Booked badge for an active rental', () => {
     const activeRental = createMockRental({ status: RentalStatus.Active });
 
@@ -84,23 +72,12 @@ describe('RentalCard', () => {
     expect(screen.getByText(l.status.booked)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 7: Prikazuje ukupnu cenu iznajmljivanja
-   * ZAŠTO: Ukupna cena (totalCost) je ključna informacija za korisnika.
-   * KAKO: getByText('€200') za totalCost.
-   */
   it('renders total rental cost', () => {
     render(<RentalCard {...defaultProps} />);
 
     expect(screen.getByText('€200')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 8: Formira ispravan period iznajmljivanja
-   * ZAŠTO: Korisnik treba da vidi tačne datume početka i kraja.
-   * KAKO: Proveravamo prisustvo strelice (→) i da su datumi
-   *   prisutni u DOM-u (proveravamo contain ALL datuma u roditelju).
-   */
   it('renders rental period dates', () => {
     render(<RentalCard {...defaultProps} />);
 
@@ -111,12 +88,6 @@ describe('RentalCard', () => {
     expect(dateElements.length).toBeGreaterThanOrEqual(2);
   });
 
-  /**
-   * TEST 9: Fallback za praznu listu slika
-   * ZAŠTO: Ako automobil nema fotografija, treba prikazati
-   *   placeholder sliku.
-   * KAKO: car.images: [], proveravamo da img ima src='/placeholder-car.svg'.
-   */
   it('shows placeholder image when car has no images', () => {
     const noImagesRental = createMockRental({
       car: createMockCar({ images: [] }),
@@ -131,16 +102,6 @@ describe('RentalCard', () => {
     expect(placeholderImg).toHaveAttribute('src', '/placeholder-car.svg');
   });
 
-  /**
-   * TEST 10: Prikazuje poruku o nedostupnosti kada car nedostaje
-   *
-   * ZAŠTO JE OVDE ISPRAVKA:
-   * Umesto da eksplicitno prosledimo `car: null`, sad koristimo
-   * `car: undefined` (ili ga jednostavno ne prosledimo uopšte).
-   * Pošto je `car` opciono polje (`car?: ICar`), `undefined` je
-   * "prirodna" vrednost za "car nije prisutan" — TypeScript ovo
-   * podrazumeva automatski, bez potrebe za `null` bilo gde u tipu.
-   */
   it('shows unavailable message when car is missing', () => {
     const noCarRental = createMockRental({ car: undefined });
 
@@ -149,25 +110,12 @@ describe('RentalCard', () => {
     expect(screen.getByText(l.common.unavailable)).toBeInTheDocument();
   });
 
-  /**
-   * TEST 11: showStatus prop sakriva status badge
-   * ZAŠTO: U nekim kontekstima (npr. kartica iznajmljivanja na
-   *   profilu) ne želimo da prikažemo badge jer je status očigledan.
-   * KAKO: showStatus={false}, proveravamo da badge nije prisutan.
-   */
   it('hides status badge when showStatus is false', () => {
     render(<RentalCard {...defaultProps} showStatus={false} />);
 
     expect(screen.queryByText('Available')).not.toBeInTheDocument();
   });
 
-  /**
-   * TEST 12: Formatira datume u dd MMM yyyy formatu (en-GB)
-   * ZAŠTO: formatDate koristi toLocaleDateString('en-GB', ...) za
-   *   konzistentan format datuma.
-   * KAKO: Proveravamo da su datumi prikazani u očekivanom formatu
-   *   (npr. "01 Aug 2024" — u ovoj jsdom konfiguraciji bez zareza).
-   */
   it('formats dates in dd MMM yyyy format', () => {
     render(<RentalCard {...defaultProps} />);
 

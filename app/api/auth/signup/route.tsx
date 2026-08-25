@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
     const password = formData.get('password') as string;
 
     const nameStr = typeof name === 'string' ? name.trim() : '';
-    const emailStr = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    const emailStr =
+      typeof email === 'string' ? email.trim().toLowerCase() : '';
     const passwordStr = typeof password === 'string' ? password : '';
 
     if (!nameStr || nameStr.length < 3) {
@@ -125,16 +126,24 @@ export async function POST(req: NextRequest) {
         appUrl,
       });
     } catch (emailError) {
-      console.error('Failed to send verification email, rolling back user:', emailError);
+      console.error(
+        'Failed to send verification email, rolling back user:',
+        emailError
+      );
       await User.deleteOne({ _id: newUser._id });
       return NextResponse.json(
-        { message: 'Failed to send verification email. Please try again later.' },
+        {
+          message: 'Failed to send verification email. Please try again later.',
+        },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { message: 'Account created. Please verify your email.', requiresVerification: true },
+      {
+        message: 'Account created. Please verify your email.',
+        requiresVerification: true,
+      },
       { status: 201 }
     );
   } catch (error: unknown) {

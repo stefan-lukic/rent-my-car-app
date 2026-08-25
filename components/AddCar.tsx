@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -241,10 +242,12 @@ export default function AddCar() {
                       key={id}
                       className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
                     >
-                      <img
+                      <Image
                         src={URL.createObjectURL(file)}
                         alt={l.cars.carImagePreview}
-                        className="h-full w-full object-cover"
+                        fill
+                        unoptimized
+                        className="object-cover"
                       />
                       <button
                         type="button"

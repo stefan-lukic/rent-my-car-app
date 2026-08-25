@@ -1,22 +1,3 @@
-/**
- * Table.test.tsx
- *
- * Table komponenta je skup React.forwardRef elemenata za izradu
- * semantičkih HTML tabela (Table, TableHeader, TableBody, TableFooter,
- * TableRow, TableHead, TableCell, TableCaption).
- *
- * ARHITEKTURA TESTIRANJA:
- * - Ovo je komponenta test — proveravamo da li se svaki element
- *   renderuje kao odgovarajući HTML tag sa ispravnim atributima.
- * - Svaki element ima svoj describe blok za jasnu organizaciju.
- *
- * ZAŠTO OVAJ PRINCEPS:
- * - Table je bibliotečka komponenta — sastoji se od više
- *   Composition pattern elemenata.
- * - Zato testiramo: ispravan HTML tag, ref forwarding, className merging,
- *   i optionalne atribute za svaki element posebno.
- */
-
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -32,12 +13,6 @@ import {
 } from './Table';
 
 describe('Table', () => {
-  /**
-   * TEST 1: Osnovni render tabele
-   * ZAŠTO: Proveravamo da se Table komponenta renderuje kao
-   * <table> unutar wrapper <div> za horizontalni scroll.
-   * KAKO: getByRole('table') pronazi element po ARIA ulozi.
-   */
   it('renders a table element inside a scrollable wrapper', () => {
     render(
       <Table>
@@ -53,13 +28,6 @@ describe('Table', () => {
     expect(table.tagName).toBe('TABLE');
   });
 
-  /**
-   * TEST 2: Ref forwarding na Table element
-   * ZAŠTO: Table koristi forwardRef da bi parent komponente mogle
-   *   da dobiju pristup DOM table elementu.
-   * KAKO: Kreiramo ref, prosleđujemo, proveravamo da ref.current
-   *   je HTMLTableElement.
-   */
   it('forwards ref to the table element', () => {
     const ref = React.createRef<HTMLTableElement>();
 
@@ -75,12 +43,6 @@ describe('Table', () => {
     expect(ref.current?.tagName).toBe('TABLE');
   });
 
-  /**
-   * TEST 3: TableCaption se renderuje
-   * ZAŠTO: TableCaption je <caption> tag — bitan za accessibility
-   *   i opisivanje sadržaja tabele.
-   * KAKO: getByText pronazi caption po tekstu.
-   */
   it('renders table caption', () => {
     render(
       <Table>
@@ -91,12 +53,6 @@ describe('Table', () => {
     expect(screen.getByText('Car List')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 4: TableHeader, TableBody, TableFooter
-   * ZAŠTO: Ovi elementi moraju biti ispravni thead/tbody/tfoot tagovi
-   *   za semantičku ispravnost tabele.
-   * KAKO: Proveravamo tagName za svaki element.
-   */
   it('renders semantic table sections', () => {
     const { container } = render(
       <Table>
@@ -123,12 +79,6 @@ describe('Table', () => {
     expect(container.querySelector('tfoot')).toBeInTheDocument();
   });
 
-  /**
-   * TEST 5: TableRow i TableHead atributi
-   * ZAŠTO: Proveravamo da li su className atributi prosleđeni
-   *   dodatnim elementima tabele.
-   * KAKO: Proveravamo prisustvo custom klasa na tr i th elementima.
-   */
   it('applies custom className to table row and head cells', () => {
     render(
       <Table>
@@ -143,12 +93,6 @@ describe('Table', () => {
     expect(screen.getByText('Make')).toHaveClass('custom-head');
   });
 
-  /**
-   * TEST 6: TableCell prosleđuje atribute
-   * ZAŠTO: TableCell mora podrživati standardne HTML atribute
-   *   poput colSpan, headers, itd.
-   * KAKO: Proveravamo colSpan atribut na td elementu.
-   */
   it('passes native td attributes like colSpan', () => {
     render(
       <Table>
@@ -167,12 +111,6 @@ describe('Table', () => {
     expect(cell).toHaveAttribute('colspan', '2');
   });
 
-  /**
-   * TEST 7: TableCaption ref forwarding
-   * ZAŠTO: Caption takođe treba da podrži ref za direktan pristup
-   *   DOM elementu kada je potrebno.
-   * KAKO: Proveravamo da ref.current je HTMLTableCaptionElement.
-   */
   it('forwards ref to caption element', () => {
     const ref = React.createRef<HTMLTableCaptionElement>();
 

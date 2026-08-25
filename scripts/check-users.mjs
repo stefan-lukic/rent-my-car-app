@@ -17,10 +17,7 @@ async function main() {
       emailVerified: { $exists: true, $ne: null },
     });
     const waitingForLink = await users.countDocuments({
-      $or: [
-        { emailVerified: null },
-        { emailVerified: { $exists: false } },
-      ],
+      $or: [{ emailVerified: null }, { emailVerified: { $exists: false } }],
       emailVerificationToken: { $exists: true, $ne: null },
     });
     const legacy = await users.countDocuments({

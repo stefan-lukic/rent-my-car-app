@@ -56,9 +56,7 @@ const MobileProfileForm = ({
 
         const response = await axios.post('/api/auth/signup', formData);
         if (response.status === 201) {
-          router.push(
-            `/verify-email?status=verification-sent`
-          );
+          router.push(`/verify-email?status=verification-sent`);
         }
       } else {
         const result = await signIn('credentials', {
@@ -79,9 +77,7 @@ const MobileProfileForm = ({
       }
     } catch (err: unknown) {
       if (isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || l.auth.errorOccurred
-        );
+        setError(err.response?.data?.message || l.auth.errorOccurred);
       } else {
         setError(l.auth.errorOccurred);
       }
@@ -170,7 +166,10 @@ const MobileProfileForm = ({
               {isLoading ? l.common.creating : l.auth.createAccount}
             </button>
 
-            <button className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center" type="button">
+            <button
+              className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center"
+              type="button"
+            >
               <Image
                 className="mr-2"
                 src="/icons/icon-google.svg"

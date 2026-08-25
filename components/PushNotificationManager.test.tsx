@@ -20,12 +20,6 @@ describe('PushNotificationManager', () => {
     vi.clearAllMocks();
   });
 
-  /**
-   * TEST 1: Prikazuje notSupported poruku u jsdom okruženju
-   * ZAŠTO: U jsdom-u `window.PushManager` ne postoji, pa komponenta
-   *   ispravno prikazuje notSupported poruku.
-   * KAKO: Renderujemo komponentu i proveravamo prisustvo poruke.
-   */
   it('shows not supported message when Push API is unavailable', () => {
     render(<PushNotificationManager />);
 
@@ -34,12 +28,6 @@ describe('PushNotificationManager', () => {
     ).toBeInTheDocument();
   });
 
-  /**
-   * TEST 2: Ne prikazuje subscribe UI u jsdom okruženju
-   * ZAŠTO: Kada Push API nije dostupan, subscribe dugme ne sme
-   *   biti prikazano.
-   * KAKO: Proveravamo da subscribe poruka nije u DOM-u.
-   */
   it('does not show subscribe UI when Push API is unavailable', () => {
     render(<PushNotificationManager />);
 
@@ -51,12 +39,6 @@ describe('PushNotificationManager', () => {
     ).not.toBeInTheDocument();
   });
 
-  /**
-   * TEST 3: Ne prikazuje subscribed UI u jsdom okruženju
-   * ZAŠTO: Isti razlog kao TEST 2 — bez Push API-a nema
-   *   subscribe state-a.
-   * KAKO: Proveravamo da subscribed poruka nije u DOM-u.
-   */
   it('does not show subscribed UI when Push API is unavailable', () => {
     render(<PushNotificationManager />);
 

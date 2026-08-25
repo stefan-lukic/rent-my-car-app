@@ -54,7 +54,6 @@ export function useAddCar() {
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.id) {
-
     } else if (status === 'unauthenticated') {
       router.push('/sign-in');
     }
@@ -69,19 +68,25 @@ export function useAddCar() {
     if (type === 'file') {
       const files = (e.target as HTMLInputElement).files;
       if (files) {
-        setCarData((prev) => ({ ...prev, images: Array.from(files).map((file) => ({ file, id: crypto.randomUUID() })) }));
+        setCarData((prev) => ({
+          ...prev,
+          images: Array.from(files).map((file) => ({
+            file,
+            id: crypto.randomUUID(),
+          })),
+        }));
       }
     } else {
       setCarData((prev) => ({ ...prev, [name]: value }));
     }
   };
-  
+
   const removeImage = (id: string) => {
-  setCarData((prev) => ({
-    ...prev,
-    images: prev.images.filter((img) => img.id !== id),
-  }));
-};
+    setCarData((prev) => ({
+      ...prev,
+      images: prev.images.filter((img) => img.id !== id),
+    }));
+  };
 
   const handleDateChange = (date: Date | null) => {
     setCarData((prev) => ({ ...prev, firstRegistration: date }));

@@ -16,7 +16,7 @@ export interface CarCardSharedConfig<TDeleteArg = ICar> {
   onDeleteClickExpectedArg: TDeleteArg;
 }
 
-export const runCarCardSharedTests = <TDeleteArg = ICar>(
+export const runCarCardSharedTests = <TDeleteArg = ICar,>(
   config: CarCardSharedConfig<TDeleteArg>
 ) => {
   const {

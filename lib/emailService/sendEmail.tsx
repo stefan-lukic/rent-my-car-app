@@ -50,7 +50,14 @@ function validateEnv(): Env | null {
     throw new Error('SMTP_SECURE must be true or false');
   }
 
-  return { host: hostStr, port, secure, user: userStr, pass: passStr, from: fromStr };
+  return {
+    host: hostStr,
+    port,
+    secure,
+    user: userStr,
+    pass: passStr,
+    from: fromStr,
+  };
 }
 
 let transporter: nodemailer.Transporter | null = null;
@@ -119,7 +126,9 @@ interface SendMailOptions {
 async function sendMail(options: SendMailOptions): Promise<void> {
   const env = getEnv();
   const from = env ? env.from : 'Rent My Car <no-reply@rent-my-car.app>';
-  const info = await (await getTransporter()).sendMail({
+  const info = await (
+    await getTransporter()
+  ).sendMail({
     from,
     ...options,
   });
