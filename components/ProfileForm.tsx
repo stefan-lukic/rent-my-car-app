@@ -32,6 +32,7 @@ const ProfileForm = ({
       name: '',
       email: '',
       password: '',
+      phoneNumber: '',
     },
   });
 
@@ -113,6 +114,13 @@ const ProfileForm = ({
               label=""
               placeholder={l.common.name}
               type="text"
+            />
+            <CustomInput
+              control={control}
+              name="phoneNumber"
+              label=""
+              placeholder={l.common.phoneNumber}
+              type="tel"
             />
             <input
               type="file"

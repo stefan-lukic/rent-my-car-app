@@ -34,7 +34,7 @@ const userSchema: Schema<IUser> = new Schema(
     name: { type: String, required: false },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    contactInfo: { type: String, required: false },
+    contactInfo: { type: String, required: true },
     rating: { type: Number, required: false },
     emailVerified: { type: Date },
     emailVerificationToken: { type: String, index: true },

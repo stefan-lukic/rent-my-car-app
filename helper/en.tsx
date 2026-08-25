@@ -17,6 +17,7 @@ const l = {
     name: 'Name',
     email: 'Email',
     password: 'Password',
+    phoneNumber: 'Phone number',
     description: 'Description',
     signIn: 'Sign in',
     signUp: 'Sign up',
@@ -279,8 +280,7 @@ const l = {
     howPeopleReachYou: 'How people can reach you',
     fullName: 'Full Name',
     fullNamePlaceholder: 'e.g. Srdjan Markovic',
-    phoneOrContact: 'Phone or Contact',
-    phoneOrContactPlaceholder: 'e.g. +381 60 123 4567',
+    phoneNumberPlaceholder: 'e.g. +381 60 123 4567',
     emailLockedHint:
       'Email is used for sign-in and cannot be changed from this screen.',
   },
@@ -523,6 +523,8 @@ const l = {
     invalidEmail: 'Invalid email address',
     passwordMinLength: 'Password should be at least 8 characters long',
     invalidPassword: 'Invalid password',
+    phoneNumberRequired: 'Phone number is required',
+    invalidPhoneNumber: 'Enter a valid phone number',
   },
 
   errors: {

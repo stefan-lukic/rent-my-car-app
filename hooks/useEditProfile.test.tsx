@@ -154,6 +154,24 @@ describe('useEditProfile', () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
+  it('rejects submit when contact information is not a phone number', async () => {
+    const { result } = renderHook(() =>
+      useEditProfile({
+        ...initialProfile,
+        contactInfo: '0#dfj,#&!$%213',
+      })
+    );
+
+    await act(async () => {
+      await result.current.handleSubmit({
+        preventDefault: vi.fn(),
+      } as unknown as React.FormEvent);
+    });
+
+    expect(result.current.error).toBe('Enter a valid phone number.');
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
   it('saves profile and redirects after successful request', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
@@ -177,6 +195,10 @@ describe('useEditProfile', () => {
         })
       );
     });
+
+    const request = vi.mocked(fetch).mock.calls[0][1];
+    const submittedData = request?.body as FormData;
+    expect(submittedData.get('contactInfo')).toBe('+381601234567');
 
     expect(mocks.push).toHaveBeenCalledWith('/profile/my-profile');
     expect(mocks.refresh).toHaveBeenCalledOnce();

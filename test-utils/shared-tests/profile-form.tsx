@@ -27,6 +27,9 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     const user = userEvent.setup();
     render(<Component type="sign-up" callbackUrl="/" />);
     expect(screen.getByPlaceholderText(l.common.name)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(l.common.phoneNumber)
+    ).toBeInTheDocument();
     expect(document.getElementById('images')).toBeTruthy();
   });
 
@@ -129,6 +132,10 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     await user.type(
       screen.getByPlaceholderText(l.common.password),
       'sigurna-lozinka'
+    );
+    await user.type(
+      screen.getByPlaceholderText(l.common.phoneNumber),
+      '+381601234567'
     );
     await user.click(
       screen.getByRole('button', { name: l.auth.createAccount })
