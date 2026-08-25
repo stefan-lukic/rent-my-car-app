@@ -18,6 +18,7 @@ type UpdateCarFields = Pick<
   | 'carModel'
   | 'engine'
   | 'power'
+  | 'seats'
   | 'carType'
   | 'city'
   | 'averageConsumption'
@@ -44,6 +45,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
     carModel: car.carModel,
     engine: car.engine,
     power: car.power,
+    seats: car.seats ?? 5,
     carType: car.carType,
     city: car.city,
     averageConsumption: car.averageConsumption,
@@ -58,7 +60,10 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
     >
   ) => {
     const { name, value } = e.target;
-    setUpdatedCar({ ...updatedCar, [name]: value });
+    setUpdatedCar({
+      ...updatedCar,
+      [name]: name === 'seats' ? Number(value) : value,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -137,6 +142,17 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               value={updatedCar.power}
               onChange={handleInputChange}
               placeholder={l.cars.eg150}
+              required
+            />
+            <FormInput
+              label={l.cars.seats}
+              name="seats"
+              type="number"
+              min="1"
+              max="9"
+              step="1"
+              value={updatedCar.seats}
+              onChange={handleInputChange}
               required
             />
             <FormInput

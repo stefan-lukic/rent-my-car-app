@@ -12,6 +12,7 @@ export type CarData = {
   carModel: string;
   engine: CarEngineType;
   power: string;
+  seats: number;
   carType: CarType;
   city: CarCity;
   carLocation: string;
@@ -33,6 +34,7 @@ const initialCarData: CarData = {
   carModel: '',
   engine: CarEngineType.PETROL,
   power: '',
+  seats: 5,
   carType: CarType.SALOON,
   city: CarCity.NOVI_SAD,
   carLocation: '',
@@ -77,7 +79,10 @@ export function useAddCar() {
         }));
       }
     } else {
-      setCarData((prev) => ({ ...prev, [name]: value }));
+      setCarData((prev) => ({
+        ...prev,
+        [name]: name === 'seats' ? Number(value) : value,
+      }));
     }
   };
 

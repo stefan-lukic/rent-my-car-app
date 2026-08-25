@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
   const make = searchParams.get('make');
   const carType = searchParams.get('carType');
   const engine = searchParams.get('engine');
+  const minSeats = searchParams.get('minSeats');
   const city = searchParams.get('city');
 
   if (!start || !end) {
@@ -32,6 +33,19 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid dates' }, { status: 400 });
   }
 
+  const parsedMinSeats = minSeats ? Number(minSeats) : null;
+  if (
+    parsedMinSeats !== null &&
+    (!Number.isInteger(parsedMinSeats) ||
+      parsedMinSeats < 1 ||
+      parsedMinSeats > 9)
+  ) {
+    return NextResponse.json(
+      { error: 'Minimum seats must be a whole number between 1 and 9' },
+      { status: 400 }
+    );
+  }
+
   const session = await getServerSession(authOptions);
   await connectToDatabase();
 
@@ -45,6 +59,9 @@ export async function GET(req: NextRequest) {
     if (make && make !== '') filter.make = make;
     if (carType && carType !== '') filter.carType = carType;
     if (engine && engine !== '') filter.engine = engine;
+    if (parsedMinSeats !== null) {
+      filter.seats = { $gte: parsedMinSeats };
+    }
     if (city && city !== '') filter.city = city;
     if (session?.user?.id) {
       filter.renter = { $ne: session.user.id };

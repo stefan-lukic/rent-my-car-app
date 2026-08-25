@@ -13,6 +13,7 @@ export default function CarListPage() {
     make: '',
     carType: '',
     engine: '',
+    minSeats: '',
   });
 
   return (

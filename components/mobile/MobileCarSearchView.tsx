@@ -12,6 +12,7 @@ export default function MobileCarSearchView() {
     make: '',
     carType: '',
     engine: '',
+    minSeats: '',
   });
 
   return (

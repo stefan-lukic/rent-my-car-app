@@ -12,6 +12,7 @@ const car = {
   carModel: 'X5',
   engine: 'DIESEL',
   power: '250',
+  seats: 5,
   carType: 'SUV',
   city: 'Belgrade',
   carLocation: 'New Belgrade',
@@ -51,6 +52,7 @@ describe('UpdateCarModal', () => {
 
     expect(screen.getByLabelText(l.cars.model)).toHaveValue('X5');
     expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue('250');
+    expect(screen.getByLabelText(l.cars.seats)).toHaveValue(5);
 
     expect(screen.getByLabelText(l.cars.carLocation)).toHaveValue(
       'New Belgrade'
@@ -88,6 +90,7 @@ describe('UpdateCarModal', () => {
     const updatedCar = {
       ...car,
       carModel: 'X3',
+      seats: 5,
     };
 
     vi.mocked(fetch).mockResolvedValue({

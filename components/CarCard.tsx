@@ -8,6 +8,7 @@ import {
   MapPin,
   Pencil,
   Trash2,
+  Users,
 } from 'lucide-react';
 import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
@@ -91,10 +92,18 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
           €{car.pricePerDay}
           {l.common.perDay}
         </p>
-        <p className="mb-4 mt-2 flex items-center gap-1.5 text-xs text-slate-500">
-          <MapPin className="h-3.5 w-3.5 text-blue-500" />
-          {car.city}
-        </p>
+        <div className="mb-4 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+          <span className="flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-blue-500" />
+            {car.city}
+          </span>
+          {car.seats ? (
+            <span className="flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5 text-blue-500" />
+              {car.seats} {l.carSpecs.seats.toLowerCase()}
+            </span>
+          ) : null}
+        </div>
 
         <div className="flex gap-2">
           <button

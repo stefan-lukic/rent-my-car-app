@@ -20,6 +20,7 @@ const updateCarSchema = z
     carModel: z.string().trim().min(1).max(100),
     engine: z.nativeEnum(CarEngineType),
     power: z.string().trim().min(1).max(50),
+    seats: z.coerce.number().int().min(1).max(9),
     carType: z.nativeEnum(CarType),
     city: z.nativeEnum(CarCity),
     averageConsumption: z.string().trim().min(1).max(50),

@@ -24,6 +24,7 @@ const mockCar = {
   images: ['/car1.jpg', '/car2.jpg'],
   engine: 'Petrol',
   power: '150',
+  seats: 5,
   averageConsumption: '6.5',
   milage: 50000,
   firstRegistration: new Date('2020-01-01'),
@@ -62,6 +63,8 @@ describe('MobileCarDetailsDrawer', () => {
     render(<MobileCarDetailsDrawer {...defaultProps} />);
     expect(screen.getByText('Petrol')).toBeInTheDocument();
     expect(screen.getByText('150 HP')).toBeInTheDocument();
+    expect(screen.getByText('Seats')).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('Sedan')).toBeInTheDocument();
     expect(screen.getByText(/Belgrade/)).toBeInTheDocument();
   });

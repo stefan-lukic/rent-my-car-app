@@ -154,6 +154,11 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
             <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
               {car.averageConsumption} l/100km
             </span>
+            {car.seats ? (
+              <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+                {car.seats} {l.carSpecs.seats.toLowerCase()}
+              </span>
+            ) : null}
           </div>
         </div>
 

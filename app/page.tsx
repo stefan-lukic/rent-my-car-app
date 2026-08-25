@@ -27,6 +27,7 @@ const initialFilters: CarFilterState = {
   make: '',
   carType: '',
   engine: '',
+  minSeats: '',
 };
 
 export default function Home() {

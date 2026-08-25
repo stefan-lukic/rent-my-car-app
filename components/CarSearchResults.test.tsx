@@ -48,6 +48,7 @@ describe('CarSearchResults', () => {
     expect(screen.getByText('Sedan')).toBeInTheDocument();
     expect(screen.getByText('Petrol')).toBeInTheDocument();
     expect(screen.getByText('6.5 l/100km')).toBeInTheDocument();
+    expect(screen.getByText('5 seats')).toBeInTheDocument();
   });
 
   it('calls onViewDetails when Details button is clicked', async () => {

@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
       !carData.carModel ||
       !carData.engine ||
       !carData.power ||
+      !carData.seats ||
       !carData.carType ||
       !carData.city ||
       !carData.carLocation ||
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           message:
-            'Make, model, engine, power, car type, city, car location, price per day, milage, average consumption, and description are required',
+            'Make, model, engine, power, seats, car type, city, car location, price per day, milage, average consumption, and description are required',
         },
         { status: 400 }
       );
@@ -107,8 +108,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Invalid city' }, { status: 400 });
     }
 
+    const seats = Number(carData.seats);
+    if (!Number.isInteger(seats) || seats < 1 || seats > 9) {
+      return NextResponse.json(
+        { message: 'Seats must be a whole number between 1 and 9' },
+        { status: 400 }
+      );
+    }
+
     const newCar = new Car({
       ...carData,
+      seats,
       images: imageBase64Array,
       renter: session.user.id,
     });

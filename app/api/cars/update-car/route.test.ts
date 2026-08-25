@@ -31,6 +31,7 @@ const validUpdate = {
   carModel: 'E-Class',
   engine: 'PETROL',
   power: '190',
+  seats: 5,
   carType: 'SALOON',
   city: 'Belgrade',
   averageConsumption: '7.2 L/100km',
@@ -89,6 +90,7 @@ describe('PUT /api/cars/update-car', () => {
         carModel: 'E-Class',
         engine: 'PETROL',
         power: '190',
+        seats: 5,
         carType: 'SALOON',
         city: 'Belgrade',
         averageConsumption: '7.2 L/100km',
@@ -98,5 +100,15 @@ describe('PUT /api/cars/update-car', () => {
       },
       { new: true, runValidators: true }
     );
+  });
+
+  it('rejects a seat count outside the supported range', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { id: 'user-a' } });
+
+    const response = await PUT(createRequest({ ...validUpdate, seats: 10 }));
+
+    expect(response.status).toBe(400);
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
+    expect(mocks.findByIdAndUpdate).not.toHaveBeenCalled();
   });
 });

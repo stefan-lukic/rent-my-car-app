@@ -57,6 +57,11 @@ export const runCarCardSharedTests = <TDeleteArg = ICar,>(
     expect(screen.getByText(`${mockCar.city}`)).toBeInTheDocument();
   });
 
+  it('renders the number of seats', () => {
+    render(<Component {...defaultProps} />);
+    expect(screen.getByText(`${mockCar.seats} seats`)).toBeInTheDocument();
+  });
+
   it('renders status badge for available', async () => {
     const user = userEvent.setup();
     render(<Component {...defaultProps} />);
