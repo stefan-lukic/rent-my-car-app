@@ -126,13 +126,37 @@ export default async function CarDetailsPage({
                 </p>
               </div>
 
-              <div className="w-fit rounded-2xl border border-white/10 bg-white/10 px-5 py-3 backdrop-blur-sm">
+              <div className="w-fit min-w-44 rounded-2xl border border-white/10 bg-white/10 px-5 py-4 backdrop-blur-sm">
                 <p className="text-3xl font-black text-white">
                   €{car.pricePerDay}
                 </p>
                 <p className="text-xs font-semibold text-slate-300">
                   {l.carDetailsPage.perDay}
                 </p>
+                <div
+                  aria-label={l.carDetailsPage.carRating}
+                  className="mt-3 flex items-center gap-2 border-t border-white/10 pt-3 text-sm"
+                >
+                  <Star
+                    className={`h-4 w-4 text-amber-400 ${
+                      car.ratingCount ? 'fill-amber-400' : ''
+                    }`}
+                  />
+                  {car.ratingCount ? (
+                    <>
+                      <span className="font-bold text-white">
+                        {(car.rating ?? 0).toFixed(1)}
+                      </span>
+                      <span className="text-slate-300">
+                        {l.carDetailsPage.ratingCount(car.ratingCount)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="font-medium text-slate-300">
+                      {l.carDetailsPage.noRatings}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -488,6 +488,9 @@ const l = {
       'The owner has not added a description yet. Review the vehicle specifications and contact the owner after booking for handover details.',
     yourHost: 'Your host',
     meetOwner: 'Meet the car owner',
+    carRating: 'Car rating',
+    ratingCount: (count: number) =>
+      `${count} ${count === 1 ? 'rating' : 'ratings'}`,
     rating: (rating: string) => `${rating} rating`,
     noRatings: 'No ratings yet',
     memberSince: (date: string) => `Member since ${date}`,
