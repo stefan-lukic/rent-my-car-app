@@ -118,3 +118,44 @@ html {
     min-height: -webkit-fill-available;
   }
 }
+
+/* Google Places autocomplete styled to match the shared form inputs. */
+.rentmycar-place-autocomplete {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  background: #f9fafb;
+  color: #0f172a;
+  color-scheme: light;
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.rentmycar-place-autocomplete:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.rentmycar-place-autocomplete::part(input) {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding-inline: 0;
+  color: #0f172a;
+  box-shadow: none;
+}
+
+.rentmycar-place-autocomplete::part(focus-ring) {
+  border: 0;
+  box-shadow: none;
+}
+
+.rentmycar-place-autocomplete::part(prediction-list) {
+  color: #0f172a;
+  background: #ffffff;
+}

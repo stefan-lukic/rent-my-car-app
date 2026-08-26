@@ -12,6 +12,7 @@ import FormInput, {
   labelClasses,
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
+import AddressAutocompleteInput from '@/components/UI/AddressAutocompleteInput';
 import l from '@/helper/en';
 import { useAddCar } from '@/hooks/useAddCar';
 import { CarCity } from '@/lib/model/car/CarCity';
@@ -27,6 +28,7 @@ export default function MobileAddCar() {
     carData,
     isSubmitting,
     handleInputChange,
+    handleLocationChange,
     handleDateChange,
     handleSubmit,
     removeImage,
@@ -135,13 +137,16 @@ export default function MobileAddCar() {
               value={carData.city}
               onChange={handleInputChange}
               options={Object.values(CarCity)}
+              placeholder={l.cars.selectCity}
+              required
             />
-            <FormInput
+            <AddressAutocompleteInput
               label={l.cars.carLocation}
               name="carLocation"
               value={carData.carLocation}
-              onChange={handleInputChange}
-              placeholder={l.cars.egLiman}
+              city={carData.city}
+              onValueChange={handleLocationChange}
+              placeholder={l.cars.egStreetLocation}
               required
             />
             <div className="grid grid-cols-2 gap-3">

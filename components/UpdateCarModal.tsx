@@ -10,6 +10,7 @@ import FormInput, {
   labelClasses,
 } from '@/components/UI/FormInput';
 import FormSelect from '@/components/UI/FormSelect';
+import AddressAutocompleteInput from '@/components/UI/AddressAutocompleteInput';
 import l from '@/helper/en';
 
 type UpdateCarFields = Pick<
@@ -89,6 +90,10 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
       console.error('Error updating car:', error);
       alert((error as Error).message);
     }
+  };
+
+  const handleLocationChange = (carLocation: string) => {
+    setUpdatedCar((currentCar) => ({ ...currentCar, carLocation }));
   };
 
   if (!isOpen) return null;
@@ -173,12 +178,13 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               onChange={handleInputChange}
               options={Object.values(CarCity)}
             />
-            <FormInput
+            <AddressAutocompleteInput
               label={l.cars.carLocation}
               name="carLocation"
               value={updatedCar.carLocation}
-              onChange={handleInputChange}
-              placeholder={l.cars.egLiman}
+              city={updatedCar.city}
+              onValueChange={handleLocationChange}
+              placeholder={l.cars.egStreetLocation}
               required
             />
             <FormInput
