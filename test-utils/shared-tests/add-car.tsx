@@ -7,6 +7,7 @@ import l from '@/helper/en';
 interface AddCarSharedConfig {
   Component: ComponentType<{}>;
   handleInputChange: ReturnType<typeof vi.fn>;
+  handleLocationChange?: ReturnType<typeof vi.fn>;
   handleDateChange: ReturnType<typeof vi.fn>;
   handleSubmit: ReturnType<typeof vi.fn>;
   removeImage: ReturnType<typeof vi.fn>;
@@ -18,6 +19,7 @@ export const runAddCarSharedTests = (config: AddCarSharedConfig) => {
   const {
     Component,
     handleInputChange,
+    handleLocationChange,
     handleDateChange,
     handleSubmit,
     removeImage,
@@ -76,6 +78,7 @@ export const runAddCarSharedTests = (config: AddCarSharedConfig) => {
       carData,
       isSubmitting: true,
       handleInputChange,
+      handleLocationChange,
       handleDateChange,
       handleSubmit,
       removeImage,

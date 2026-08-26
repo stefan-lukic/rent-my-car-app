@@ -7,6 +7,7 @@ import l from '@/helper/en';
 import { runAddCarSharedTests } from '@/test-utils/shared-tests/add-car';
 
 const handleInputChange = vi.fn();
+const handleLocationChange = vi.fn();
 const handleDateChange = vi.fn();
 const handleSubmit = vi.fn((event: React.FormEvent) => {
   event.preventDefault();
@@ -63,6 +64,7 @@ describe('AddCar', () => {
       carData,
       isSubmitting: false,
       handleInputChange,
+      handleLocationChange,
       handleDateChange,
       handleSubmit,
       removeImage,
@@ -102,6 +104,7 @@ describe('AddCar', () => {
       },
       isSubmitting: false,
       handleInputChange,
+      handleLocationChange,
       handleDateChange,
       handleSubmit,
       removeImage,

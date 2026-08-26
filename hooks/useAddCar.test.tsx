@@ -65,6 +65,7 @@ describe('useAddCar', () => {
 
     expect(result.current.carData.carModel).toBe('');
     expect(result.current.carData.images).toEqual([]);
+    expect(result.current.carData.city).toBe('');
     expect(result.current.carData.firstRegistration).toBeNull();
     expect(result.current.isSubmitting).toBe(false);
     expect(result.current.showSuccess).toBe(false);
@@ -139,6 +140,30 @@ describe('useAddCar', () => {
     expect(result.current.carData.firstRegistration).toEqual(registrationDate);
   });
 
+  it('updates the selected car location', () => {
+    const { result } = renderHook(() => useAddCar());
+
+    act(() => {
+      result.current.handleLocationChange('Trg Republike 5, Beograd');
+    });
+
+    expect(result.current.carData.carLocation).toBe('Trg Republike 5, Beograd');
+  });
+
+  it('clears the location when the selected city changes', () => {
+    const { result } = renderHook(() => useAddCar());
+
+    act(() => {
+      result.current.handleLocationChange('Liman 3');
+      result.current.handleInputChange(
+        createTextChangeEvent('city', 'Novi Sad')
+      );
+    });
+
+    expect(result.current.carData.city).toBe('Novi Sad');
+    expect(result.current.carData.carLocation).toBe('');
+  });
+
   it('does not submit without first registration date', async () => {
     const { result } = renderHook(() => useAddCar());
 
@@ -157,6 +182,9 @@ describe('useAddCar', () => {
 
     act(() => {
       result.current.handleDateChange(new Date('2022-01-01'));
+      result.current.handleInputChange(
+        createTextChangeEvent('city', 'Novi Sad')
+      );
     });
 
     await act(async () => {
@@ -184,6 +212,10 @@ describe('useAddCar', () => {
       );
 
       result.current.handleDateChange(new Date('2022-01-01'));
+
+      result.current.handleInputChange(
+        createTextChangeEvent('city', 'Novi Sad')
+      );
 
       result.current.handleInputChange(createFileChangeEvent([image]));
     });
@@ -218,6 +250,10 @@ describe('useAddCar', () => {
 
     act(() => {
       result.current.handleDateChange(new Date('2022-01-01'));
+
+      result.current.handleInputChange(
+        createTextChangeEvent('city', 'Novi Sad')
+      );
 
       result.current.handleInputChange(createFileChangeEvent([image]));
     });

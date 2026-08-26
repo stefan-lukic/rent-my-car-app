@@ -9,11 +9,12 @@ interface FormSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   options: string[];
+  placeholder?: string;
   error?: string;
 }
 
 const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
-  ({ label, options, error, className = '', ...props }, ref) => {
+  ({ label, options, placeholder, error, className = '', ...props }, ref) => {
     const selectId =
       props.id ?? props.name ?? label.toLowerCase().replace(/\s+/g, '-');
     return (
@@ -27,6 +28,11 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
           className={`${inputClasses} ${className}`}
           {...props}
         >
+          {placeholder ? (
+            <option value="" disabled>
+              {placeholder}
+            </option>
+          ) : null}
           {options.map((option) => (
             <option key={option} value={option}>
               {option}

@@ -14,7 +14,7 @@ export type CarData = {
   power: string;
   seats: number;
   carType: CarType;
-  city: CarCity;
+  city: CarCity | '';
   carLocation: string;
   firstRegistration: Date | null;
   images: CarImage[];
@@ -36,7 +36,7 @@ const initialCarData: CarData = {
   power: '',
   seats: 5,
   carType: CarType.SALOON,
-  city: CarCity.NOVI_SAD,
+  city: '',
   carLocation: '',
   firstRegistration: null as Date | null,
   images: [] as CarImage[],
@@ -82,6 +82,7 @@ export function useAddCar() {
       setCarData((prev) => ({
         ...prev,
         [name]: name === 'seats' ? Number(value) : value,
+        ...(name === 'city' ? { carLocation: '' } : {}),
       }));
     }
   };
@@ -97,12 +98,22 @@ export function useAddCar() {
     setCarData((prev) => ({ ...prev, firstRegistration: date }));
   };
 
+  const handleLocationChange = (carLocation: string) => {
+    setCarData((prev) => ({ ...prev, carLocation }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     if (!carData.firstRegistration) {
       alert(l.cars.firstRegistrationRequired);
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!carData.city) {
+      alert(l.cars.cityRequired);
       setIsSubmitting(false);
       return;
     }
@@ -148,6 +159,7 @@ export function useAddCar() {
     isSubmitting,
     showSuccess,
     handleInputChange,
+    handleLocationChange,
     handleDateChange,
     handleSubmit,
     removeImage,
