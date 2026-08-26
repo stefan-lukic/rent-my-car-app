@@ -19,7 +19,9 @@ export async function GET(
     await connectToDatabase();
     // Positive projection prevents private fields from ever entering the
     // response object, even when new sensitive User fields are added later.
-    const user = await User.findById(id).select('name images rating').lean();
+    const user = await User.findById(id)
+      .select('name images rating ratingCount')
+      .lean();
 
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import {
   CalendarDays,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock3,
@@ -11,6 +12,7 @@ import {
   MapPin,
   MessageCircle,
   Phone,
+  Star,
   UserRound,
 } from 'lucide-react';
 import { OwnerBooking } from '@/types/OwnerBooking';
@@ -21,6 +23,7 @@ import {
   RentalStatusFilterValue,
 } from '@/lib/rentalLifecycle';
 import l from '@/helper/en';
+import RatingModal from './RatingModal';
 
 interface IncomingBookingsSectionProps {
   bookings: OwnerBooking[];
@@ -57,10 +60,14 @@ const statusPresentation = {
 };
 
 export default function IncomingBookingsSection({
-  bookings,
+  bookings: initialBookings,
   currentDate,
 }: IncomingBookingsSectionProps) {
+  const [bookings, setBookings] = useState(initialBookings);
   const [currentPage, setCurrentPage] = useState(0);
+  const [bookingToReview, setBookingToReview] = useState<OwnerBooking | null>(
+    null
+  );
   const [statusFilter, setStatusFilter] =
     useState<RentalStatusFilterValue>('all');
   const visibleBookings = bookings.filter(
@@ -241,6 +248,17 @@ export default function IncomingBookingsSection({
                           <p className="truncate text-sm font-bold text-slate-900">
                             {client.name || 'RentMyCar user'}
                           </p>
+                          {client.ratingCount ? (
+                            <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-500">
+                              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                              {client.rating?.toFixed(1)} ({client.ratingCount}{' '}
+                              {l.reviews.ratings})
+                            </p>
+                          ) : (
+                            <p className="mt-1 text-xs text-slate-400">
+                              {l.profile.noRatingYet}
+                            </p>
+                          )}
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-bold text-blue-600">
@@ -324,6 +342,23 @@ export default function IncomingBookingsSection({
                           </span>
                         </button>
                       </div>
+
+                      {lifecycleStatus === RentalLifecycleStatus.Completed &&
+                        (booking.ownerReview?.submittedAt ? (
+                          <div className="flex items-center justify-center gap-2 rounded-xl bg-emerald-50 py-2.5 text-xs font-bold text-emerald-700">
+                            <CheckCircle2 className="h-4 w-4" />
+                            {l.reviews.clientRated}
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setBookingToReview(booking)}
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700"
+                          >
+                            <Star className="h-4 w-4" />
+                            {l.reviews.rateClient}
+                          </button>
+                        ))}
                     </div>
                   </article>
                 );
@@ -357,6 +392,28 @@ export default function IncomingBookingsSection({
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
+      )}
+
+      {bookingToReview?.client && (
+        <RatingModal
+          rentalId={bookingToReview._id}
+          reviewerRole="owner"
+          targetName={bookingToReview.client.name || 'RentMyCar user'}
+          onClose={() => setBookingToReview(null)}
+          onSubmitted={(review) => {
+            setBookings((currentBookings) =>
+              currentBookings.map((booking) =>
+                booking._id === bookingToReview._id
+                  ? {
+                      ...booking,
+                      ownerReview: review,
+                    }
+                  : booking
+              )
+            );
+            setBookingToReview(null);
+          }}
+        />
       )}
     </section>
   );

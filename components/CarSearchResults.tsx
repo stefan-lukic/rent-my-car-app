@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
 import l from '@/helper/en';
+import { Star } from 'lucide-react';
 
 interface SearchResultsProps {
   car: ICar;
@@ -107,6 +108,13 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
                 {car.make}{' '}
                 <span className="text-gray-600 lowercase">{car.carModel}</span>
               </h3>
+
+              {car.ratingCount ? (
+                <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-600">
+                  <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                  {car.rating?.toFixed(1)} ({car.ratingCount})
+                </p>
+              ) : null}
 
               <div className="flex items-center text-sm text-gray-500 mt-1">
                 <svg

@@ -2,31 +2,31 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { CalendarDays, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { ICar } from '@/lib/model/car/Car';
-import { RentalStatus } from '@/types/RentalWithCar';
+import {
+  CalendarDays,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  Star,
+} from 'lucide-react';
+import { RentalWithCar } from '@/types/RentalWithCar';
 import {
   getRentalLifecycleStatus,
   RentalLifecycleStatus,
 } from '@/lib/rentalLifecycle';
 import l from '@/helper/en';
+import RatingModal from './RatingModal';
 
 interface RentalCardProps {
-  rental: {
-    _id: string;
-    car: ICar;
-    rentalPeriod: {
-      startDate: Date;
-      endDate: Date;
-    };
-    totalCost: number;
-    status?: RentalStatus;
-    cancelledAt?: Date;
-    cancelledBy?: string;
-  };
+  rental: RentalWithCar;
   showStatus?: boolean;
   onCancel?: (rentalId: string) => void;
   currentDate: string;
+  onReviewed?: (
+    rentalId: string,
+    review: NonNullable<RentalWithCar['clientReview']>
+  ) => void;
 }
 
 const statusStyles: Record<string, string> = {
@@ -48,8 +48,10 @@ const RentalCard: React.FC<RentalCardProps> = ({
   showStatus = true,
   onCancel,
   currentDate,
+  onReviewed,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
 
   if (!rental.car) {
     return (
@@ -162,7 +164,37 @@ const RentalCard: React.FC<RentalCardProps> = ({
             {l.booking.cancelReservation}
           </button>
         )}
+
+        {status === RentalLifecycleStatus.Completed &&
+          (rental.clientReview?.submittedAt ? (
+            <div className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-emerald-50 py-2.5 text-xs font-bold text-emerald-700">
+              <CheckCircle2 className="h-4 w-4" />
+              {l.reviews.carAndOwnerRated}
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsRatingOpen(true)}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700"
+            >
+              <Star className="h-4 w-4" />
+              {l.reviews.rateTrip}
+            </button>
+          ))}
       </div>
+
+      {isRatingOpen && (
+        <RatingModal
+          rentalId={rental._id}
+          reviewerRole="client"
+          targetName={l.profile.rentMyCarOwner}
+          onClose={() => setIsRatingOpen(false)}
+          onSubmitted={(review) => {
+            onReviewed?.(rental._id, review);
+            setIsRatingOpen(false);
+          }}
+        />
+      )}
     </article>
   );
 };

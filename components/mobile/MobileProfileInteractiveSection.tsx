@@ -79,6 +79,17 @@ const MobileProfileInteractiveSection = ({
     );
   };
 
+  const handleRentalReviewed = (
+    rentalId: string,
+    review: NonNullable<RentalWithCar['clientReview']>
+  ) => {
+    setRentalsState((currentRentals) =>
+      currentRentals.map((rental) =>
+        rental._id === rentalId ? { ...rental, clientReview: review } : rental
+      )
+    );
+  };
+
   return (
     <section className="pt-1">
       {activeTab === 'cars' && (
@@ -145,6 +156,7 @@ const MobileProfileInteractiveSection = ({
                   key={rental._id}
                   rental={rental}
                   currentDate={currentDate}
+                  onReviewed={handleRentalReviewed}
                   onCancel={(rentalId) => {
                     setRentalToCancelId(rentalId);
                     setIsCancelModalOpen(true);

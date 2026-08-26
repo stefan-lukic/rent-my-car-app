@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import MobileProfileUserInfoCard from './MobileUserProfileInfoCard';
+import l from '@/helper/en';
 
 vi.mock('next/image', () => ({
   __esModule: true,
@@ -27,6 +28,7 @@ const mockUser = {
   images: ['/avatar.jpg'],
   createdAt: new Date('2024-01-15T00:00:00.000Z'),
   rating: 4.8,
+  ratingCount: 12,
 };
 
 describe('MobileUserProfileInfoCard', () => {
@@ -78,13 +80,18 @@ describe('MobileUserProfileInfoCard', () => {
     expect(screen.getByText('Rating')).toBeInTheDocument();
   });
 
-  it('renders rating as 0.0 when no rating is provided', () => {
-    const userWithoutRating = { ...mockUser, rating: undefined };
+  it('shows a clear empty state when no rating is available', () => {
+    const userWithoutRating = {
+      ...mockUser,
+      rating: undefined,
+      ratingCount: 0,
+    };
     render(
       <MobileProfileUserInfoCard {...defaultProps} user={userWithoutRating} />
     );
 
-    expect(screen.getByText('0.0')).toBeInTheDocument();
+    expect(screen.getByText(l.profile.noRatingYet)).toBeInTheDocument();
+    expect(screen.queryByText('0.0')).not.toBeInTheDocument();
   });
 
   it('renders edit profile link', () => {

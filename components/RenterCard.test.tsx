@@ -26,6 +26,7 @@ const mockRenterWithImage = {
   _id: 'renter-1',
   name: 'Marko Markovic',
   rating: 4.5,
+  ratingCount: 8,
   images: ['/avatar.jpg'],
   profilePicture: '/avatar.jpg',
 };
@@ -75,7 +76,7 @@ describe('RenterCard', () => {
     render(<RenterCard renter={mockRenterWithImage} />);
 
     expect(screen.getByLabelText('Rating')).toBeInTheDocument();
-    expect(screen.getByText('4.5')).toBeInTheDocument();
+    expect(screen.getByText('4.5 (8)')).toBeInTheDocument();
   });
 
   it('hides rating when rating is 0', () => {

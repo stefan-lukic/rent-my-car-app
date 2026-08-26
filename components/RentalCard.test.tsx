@@ -150,4 +150,35 @@ describe('RentalCard', () => {
       screen.queryByRole('button', { name: l.booking.cancelReservation })
     ).not.toBeInTheDocument();
   });
+
+  it('offers rating only after the rental is completed', () => {
+    render(<RentalCard {...defaultProps} currentDate="2024-08-06" />);
+
+    expect(
+      screen.getByRole('button', { name: l.reviews.rateTrip })
+    ).toBeInTheDocument();
+  });
+
+  it('shows that a completed rental was already rated', () => {
+    const reviewedRental = createMockRental({
+      clientReview: {
+        carRating: 5,
+        ownerRating: 4,
+        submittedAt: new Date('2024-08-06T00:00:00.000Z'),
+      },
+    });
+
+    render(
+      <RentalCard
+        {...defaultProps}
+        rental={reviewedRental}
+        currentDate="2024-08-06"
+      />
+    );
+
+    expect(screen.getByText(l.reviews.carAndOwnerRated)).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: l.reviews.rateTrip })
+    ).not.toBeInTheDocument();
+  });
 });

@@ -8,6 +8,7 @@ export interface IUser extends Document {
   password: string;
   contactInfo: string;
   rating: number;
+  ratingCount: number;
   emailVerified?: Date;
   emailVerificationToken?: string;
   emailVerificationExpires?: Date;
@@ -26,6 +27,7 @@ export interface IRenter {
   contactInfo: string;
   profilePicture?: string;
   rating: number;
+  ratingCount?: number;
   images?: string[];
 }
 
@@ -35,7 +37,8 @@ const userSchema: Schema<IUser> = new Schema(
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     contactInfo: { type: String, required: true },
-    rating: { type: Number, required: false },
+    rating: { type: Number, default: 0, min: 0, max: 5 },
+    ratingCount: { type: Number, default: 0, min: 0 },
     emailVerified: { type: Date },
     emailVerificationToken: { type: String, index: true },
     emailVerificationExpires: { type: Date },

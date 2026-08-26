@@ -161,6 +161,17 @@ const ProfileInteractiveSection = ({
     setCurrentRentalPage(0);
   };
 
+  const handleRentalReviewed = (
+    rentalId: string,
+    review: NonNullable<RentalWithCar['clientReview']>
+  ) => {
+    setRentals((currentRentals) =>
+      currentRentals.map((rental) =>
+        rental._id === rentalId ? { ...rental, clientReview: review } : rental
+      )
+    );
+  };
+
   return (
     <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
@@ -355,6 +366,7 @@ const ProfileInteractiveSection = ({
                           key={rental._id}
                           rental={rental}
                           currentDate={currentDate}
+                          onReviewed={handleRentalReviewed}
                           onCancel={(rentalId) => {
                             setRentalToCancelId(rentalId);
                             setIsCancelModalOpen(true);

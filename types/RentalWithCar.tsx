@@ -1,4 +1,5 @@
 import { ICar } from '@/lib/model/car/Car';
+import type { ClientReview } from './Review';
 
 export enum RentalStatus {
   Active = 'active',
@@ -16,4 +17,5 @@ export type RentalWithCar = {
   status?: RentalStatus;
   cancelledAt?: Date;
   cancelledBy?: string;
+  clientReview?: ClientReview;
 };

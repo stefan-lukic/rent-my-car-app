@@ -41,6 +41,7 @@ const mockUser: any = {
   images: ['/avatar.jpg'],
   createdAt: '2024-01-15T00:00:00.000Z',
   rating: 4.8,
+  ratingCount: 12,
 };
 
 const mockCars: any = [
@@ -174,6 +175,18 @@ describe('ProfilePage', () => {
     const zeroValues = screen.getAllByText('0');
 
     expect(zeroValues.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('shows a clear empty rating state when the user has no ratings', () => {
+    render(
+      <ProfilePage
+        {...defaultProps}
+        user={{ ...mockUser, rating: 0, ratingCount: 0 }}
+      />
+    );
+
+    expect(screen.getByText(l.profile.noRatingYet)).toBeInTheDocument();
+    expect(screen.queryByText('0.0')).not.toBeInTheDocument();
   });
 
   it('counts only rentals that can be displayed', () => {

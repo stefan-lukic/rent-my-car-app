@@ -9,6 +9,7 @@ import {
   Pencil,
   Trash2,
   Users,
+  Star,
 } from 'lucide-react';
 import { ICar } from '@/lib/model/car/Car';
 import l from '@/helper/en';
@@ -88,6 +89,12 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
         <h3 className="text-base font-bold text-slate-950">
           {car.make} {car.carModel}
         </h3>
+        {car.ratingCount ? (
+          <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-600">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            {car.rating?.toFixed(1)} ({car.ratingCount})
+          </p>
+        ) : null}
         <p className="mt-1 text-sm font-bold text-blue-600">
           €{car.pricePerDay}
           {l.common.perDay}

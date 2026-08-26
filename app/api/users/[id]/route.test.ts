@@ -36,7 +36,7 @@ describe('GET /api/users/[id]', () => {
     const body = await response.json();
 
     expect(response.status).toBe(200);
-    expect(mocks.select).toHaveBeenCalledWith('name images rating');
+    expect(mocks.select).toHaveBeenCalledWith('name images rating ratingCount');
     expect(body).not.toHaveProperty('email');
     expect(body).not.toHaveProperty('password');
     expect(body).not.toHaveProperty('passwordResetToken');

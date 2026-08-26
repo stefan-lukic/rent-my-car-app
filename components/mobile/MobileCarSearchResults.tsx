@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
-import { MapPin, Eye, Zap } from 'lucide-react';
+import { MapPin, Eye, Star, Zap } from 'lucide-react';
 import l from '@/helper/en';
 
 interface CarSearchResultsProps {
@@ -119,6 +119,12 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
                 </span>
               )}
             </h3>
+            {car.ratingCount ? (
+              <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-600">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                {car.rating?.toFixed(1)} ({car.ratingCount})
+              </p>
+            ) : null}
           </div>
           <div className="text-right">
             <p className="text-xl font-black text-slate-900">

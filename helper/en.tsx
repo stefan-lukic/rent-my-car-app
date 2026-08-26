@@ -253,7 +253,7 @@ const l = {
     phoneNumber: 'Phone number',
     member: 'Member',
     rentMyCarOwner: 'RentMyCar owner',
-    noRatingYet: 'New',
+    noRatingYet: 'No ratings yet',
     viewOwnerProfile: 'View public profile',
     ownerAtGlance: 'Owner at a glance',
     carsListed: 'Cars listed',
@@ -533,6 +533,30 @@ const l = {
     invalidPassword: 'Invalid password',
     phoneNumberRequired: 'Phone number is required',
     invalidPhoneNumber: 'Enter a valid phone number',
+  },
+
+  reviews: {
+    rateTrip: 'Rate this trip',
+    rateClient: 'Rate client',
+    carAndOwnerRated: 'Car and owner rated',
+    clientRated: 'Client rated',
+    tripComplete: 'Trip completed',
+    clientTitle: 'How was your rental?',
+    ownerTitle: 'How was this client?',
+    clientDescription:
+      'Your ratings help other renters choose confidently and help owners improve.',
+    ownerDescription:
+      'Share a fair rating based on communication and care of your vehicle.',
+    rateCar: 'Rate the car',
+    rateOwner: 'Rate the owner',
+    rateClientLabel: 'Rate the client',
+    selectRating: 'Select a rating from 1 to 5 stars',
+    submit: 'Submit rating',
+    submitting: 'Submitting...',
+    cancel: 'Not now',
+    success: 'Thanks! Your rating has been saved.',
+    genericError: 'We could not save your rating. Please try again.',
+    ratings: 'ratings',
   },
 
   errors: {

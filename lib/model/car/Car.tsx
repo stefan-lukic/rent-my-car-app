@@ -22,6 +22,8 @@ export interface ICar {
   description?: string;
   renter: mongoose.Types.ObjectId;
   status?: string;
+  rating?: number;
+  ratingCount?: number;
   bookedPeriods: {
     rental: mongoose.Types.ObjectId;
     startDate: Date;
@@ -51,6 +53,8 @@ const carSchema: Schema<ICar> = new Schema(
     description: { type: String, required: false },
     renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     status: { type: String },
+    rating: { type: Number, default: 0, min: 0, max: 5 },
+    ratingCount: { type: Number, default: 0, min: 0 },
     bookedPeriods: {
       type: [
         {

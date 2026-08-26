@@ -19,6 +19,7 @@ interface UserProfileCardProps {
     images?: string[];
     createdAt: Date;
     rating?: number;
+    ratingCount?: number;
   };
   carsCount: number;
   rentalsCount: number;
@@ -38,7 +39,9 @@ export default function MobileProfileUserInfoCard({
     { icon: CalendarDays, value: rentalsCount, label: l.profile.rentals },
     {
       icon: Star,
-      value: (user.rating ?? 0).toFixed(1),
+      value: user.ratingCount
+        ? (user.rating ?? 0).toFixed(1)
+        : l.profile.noRatingYet,
       label: l.profile.rating,
     },
   ];
