@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   CalendarDays,
   CarFront,
+  ExternalLink,
   Fuel,
   Gauge,
   MapPin,
@@ -58,6 +59,16 @@ export default async function CarDetailsPage({
 
   const carName = `${car.make} ${car.carModel}`;
   const location = [car.city, car.carLocation].filter(Boolean).join(', ');
+  const mapQuery = [car.carLocation, car.city, 'Serbia']
+    .filter(Boolean)
+    .join(', ');
+  const encodedMapQuery = encodeURIComponent(mapQuery);
+  const googleMapsApiKey =
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY?.trim();
+  const googleMapsEmbedUrl = googleMapsApiKey
+    ? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodedMapQuery}&zoom=15&language=en&region=RS`
+    : null;
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedMapQuery}`;
   const registrationYear = car.firstRegistration
     ? new Date(car.firstRegistration).getFullYear()
     : null;
@@ -203,6 +214,62 @@ export default async function CarDetailsPage({
               </h2>
               <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 sm:text-base">
                 {car.description || l.carDetailsPage.missingDescription}
+              </p>
+            </section>
+
+            <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+                    {l.carDetailsPage.pickupLocation}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-black tracking-tight">
+                    {l.carDetailsPage.findTheCar}
+                  </h2>
+                  <p className="mt-2 flex items-start gap-2 text-sm text-slate-600">
+                    <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
+                    <span>{location}</span>
+                  </p>
+                </div>
+
+                <Link
+                  href={googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                >
+                  {l.carDetailsPage.openInGoogleMaps}
+                  <ExternalLink className="h-4 w-4" />
+                </Link>
+              </div>
+
+              {googleMapsEmbedUrl ? (
+                <iframe
+                  title={l.carDetailsPage.mapTitle(carName)}
+                  src={googleMapsEmbedUrl}
+                  className="h-72 w-full border-0 sm:h-80"
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              ) : (
+                <div className="flex min-h-64 items-center justify-center border-t border-slate-200 bg-slate-950 px-6 py-10 text-center text-white">
+                  <div className="max-w-md">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/15 text-blue-300">
+                      <MapPin className="h-6 w-6" />
+                    </div>
+                    <p className="mt-4 font-bold">
+                      {l.carDetailsPage.mapUnavailable}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      {l.carDetailsPage.mapUnavailableDescription}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <p className="border-t border-slate-200 bg-slate-50 px-5 py-3 text-xs leading-5 text-slate-500 sm:px-7">
+                {l.carDetailsPage.handoverLocationNote}
               </p>
             </section>
 
