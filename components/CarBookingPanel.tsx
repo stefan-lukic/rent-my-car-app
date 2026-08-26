@@ -27,13 +27,13 @@ interface CarBookingPanelProps {
 
 const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
+const getUtcCalendarTime = (date: Date) =>
+  Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+
 const toLocalCalendarDate = (value: string) => {
   const date = new Date(value);
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 };
-
-const getUtcCalendarTime = (date: Date) =>
-  Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
 
 const serializeCalendarDate = (date: Date) => {
   const year = date.getFullYear();
