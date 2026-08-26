@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import IncomingBookingsSection from './IncomingBookingsSection';
 import { RentalStatus } from '@/types/RentalWithCar';
+import l from '@/helper/en';
 
 vi.mock('next/image', () => ({
   __esModule: true,
@@ -28,6 +29,8 @@ const booking = {
     email: 'ana@example.com',
     contactInfo: '+381601234567',
     images: ['/ana.jpg'],
+    rating: 4.7,
+    ratingCount: 6,
   },
   carLocation: 'City center',
   rentalPeriod: {
@@ -46,6 +49,7 @@ describe('IncomingBookingsSection', () => {
 
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
     expect(screen.getByText('Ana Jovanovic')).toBeInTheDocument();
+    expect(screen.getByText(/4\.7 \(6 ratings\)/)).toBeInTheDocument();
     expect(screen.getAllByText('Upcoming')).toHaveLength(2);
     expect(screen.getByText('01 Sept 2026')).toBeInTheDocument();
     expect(screen.getByText('05 Sept 2026')).toBeInTheDocument();
@@ -166,6 +170,9 @@ describe('IncomingBookingsSection', () => {
     await user.click(screen.getByRole('tab', { name: /Completed/ }));
 
     expect(screen.getByText('BMW M3')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: l.reviews.rateClient })
+    ).toBeInTheDocument();
     expect(screen.queryByText('BMW X5')).not.toBeInTheDocument();
   });
 

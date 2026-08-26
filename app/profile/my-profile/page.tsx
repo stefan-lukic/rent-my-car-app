@@ -20,7 +20,7 @@ export default async function MyProfilePage() {
     await connectToDatabase();
 
     const userDocument = await User.findById(session.user.id)
-      .select('name email contactInfo images rating createdAt')
+      .select('name email contactInfo images rating ratingCount createdAt')
       .lean();
 
     if (!userDocument) {

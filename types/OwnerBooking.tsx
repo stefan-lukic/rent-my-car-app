@@ -1,4 +1,5 @@
 import { RentalStatus } from './RentalWithCar';
+import type { OwnerReview } from './Review';
 
 export type OwnerBooking = {
   _id: string;
@@ -16,6 +17,8 @@ export type OwnerBooking = {
     email: string;
     contactInfo?: string;
     images?: string[];
+    rating?: number;
+    ratingCount?: number;
   } | null;
   carLocation: string;
   rentalPeriod: {
@@ -24,4 +27,5 @@ export type OwnerBooking = {
   };
   totalCost: number;
   status?: RentalStatus;
+  ownerReview?: OwnerReview;
 };

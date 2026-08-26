@@ -5,6 +5,7 @@ export interface MockUserOverrides {
   contactInfo?: string;
   images?: string[];
   rating?: number;
+  ratingCount?: number;
   createdAt?: string;
 }
 
@@ -15,6 +16,7 @@ export const createMockUser = (overrides?: MockUserOverrides) => ({
   contactInfo: '+381 60 123 4567',
   images: ['/avatar.jpg'],
   rating: 4.8,
+  ratingCount: 12,
   createdAt: '2024-01-15T00:00:00.000Z',
   ...overrides,
 });

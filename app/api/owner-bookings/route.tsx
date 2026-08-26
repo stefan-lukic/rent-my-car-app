@@ -17,7 +17,7 @@ export async function GET() {
     const bookings = await Rental.find({ renter: session.user.id })
       .sort({ 'rentalPeriod.startDate': 1 })
       .populate('car', 'make carModel images city carLocation')
-      .populate('client', 'name email contactInfo images')
+      .populate('client', 'name email contactInfo images rating ratingCount')
       .lean();
 
     return NextResponse.json(bookings);

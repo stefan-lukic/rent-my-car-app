@@ -9,6 +9,7 @@ interface RenterCardProps {
     _id: string;
     name: string;
     rating: number;
+    ratingCount?: number;
     images?: string[];
     profilePicture?: string;
   };
@@ -56,6 +57,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
               <Star className="h-3.5 w-3.5 fill-current" />
               <span className="font-semibold text-slate-600">
                 {renter.rating.toFixed(1)}
+                {renter.ratingCount ? ` (${renter.ratingCount})` : ''}
               </span>
             </span>
           )}

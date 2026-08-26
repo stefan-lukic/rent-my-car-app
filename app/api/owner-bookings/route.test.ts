@@ -59,7 +59,7 @@ describe('GET /api/owner-bookings', () => {
     );
     expect(mocks.populateClient).toHaveBeenCalledWith(
       'client',
-      'name email contactInfo images'
+      'name email contactInfo images rating ratingCount'
     );
     expect(body).toEqual(bookings);
   });

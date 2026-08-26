@@ -50,7 +50,9 @@ const ProfilePage = ({
     },
     {
       icon: Star,
-      value: (user.rating ?? 0).toFixed(1),
+      value: user.ratingCount
+        ? (user.rating ?? 0).toFixed(1)
+        : l.profile.noRatingYet,
       label: l.profile.rating,
     },
   ];

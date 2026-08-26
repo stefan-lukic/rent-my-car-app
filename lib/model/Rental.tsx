@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
+import type { ClientReview, OwnerReview } from '@/types/Review';
 
 export interface IRental extends Document {
   _id: string;
@@ -14,6 +15,8 @@ export interface IRental extends Document {
   status: 'active' | 'cancelled';
   cancelledAt?: Date;
   cancelledBy?: Schema.Types.ObjectId;
+  clientReview?: ClientReview<Date>;
+  ownerReview?: OwnerReview<Date>;
 }
 
 const rentalSchema: Schema<IRental> = new Schema(
@@ -34,6 +37,15 @@ const rentalSchema: Schema<IRental> = new Schema(
     },
     cancelledAt: { type: Date },
     cancelledBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    clientReview: {
+      carRating: { type: Number, min: 1, max: 5 },
+      ownerRating: { type: Number, min: 1, max: 5 },
+      submittedAt: { type: Date },
+    },
+    ownerReview: {
+      clientRating: { type: Number, min: 1, max: 5 },
+      submittedAt: { type: Date },
+    },
   },
   { timestamps: true }
 );

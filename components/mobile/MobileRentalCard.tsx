@@ -8,6 +8,10 @@ interface MobileRentalCardProps {
   showStatus?: boolean;
   onCancel?: (rentalId: string) => void;
   currentDate: string;
+  onReviewed?: (
+    rentalId: string,
+    review: NonNullable<RentalWithCar['clientReview']>
+  ) => void;
 }
 
 const MobileRentalCard = (props: MobileRentalCardProps) => (

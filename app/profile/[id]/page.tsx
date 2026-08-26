@@ -126,7 +126,9 @@ export default async function RenterProfilePage({
                   {rating > 0 ? rating.toFixed(1) : l.profile.noRatingYet}
                 </p>
                 <p className="mt-0.5 text-xs font-semibold text-slate-500">
-                  {l.profile.rating}
+                  {renter.ratingCount
+                    ? `${renter.ratingCount} ${l.reviews.ratings}`
+                    : l.profile.rating}
                 </p>
               </div>
 

@@ -11,6 +11,7 @@ import {
   Fuel,
   Gauge,
   MapPin,
+  Star,
   Users,
   Route,
   X,
@@ -210,6 +211,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                   <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
                   <span>{location}</span>
                 </p>
+                {car.ratingCount ? (
+                  <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    {car.rating?.toFixed(1)} ({car.ratingCount})
+                  </p>
+                ) : null}
               </div>
 
               <div className="flex-shrink-0 rounded-2xl bg-blue-50 px-4 py-3 text-right">
