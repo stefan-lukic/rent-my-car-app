@@ -22,6 +22,8 @@ export interface CarDetailsData {
   images: string[];
   pricePerDay: number;
   description?: string;
+  rating?: number;
+  ratingCount?: number;
   renter: string;
   owner: CarDetailsOwner | null;
   bookedPeriods: Array<{

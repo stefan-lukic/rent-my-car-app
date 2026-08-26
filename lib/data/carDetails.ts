@@ -43,6 +43,8 @@ export const getCarDetails = cache(
       images: car.images ?? [],
       pricePerDay: car.pricePerDay,
       description: car.description,
+      rating: car.rating,
+      ratingCount: car.ratingCount,
       renter: ownerId ?? String(car.renter),
       owner: ownerId
         ? {
