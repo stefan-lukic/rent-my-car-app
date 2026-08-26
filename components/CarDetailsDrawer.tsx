@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   CalendarDays,
   CarFront,
@@ -27,6 +28,8 @@ export interface CarDetailsDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
 
 interface CarSpec {
@@ -41,6 +44,8 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   isOpen,
   onClose,
   onBookNow,
+  startDate,
+  endDate,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -54,6 +59,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const images = car.images ?? [];
   const totalImages = images.length;
   const location = [car.city, car.carLocation].filter(Boolean).join(', ');
+  const detailsQuery = new URLSearchParams();
+  if (startDate) detailsQuery.set('start', startDate.toISOString());
+  if (endDate) detailsQuery.set('end', endDate.toISOString());
+  const detailsHref = `/cars/${car._id}${
+    detailsQuery.size > 0 ? `?${detailsQuery.toString()}` : ''
+  }`;
   const specs: CarSpec[] = [
     { icon: Fuel, label: l.carSpecs.engine, value: car.engine },
     { icon: Gauge, label: l.carSpecs.power, value: `${car.power} HP` },
@@ -106,12 +117,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               {l.drawer.carDetails}
             </p>
             <p className="mt-0.5 text-xs text-slate-500">
-              Review the vehicle before booking
+              {l.carDetailsPage.reviewBeforeBooking}
             </p>
           </div>
           <button
             type="button"
-            aria-label="Close car details"
+            aria-label={l.carDetailsPage.closeDetails}
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
@@ -141,7 +152,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               <>
                 <button
                   type="button"
-                  aria-label="Previous car image"
+                  aria-label={l.carDetailsPage.previousImage}
                   onClick={() =>
                     setCurrentImageIndex((index) => Math.max(index - 1, 0))
                   }
@@ -152,7 +163,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 </button>
                 <button
                   type="button"
-                  aria-label="Next car image"
+                  aria-label={l.carDetailsPage.nextImage}
                   onClick={() =>
                     setCurrentImageIndex((index) =>
                       Math.min(index + 1, totalImages - 1)
@@ -169,7 +180,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     <button
                       type="button"
                       key={`${image}-${index}`}
-                      aria-label={`Show image ${index + 1}`}
+                      aria-label={l.carDetailsPage.showImage(index + 1)}
                       onClick={() => setCurrentImageIndex(index)}
                       className={`h-1.5 rounded-full transition-all ${
                         index === currentImageIndex
@@ -187,7 +198,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             <section className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <p className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
-                  Available for rent
+                  {l.carDetailsPage.availableForRent}
                 </p>
                 <h2
                   id="car-details-title"
@@ -213,7 +224,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
             <section>
               <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                Vehicle overview
+                {l.carDetailsPage.vehicleOverview}
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 {specs.map(({ icon: Icon, label, value }) => (
@@ -248,7 +259,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
             <section>
               <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                Listed by
+                {l.carDetailsPage.listedBy}
               </h3>
               {renter ? (
                 <RenterCard renter={renter} />
@@ -262,6 +273,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
         </div>
 
         <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 py-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6">
+          <Link
+            href={detailsHref}
+            className="col-span-2 flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          >
+            {l.carDetailsPage.viewFullDetails}
+          </Link>
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}

@@ -51,6 +51,13 @@ export const runCarDetailsDrawerSharedTests = (
     expect(onBookNow).toHaveBeenCalled();
   });
 
+  it('links to the full car details page', () => {
+    render(<Component {...defaultProps} />);
+    expect(
+      screen.getByRole('link', { name: 'View full details' })
+    ).toHaveAttribute('href', `/cars/${mockCar._id}`);
+  });
+
   it('opens How It Works modal when button is clicked', async () => {
     const user = userEvent.setup();
     render(<Component {...defaultProps} />);

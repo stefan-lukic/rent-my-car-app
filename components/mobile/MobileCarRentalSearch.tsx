@@ -231,6 +231,8 @@ const MobileCarRentalSearch = ({
             isOpen={modals.details}
             onClose={closeDetails}
             onBookNow={() => setModals({ details: false, booking: true })}
+            startDate={form.getValues('startDate')}
+            endDate={form.getValues('endDate')}
           />
           <BookingDialog
             car={selectedCar}

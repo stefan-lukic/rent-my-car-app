@@ -218,6 +218,33 @@ export function OwnerProfileSkeleton() {
   );
 }
 
+export function DetailPageSkeleton() {
+  return (
+    <LoadingRegion>
+      <div className="min-h-screen bg-slate-50">
+        <div className="border-b border-slate-100 bg-white px-4 py-4">
+          <Skeleton className="mx-auto h-10 max-w-7xl" />
+        </div>
+        <div className="bg-slate-950 px-4 py-12">
+          <div className="mx-auto max-w-7xl space-y-5">
+            <Skeleton className="h-5 w-32 bg-slate-700" />
+            <Skeleton className="h-12 w-2/3 max-w-xl bg-slate-700" />
+            <Skeleton className="h-5 w-48 bg-slate-700" />
+          </div>
+        </div>
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="space-y-8">
+            <Skeleton className="aspect-[16/9] w-full rounded-3xl" />
+            <Skeleton className="h-64 w-full rounded-3xl bg-white" />
+            <Skeleton className="h-48 w-full rounded-3xl bg-white" />
+          </div>
+          <Skeleton className="h-[520px] w-full rounded-3xl bg-white" />
+        </div>
+      </div>
+    </LoadingRegion>
+  );
+}
+
 export function EditProfileSkeleton() {
   return (
     <LoadingRegion>
