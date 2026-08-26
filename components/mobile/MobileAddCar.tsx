@@ -19,6 +19,7 @@ import { CarCity } from '@/lib/model/car/CarCity';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarType } from '@/lib/model/car/CarType';
+import { CAR_FIELD_LIMITS } from '@/lib/model/car/carValidation';
 
 const sectionClasses =
   'rounded-2xl border border-slate-200 bg-white p-5 shadow-sm';
@@ -74,6 +75,7 @@ export default function MobileAddCar() {
               value={carData.carModel}
               onChange={handleInputChange}
               placeholder={l.cars.egCClass}
+              maxLength={CAR_FIELD_LIMITS.modelLength}
               required
             />
             <div className="grid grid-cols-2 gap-3">
@@ -96,6 +98,11 @@ export default function MobileAddCar() {
               <FormInput
                 label={l.cars.horsepowerMobile}
                 name="power"
+                type="number"
+                min={CAR_FIELD_LIMITS.horsepower.min}
+                max={CAR_FIELD_LIMITS.horsepower.max}
+                step="1"
+                inputMode="numeric"
                 value={carData.power}
                 onChange={handleInputChange}
                 placeholder={l.cars.eg150}
@@ -105,9 +112,10 @@ export default function MobileAddCar() {
                 label={l.cars.seats}
                 name="seats"
                 type="number"
-                min="1"
-                max="9"
+                min={CAR_FIELD_LIMITS.seats.min}
+                max={CAR_FIELD_LIMITS.seats.max}
                 step="1"
+                inputMode="numeric"
                 value={carData.seats}
                 onChange={handleInputChange}
                 required
@@ -115,9 +123,27 @@ export default function MobileAddCar() {
               <FormInput
                 label={l.cars.avgConsumption}
                 name="averageConsumption"
+                type="number"
+                min={CAR_FIELD_LIMITS.averageConsumption.min}
+                max={CAR_FIELD_LIMITS.averageConsumption.max}
+                step="0.1"
+                inputMode="decimal"
                 value={carData.averageConsumption}
                 onChange={handleInputChange}
                 placeholder={l.cars.eg65L}
+                required
+              />
+              <FormInput
+                label={l.cars.mileage}
+                name="milage"
+                type="number"
+                min={CAR_FIELD_LIMITS.mileage.min}
+                max={CAR_FIELD_LIMITS.mileage.max}
+                step="1"
+                inputMode="numeric"
+                value={carData.milage}
+                onChange={handleInputChange}
+                placeholder={l.cars.eg50000}
                 required
               />
             </div>
@@ -172,7 +198,10 @@ export default function MobileAddCar() {
                 label={l.cars.pricePerDayLabel}
                 name="pricePerDay"
                 type="number"
-                min="1"
+                min={CAR_FIELD_LIMITS.pricePerDay.min}
+                max={CAR_FIELD_LIMITS.pricePerDay.max}
+                step="0.01"
+                inputMode="decimal"
                 value={carData.pricePerDay}
                 onChange={handleInputChange}
                 placeholder={l.cars.eg45}
@@ -190,6 +219,7 @@ export default function MobileAddCar() {
                 placeholder={l.cars.descriptionPlaceholder}
                 value={carData.description}
                 onChange={handleInputChange}
+                maxLength={CAR_FIELD_LIMITS.descriptionLength}
                 className={`${inputClasses} resize-none`}
               />
             </div>

@@ -67,6 +67,7 @@ describe('useAddCar', () => {
     expect(result.current.carData.images).toEqual([]);
     expect(result.current.carData.city).toBe('');
     expect(result.current.carData.firstRegistration).toBeNull();
+    expect(result.current.carData.milage).toBe('');
     expect(result.current.isSubmitting).toBe(false);
     expect(result.current.showSuccess).toBe(false);
   });
@@ -97,10 +98,15 @@ describe('useAddCar', () => {
       result.current.handleInputChange(
         createTextChangeEvent('pricePerDay', '55')
       );
+
+      result.current.handleInputChange(
+        createTextChangeEvent('milage', '50000')
+      );
     });
 
     expect(result.current.carData.carModel).toBe('C-Class');
     expect(result.current.carData.pricePerDay).toBe('55');
+    expect(result.current.carData.milage).toBe('50000');
   });
 
   it('adds selected image files and removes an image by id', () => {

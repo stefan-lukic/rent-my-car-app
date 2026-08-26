@@ -8,6 +8,11 @@ import { CarCity } from '@/lib/model/car/CarCity';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import User from '@/lib/model/User';
+import {
+  CAR_FIELD_LIMITS,
+  CAR_MODEL_PATTERN,
+  isNumberInRange,
+} from '@/lib/model/car/carValidation';
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -108,16 +113,101 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Invalid city' }, { status: 400 });
     }
 
+    const carModel = String(carData.carModel).trim();
+    if (
+      carModel.length > CAR_FIELD_LIMITS.modelLength ||
+      !CAR_MODEL_PATTERN.test(carModel)
+    ) {
+      return NextResponse.json(
+        { message: 'Invalid car model' },
+        { status: 400 }
+      );
+    }
+
+    if (
+      !isNumberInRange(
+        String(carData.power),
+        CAR_FIELD_LIMITS.horsepower.min,
+        CAR_FIELD_LIMITS.horsepower.max,
+        true
+      )
+    ) {
+      return NextResponse.json(
+        { message: 'Horsepower must be a whole number between 1 and 2000' },
+        { status: 400 }
+      );
+    }
+
     const seats = Number(carData.seats);
-    if (!Number.isInteger(seats) || seats < 1 || seats > 9) {
+    if (
+      !isNumberInRange(
+        String(carData.seats),
+        CAR_FIELD_LIMITS.seats.min,
+        CAR_FIELD_LIMITS.seats.max,
+        true
+      )
+    ) {
       return NextResponse.json(
         { message: 'Seats must be a whole number between 1 and 9' },
         { status: 400 }
       );
     }
 
+    if (
+      !isNumberInRange(
+        String(carData.averageConsumption),
+        CAR_FIELD_LIMITS.averageConsumption.min,
+        CAR_FIELD_LIMITS.averageConsumption.max
+      )
+    ) {
+      return NextResponse.json(
+        { message: 'Average consumption must be between 0.1 and 100' },
+        { status: 400 }
+      );
+    }
+
+    if (
+      !isNumberInRange(
+        String(carData.pricePerDay),
+        CAR_FIELD_LIMITS.pricePerDay.min,
+        CAR_FIELD_LIMITS.pricePerDay.max
+      )
+    ) {
+      return NextResponse.json(
+        { message: 'Price per day must be between 1 and 100000' },
+        { status: 400 }
+      );
+    }
+
+    if (
+      !isNumberInRange(
+        String(carData.milage),
+        CAR_FIELD_LIMITS.mileage.min,
+        CAR_FIELD_LIMITS.mileage.max,
+        true
+      )
+    ) {
+      return NextResponse.json(
+        { message: 'Mileage must be a valid whole number' },
+        { status: 400 }
+      );
+    }
+
+    if (
+      String(carData.carLocation).trim().length >
+        CAR_FIELD_LIMITS.locationLength ||
+      String(carData.description).trim().length >
+        CAR_FIELD_LIMITS.descriptionLength
+    ) {
+      return NextResponse.json(
+        { message: 'Car location or description is too long' },
+        { status: 400 }
+      );
+    }
+
     const newCar = new Car({
       ...carData,
+      carModel,
       seats,
       images: imageBase64Array,
       renter: session.user.id,
