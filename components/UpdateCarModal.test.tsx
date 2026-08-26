@@ -17,6 +17,7 @@ const car = {
   city: 'Belgrade',
   carLocation: 'New Belgrade',
   averageConsumption: '7.5',
+  milage: 50000,
   pricePerDay: 90,
   description: 'Family SUV',
 } as ICar;
@@ -51,8 +52,17 @@ describe('UpdateCarModal', () => {
     renderModal();
 
     expect(screen.getByLabelText(l.cars.model)).toHaveValue('X5');
-    expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue('250');
+    expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue(250);
+    expect(screen.getByLabelText(l.cars.horsepower)).toHaveAttribute(
+      'type',
+      'number'
+    );
+    expect(screen.getByLabelText(l.cars.avgConsumption)).toHaveAttribute(
+      'type',
+      'number'
+    );
     expect(screen.getByLabelText(l.cars.seats)).toHaveValue(5);
+    expect(screen.getByLabelText(l.cars.mileage)).toHaveValue(50000);
 
     expect(screen.getByLabelText(l.cars.carLocation)).toHaveValue(
       'New Belgrade'

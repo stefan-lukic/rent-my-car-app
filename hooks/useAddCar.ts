@@ -19,7 +19,7 @@ export type CarData = {
   firstRegistration: Date | null;
   images: CarImage[];
   pricePerDay: string;
-  milage: number;
+  milage: string;
   averageConsumption: string;
   description: string;
 };
@@ -41,7 +41,7 @@ const initialCarData: CarData = {
   firstRegistration: null as Date | null,
   images: [] as CarImage[],
   pricePerDay: '',
-  milage: 0,
+  milage: '',
   averageConsumption: '',
   description: '',
 };

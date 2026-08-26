@@ -10,6 +10,11 @@ import { CarCity } from '@/lib/model/car/CarCity';
 import { CarEngineType } from '@/lib/model/car/CarEngineType';
 import { CarMake } from '@/lib/model/car/CarMake';
 import { CarType } from '@/lib/model/car/CarType';
+import {
+  CAR_FIELD_LIMITS,
+  CAR_MODEL_PATTERN,
+  isNumberInRange,
+} from '@/lib/model/car/carValidation';
 
 const updateCarSchema = z
   .object({
@@ -17,16 +22,56 @@ const updateCarSchema = z
       message: 'Invalid car ID',
     }),
     make: z.nativeEnum(CarMake),
-    carModel: z.string().trim().min(1).max(100),
+    carModel: z
+      .string()
+      .trim()
+      .min(1)
+      .max(CAR_FIELD_LIMITS.modelLength)
+      .regex(CAR_MODEL_PATTERN),
     engine: z.nativeEnum(CarEngineType),
-    power: z.string().trim().min(1).max(50),
-    seats: z.coerce.number().int().min(1).max(9),
+    power: z
+      .string()
+      .trim()
+      .refine((value) =>
+        isNumberInRange(
+          value,
+          CAR_FIELD_LIMITS.horsepower.min,
+          CAR_FIELD_LIMITS.horsepower.max,
+          true
+        )
+      ),
+    seats: z.coerce
+      .number()
+      .int()
+      .min(CAR_FIELD_LIMITS.seats.min)
+      .max(CAR_FIELD_LIMITS.seats.max),
     carType: z.nativeEnum(CarType),
     city: z.nativeEnum(CarCity),
-    averageConsumption: z.string().trim().min(1).max(50),
-    carLocation: z.string().trim().min(1).max(200),
-    pricePerDay: z.coerce.number().positive().max(100000),
-    description: z.string().trim().max(2000).optional(),
+    averageConsumption: z
+      .string()
+      .trim()
+      .refine((value) =>
+        isNumberInRange(
+          value,
+          CAR_FIELD_LIMITS.averageConsumption.min,
+          CAR_FIELD_LIMITS.averageConsumption.max
+        )
+      ),
+    milage: z.coerce
+      .number()
+      .int()
+      .min(CAR_FIELD_LIMITS.mileage.min)
+      .max(CAR_FIELD_LIMITS.mileage.max),
+    carLocation: z.string().trim().min(1).max(CAR_FIELD_LIMITS.locationLength),
+    pricePerDay: z.coerce
+      .number()
+      .min(CAR_FIELD_LIMITS.pricePerDay.min)
+      .max(CAR_FIELD_LIMITS.pricePerDay.max),
+    description: z
+      .string()
+      .trim()
+      .max(CAR_FIELD_LIMITS.descriptionLength)
+      .optional(),
   })
   .strict();
 

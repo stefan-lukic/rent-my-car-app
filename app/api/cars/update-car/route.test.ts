@@ -34,7 +34,8 @@ const validUpdate = {
   seats: 5,
   carType: 'SALOON',
   city: 'Belgrade',
-  averageConsumption: '7.2 L/100km',
+  averageConsumption: '7.2',
+  milage: 50000,
   carLocation: 'City center',
   pricePerDay: 65,
   description: 'Comfortable and well maintained.',
@@ -93,7 +94,8 @@ describe('PUT /api/cars/update-car', () => {
         seats: 5,
         carType: 'SALOON',
         city: 'Belgrade',
-        averageConsumption: '7.2 L/100km',
+        averageConsumption: '7.2',
+        milage: 50000,
         carLocation: 'City center',
         pricePerDay: 65,
         description: 'Comfortable and well maintained.',
@@ -106,6 +108,26 @@ describe('PUT /api/cars/update-car', () => {
     mocks.getServerSession.mockResolvedValue({ user: { id: 'user-a' } });
 
     const response = await PUT(createRequest({ ...validUpdate, seats: 10 }));
+
+    expect(response.status).toBe(400);
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
+    expect(mocks.findByIdAndUpdate).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['horsepower containing letters', { power: 'fast' }],
+    ['decimal horsepower', { power: '150.5' }],
+    ['invalid average consumption', { averageConsumption: 'low' }],
+    ['average consumption above the limit', { averageConsumption: '101' }],
+    ['negative mileage', { milage: -1 }],
+    ['invalid model characters', { carModel: '!!!' }],
+    ['negative price', { pricePerDay: -1 }],
+  ])('rejects %s', async (_caseName, invalidFields) => {
+    mocks.getServerSession.mockResolvedValue({ user: { id: 'user-a' } });
+
+    const response = await PUT(
+      createRequest({ ...validUpdate, ...invalidFields })
+    );
 
     expect(response.status).toBe(400);
     expect(mocks.connectToDatabase).not.toHaveBeenCalled();

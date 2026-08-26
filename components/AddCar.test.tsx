@@ -51,8 +51,8 @@ const carData = {
   firstRegistration: null,
   images: [],
   pricePerDay: '45',
-  milage: 0,
-  averageConsumption: '6.5 L/100km',
+  milage: '50000',
+  averageConsumption: '6.5',
   description: 'Reliable car.',
 };
 
@@ -79,8 +79,17 @@ describe('AddCar', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByLabelText(l.cars.model)).toHaveValue('C-Class');
-    expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue('150');
+    expect(screen.getByLabelText(l.cars.horsepower)).toHaveValue(150);
+    expect(screen.getByLabelText(l.cars.horsepower)).toHaveAttribute(
+      'type',
+      'number'
+    );
+    expect(screen.getByLabelText(l.cars.avgConsumption)).toHaveAttribute(
+      'type',
+      'number'
+    );
     expect(screen.getByLabelText(l.cars.seats)).toHaveValue(5);
+    expect(screen.getByLabelText(l.cars.mileage)).toHaveValue(50000);
     expect(screen.getByLabelText(l.cars.carLocation)).toHaveValue('Liman 3');
     expect(screen.getByLabelText(/Price Per Day/)).toHaveValue(45);
     expect(screen.getByLabelText(l.common.description)).toHaveValue(

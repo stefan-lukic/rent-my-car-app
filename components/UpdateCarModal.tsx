@@ -12,6 +12,10 @@ import FormInput, {
 import FormSelect from '@/components/UI/FormSelect';
 import AddressAutocompleteInput from '@/components/UI/AddressAutocompleteInput';
 import l from '@/helper/en';
+import {
+  CAR_FIELD_LIMITS,
+  normalizeLegacyNumericValue,
+} from '@/lib/model/car/carValidation';
 
 type UpdateCarFields = Pick<
   ICar,
@@ -23,6 +27,7 @@ type UpdateCarFields = Pick<
   | 'carType'
   | 'city'
   | 'averageConsumption'
+  | 'milage'
   | 'carLocation'
   | 'pricePerDay'
   | 'description'
@@ -45,11 +50,12 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
     make: car.make,
     carModel: car.carModel,
     engine: car.engine,
-    power: car.power,
+    power: normalizeLegacyNumericValue(car.power),
     seats: car.seats ?? 5,
     carType: car.carType,
     city: car.city,
-    averageConsumption: car.averageConsumption,
+    averageConsumption: normalizeLegacyNumericValue(car.averageConsumption),
+    milage: car.milage,
     carLocation: car.carLocation,
     pricePerDay: car.pricePerDay,
     description: car.description,
@@ -123,6 +129,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               value={updatedCar.carModel}
               onChange={handleInputChange}
               placeholder={l.cars.egCClass}
+              maxLength={CAR_FIELD_LIMITS.modelLength}
               required
             />
             <FormSelect
@@ -144,6 +151,11 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             <FormInput
               label={l.cars.horsepower}
               name="power"
+              type="number"
+              min={CAR_FIELD_LIMITS.horsepower.min}
+              max={CAR_FIELD_LIMITS.horsepower.max}
+              step="1"
+              inputMode="numeric"
               value={updatedCar.power}
               onChange={handleInputChange}
               placeholder={l.cars.eg150}
@@ -153,9 +165,10 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               label={l.cars.seats}
               name="seats"
               type="number"
-              min="1"
-              max="9"
+              min={CAR_FIELD_LIMITS.seats.min}
+              max={CAR_FIELD_LIMITS.seats.max}
               step="1"
+              inputMode="numeric"
               value={updatedCar.seats}
               onChange={handleInputChange}
               required
@@ -163,9 +176,27 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             <FormInput
               label={l.cars.avgConsumption}
               name="averageConsumption"
+              type="number"
+              min={CAR_FIELD_LIMITS.averageConsumption.min}
+              max={CAR_FIELD_LIMITS.averageConsumption.max}
+              step="0.1"
+              inputMode="decimal"
               value={updatedCar.averageConsumption}
               onChange={handleInputChange}
               placeholder={l.cars.eg65L}
+              required
+            />
+            <FormInput
+              label={l.cars.mileage}
+              name="milage"
+              type="number"
+              min={CAR_FIELD_LIMITS.mileage.min}
+              max={CAR_FIELD_LIMITS.mileage.max}
+              step="1"
+              inputMode="numeric"
+              value={updatedCar.milage}
+              onChange={handleInputChange}
+              placeholder={l.cars.eg50000}
               required
             />
           </div>
@@ -191,6 +222,10 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               label={l.cars.pricePerDayLabel}
               name="pricePerDay"
               type="number"
+              min={CAR_FIELD_LIMITS.pricePerDay.min}
+              max={CAR_FIELD_LIMITS.pricePerDay.max}
+              step="0.01"
+              inputMode="decimal"
               value={updatedCar.pricePerDay}
               onChange={handleInputChange}
               placeholder={l.cars.eg45}
@@ -206,6 +241,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
               placeholder={l.common.clickToUpload}
               value={updatedCar.description}
               onChange={handleInputChange}
+              maxLength={CAR_FIELD_LIMITS.descriptionLength}
               className={`${inputClasses} resize-none`}
             />
           </div>
