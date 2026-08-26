@@ -43,7 +43,7 @@ describe('getCarDetails', () => {
     mocks.lean.mockReturnValue({ exec: mocks.exec });
   });
 
-  it('maps the car rating and rating count to the details page data', async () => {
+  it('maps the location and rating data used by the details page', async () => {
     mocks.exec.mockResolvedValue({
       _id: { toString: () => 'car-1' },
       make: 'TOYOTA',
@@ -73,7 +73,12 @@ describe('getCarDetails', () => {
     const result = await getCarDetails('507f1f77bcf86cd799439011');
 
     expect(result).toEqual(
-      expect.objectContaining({ rating: 4.7, ratingCount: 3 })
+      expect.objectContaining({
+        city: 'Novi Sad',
+        carLocation: 'Center',
+        rating: 4.7,
+        ratingCount: 3,
+      })
     );
   });
 

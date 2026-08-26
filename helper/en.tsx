@@ -489,6 +489,15 @@ const l = {
     description: 'Description',
     missingDescription:
       'The owner has not added a description yet. Review the vehicle specifications and contact the owner after booking for handover details.',
+    pickupLocation: 'Pickup location',
+    findTheCar: 'Find the car on the map',
+    openInGoogleMaps: 'Open in Google Maps',
+    mapTitle: (carName: string) => `${carName} pickup location`,
+    mapUnavailable: 'Map preview is currently unavailable',
+    mapUnavailableDescription:
+      'You can still open this location directly in Google Maps.',
+    handoverLocationNote:
+      'Confirm the exact pickup point and handover details with the owner before your trip.',
     yourHost: 'Your host',
     meetOwner: 'Meet the car owner',
     carRating: 'Car rating',
