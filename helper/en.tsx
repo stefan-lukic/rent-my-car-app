@@ -313,6 +313,9 @@ const l = {
 
   navigation: {
     home: 'Home',
+    explore: 'Explore',
+    listCar: 'List a car',
+    mobileNavigation: 'Mobile navigation',
     signIn: 'Sign In',
     signInMobile: 'Sign-in',
     signUpMobile: 'Sign-up',
