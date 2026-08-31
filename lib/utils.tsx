@@ -9,31 +9,45 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const authFormSchema = (type: string) =>
-  z.object({
-    name:
-      type === 'sign-in'
-        ? z.string().optional()
-        : z.string().min(3, {
-            message: l.validation.nameMinLength,
-          }),
-    email: z.string().email({ message: l.validation.invalidEmail }),
-    password: z.string().min(8, {
-      message:
+  z
+    .object({
+      name:
         type === 'sign-in'
-          ? l.validation.invalidPassword
-          : l.validation.passwordMinLength,
-    }),
-    phoneNumber:
-      type === 'sign-in'
-        ? z.string().optional()
-        : z
-            .string()
-            .trim()
-            .min(1, { message: l.validation.phoneNumberRequired })
-            .refine(isValidPhoneNumber, {
-              message: l.validation.invalidPhoneNumber,
+          ? z.string().optional()
+          : z.string().min(3, {
+              message: l.validation.nameMinLength,
             }),
-  });
+      email: z.string().email({ message: l.validation.invalidEmail }),
+      password: z.string().min(8, {
+        message:
+          type === 'sign-in'
+            ? l.validation.invalidPassword
+            : l.validation.passwordMinLength,
+      }),
+      confirmPassword:
+        type === 'sign-in'
+          ? z.string().optional()
+          : z.string().min(1, { message: l.auth.confirmPasswordRequired }),
+      phoneNumber:
+        type === 'sign-in'
+          ? z.string().optional()
+          : z
+              .string()
+              .trim()
+              .min(1, { message: l.validation.phoneNumberRequired })
+              .refine(isValidPhoneNumber, {
+                message: l.validation.invalidPhoneNumber,
+              }),
+    })
+    .superRefine((data, context) => {
+      if (type === 'sign-up' && data.password !== data.confirmPassword) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['confirmPassword'],
+          message: l.auth.passwordsDoNotMatch,
+        });
+      }
+    });
 
 export const renterSchema = z.object({
   title: z.string().nonempty(l.errors.titleRequired),

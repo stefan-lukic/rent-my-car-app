@@ -14,6 +14,7 @@ interface CustomInput {
   placeholder?: string;
   type: string;
   maxLength?: number;
+  endAdornment?: React.ReactNode;
 }
 
 const CustomInput = ({
@@ -23,6 +24,7 @@ const CustomInput = ({
   placeholder,
   type,
   maxLength,
+  endAdornment,
 }: CustomInput) => {
   return (
     <FormField
@@ -32,24 +34,31 @@ const CustomInput = ({
         <div className="form-item">
           <FormLabel className="form-label">{label}</FormLabel>
           <div className="flex w-full flex-col">
-            <FormControl>
-              {maxLength ? (
-                <Input
-                  type={type}
-                  placeholder={placeholder}
-                  className="input-class min-w-16 max-w-24 placeholder:text-base  placeholder:text-gray-500"
-                  maxLength={maxLength}
-                  {...field}
-                />
-              ) : (
-                <Input
-                  type={type}
-                  placeholder={placeholder}
-                  className="input-class placeholder:text-gray-500"
-                  {...field}
-                />
+            <div className="relative w-full">
+              <FormControl>
+                {maxLength ? (
+                  <Input
+                    type={type}
+                    placeholder={placeholder}
+                    className="input-class min-w-16 max-w-24 placeholder:text-base placeholder:text-gray-500"
+                    maxLength={maxLength}
+                    {...field}
+                  />
+                ) : (
+                  <Input
+                    type={type}
+                    placeholder={placeholder}
+                    className={`input-class placeholder:text-gray-500 ${endAdornment ? 'pr-12' : ''}`}
+                    {...field}
+                  />
+                )}
+              </FormControl>
+              {endAdornment && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {endAdornment}
+                </div>
               )}
-            </FormControl>
+            </div>
             <FormMessage className="form-message mt-2" />
           </div>
         </div>

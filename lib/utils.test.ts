@@ -13,6 +13,7 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      confirmPassword: 'sigurna-lozinka',
       phoneNumber: '+381 60 123 4567',
     });
 
@@ -24,6 +25,7 @@ describe('authFormSchema', () => {
       name: 'Mi',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      confirmPassword: 'sigurna-lozinka',
       phoneNumber: '+381 60 123 4567',
     });
 
@@ -45,6 +47,7 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      confirmPassword: 'sigurna-lozinka',
       phoneNumber: '',
     });
 
@@ -56,6 +59,7 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'marko@example.com',
       password: 'sigurna-lozinka',
+      confirmPassword: 'sigurna-lozinka',
       phoneNumber: 'telefon',
     });
 
@@ -85,10 +89,28 @@ describe('authFormSchema', () => {
       name: 'Marko Markovic',
       email: 'neispravan-email',
       password: 'sigurna-lozinka',
+      confirmPassword: 'sigurna-lozinka',
       phoneNumber: '+381601234567',
     });
 
     expect(result.success).toBe(false);
+  });
+
+  it('odbija registraciju kada se lozinke ne podudaraju', () => {
+    const result = authFormSchema('sign-up').safeParse({
+      name: 'Marko Markovic',
+      email: 'marko@example.com',
+      password: 'sigurna-lozinka',
+      confirmPassword: 'druga-lozinka',
+      phoneNumber: '+381601234567',
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.flatten().fieldErrors.confirmPassword).toContain(
+        'Passwords do not match'
+      );
+    }
   });
 });
 

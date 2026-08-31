@@ -36,13 +36,19 @@ vi.mock('axios', () => ({
 }));
 
 vi.mock('@/lib/utils', () => ({
-  authFormSchema: () =>
-    z.object({
-      name: z.string().optional(),
-      email: z.string().email().optional(),
-      password: z.string().optional(),
-      phoneNumber: z.string().optional(),
-    }),
+  authFormSchema: (type: string) =>
+    z
+      .object({
+        name: z.string().optional(),
+        email: z.string().email().optional(),
+        password: z.string().optional(),
+        confirmPassword: z.string().optional(),
+        phoneNumber: z.string().optional(),
+      })
+      .refine(
+        (data) => type === 'sign-in' || data.password === data.confirmPassword,
+        { path: ['confirmPassword'], message: 'Passwords do not match' }
+      ),
   cn: (...args: any[]) => args.join(' '),
 }));
 
