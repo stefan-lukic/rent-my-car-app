@@ -79,15 +79,9 @@ describe('useCarSearchForm', () => {
     );
 
     act(() => {
-      result.current.form.setValue(
-        'startDate',
-        new Date('2026-08-01T00:00:00.000Z')
-      );
+      result.current.form.setValue('startDate', new Date(2026, 7, 1));
 
-      result.current.form.setValue(
-        'endDate',
-        new Date('2026-08-05T00:00:00.000Z')
-      );
+      result.current.form.setValue('endDate', new Date(2026, 7, 5));
 
       result.current.form.setValue('city', 'Belgrade');
     });
@@ -109,6 +103,9 @@ describe('useCarSearchForm', () => {
     expect(requestUrl).toContain('make=BMW');
     expect(requestUrl).toContain('minPrice=40');
     expect(requestUrl).toContain('minSeats=5');
+    const requestQuery = new URL(requestUrl, 'http://localhost').searchParams;
+    expect(requestQuery.get('start')).toBe('2026-08-01');
+    expect(requestQuery.get('end')).toBe('2026-08-05');
 
     expect(result.current.results.data).toEqual([car]);
     expect(result.current.results.total).toBe(1);
@@ -123,18 +120,12 @@ describe('useCarSearchForm', () => {
     );
 
     act(() => {
-      result.current.form.setValue(
-        'startDate',
-        new Date('2026-08-01T00:00:00.000Z')
-      );
+      result.current.form.setValue('startDate', new Date(2026, 7, 1));
 
-      result.current.form.setValue(
-        'endDate',
-        new Date('2026-08-04T00:00:00.000Z')
-      );
+      result.current.form.setValue('endDate', new Date(2026, 7, 4));
     });
 
-    expect(result.current.daysSelected).toBe(3);
+    expect(result.current.daysSelected).toBe(4);
   });
 
   it('does not create booking when rental dates are missing', async () => {
@@ -167,15 +158,9 @@ describe('useCarSearchForm', () => {
     );
 
     act(() => {
-      result.current.form.setValue(
-        'startDate',
-        new Date('2026-08-01T00:00:00.000Z')
-      );
+      result.current.form.setValue('startDate', new Date(2026, 7, 1));
 
-      result.current.form.setValue(
-        'endDate',
-        new Date('2026-08-03T00:00:00.000Z')
-      );
+      result.current.form.setValue('endDate', new Date(2026, 7, 3));
     });
 
     let bookingResult = false;
@@ -195,6 +180,13 @@ describe('useCarSearchForm', () => {
         method: 'POST',
       })
     );
+    const bookingRequest = vi.mocked(fetch).mock.calls[0][1];
+    expect(JSON.parse(bookingRequest?.body as string)).toEqual({
+      carId: 'car-1',
+      carLocation: 'New Belgrade',
+      startDate: '2026-08-01',
+      endDate: '2026-08-03',
+    });
   });
 
   it('loads renter details when a car is opened', async () => {

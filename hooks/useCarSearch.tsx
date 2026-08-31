@@ -4,6 +4,10 @@ import { ICar } from '@/lib/model/car/Car';
 import { IRenter } from '@/lib/model/User';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import l from '@/helper/en';
+import {
+  countInclusiveCalendarDays,
+  formatCalendarDate,
+} from '@/lib/utils/calendarDate';
 
 export type CarSearchFormValues = {
   city: string;
@@ -41,9 +45,7 @@ export function useCarSearchForm({
   const [startDate, endDate] = form.watch(['startDate', 'endDate']);
 
   const daysSelected =
-    startDate && endDate
-      ? Math.ceil((endDate.getTime() - startDate.getTime()) / 86400000)
-      : 0;
+    startDate && endDate ? countInclusiveCalendarDays(startDate, endDate) : 0;
 
   // JSON.stringify stabilizuje referencu filters objekta kao string
   // kako bi fetchCars bio stabilan između rendera kad se filters nije stvarno promenio
@@ -60,8 +62,8 @@ export function useCarSearchForm({
         const query = new URLSearchParams({
           page: page.toString(),
           limit: '10',
-          start: values.startDate.toISOString(),
-          end: values.endDate.toISOString(),
+          start: formatCalendarDate(values.startDate),
+          end: formatCalendarDate(values.endDate),
         });
         if (values.city) query.set('city', values.city);
 
@@ -125,8 +127,8 @@ export function useCarSearchForm({
         body: JSON.stringify({
           carId: car._id,
           carLocation: car.carLocation,
-          startDate,
-          endDate,
+          startDate: formatCalendarDate(startDate),
+          endDate: formatCalendarDate(endDate),
         }),
       });
 

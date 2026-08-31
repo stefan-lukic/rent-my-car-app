@@ -14,6 +14,10 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import l from '@/helper/en';
+import {
+  countInclusiveCalendarDays,
+  formatCalendarDate,
+} from '@/lib/utils/calendarDate';
 
 interface CarBookingPanelProps {
   carId: string;
@@ -25,21 +29,9 @@ interface CarBookingPanelProps {
   initialEndDate?: string;
 }
 
-const millisecondsPerDay = 24 * 60 * 60 * 1000;
-
-const getUtcCalendarTime = (date: Date) =>
-  Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-
 const toLocalCalendarDate = (value: string) => {
   const date = new Date(value);
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-};
-
-const serializeCalendarDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
 };
 
 const getInitialDate = (value: string | undefined, minimumDate: Date) => {
@@ -86,12 +78,7 @@ export default function CarBookingPanel({
   } | null>(null);
 
   const selectedDays =
-    startDate && endDate
-      ? Math.floor(
-          (getUtcCalendarTime(endDate) - getUtcCalendarTime(startDate)) /
-            millisecondsPerDay
-        ) + 1
-      : 0;
+    startDate && endDate ? countInclusiveCalendarDays(startDate, endDate) : 0;
   const estimatedTotal = selectedDays * pricePerDay;
 
   const overlapsExistingBooking = () =>
@@ -135,8 +122,8 @@ export default function CarBookingPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           carId,
-          startDate: serializeCalendarDate(startDate),
-          endDate: serializeCalendarDate(endDate),
+          startDate: formatCalendarDate(startDate),
+          endDate: formatCalendarDate(endDate),
         }),
       });
       const data = await response.json().catch(() => null);

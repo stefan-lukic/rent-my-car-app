@@ -58,6 +58,27 @@ export const runCarDetailsDrawerSharedTests = (
     ).toHaveAttribute('href', `/cars/${mockCar._id}`);
   });
 
+  it('keeps selected calendar dates in the full details link', () => {
+    render(
+      <Component
+        {...defaultProps}
+        startDate={new Date(2026, 8, 10)}
+        endDate={new Date(2026, 8, 12)}
+      />
+    );
+
+    const detailsLink = screen.getByRole('link', {
+      name: 'View full details',
+    });
+    const detailsUrl = new URL(
+      detailsLink.getAttribute('href') ?? '',
+      'http://localhost'
+    );
+
+    expect(detailsUrl.searchParams.get('start')).toBe('2026-09-10');
+    expect(detailsUrl.searchParams.get('end')).toBe('2026-09-12');
+  });
+
   it('opens How It Works modal when button is clicked', async () => {
     const user = userEvent.setup();
     render(<Component {...defaultProps} />);

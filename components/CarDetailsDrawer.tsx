@@ -22,6 +22,7 @@ import { ICar } from '@/lib/model/car/Car';
 import HowItWorksModal from './HowItWorksModal';
 import RenterCard from './RenterCard';
 import l from '@/helper/en';
+import { formatCalendarDate } from '@/lib/utils/calendarDate';
 
 export interface CarDetailsDrawerProps {
   car: ICar | null;
@@ -61,8 +62,8 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const totalImages = images.length;
   const location = [car.city, car.carLocation].filter(Boolean).join(', ');
   const detailsQuery = new URLSearchParams();
-  if (startDate) detailsQuery.set('start', startDate.toISOString());
-  if (endDate) detailsQuery.set('end', endDate.toISOString());
+  if (startDate) detailsQuery.set('start', formatCalendarDate(startDate));
+  if (endDate) detailsQuery.set('end', formatCalendarDate(endDate));
   const detailsHref = `/cars/${car._id}${
     detailsQuery.size > 0 ? `?${detailsQuery.toString()}` : ''
   }`;

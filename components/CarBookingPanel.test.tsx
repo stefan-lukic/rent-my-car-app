@@ -8,10 +8,15 @@ vi.mock('react-datepicker', () => ({
   default: ({ selected, onChange, placeholderText }: any) => (
     <input
       aria-label={placeholderText}
-      value={selected ? selected.toISOString().slice(0, 10) : ''}
-      onChange={(event) =>
-        onChange(new Date(`${event.target.value}T00:00:00Z`))
+      value={
+        selected
+          ? `${selected.getFullYear()}-${String(selected.getMonth() + 1).padStart(2, '0')}-${String(selected.getDate()).padStart(2, '0')}`
+          : ''
       }
+      onChange={(event) => {
+        const [year, month, day] = event.target.value.split('-').map(Number);
+        onChange(new Date(year, month - 1, day));
+      }}
     />
   ),
 }));
@@ -85,6 +90,37 @@ describe('CarBookingPanel', () => {
     expect(
       await screen.findByRole('link', { name: 'View My Rentals' })
     ).toHaveAttribute('href', '/profile/my-profile');
+  });
+
+  it('keeps URL calendar dates unchanged in the booking payload', async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.spyOn(global, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ message: 'Booking successful' }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
+
+    render(
+      <CarBookingPanel
+        {...defaultProps}
+        initialStartDate="2026-09-10"
+        initialEndDate="2026-09-12"
+      />
+    );
+
+    expect(screen.getByLabelText('Select pickup')).toHaveValue('2026-09-10');
+    expect(screen.getByLabelText('Select return')).toHaveValue('2026-09-12');
+    expect(screen.getByText('3 days')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Book Now' }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string)).toEqual({
+      carId: 'car-1',
+      startDate: '2026-09-10',
+      endDate: '2026-09-12',
+    });
   });
 
   it('blocks a period that overlaps an existing booking', async () => {
