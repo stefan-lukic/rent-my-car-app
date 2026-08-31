@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { Form } from './UI/Form';
 import CustomInput from './UI/CustomInput';
 import { authFormSchema } from '@/lib/utils';
+import { Eye, EyeOff } from 'lucide-react';
 
 const ProfileForm = ({
   type,
@@ -23,6 +24,9 @@ const ProfileForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [uploadImages, setUploadImages] = useState<File[]>([]);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
 
   const router = useRouter();
 
@@ -32,6 +36,7 @@ const ProfileForm = ({
       name: '',
       email: '',
       password: '',
+      confirmPassword: '',
       phoneNumber: '',
     },
   });
@@ -44,8 +49,8 @@ const ProfileForm = ({
     try {
       if (type === 'sign-up') {
         const formData = new FormData();
-
         Object.entries(data).forEach(([key, value]) => {
+          if (key === 'confirmPassword') return;
           if (value !== null) {
             formData.append(key, value.toString());
           }
@@ -147,8 +152,54 @@ const ProfileForm = ({
           name="password"
           label=""
           placeholder={l.common.password}
-          type="password"
+          type={isPasswordVisible ? 'text' : 'password'}
+          endAdornment={
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
+              aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+              aria-pressed={isPasswordVisible}
+              className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+              {isPasswordVisible ? (
+                <Eye aria-hidden="true" className="h-5 w-5" />
+              ) : (
+                <EyeOff aria-hidden="true" className="h-5 w-5" />
+              )}
+            </button>
+          }
         />
+
+        {type === 'sign-up' && (
+          <CustomInput
+            control={control}
+            name="confirmPassword"
+            label=""
+            placeholder={l.auth.confirmPassword}
+            type={isConfirmPasswordVisible ? 'text' : 'password'}
+            endAdornment={
+              <button
+                type="button"
+                onClick={() =>
+                  setIsConfirmPasswordVisible((isVisible) => !isVisible)
+                }
+                aria-label={
+                  isConfirmPasswordVisible
+                    ? 'Hide confirm password'
+                    : 'Show confirm password'
+                }
+                aria-pressed={isConfirmPasswordVisible}
+                className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              >
+                {isConfirmPasswordVisible ? (
+                  <Eye aria-hidden="true" className="h-5 w-5" />
+                ) : (
+                  <EyeOff aria-hidden="true" className="h-5 w-5" />
+                )}
+              </button>
+            }
+          />
+        )}
 
         {error && <p className="text-red-500">{error}</p>}
 

@@ -23,6 +23,20 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     expect(screen.getByPlaceholderText(l.common.password)).toBeInTheDocument();
   });
 
+  it('lets the user show and hide the password', async () => {
+    const user = userEvent.setup();
+    render(<Component type="sign-in" callbackUrl="/" />);
+
+    const passwordInput = screen.getByPlaceholderText(l.common.password);
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    await user.click(screen.getByRole('button', { name: 'Show password' }));
+    expect(passwordInput).toHaveAttribute('type', 'text');
+
+    await user.click(screen.getByRole('button', { name: 'Hide password' }));
+    expect(passwordInput).toHaveAttribute('type', 'password');
+  });
+
   it('renders name field and file input for sign-up', async () => {
     const user = userEvent.setup();
     render(<Component type="sign-up" callbackUrl="/" />);
@@ -31,6 +45,58 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
       screen.getByPlaceholderText(l.common.phoneNumber)
     ).toBeInTheDocument();
     expect(document.getElementById('images')).toBeTruthy();
+    expect(screen.getByPlaceholderText(l.auth.confirmPassword)).toHaveAttribute(
+      'type',
+      'password'
+    );
+  });
+
+  it('lets the user show and hide the confirm password', async () => {
+    const user = userEvent.setup();
+    render(<Component type="sign-up" callbackUrl="/" />);
+
+    const confirmPasswordInput = screen.getByPlaceholderText(
+      l.auth.confirmPassword
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Show confirm password' })
+    );
+    expect(confirmPasswordInput).toHaveAttribute('type', 'text');
+
+    await user.click(
+      screen.getByRole('button', { name: 'Hide confirm password' })
+    );
+    expect(confirmPasswordInput).toHaveAttribute('type', 'password');
+  });
+
+  it('does not submit sign-up when passwords do not match', async () => {
+    const user = userEvent.setup();
+    render(<Component type="sign-up" callbackUrl="/" />);
+
+    await user.type(screen.getByPlaceholderText(l.common.name), 'Marko');
+    await user.type(
+      screen.getByPlaceholderText(l.common.email),
+      'marko@example.com'
+    );
+    await user.type(
+      screen.getByPlaceholderText(l.common.phoneNumber),
+      '+381601234567'
+    );
+    await user.type(
+      screen.getByPlaceholderText(l.common.password),
+      'sigurna-lozinka'
+    );
+    await user.type(
+      screen.getByPlaceholderText(l.auth.confirmPassword),
+      'druga-lozinka'
+    );
+    await user.click(
+      screen.getByRole('button', { name: l.auth.createAccount })
+    );
+
+    expect(await screen.findByText(l.auth.passwordsDoNotMatch)).toBeVisible();
+    expect(mocks.axiosPost).not.toHaveBeenCalled();
   });
 
   it('shows Create Account button for sign-up', async () => {
@@ -134,6 +200,10 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
       'sigurna-lozinka'
     );
     await user.type(
+      screen.getByPlaceholderText(l.auth.confirmPassword),
+      'sigurna-lozinka'
+    );
+    await user.type(
       screen.getByPlaceholderText(l.common.phoneNumber),
       '+381601234567'
     );
@@ -144,6 +214,10 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     await waitFor(() => {
       expect(mocks.axiosPost).toHaveBeenCalledOnce();
     });
+
+    const submittedFormData = mocks.axiosPost.mock.calls[0][1] as FormData;
+    expect(submittedFormData.get('password')).toBe('sigurna-lozinka');
+    expect(submittedFormData.has('confirmPassword')).toBe(false);
 
     expect(mocks.push).toHaveBeenCalledWith(
       '/verify-email?status=verification-sent'
