@@ -75,6 +75,24 @@ describe('UpdateCarModal', () => {
     );
   });
 
+  it('renders above mobile navigation and respects the safe viewport', () => {
+    const { container } = render(
+      <UpdateCarModal isOpen car={car} onUpdate={vi.fn()} onClose={vi.fn()} />
+    );
+    const overlay = container.firstChild;
+    const modal = overlay?.firstChild;
+
+    expect(overlay).toHaveClass(
+      'z-[100]',
+      'pb-[max(1rem,env(safe-area-inset-bottom))]'
+    );
+    expect(modal).toHaveClass(
+      'max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))]',
+      'p-5',
+      'sm:p-8'
+    );
+  });
+
   it('updates field values before submitting', async () => {
     const user = userEvent.setup();
     renderModal();

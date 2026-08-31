@@ -104,14 +104,14 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
       <div
         aria-hidden="true"
         onClick={onClose}
-        className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-[2px]"
+        className="fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-[2px]"
       />
 
       <aside
         role="dialog"
         aria-modal="true"
         aria-labelledby="car-details-title"
-        className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:w-[500px] lg:w-[540px]"
+        className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col bg-white shadow-2xl sm:w-[500px] lg:w-[540px]"
       >
         <header className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
           <div>
@@ -280,7 +280,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           </div>
         </div>
 
-        <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 py-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6">
+        <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6 sm:pb-4">
           <Link
             href={detailsHref}
             className="col-span-2 flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"

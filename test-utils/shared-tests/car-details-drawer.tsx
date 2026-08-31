@@ -51,6 +51,19 @@ export const runCarDetailsDrawerSharedTests = (
     expect(onBookNow).toHaveBeenCalled();
   });
 
+  it('keeps booking actions above mobile navigation and safe areas', () => {
+    render(<Component {...defaultProps} />);
+
+    const dialog = screen.getByRole('dialog');
+    const actions = screen.getByText('Book Now').closest('footer');
+
+    expect(dialog).toHaveClass('z-[70]');
+    expect(actions).toHaveClass(
+      'pb-[max(1rem,env(safe-area-inset-bottom))]',
+      'sm:pb-4'
+    );
+  });
+
   it('links to the full car details page', () => {
     render(<Component {...defaultProps} />);
     expect(

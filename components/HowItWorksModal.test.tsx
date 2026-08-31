@@ -81,7 +81,7 @@ describe('HowItWorksModal', () => {
   it('has fixed positioning and high z-index', async () => {
     const user = userEvent.setup();
     render(<HowItWorksModal isOpen={true} onClose={vi.fn()} />);
-    const modal = document.querySelector('.fixed.inset-0.z-50');
+    const modal = document.querySelector('.fixed.inset-0.z-\\[100\\]');
     expect(modal).toBeInTheDocument();
   });
 });
