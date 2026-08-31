@@ -14,8 +14,8 @@ describe('BookingDialog', () => {
   const defaultProps = {
     car: mockCar,
     isOpen: true,
-    startDate: new Date('2026-08-01'),
-    endDate: new Date('2026-08-03'),
+    startDate: new Date(2026, 7, 1),
+    endDate: new Date(2026, 7, 3),
     isUnauthorized: false,
     bookingFailed: false,
     onClose: vi.fn(),
@@ -61,6 +61,19 @@ describe('BookingDialog', () => {
     expect(screen.getByText(/€50 × 3/)).toBeInTheDocument();
     const totals = screen.getAllByText('€150.00');
     expect(totals.length).toBeGreaterThan(0);
+  });
+
+  it('counts calendar days across the autumn clock change', () => {
+    render(
+      <BookingDialog
+        {...defaultProps}
+        startDate={new Date(2026, 9, 25)}
+        endDate={new Date(2026, 9, 26)}
+      />
+    );
+
+    expect(screen.getByText(/€50 × 2/)).toBeInTheDocument();
+    expect(screen.getAllByText('€100.00').length).toBeGreaterThan(0);
   });
 
   it('returns total 0 when dates are missing', async () => {

@@ -2,6 +2,7 @@ import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
 import React from 'react';
 import l from '@/helper/en';
+import { countInclusiveCalendarDays } from '@/lib/utils/calendarDate';
 
 interface BookingDialogProps {
   car: ICar;
@@ -28,11 +29,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
 
   const calculateDays = () => {
     if (startDate && endDate) {
-      return (
-        Math.ceil(
-          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-        ) + 1
-      );
+      return countInclusiveCalendarDays(startDate, endDate);
     }
     return 0;
   };
