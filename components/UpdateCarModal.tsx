@@ -105,8 +105,8 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-      <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/50 p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div className="max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-5 shadow-xl shadow-blue-100/50 sm:p-8">
         <header className="mb-8">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-1">
             {l.cars.updateCar}

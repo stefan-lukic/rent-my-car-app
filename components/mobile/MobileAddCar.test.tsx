@@ -72,7 +72,12 @@ describe('MobileAddCar', () => {
   });
 
   it('renders form heading and mobile-specific field values', () => {
-    render(<MobileAddCar />);
+    const { container } = render(<MobileAddCar />);
+
+    expect(container.firstChild).toHaveClass(
+      'pb-[calc(6rem+env(safe-area-inset-bottom))]',
+      'md:pb-10'
+    );
 
     expect(
       screen.getByRole('heading', { name: l.cars.addNewCar })

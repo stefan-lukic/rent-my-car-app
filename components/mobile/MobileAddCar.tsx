@@ -36,7 +36,7 @@ export default function MobileAddCar() {
   } = useAddCar();
 
   return (
-    <div className="px-4 pb-10 pt-6">
+    <div className="px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-6 md:pb-10">
       <Link
         href="/profile/my-profile"
         className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500"
