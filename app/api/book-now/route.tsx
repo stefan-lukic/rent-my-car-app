@@ -12,6 +12,7 @@ import {
 } from '@/lib/emailService/sendEmail';
 
 const CAR_UNAVAILABLE = 'CAR_UNAVAILABLE';
+const CLIENT_BOOKING_OVERLAP = 'CLIENT_BOOKING_OVERLAP';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -72,6 +73,24 @@ export async function POST(req: NextRequest) {
 
     try {
       await dbSession.withTransaction(async () => {
+        // Concurrent bookings by the same client must check availability in order.
+        await User.updateOne(
+          { _id: userId },
+          { $inc: { bookingVersion: 1 } },
+          { session: dbSession }
+        );
+
+        const overlappingClientRental = await Rental.exists({
+          client: userId,
+          status: 'active',
+          'rentalPeriod.startDate': { $lt: rentalEndDate },
+          'rentalPeriod.endDate': { $gt: rentalStartDate },
+        }).session(dbSession);
+
+        if (overlappingClientRental) {
+          throw new Error(CLIENT_BOOKING_OVERLAP);
+        }
+
         const reservedCar = await Car.findOneAndUpdate(
           {
             _id: car._id,
@@ -125,6 +144,16 @@ export async function POST(req: NextRequest) {
         rental = createdRentals[0];
       });
     } catch (error) {
+      if (error instanceof Error && error.message === CLIENT_BOOKING_OVERLAP) {
+        return NextResponse.json(
+          {
+            message:
+              'You already have an active reservation for the selected dates',
+          },
+          { status: 409 }
+        );
+      }
+
       if (error instanceof Error && error.message === CAR_UNAVAILABLE) {
         return NextResponse.json(
           { message: 'Car is not available for the selected dates' },

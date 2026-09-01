@@ -10,6 +10,9 @@ const mocks = vi.hoisted(() => ({
   endSession: vi.fn(),
   findById: vi.fn(),
   findOneAndUpdate: vi.fn(),
+  userUpdateOne: vi.fn(),
+  rentalExists: vi.fn(),
+  rentalExistsSession: vi.fn(),
   create: vi.fn(),
   sendBookingConfirmationToCustomer: vi.fn(),
   sendBookingNotificationToOwner: vi.fn(),
@@ -44,6 +47,7 @@ vi.mock('mongoose', () => {
 
 vi.mock('@/lib/model/Rental', () => ({
   default: {
+    exists: mocks.rentalExists,
     create: mocks.create,
   },
 }));
@@ -56,7 +60,10 @@ vi.mock('@/lib/model/car/Car', () => ({
 }));
 
 vi.mock('@/lib/model/User', () => ({
-  default: { findById: vi.fn() },
+  default: {
+    findById: vi.fn(),
+    updateOne: mocks.userUpdateOne,
+  },
 }));
 
 vi.mock('@/lib/emailService/sendEmail', () => ({
@@ -73,8 +80,8 @@ const ownerId = '507f1f77bcf86cd799439014';
 const clientId = '507f1f77bcf86cd799439015';
 const rentalId = '507f1f77bcf86cd799439016';
 
-const startDate = new Date(Date.now() + 86_400_000);
-const endDate = new Date(Date.now() + 172_800_000);
+const startDate = new Date('2026-02-12T00:00:00.000Z');
+const endDate = new Date('2026-02-14T00:00:00.000Z');
 
 const createRequest = (payload: object) =>
   ({
@@ -120,6 +127,14 @@ describe('POST /api/book-now', () => {
     mocks.endSession.mockResolvedValue(undefined);
     mocks.sendBookingConfirmationToCustomer.mockResolvedValue(undefined);
     mocks.sendBookingNotificationToOwner.mockResolvedValue(undefined);
+    mocks.userUpdateOne.mockResolvedValue({
+      matchedCount: 1,
+      modifiedCount: 1,
+    });
+    mocks.rentalExistsSession.mockResolvedValue(null);
+    mocks.rentalExists.mockReturnValue({
+      session: mocks.rentalExistsSession,
+    });
 
     const carFindById = vi.fn().mockResolvedValue(createCar());
     vi.mocked(Car).findById = carFindById;
@@ -153,6 +168,17 @@ describe('POST /api/book-now', () => {
     expect(response.status).toBe(201);
     expect(mocks.withTransaction).toHaveBeenCalledOnce();
     expect(mocks.endSession).toHaveBeenCalledOnce();
+    expect(mocks.userUpdateOne).toHaveBeenCalledWith(
+      { _id: clientId },
+      { $inc: { bookingVersion: 1 } },
+      { session: expect.anything() }
+    );
+    expect(mocks.rentalExists).toHaveBeenCalledWith({
+      client: clientId,
+      status: 'active',
+      'rentalPeriod.startDate': { $lt: endDate },
+      'rentalPeriod.endDate': { $gt: startDate },
+    });
     expect(mocks.findOneAndUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         _id: carId,
@@ -176,6 +202,58 @@ describe('POST /api/book-now', () => {
         }),
       ]),
       expect.objectContaining({ session: expect.anything() })
+    );
+  });
+
+  it('returns 409 when the client already has an overlapping active rental', async () => {
+    mocks.rentalExistsSession.mockResolvedValueOnce({ _id: rentalId });
+
+    const response = await POST(
+      createRequest({
+        carId,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      })
+    );
+
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toEqual({
+      message: 'You already have an active reservation for the selected dates',
+    });
+    expect(mocks.findOneAndUpdate).not.toHaveBeenCalled();
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(mocks.endSession).toHaveBeenCalledOnce();
+  });
+
+  it('checks only active rentals with an available end-date boundary', async () => {
+    const response = await POST(
+      createRequest({
+        carId,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      })
+    );
+
+    expect(response.status).toBe(201);
+    expect(mocks.rentalExists).toHaveBeenCalledWith({
+      client: clientId,
+      status: 'active',
+      'rentalPeriod.startDate': { $lt: endDate },
+      'rentalPeriod.endDate': { $gt: startDate },
+    });
+  });
+
+  it('locks the client before checking for an overlapping rental', async () => {
+    await POST(
+      createRequest({
+        carId,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      })
+    );
+
+    expect(mocks.userUpdateOne.mock.invocationCallOrder[0]).toBeLessThan(
+      mocks.rentalExists.mock.invocationCallOrder[0]
     );
   });
 
