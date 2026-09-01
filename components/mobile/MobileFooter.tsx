@@ -43,35 +43,42 @@ const MobileFooter = () => {
   if (loading || !isAuthenticated) return null;
 
   return (
-    <nav
-      aria-label={l.navigation.mobileNavigation}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-slate-950/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_32px_rgba(15,23,42,0.18)] backdrop-blur-xl md:hidden"
-    >
-      <div className="mx-auto grid max-w-md grid-cols-3 gap-2">
-        {navigationItems.map(({ label, href, icon: Icon, isActive }) => {
-          const active = isActive(pathname);
+    <>
+      <div
+        aria-hidden="true"
+        data-testid="mobile-footer-spacer"
+        className="h-[calc(4.25rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"
+      />
+      <nav
+        aria-label={l.navigation.mobileNavigation}
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-slate-950/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_32px_rgba(15,23,42,0.18)] backdrop-blur-xl md:hidden"
+      >
+        <div className="mx-auto grid max-w-md grid-cols-3 gap-2">
+          {navigationItems.map(({ label, href, icon: Icon, isActive }) => {
+            const active = isActive(pathname);
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-current={active ? 'page' : undefined}
-              className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
-                active
-                  ? 'bg-white/10 text-white'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-100'
-              }`}
-            >
-              <Icon
-                aria-hidden="true"
-                className={`h-5 w-5 ${active ? 'text-blue-400' : ''}`}
-              />
-              <span>{label}</span>
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? 'page' : undefined}
+                className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+                  active
+                    ? 'bg-white/10 text-white'
+                    : 'text-slate-400 hover:bg-white/5 hover:text-slate-100'
+                }`}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className={`h-5 w-5 ${active ? 'text-blue-400' : ''}`}
+                />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 };
 
