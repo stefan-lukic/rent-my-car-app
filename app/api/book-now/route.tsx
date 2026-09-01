@@ -11,6 +11,8 @@ import {
   sendBookingNotificationToOwner,
 } from '@/lib/emailService/sendEmail';
 
+const CAR_UNAVAILABLE = 'CAR_UNAVAILABLE';
+
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
@@ -64,78 +66,74 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const existingRental = await Rental.exists({
-      car: car._id,
-      status: { $ne: 'cancelled' },
-      'rentalPeriod.startDate': { $lte: rentalEndDate },
-      'rentalPeriod.endDate': { $gte: rentalStartDate },
-    });
-
-    if (existingRental) {
-      return NextResponse.json(
-        { message: 'Car is not available for the selected dates' },
-        { status: 409 }
-      );
-    }
-
     const rentalId = new mongoose.Types.ObjectId();
-
-    const reservedCar = await Car.findOneAndUpdate(
-      {
-        _id: car._id,
-        bookedPeriods: {
-          $not: {
-            $elemMatch: {
-              startDate: { $lte: rentalEndDate },
-              endDate: { $gte: rentalStartDate },
-            },
-          },
-        },
-      },
-      {
-        $push: {
-          bookedPeriods: {
-            rental: rentalId,
-            startDate: rentalStartDate,
-            endDate: rentalEndDate,
-          },
-        },
-      },
-      { new: true }
-    );
-
-    if (!reservedCar) {
-      return NextResponse.json(
-        { message: 'Car is not available for the selected dates' },
-        { status: 409 }
-      );
-    }
-
-    const rental = new Rental({
-      _id: rentalId.toString(),
-      car: carId,
-      renter: car.renter,
-      client: userId,
-      carLocation: car.carLocation,
-      rentalPeriod: {
-        startDate: rentalStartDate,
-        endDate: rentalEndDate,
-      },
-      totalCost: calculateTotalCost(
-        car.pricePerDay,
-        rentalStartDate,
-        rentalEndDate
-      ),
-    });
+    const dbSession = await mongoose.startSession();
+    let rental: InstanceType<typeof Rental> | null = null;
 
     try {
-      await rental.save();
+      await dbSession.withTransaction(async () => {
+        const reservedCar = await Car.findOneAndUpdate(
+          {
+            _id: car._id,
+            bookedPeriods: {
+              $not: {
+                $elemMatch: {
+                  startDate: { $lte: rentalEndDate },
+                  endDate: { $gte: rentalStartDate },
+                },
+              },
+            },
+          },
+          {
+            $push: {
+              bookedPeriods: {
+                rental: rentalId,
+                startDate: rentalStartDate,
+                endDate: rentalEndDate,
+              },
+            },
+          },
+          { new: true, session: dbSession }
+        );
+
+        if (!reservedCar) {
+          throw new Error(CAR_UNAVAILABLE);
+        }
+
+        const createdRentals = await Rental.create(
+          [
+            {
+              _id: rentalId.toString(),
+              car: carId,
+              renter: car.renter,
+              client: userId,
+              carLocation: car.carLocation,
+              rentalPeriod: {
+                startDate: rentalStartDate,
+                endDate: rentalEndDate,
+              },
+              totalCost: calculateTotalCost(
+                car.pricePerDay,
+                rentalStartDate,
+                rentalEndDate
+              ),
+            },
+          ],
+          { session: dbSession }
+        );
+
+        rental = createdRentals[0];
+      });
     } catch (error) {
-      await Car.updateOne(
-        { _id: car._id },
-        { $pull: { bookedPeriods: { rental: rentalId } } }
-      );
+      if (error instanceof Error && error.message === CAR_UNAVAILABLE) {
+        return NextResponse.json(
+          { message: 'Car is not available for the selected dates' },
+          { status: 409 }
+        );
+      }
       throw error;
+    } finally {
+      await dbSession.endSession();
     }
 
     const owner = await User.findById(car.renter)

@@ -15,6 +15,9 @@ import {
   RentalLifecycleStatus,
 } from '@/lib/rentalLifecycle';
 
+const RENTAL_CANCELLATION_CONFLICT = 'RENTAL_CANCELLATION_CONFLICT';
+const CAR_AVAILABILITY_UPDATE_FAILED = 'CAR_AVAILABILITY_UPDATE_FAILED';
+
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
@@ -67,30 +70,44 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const updatedRental = await Rental.findByIdAndUpdate(
-      rental._id,
-      {
-        status: 'cancelled',
-        cancelledAt: new Date(),
-        cancelledBy: new mongoose.Types.ObjectId(userId),
-      },
-      { new: true }
-    );
+    const dbSession = await mongoose.startSession();
+    let updatedRental = rental;
 
-    const pullResult = await Car.updateOne(
-      { _id: rental.car },
-      { $pull: { bookedPeriods: { rental: rental._id } } }
-    );
+    try {
+      await dbSession.withTransaction(async () => {
+        const cancelledRental = await Rental.findOneAndUpdate(
+          { _id: rental._id, status: 'active' },
+          {
+            $set: {
+              status: 'cancelled',
+              cancelledAt: new Date(),
+              cancelledBy: new mongoose.Types.ObjectId(userId),
+            },
+          },
+          { new: true, session: dbSession }
+        );
 
-    if (pullResult.modifiedCount === 0) {
-      await Rental.findByIdAndUpdate(rental._id, {
-        $set: { status: 'active' },
-        $unset: { cancelledAt: '', cancelledBy: '' },
+        if (!cancelledRental) {
+          throw new Error(RENTAL_CANCELLATION_CONFLICT);
+        }
+
+        const pullResult = await Car.updateOne(
+          {
+            _id: rental.car,
+            'bookedPeriods.rental': rental._id,
+          },
+          { $pull: { bookedPeriods: { rental: rental._id } } },
+          { session: dbSession }
+        );
+
+        if (pullResult.modifiedCount === 0) {
+          throw new Error(CAR_AVAILABILITY_UPDATE_FAILED);
+        }
+
+        updatedRental = cancelledRental;
       });
-      return NextResponse.json(
-        { message: 'Failed to update car availability' },
-        { status: 500 }
-      );
+    } finally {
+      await dbSession.endSession();
     }
 
     const [client, owner] = await Promise.all([
@@ -154,6 +171,26 @@ export async function DELETE(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === RENTAL_CANCELLATION_CONFLICT
+    ) {
+      return NextResponse.json(
+        { message: 'Rental is already cancelled' },
+        { status: 409 }
+      );
+    }
+
+    if (
+      error instanceof Error &&
+      error.message === CAR_AVAILABILITY_UPDATE_FAILED
+    ) {
+      return NextResponse.json(
+        { message: 'Failed to update car availability' },
+        { status: 500 }
+      );
+    }
+
     console.error('Error cancelling rental:', error);
     return NextResponse.json(
       { message: 'Error cancelling rental' },
