@@ -68,6 +68,20 @@ describe('MobileFooter', () => {
     expect(screen.queryByText(l.common.logOut)).not.toBeInTheDocument();
   });
 
+  it('reserves mobile layout space for the fixed navigation', () => {
+    mocks.useAuth.mockReturnValue({
+      isAuthenticated: true,
+      loading: false,
+    });
+
+    render(<MobileFooter />);
+
+    expect(screen.getByTestId('mobile-footer-spacer')).toHaveClass(
+      'h-[calc(4.25rem+env(safe-area-inset-bottom))]',
+      'md:hidden'
+    );
+  });
+
   it('marks the destination matching the current page as active', () => {
     mocks.useAuth.mockReturnValue({
       isAuthenticated: true,
