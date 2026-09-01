@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
+import { PUBLIC_USER_PROFILE_PROJECTION } from '@/lib/profileAccess';
 
 export async function GET(
   request: NextRequest,
@@ -20,7 +21,7 @@ export async function GET(
     // Positive projection prevents private fields from ever entering the
     // response object, even when new sensitive User fields are added later.
     const user = await User.findById(id)
-      .select('name images rating ratingCount')
+      .select(PUBLIC_USER_PROFILE_PROJECTION)
       .lean();
 
     if (!user) {
