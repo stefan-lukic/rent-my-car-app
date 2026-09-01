@@ -32,18 +32,8 @@ const config = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
+  // Cache only static assets; auth, API, and protected pages stay network-only.
   runtimeCaching: [
-    {
-      urlPattern: /^https?.*/,
-      handler: 'NetworkFirst',
-      options: {
-        cacheName: 'offlineCache',
-        expiration: {
-          maxEntries: 200,
-          maxAgeSeconds: 24 * 60 * 60, // 24 hours
-        },
-      },
-    },
     {
       urlPattern: /\.(png|jpg|jpeg|svg|gif|webp)$/,
       handler: 'CacheFirst',

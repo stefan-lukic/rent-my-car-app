@@ -5,9 +5,10 @@ import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import { redirect } from 'next/navigation';
-import { cookies, headers } from 'next/headers';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
+import Car from '@/lib/model/car/Car';
+import Rental from '@/lib/model/Rental';
 
 export default async function MyProfilePage() {
   const session = await getServerSession(authOptions);
@@ -19,49 +20,36 @@ export default async function MyProfilePage() {
   try {
     await connectToDatabase();
 
-    const userDocument = await User.findById(session.user.id)
-      .select('name email contactInfo images rating ratingCount createdAt')
-      .lean();
+    const [
+      userDocument,
+      carsDocuments,
+      rentalsDocuments,
+      ownerBookingsDocuments,
+    ] = await Promise.all([
+      User.findById(session.user.id)
+        .select('name email contactInfo images rating ratingCount createdAt')
+        .lean(),
+      Car.find({ renter: session.user.id }).lean(),
+      Rental.find({ client: session.user.id }).populate('car').lean(),
+      Rental.find({ renter: session.user.id })
+        .sort({ 'rentalPeriod.startDate': 1 })
+        .populate('car', 'make carModel images city carLocation')
+        .populate('client', 'name email contactInfo images rating ratingCount')
+        .lean(),
+    ]);
 
     if (!userDocument) {
       throw new Error(l.errors.errorFetchingUser);
     }
 
-    const user = JSON.parse(JSON.stringify(userDocument));
-    const requestHeaders = headers();
-    const host = requestHeaders.get('host');
-    const forwardedProtocol = requestHeaders.get('x-forwarded-proto');
-    const protocol =
-      forwardedProtocol || (host?.startsWith('localhost') ? 'http' : 'https');
-    const baseUrl = host
-      ? `${protocol}://${host}`
-      : process.env.NEXTAUTH_URL || 'http://localhost:3000';
-
-    const fetchJson = async (url: string) => {
-      const res = await fetch(url, {
-        cache: 'no-store',
-        headers: { Cookie: cookies().toString() },
-      });
-      if (!res.ok) {
-        throw new Error(`Profile request failed with status ${res.status}`);
-      }
-      return res.json();
-    };
-
-    const [carsResult, rentalsResult, ownerBookingsResult] =
-      await Promise.allSettled([
-        fetchJson(`${baseUrl}/api/cars/my-cars`),
-        fetchJson(`${baseUrl}/api/my-rentals`),
-        fetchJson(`${baseUrl}/api/owner-bookings`),
-      ]);
-
-    const cars = carsResult.status === 'fulfilled' ? carsResult.value : [];
-    const rentals =
-      rentalsResult.status === 'fulfilled' ? rentalsResult.value : [];
-    const ownerBookings =
-      ownerBookingsResult.status === 'fulfilled'
-        ? ownerBookingsResult.value
-        : [];
+    const [user, cars, rentals, ownerBookings] = JSON.parse(
+      JSON.stringify([
+        userDocument,
+        carsDocuments,
+        rentalsDocuments,
+        ownerBookingsDocuments,
+      ])
+    );
     const currentDate = new Date().toISOString().slice(0, 10);
 
     const isMobile = isMobileSSR();
