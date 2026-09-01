@@ -17,6 +17,7 @@ export interface IUser extends Document {
   images?: string[];
   role: Role;
   cars: mongoose.Types.ObjectId[];
+  bookingVersion?: number;
   createdAt: Date;
 }
 
@@ -47,6 +48,7 @@ const userSchema: Schema<IUser> = new Schema(
     images: { type: [String] },
     role: { type: String },
     cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }],
+    bookingVersion: { type: Number, default: 0, select: false },
   },
   {
     timestamps: true,
