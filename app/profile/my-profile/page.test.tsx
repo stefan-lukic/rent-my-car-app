@@ -39,8 +39,12 @@ vi.mock('@/utils/deviceDetectionSSR', () => ({
 vi.mock('@/components/ProfilePage', () => ({
   default: ({ cars, rentals, ownerBookings }: any) => (
     <div>
-      Cars: {cars.length}, Rentals: {rentals.length}, Owner bookings:{' '}
-      {ownerBookings.length}
+      <p>
+        Cars: {cars.length}, Rentals: {rentals.length}, Owner bookings:{' '}
+        {ownerBookings.length}
+      </p>
+      <p>Rental car: {rentals[0]?.car?.carModel ?? 'missing'}</p>
+      <p>Owner booking car: {ownerBookings[0]?.car?.carModel ?? 'missing'}</p>
     </div>
   ),
 }));
@@ -122,5 +126,39 @@ describe('MyProfilePage profile data loading', () => {
 
     expect(screen.queryByText(/Rentals: 0/)).not.toBeInTheDocument();
     expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
+  });
+
+  it('restores deleted cars from rental snapshots', async () => {
+    const historicalRental = {
+      _id: 'rental-history',
+      car: null,
+      carSnapshot: {
+        carId: 'car-deleted',
+        make: 'BMW',
+        carModel: 'X5',
+        images: [],
+        city: 'Belgrade',
+        carLocation: 'New Belgrade',
+        pricePerDay: 90,
+      },
+    };
+
+    mocks.findRentals.mockImplementation(() => ({
+      populate: () => ({
+        lean: () => Promise.resolve([historicalRental]),
+      }),
+      sort: () => ({
+        populate: () => ({
+          populate: () => ({
+            lean: () => Promise.resolve([historicalRental]),
+          }),
+        }),
+      }),
+    }));
+
+    render(await MyProfilePage());
+
+    expect(screen.getByText('Rental car: X5')).toBeInTheDocument();
+    expect(screen.getByText('Owner booking car: X5')).toBeInTheDocument();
   });
 });

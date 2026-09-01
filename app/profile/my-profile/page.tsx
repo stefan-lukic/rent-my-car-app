@@ -10,6 +10,34 @@ import User from '@/lib/model/User';
 import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 
+type SerializedRental = {
+  car: unknown | null;
+  carSnapshot?: {
+    carId: string;
+    make: string;
+    carModel: string;
+    images?: string[];
+    city: string;
+    carLocation: string;
+    pricePerDay: number;
+  } | null;
+  [key: string]: unknown;
+};
+
+const restoreHistoricalCar = (rental: SerializedRental) => {
+  const { carSnapshot, ...rentalData } = rental;
+
+  if (rental.car || !carSnapshot) {
+    return rentalData;
+  }
+
+  const { carId, ...carData } = carSnapshot;
+  return {
+    ...rentalData,
+    car: { _id: carId, ...carData },
+  };
+};
+
 export default async function MyProfilePage() {
   const session = await getServerSession(authOptions);
 
@@ -42,7 +70,7 @@ export default async function MyProfilePage() {
       throw new Error(l.errors.errorFetchingUser);
     }
 
-    const [user, cars, rentals, ownerBookings] = JSON.parse(
+    const [user, cars, serializedRentals, serializedOwnerBookings] = JSON.parse(
       JSON.stringify([
         userDocument,
         carsDocuments,
@@ -50,6 +78,8 @@ export default async function MyProfilePage() {
         ownerBookingsDocuments,
       ])
     );
+    const rentals = serializedRentals.map(restoreHistoricalCar);
+    const ownerBookings = serializedOwnerBookings.map(restoreHistoricalCar);
     const currentDate = new Date().toISOString().slice(0, 10);
 
     const isMobile = isMobileSSR();

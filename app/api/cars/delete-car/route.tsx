@@ -56,6 +56,27 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
+    // Preserve immutable vehicle details before the listing is physically removed.
+    await Rental.updateMany(
+      {
+        car: car._id,
+        $or: [{ carSnapshot: { $exists: false } }, { carSnapshot: null }],
+      },
+      {
+        $set: {
+          carSnapshot: {
+            carId: car._id,
+            make: car.make,
+            carModel: car.carModel,
+            images: car.images ?? [],
+            city: car.city,
+            carLocation: car.carLocation,
+            pricePerDay: car.pricePerDay,
+          },
+        },
+      }
+    );
+
     const deletedCar = await Car.findOneAndDelete({
       _id: car._id,
       bookedPeriods: {
