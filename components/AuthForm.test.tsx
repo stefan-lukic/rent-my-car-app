@@ -7,6 +7,8 @@ import l from '@/helper/en';
 
 const mocks = vi.hoisted(() => ({
   useSession: vi.fn(),
+  replace: vi.fn(),
+  callbackUrl: '/',
 }));
 
 vi.mock('next-auth/react', () => ({
@@ -14,8 +16,8 @@ vi.mock('next-auth/react', () => ({
 }));
 
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn() }),
-  useSearchParams: () => ({ get: () => '/' }),
+  useRouter: () => ({ replace: mocks.replace }),
+  useSearchParams: () => ({ get: () => mocks.callbackUrl }),
 }));
 
 vi.mock('@/utils/deviceDetectionCSR', () => ({
@@ -29,6 +31,7 @@ vi.mock('next/link', () => ({
 describe('AuthForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mocks.callbackUrl = '/';
   });
 
   it('renders an accessible skeleton while session is loading', () => {
@@ -43,14 +46,17 @@ describe('AuthForm', () => {
     expect(screen.getByRole('status')).toHaveAccessibleName(l.common.loading);
   });
 
-  it('renders nothing when user is already authenticated', () => {
+  it('keeps a loading state visible while redirecting an authenticated user', () => {
+    mocks.callbackUrl = 'https://rent-my-car-app.vercel.app/profile/my-profile';
     mocks.useSession.mockReturnValue({
       data: { user: { name: 'Marko' } },
       status: 'authenticated',
     });
 
-    const { container } = render(<AuthForm type="sign-in" />);
-    expect(container.innerHTML).toBe('');
+    render(<AuthForm type="sign-in" />);
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(mocks.replace).toHaveBeenCalledWith('/profile/my-profile');
   });
 
   it('renders sign-in form for unauthenticated user', () => {

@@ -99,8 +99,7 @@ export function useEditProfile(initialProfile: InitialProfileData) {
         throw new Error(result.message || 'Unable to update profile.');
       }
 
-      router.push('/profile/my-profile');
-      router.refresh();
+      router.replace('/profile/my-profile');
     } catch (error) {
       setError(
         error instanceof Error ? error.message : 'Unable to update profile.'

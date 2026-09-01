@@ -6,7 +6,11 @@ export async function middleware(req: NextRequest) {
 
   if (!token) {
     const signInUrl = new URL('/sign-in', req.url);
-    signInUrl.searchParams.set('callbackUrl', req.url);
+    // Pass an internal path that the client router can handle reliably.
+    signInUrl.searchParams.set(
+      'callbackUrl',
+      `${req.nextUrl.pathname}${req.nextUrl.search}`
+    );
     return NextResponse.redirect(signInUrl);
   }
 

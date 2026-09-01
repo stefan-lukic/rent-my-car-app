@@ -4,14 +4,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useEditProfile } from './useEditProfile';
 
 const mocks = vi.hoisted(() => ({
-  push: vi.fn(),
-  refresh: vi.fn(),
+  replace: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: mocks.push,
-    refresh: mocks.refresh,
+    replace: mocks.replace,
   }),
 }));
 
@@ -200,8 +198,7 @@ describe('useEditProfile', () => {
     const submittedData = request?.body as FormData;
     expect(submittedData.get('contactInfo')).toBe('+381601234567');
 
-    expect(mocks.push).toHaveBeenCalledWith('/profile/my-profile');
-    expect(mocks.refresh).toHaveBeenCalledOnce();
+    expect(mocks.replace).toHaveBeenCalledWith('/profile/my-profile');
   });
 
   it('shows server error after unsuccessful request', async () => {

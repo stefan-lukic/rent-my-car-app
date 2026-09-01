@@ -10,25 +10,39 @@ import MobileProfileForm from './mobile/MobileProfileForm';
 import Link from 'next/link';
 import { AuthFormSkeleton } from './UI/LoadingSkeletons';
 
+// Keep redirects inside the app, including legacy absolute callback URLs.
+const getInternalCallbackUrl = (callbackUrl: string | null) => {
+  if (!callbackUrl) return '/';
+
+  try {
+    const parsedUrl = new URL(callbackUrl, 'https://rent-my-car.local');
+
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return '/';
+    }
+
+    return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+  } catch {
+    return '/';
+  }
+};
+
 const AuthForm = ({ type }: { type: string }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const callbackUrl = getInternalCallbackUrl(searchParams.get('callbackUrl'));
   const isMobile = isMobileCSR();
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push(callbackUrl);
+      router.replace(callbackUrl);
     }
   }, [status, router, callbackUrl]);
 
-  if (status === 'loading') {
+  // Keep feedback visible while the authenticated redirect completes.
+  if (status === 'loading' || status === 'authenticated') {
     return <AuthFormSkeleton />;
-  }
-
-  if (status === 'authenticated') {
-    return null;
   }
 
   return (
