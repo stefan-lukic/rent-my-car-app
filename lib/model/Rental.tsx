@@ -7,6 +7,15 @@ export interface IRental extends Document {
   renter: Schema.Types.ObjectId;
   client: Schema.Types.ObjectId;
   carLocation: string;
+  carSnapshot?: {
+    carId: Schema.Types.ObjectId;
+    make: string;
+    carModel: string;
+    images?: string[];
+    city: string;
+    carLocation: string;
+    pricePerDay: number;
+  };
   rentalPeriod: {
     startDate: Date;
     endDate: Date;
@@ -25,6 +34,21 @@ const rentalSchema: Schema<IRental> = new Schema(
     renter: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     client: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     carLocation: { type: String, required: true },
+    carSnapshot: {
+      type: new Schema(
+        {
+          carId: { type: Schema.Types.ObjectId, required: true },
+          make: { type: String, required: true },
+          carModel: { type: String, required: true },
+          images: { type: [String], default: [] },
+          city: { type: String, required: true },
+          carLocation: { type: String, required: true },
+          pricePerDay: { type: Number, required: true },
+        },
+        { _id: false }
+      ),
+      required: false,
+    },
     rentalPeriod: {
       startDate: { type: Date, required: true },
       endDate: { type: Date, required: true },
