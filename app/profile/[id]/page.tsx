@@ -14,15 +14,40 @@ import {
   UserRound,
 } from 'lucide-react';
 import OwnerProfileHeader from '@/components/OwnerProfileHeader';
+import PublicOwnerCarCard, {
+  PublicOwnerCar,
+} from '@/components/PublicOwnerCarCard';
 import connectToDatabase from '@/lib/db/mongoose';
 import User, { IUser } from '@/lib/model/User';
+import Car from '@/lib/model/car/Car';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
+import {
+  canViewContactInfo,
+  getProfilePageProjection,
+} from '@/lib/profileAccess';
 
-async function getRenter(id: string) {
+type ProfileUser = Pick<
+  IUser,
+  'name' | 'images' | 'rating' | 'ratingCount' | 'createdAt' | 'emailVerified'
+> &
+  Partial<Pick<IUser, 'email' | 'contactInfo'>>;
+
+const PUBLIC_OWNER_CAR_PROJECTION =
+  'make carModel city engine power seats carType firstRegistration milage averageConsumption images pricePerDay rating ratingCount';
+
+async function getRenter(id: string, viewerId: string | undefined) {
   await connectToDatabase();
-  const user = await User.findById(id).lean<IUser>();
-  if (!user) return null;
-  const { password, ...userWithoutPassword } = user;
-  return userWithoutPassword;
+  const showContactInfo = await canViewContactInfo(viewerId, id);
+  const projection = getProfilePageProjection(showContactInfo);
+  const [user, cars] = await Promise.all([
+    User.findById(id).select(projection).lean<ProfileUser>(),
+    Car.find({ renter: id })
+      .select(PUBLIC_OWNER_CAR_PROJECTION)
+      .lean<PublicOwnerCar[]>(),
+  ]);
+
+  return { user, cars, showContactInfo };
 }
 
 export default async function RenterProfilePage({
@@ -30,12 +55,17 @@ export default async function RenterProfilePage({
 }: {
   params: { id: string };
 }) {
-  const renter = await getRenter(params.id);
+  const session = await getServerSession(authOptions);
+  const {
+    user: renter,
+    cars,
+    showContactInfo,
+  } = await getRenter(params.id, session?.user?.id);
 
   if (!renter) notFound();
 
   const rating = Number(renter.rating) || 0;
-  const carCount = renter.cars?.length ?? 0;
+  const carCount = cars.length;
   const isEmailVerified = Boolean(renter.emailVerified);
   const memberSince = renter.createdAt
     ? new Intl.DateTimeFormat('en', {
@@ -167,69 +197,94 @@ export default async function RenterProfilePage({
               </div>
             </div>
 
-            <div className="my-8 border-t border-slate-200" />
+            {showContactInfo && renter.email ? (
+              <>
+                <div className="my-8 border-t border-slate-200" />
 
-            <div className="grid gap-7 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
-              <div>
-                <h2 className="text-xl font-black tracking-tight text-slate-900">
-                  {l.profile.contactOwner}
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  {l.profile.contactDescription}
-                </p>
-                <div className="mt-5 flex items-start gap-3 rounded-2xl bg-blue-50 p-4 text-blue-900">
-                  <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
-                  <p className="text-xs leading-5">{l.profile.messagingNote}</p>
+                <div className="grid gap-7 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+                  <div>
+                    <h2 className="text-xl font-black tracking-tight text-slate-900">
+                      {l.profile.contactOwner}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">
+                      {l.profile.contactDescription}
+                    </p>
+                    <div className="mt-5 flex items-start gap-3 rounded-2xl bg-blue-50 p-4 text-blue-900">
+                      <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
+                      <p className="text-xs leading-5">
+                        {l.profile.messagingNote}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <a
+                      href={`mailto:${renter.email}`}
+                      className="group rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-200 hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    >
+                      <div className="inline-flex rounded-xl bg-blue-100 p-2.5 text-blue-600">
+                        <Mail className="h-5 w-5" />
+                      </div>
+                      <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
+                        {l.profile.emailAddress}
+                      </p>
+                      <p className="mt-1 break-all text-sm font-bold text-slate-800 group-hover:text-blue-700">
+                        {renter.email}
+                      </p>
+                    </a>
+
+                    {renter.contactInfo ? (
+                      <a
+                        href={`tel:${renter.contactInfo}`}
+                        className="group rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-200 hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                      >
+                        <div className="inline-flex rounded-xl bg-blue-100 p-2.5 text-blue-600">
+                          <Phone className="h-5 w-5" />
+                        </div>
+                        <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
+                          {l.profile.phoneNumber}
+                        </p>
+                        <p className="mt-1 break-words text-sm font-bold text-slate-800 group-hover:text-blue-700">
+                          {renter.contactInfo}
+                        </p>
+                      </a>
+                    ) : (
+                      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <div className="inline-flex rounded-xl bg-slate-200 p-2.5 text-slate-500">
+                          <Phone className="h-5 w-5" />
+                        </div>
+                        <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
+                          {l.profile.phoneNumber}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-slate-500">
+                          {l.profile.noPhoneNumber}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              </>
+            ) : null}
+          </div>
+
+          {cars.length > 0 ? (
+            <div className="mt-8">
+              <div className="mb-5">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+                  {l.profile.carOwner}
+                </p>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900">
+                  {renter.name}&apos;s {l.profile.cars.toLowerCase()}
+                </h2>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <a
-                  href={`mailto:${renter.email}`}
-                  className="group rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-200 hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                >
-                  <div className="inline-flex rounded-xl bg-blue-100 p-2.5 text-blue-600">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
-                    {l.profile.emailAddress}
-                  </p>
-                  <p className="mt-1 break-all text-sm font-bold text-slate-800 group-hover:text-blue-700">
-                    {renter.email}
-                  </p>
-                </a>
-
-                {renter.contactInfo ? (
-                  <a
-                    href={`tel:${renter.contactInfo}`}
-                    className="group rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-200 hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  >
-                    <div className="inline-flex rounded-xl bg-blue-100 p-2.5 text-blue-600">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
-                      {l.profile.phoneNumber}
-                    </p>
-                    <p className="mt-1 break-words text-sm font-bold text-slate-800 group-hover:text-blue-700">
-                      {renter.contactInfo}
-                    </p>
-                  </a>
-                ) : (
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                    <div className="inline-flex rounded-xl bg-slate-200 p-2.5 text-slate-500">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <p className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-400">
-                      {l.profile.phoneNumber}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-500">
-                      {l.profile.noPhoneNumber}
-                    </p>
-                  </div>
-                )}
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {cars.map((car) => (
+                  <PublicOwnerCarCard key={car._id.toString()} car={car} />
+                ))}
               </div>
             </div>
-          </div>
+          ) : null}
         </section>
       </main>
     </div>
