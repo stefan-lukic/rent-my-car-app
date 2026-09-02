@@ -10,10 +10,7 @@ import {
   sendCancellationNotificationToCustomer,
   sendCancellationNotificationToOwner,
 } from '@/lib/emailService/sendEmail';
-import {
-  getRentalLifecycleStatus,
-  RentalLifecycleStatus,
-} from '@/lib/rentalLifecycle';
+import { canCancelRental } from '@/lib/rentalLifecycle';
 
 const RENTAL_CANCELLATION_CONFLICT = 'RENTAL_CANCELLATION_CONFLICT';
 const CAR_AVAILABILITY_UPDATE_FAILED = 'CAR_AVAILABILITY_UPDATE_FAILED';
@@ -60,12 +57,12 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    if (
-      getRentalLifecycleStatus(rental, new Date()) !==
-      RentalLifecycleStatus.Upcoming
-    ) {
+    if (!canCancelRental(rental, new Date())) {
       return NextResponse.json(
-        { message: 'A reservation cannot be cancelled after it has started' },
+        {
+          message:
+            'Reservations can only be cancelled at least 24 hours before the start time',
+        },
         { status: 409 }
       );
     }

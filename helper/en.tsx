@@ -230,6 +230,8 @@ const l = {
     cancellingReservation: 'Cancelling...',
     reservationCancelled: 'Reservation cancelled successfully',
     reservationAlreadyCancelled: 'This reservation is already cancelled',
+    cancellationCutoffPassed:
+      'Cancellation is unavailable less than 24 hours before the rental starts',
     cannotCancelReservation:
       'You are not authorized to cancel this reservation',
   },
@@ -428,10 +430,10 @@ const l = {
     cancellationOptions: 'Cancellation Options',
     flexiblePolicy: 'Our Flexible Cancellation Policy',
     cancellationDesc:
-      'We understand that plans can change. You can cancel your reservation at any time through your profile.',
+      'Clients can cancel through their profile until 24 hours before the rental starts.',
     forClients: 'For Clients:',
     freeCancellationClient:
-      'Free cancellation up to 24 hours before the rental start time',
+      'Cancellation is available until 24 hours before the rental start time',
     partialRefund: 'No automated refunds are processed through the app',
     noRefund: 'Contact the owner directly for any refund discussions',
     forRenters: 'For Car Renters:',

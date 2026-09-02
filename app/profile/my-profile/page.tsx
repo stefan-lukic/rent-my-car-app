@@ -80,7 +80,7 @@ export default async function MyProfilePage() {
     );
     const rentals = serializedRentals.map(restoreHistoricalCar);
     const ownerBookings = serializedOwnerBookings.map(restoreHistoricalCar);
-    const currentDate = new Date().toISOString().slice(0, 10);
+    const currentDate = new Date().toISOString();
 
     const isMobile = isMobileSSR();
 
