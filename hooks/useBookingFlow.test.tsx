@@ -39,7 +39,8 @@ describe('useBookingFlow', () => {
       details: false,
     });
 
-    expect(result.current.bookingFailed).toBe(false);
+    expect(result.current.bookingError).toBe('');
+    expect(result.current.isBooking).toBe(false);
   });
 
   it('sets unauthorized state when user is not authenticated', () => {
@@ -81,7 +82,9 @@ describe('useBookingFlow', () => {
 
   it('closes booking, clears selected car and resets booking error', async () => {
     const setSelectedCar = vi.fn();
-    const confirmBooking = vi.fn().mockResolvedValue(false);
+    const confirmBooking = vi
+      .fn()
+      .mockRejectedValue(new Error('Booking period is unavailable'));
 
     const { result } = renderHook(() =>
       useBookingFlow({
@@ -98,20 +101,20 @@ describe('useBookingFlow', () => {
       await result.current.handleBooking(car);
     });
 
-    expect(result.current.bookingFailed).toBe(true);
+    expect(result.current.bookingError).toBe('Booking period is unavailable');
 
     act(() => {
       result.current.closeBooking();
     });
 
     expect(result.current.modals.booking).toBe(false);
-    expect(result.current.bookingFailed).toBe(false);
+    expect(result.current.bookingError).toBe('');
     expect(setSelectedCar).toHaveBeenLastCalledWith(null);
   });
 
   it('closes all modals and clears car after successful booking', async () => {
     const setSelectedCar = vi.fn();
-    const confirmBooking = vi.fn().mockResolvedValue(true);
+    const confirmBooking = vi.fn().mockResolvedValue(undefined);
 
     const { result } = renderHook(() =>
       useBookingFlow({
@@ -135,8 +138,40 @@ describe('useBookingFlow', () => {
       details: false,
     });
 
-    expect(result.current.bookingFailed).toBe(false);
+    expect(result.current.bookingError).toBe('');
     expect(setSelectedCar).toHaveBeenLastCalledWith(null);
+  });
+
+  it('prevents another booking submission while one is pending', async () => {
+    let finishBooking: () => void = () => undefined;
+    const pendingBooking = new Promise<void>((resolve) => {
+      finishBooking = resolve;
+    });
+    const confirmBooking = vi.fn().mockReturnValue(pendingBooking);
+
+    const { result } = renderHook(() =>
+      useBookingFlow({ confirmBooking, setSelectedCar: vi.fn() })
+    );
+
+    let firstBooking: Promise<void>;
+    act(() => {
+      firstBooking = result.current.handleBooking(car);
+    });
+
+    expect(result.current.isBooking).toBe(true);
+
+    await act(async () => {
+      await result.current.handleBooking(car);
+    });
+
+    expect(confirmBooking).toHaveBeenCalledOnce();
+
+    finishBooking();
+    await act(async () => {
+      await firstBooking;
+    });
+
+    expect(result.current.isBooking).toBe(false);
   });
 
   it('opens details and calls the provided details callback', () => {

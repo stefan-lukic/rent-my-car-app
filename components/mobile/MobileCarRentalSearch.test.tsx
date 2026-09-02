@@ -108,7 +108,8 @@ describe('MobileCarRentalSearch', () => {
 
     mocks.useBookingFlow.mockReturnValue({
       modals: { booking: false, details: false },
-      bookingFailed: false,
+      bookingError: '',
+      isBooking: false,
       isUnauthorized: false,
       handleBooking: vi.fn(),
       openBooking: vi.fn(),

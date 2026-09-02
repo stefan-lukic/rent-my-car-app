@@ -10,7 +10,8 @@ interface BookingDialogProps {
   startDate: Date | null;
   endDate: Date | null;
   isUnauthorized: boolean;
-  bookingFailed: boolean;
+  bookingError: string;
+  isBooking: boolean;
   onClose: () => void;
   onBook: () => void;
 }
@@ -21,7 +22,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
   startDate,
   endDate,
   isUnauthorized,
-  bookingFailed,
+  bookingError,
+  isBooking,
   onClose,
   onBook,
 }) => {
@@ -158,11 +160,9 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
           </div>
         )}
 
-        {bookingFailed && (
+        {bookingError && (
           <div className="mx-6 mb-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-            <p className="text-sm text-red-700 font-medium">
-              {l.common.bookingFailed}
-            </p>
+            <p className="text-sm text-red-700 font-medium">{bookingError}</p>
           </div>
         )}
 
@@ -175,9 +175,13 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
           </button>
           <button
             onClick={onBook}
-            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+            disabled={isBooking}
+            aria-busy={isBooking}
+            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {l.common.confirmReservation}
+            {isBooking
+              ? l.carDetailsPage.reserving
+              : l.common.confirmReservation}
           </button>
         </div>
       </div>
