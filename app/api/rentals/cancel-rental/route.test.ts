@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   endSession: vi.fn(),
   findById: vi.fn(),
   findOneAndUpdate: vi.fn(),
+  serializeRental: vi.fn(),
   updateOne: vi.fn(),
   findCarById: vi.fn(),
   findUserById: vi.fn(),
@@ -70,6 +71,13 @@ const rentalId = '507f1f77bcf86cd799439011';
 const clientId = '507f1f77bcf86cd799439012';
 const carId = '507f1f77bcf86cd799439013';
 const ownerId = '507f1f77bcf86cd799439014';
+const populatedCar = {
+  _id: carId,
+  make: 'Audi',
+  carModel: 'A4',
+  city: 'Novi Sad',
+  pricePerDay: 60,
+};
 
 const createRequest = () =>
   ({ json: vi.fn().mockResolvedValue({ rentalId }) }) as never;
@@ -80,6 +88,7 @@ const createUpcomingRental = (overrides: Record<string, unknown> = {}) => ({
   renter: ownerId,
   client: { toString: () => clientId },
   status: 'active',
+  toObject: mocks.serializeRental,
   rentalPeriod: {
     startDate: new Date(Date.now() + 86_400_000),
     endDate: new Date(Date.now() + 172_800_000),
@@ -96,6 +105,11 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     mocks.findOneAndUpdate.mockResolvedValue(
       createUpcomingRental({ status: 'cancelled' })
     );
+    mocks.serializeRental.mockReturnValue({
+      _id: rentalId,
+      car: carId,
+      status: 'cancelled',
+    });
     mocks.updateOne.mockResolvedValue({ modifiedCount: 1 });
     mocks.withTransaction.mockImplementation(async (callback) => callback());
     mocks.startSession.mockImplementation(async () => ({
@@ -107,7 +121,7 @@ describe('DELETE /api/rentals/cancel-rental', () => {
       select: () => ({ lean: () => ({ exec: async () => null }) }),
     }));
     mocks.findCarById.mockImplementation(() => ({
-      lean: () => ({ exec: async () => null }),
+      lean: () => ({ exec: async () => populatedCar }),
     }));
   });
 
@@ -147,6 +161,15 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     );
     expect(mocks.withTransaction).toHaveBeenCalledOnce();
     expect(mocks.endSession).toHaveBeenCalledOnce();
+  });
+
+  it('returns the cancelled rental with complete car data', async () => {
+    const response = await DELETE(createRequest());
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(mocks.serializeRental).toHaveBeenCalledOnce();
+    expect(body.rental.car).toEqual(populatedCar);
   });
 
   it('allows only one of two parallel cancellation requests to mutate the car', async () => {

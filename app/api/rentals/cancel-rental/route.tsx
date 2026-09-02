@@ -166,8 +166,11 @@ export async function DELETE(req: NextRequest) {
       });
     }
 
+    // Keep the mutation response consistent with the populated rentals list.
+    const responseRental = { ...updatedRental.toObject(), car };
+
     return NextResponse.json(
-      { message: 'Rental cancelled successfully', rental: updatedRental },
+      { message: 'Rental cancelled successfully', rental: responseRental },
       { status: 200 }
     );
   } catch (error) {
