@@ -85,12 +85,18 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    const { password, ...userWithoutPassword } = user.toObject();
+    const updatedProfile = {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      contactInfo: user.contactInfo,
+      images: user.images ?? [],
+    };
 
     return NextResponse.json(
       {
         message: 'Profile updated successfully',
-        user: userWithoutPassword,
+        user: updatedProfile,
       },
       { status: 200 }
     );
