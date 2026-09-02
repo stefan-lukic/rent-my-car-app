@@ -9,6 +9,8 @@ export enum RentalLifecycleStatus {
 
 export type RentalStatusFilterValue = 'all' | RentalLifecycleStatus;
 
+const CANCELLATION_CUTOFF_MS = 24 * 60 * 60 * 1000;
+
 type RentalLifecycleInput = {
   status?: RentalStatus | 'active' | 'cancelled';
   rentalPeriod: {
@@ -21,6 +23,22 @@ const getUtcDay = (value: string | Date) => {
   const date = new Date(value);
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 };
+
+export function canCancelRental(
+  rental: RentalLifecycleInput,
+  currentDate: string | Date
+) {
+  if (rental.status === RentalStatus.Cancelled) return false;
+
+  const startTime = new Date(rental.rentalPeriod.startDate).getTime();
+  const currentTime = new Date(currentDate).getTime();
+
+  if (!Number.isFinite(startTime) || !Number.isFinite(currentTime))
+    return false;
+
+  // Exactly 24 hours before the rental starts is still inside the allowed window.
+  return startTime - currentTime >= CANCELLATION_CUTOFF_MS;
+}
 
 export function getRentalLifecycleStatus(
   rental: RentalLifecycleInput,

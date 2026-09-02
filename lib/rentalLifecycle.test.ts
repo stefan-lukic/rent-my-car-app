@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  canCancelRental,
   getRentalLifecycleStatus,
   RentalLifecycleStatus,
 } from './rentalLifecycle';
@@ -12,6 +13,30 @@ const createRental = (
 ) => ({
   status,
   rentalPeriod: { startDate, endDate },
+});
+
+describe('canCancelRental', () => {
+  it('allows cancellation exactly 24 hours before the rental starts', () => {
+    const rental = createRental('2026-09-02T12:00:00.000Z', '2026-09-05');
+
+    expect(canCancelRental(rental, '2026-09-01T12:00:00.000Z')).toBe(true);
+  });
+
+  it('blocks cancellation when less than 24 hours remain', () => {
+    const rental = createRental('2026-09-02T12:00:00.000Z', '2026-09-05');
+
+    expect(canCancelRental(rental, '2026-09-01T12:00:00.001Z')).toBe(false);
+  });
+
+  it('never allows an already cancelled rental to be cancelled again', () => {
+    const rental = createRental(
+      '2026-09-05T12:00:00.000Z',
+      '2026-09-07',
+      RentalStatus.Cancelled
+    );
+
+    expect(canCancelRental(rental, '2026-09-01T12:00:00.000Z')).toBe(false);
+  });
 });
 
 describe('getRentalLifecycleStatus', () => {

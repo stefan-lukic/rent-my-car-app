@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import {
+  canCancelRental,
   getRentalLifecycleStatus,
   RentalLifecycleStatus,
 } from '@/lib/rentalLifecycle';
@@ -63,6 +64,8 @@ const RentalCard: React.FC<RentalCardProps> = ({
 
   const { car, rentalPeriod, totalCost } = rental;
   const status = getRentalLifecycleStatus(rental, currentDate);
+  const isCancelled = status === RentalLifecycleStatus.Cancelled;
+  const cancellationAllowed = canCancelRental(rental, currentDate);
   const images = car.images ?? [];
   const formatDate = (date: Date) =>
     new Date(date).toLocaleDateString('en-GB', {
@@ -72,7 +75,13 @@ const RentalCard: React.FC<RentalCardProps> = ({
     });
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article
+      className={`overflow-hidden rounded-2xl border shadow-sm ${
+        isCancelled
+          ? 'border-slate-300 bg-slate-100 opacity-70 grayscale'
+          : 'border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-md'
+      }`}
+    >
       <div className="relative h-44 w-full bg-slate-100">
         <Image
           src={images[currentImageIndex] || '/placeholder-car.svg'}
@@ -155,15 +164,21 @@ const RentalCard: React.FC<RentalCardProps> = ({
           </div>
         </div>
 
-        {status === RentalLifecycleStatus.Upcoming && onCancel && (
-          <button
-            type="button"
-            onClick={() => onCancel(rental._id)}
-            className="mt-3 w-full rounded-xl border border-red-200 py-2.5 text-xs font-bold text-red-600 transition hover:bg-red-50"
-          >
-            {l.booking.cancelReservation}
-          </button>
-        )}
+        {status === RentalLifecycleStatus.Upcoming &&
+          onCancel &&
+          (cancellationAllowed ? (
+            <button
+              type="button"
+              onClick={() => onCancel(rental._id)}
+              className="mt-3 w-full rounded-xl border border-red-200 py-2.5 text-xs font-bold text-red-600 transition hover:bg-red-50"
+            >
+              {l.booking.cancelReservation}
+            </button>
+          ) : (
+            <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2.5 text-center text-xs font-semibold text-slate-500">
+              {l.booking.cancellationCutoffPassed}
+            </p>
+          ))}
 
         {status === RentalLifecycleStatus.Completed &&
           (rental.clientReview?.submittedAt ? (

@@ -47,9 +47,16 @@ describe('RentalCard', () => {
       status: RentalStatus.Cancelled,
     });
 
-    render(<RentalCard {...defaultProps} rental={cancelledRental} />);
+    const { container } = render(
+      <RentalCard {...defaultProps} rental={cancelledRental} />
+    );
 
     expect(screen.getByText(l.status.cancelled)).toBeInTheDocument();
+    expect(container.querySelector('article')).toHaveClass(
+      'bg-slate-100',
+      'opacity-70',
+      'grayscale'
+    );
   });
 
   it('uses rental status instead of car availability status', () => {
@@ -149,6 +156,37 @@ describe('RentalCard', () => {
     expect(
       screen.queryByRole('button', { name: l.booking.cancelReservation })
     ).not.toBeInTheDocument();
+  });
+
+  it('explains why cancellation is unavailable within 24 hours', () => {
+    render(
+      <RentalCard
+        {...defaultProps}
+        currentDate="2024-07-31T01:00:00.000Z"
+        onCancel={vi.fn()}
+      />
+    );
+
+    expect(
+      screen.getByText(l.booking.cancellationCutoffPassed)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: l.booking.cancelReservation })
+    ).not.toBeInTheDocument();
+  });
+
+  it('allows cancellation exactly 24 hours before the rental starts', () => {
+    render(
+      <RentalCard
+        {...defaultProps}
+        currentDate="2024-07-31T00:00:00.000Z"
+        onCancel={vi.fn()}
+      />
+    );
+
+    expect(
+      screen.getByRole('button', { name: l.booking.cancelReservation })
+    ).toBeInTheDocument();
   });
 
   it('offers rating only after the rental is completed', () => {

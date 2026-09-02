@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   getServerSession: vi.fn(),
@@ -71,6 +71,7 @@ const rentalId = '507f1f77bcf86cd799439011';
 const clientId = '507f1f77bcf86cd799439012';
 const carId = '507f1f77bcf86cd799439013';
 const ownerId = '507f1f77bcf86cd799439014';
+const currentTime = new Date('2026-09-01T12:00:00.000Z');
 const populatedCar = {
   _id: carId,
   make: 'Audi',
@@ -90,14 +91,16 @@ const createUpcomingRental = (overrides: Record<string, unknown> = {}) => ({
   status: 'active',
   toObject: mocks.serializeRental,
   rentalPeriod: {
-    startDate: new Date(Date.now() + 86_400_000),
-    endDate: new Date(Date.now() + 172_800_000),
+    startDate: new Date(Date.now() + 2 * 86_400_000),
+    endDate: new Date(Date.now() + 3 * 86_400_000),
   },
   ...overrides,
 });
 
 describe('DELETE /api/rentals/cancel-rental', () => {
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(currentTime);
     vi.clearAllMocks();
     mocks.getServerSession.mockResolvedValue({ user: { id: clientId } });
     mocks.isValidObjectId.mockReturnValue(true);
@@ -125,6 +128,10 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     }));
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('rejects cancellation after the reservation has started', async () => {
     mocks.findById.mockResolvedValue(
       createUpcomingRental({
@@ -141,6 +148,42 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     expect(mocks.startSession).not.toHaveBeenCalled();
     expect(mocks.findOneAndUpdate).not.toHaveBeenCalled();
     expect(mocks.updateOne).not.toHaveBeenCalled();
+  });
+
+  it('rejects cancellation when less than 24 hours remain', async () => {
+    mocks.findById.mockResolvedValue(
+      createUpcomingRental({
+        rentalPeriod: {
+          startDate: new Date(Date.now() + 23 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 2 * 86_400_000),
+        },
+      })
+    );
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      message:
+        'Reservations can only be cancelled at least 24 hours before the start time',
+    });
+    expect(mocks.startSession).not.toHaveBeenCalled();
+  });
+
+  it('allows cancellation exactly 24 hours before the start time', async () => {
+    mocks.findById.mockResolvedValue(
+      createUpcomingRental({
+        rentalPeriod: {
+          startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 2 * 86_400_000),
+        },
+      })
+    );
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.startSession).toHaveBeenCalledOnce();
   });
 
   it('cancels the rental and releases its booked period in one transaction', async () => {
