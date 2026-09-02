@@ -17,6 +17,9 @@ vi.mock('@/lib/model/User', () => ({
 
 import { GET } from './route';
 
+const userId = '507f1f77bcf86cd799439011';
+const missingUserId = '507f1f77bcf86cd799439012';
+
 describe('GET /api/users/[id]', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -32,7 +35,7 @@ describe('GET /api/users/[id]', () => {
       rating: 4.8,
     });
 
-    const response = await GET({} as never, { params: { id: 'user-1' } });
+    const response = await GET({} as never, { params: { id: userId } });
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -45,8 +48,19 @@ describe('GET /api/users/[id]', () => {
   it('returns 404 when the profile does not exist', async () => {
     mocks.lean.mockResolvedValue(null);
 
-    const response = await GET({} as never, { params: { id: 'missing' } });
+    const response = await GET({} as never, { params: { id: missingUserId } });
 
     expect(response.status).toBe(404);
+  });
+
+  it('returns 400 for a malformed user id without querying the database', async () => {
+    const response = await GET({} as never, {
+      params: { id: 'not-a-valid-id' },
+    });
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ message: 'Invalid user ID' });
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
+    expect(mocks.findById).not.toHaveBeenCalled();
   });
 });

@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   selectCars: vi.fn(),
   leanCars: vi.fn(),
   rentalExists: vi.fn(),
+  notFound: vi.fn(),
 }));
 
 vi.mock('next-auth/next', () => ({
@@ -33,6 +34,10 @@ vi.mock('@/lib/model/Rental', () => ({
 
 vi.mock('@/lib/model/car/Car', () => ({
   default: { find: mocks.findCars },
+}));
+
+vi.mock('next/navigation', () => ({
+  notFound: mocks.notFound,
 }));
 
 vi.mock('@/components/OwnerProfileHeader', () => ({
@@ -108,6 +113,9 @@ describe('public owner profile contact privacy', () => {
     mocks.selectCars.mockReturnValue({ lean: mocks.leanCars });
     mocks.leanCars.mockResolvedValue([profileCar]);
     mocks.rentalExists.mockResolvedValue(null);
+    mocks.notFound.mockImplementation(() => {
+      throw new Error('NEXT_NOT_FOUND');
+    });
   });
 
   afterEach(() => {
@@ -167,6 +175,16 @@ describe('public owner profile contact privacy', () => {
     );
     expect(PUBLIC_USER_PROFILE_PROJECTION).not.toContain('email');
     expect(PUBLIC_USER_PROFILE_PROJECTION).not.toContain('contactInfo');
+  });
+
+  it('returns not found for a malformed profile id before querying data', async () => {
+    await expect(
+      RenterProfilePage({ params: { id: 'not-a-valid-id' } })
+    ).rejects.toThrow('NEXT_NOT_FOUND');
+
+    expect(mocks.getServerSession).not.toHaveBeenCalled();
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
+    expect(mocks.findById).not.toHaveBeenCalled();
   });
 
   it("displays the owner's cars with links to their details", async () => {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import { PUBLIC_USER_PROFILE_PROJECTION } from '@/lib/profileAccess';
+import mongoose from 'mongoose';
 
 export async function GET(
   request: NextRequest,
@@ -14,6 +15,11 @@ export async function GET(
       { message: 'User ID is required' },
       { status: 400 }
     );
+  }
+
+  // Reject malformed IDs before Mongoose can throw a CastError.
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return NextResponse.json({ message: 'Invalid user ID' }, { status: 400 });
   }
 
   try {
