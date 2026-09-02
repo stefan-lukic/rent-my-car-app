@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import ServiceWorkerRegistrar from './ServiceWorkerRegistration';
 
 const mockServiceWorker = vi.fn();
+const mockCacheDelete = vi.fn();
 
 Object.defineProperty(navigator, 'serviceWorker', {
   value: {
@@ -15,10 +16,24 @@ Object.defineProperty(navigator, 'serviceWorker', {
   configurable: true,
 });
 
+Object.defineProperty(window, 'caches', {
+  value: {
+    delete: mockCacheDelete,
+  },
+  writable: true,
+  configurable: true,
+});
+
 describe('ServiceWorkerRegistrar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockServiceWorker.mockResolvedValue({ scope: '/' });
+    mockCacheDelete.mockResolvedValue(true);
+    (
+      window as unknown as { caches: { delete: typeof mockCacheDelete } }
+    ).caches = {
+      delete: mockCacheDelete,
+    };
   });
 
   it('renders no visible UI', () => {
@@ -33,6 +48,25 @@ describe('ServiceWorkerRegistrar', () => {
     await vi.waitFor(() => {
       expect(mockServiceWorker).toHaveBeenCalledWith('/sw.js');
     });
+  });
+
+  it('removes the legacy cache that could contain private responses', async () => {
+    render(<ServiceWorkerRegistrar />);
+
+    await vi.waitFor(() => {
+      expect(mockCacheDelete).toHaveBeenCalledWith('offlineCache');
+    });
+  });
+
+  it('still registers when the Cache API is unavailable', async () => {
+    delete (window as unknown as { caches?: CacheStorage }).caches;
+
+    render(<ServiceWorkerRegistrar />);
+
+    await vi.waitFor(() => {
+      expect(mockServiceWorker).toHaveBeenCalledWith('/sw.js');
+    });
+    expect(mockCacheDelete).not.toHaveBeenCalled();
   });
 
   it('does not register when serviceWorker is unavailable', () => {

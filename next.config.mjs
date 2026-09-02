@@ -15,6 +15,20 @@ const nextConfig = {
   env: {
     API_URL: process.env.API_URL,
   },
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            // API responses can contain user-specific or authenticated data.
+            key: 'Cache-Control',
+            value: 'private, no-store, max-age=0, must-revalidate',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     config.devtool = 'source-map';
     if (!isServer) {
