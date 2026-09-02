@@ -38,12 +38,18 @@ describe('PUT /api/users/me', () => {
     vi.clearAllMocks();
     mocks.getServerSession.mockResolvedValue({ user: { id: 'user-1' } });
     mocks.findByIdAndUpdate.mockResolvedValue({
-      toObject: () => ({
-        _id: 'user-1',
-        name: 'Marko Markovic',
-        contactInfo: '+381601234567',
-        password: 'hashed-password',
-      }),
+      _id: 'user-1',
+      name: 'Marko Markovic',
+      email: 'marko@example.com',
+      contactInfo: '+381601234567',
+      images: ['data:image/jpeg;base64,profile'],
+      password: 'hashed-password',
+      role: 'admin',
+      cars: ['car-1'],
+      passwordResetToken: 'hashed-reset-token',
+      passwordResetExpires: new Date('2026-09-03T00:00:00.000Z'),
+      emailVerificationToken: 'hashed-verification-token',
+      sessionVersion: 2,
     });
   });
 
@@ -70,6 +76,15 @@ describe('PUT /api/users/me', () => {
       },
       { new: true, runValidators: true }
     );
-    expect(await response.json()).not.toHaveProperty('user.password');
+    expect(await response.json()).toEqual({
+      message: 'Profile updated successfully',
+      user: {
+        id: 'user-1',
+        name: 'Marko Markovic',
+        email: 'marko@example.com',
+        contactInfo: '+381601234567',
+        images: ['data:image/jpeg;base64,profile'],
+      },
+    });
   });
 });
