@@ -18,6 +18,7 @@ export interface IUser extends Document {
   role: Role;
   cars: mongoose.Types.ObjectId[];
   bookingVersion?: number;
+  sessionVersion?: number;
   createdAt: Date;
 }
 
@@ -49,6 +50,8 @@ const userSchema: Schema<IUser> = new Schema(
     role: { type: String },
     cars: [{ type: Schema.Types.ObjectId, ref: 'Car' }],
     bookingVersion: { type: Number, default: 0, select: false },
+    // Incremented after password reset to invalidate previously issued JWTs.
+    sessionVersion: { type: Number, default: 0, select: false },
   },
   {
     timestamps: true,
