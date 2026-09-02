@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ICar } from '@/lib/model/car/Car';
 import { useCarSearchForm } from './useCarSearch';
+import l from '@/helper/en';
 import type { CarFilterState } from '@/lib/model/car/CarFilterState';
 
 const filters: CarFilterState = {
@@ -135,19 +136,16 @@ describe('useCarSearchForm', () => {
       })
     );
 
-    let bookingResult = true;
-
-    await act(async () => {
-      bookingResult = await result.current.confirmBooking(car);
-    });
-
-    expect(bookingResult).toBe(false);
+    await expect(result.current.confirmBooking(car)).rejects.toThrow(
+      l.search.selectDatesFirst
+    );
     expect(fetch).not.toHaveBeenCalled();
   });
 
   it('removes booked car from results after successful booking', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
+      json: async () => ({ message: 'Booking successful' }),
     } as Response);
 
     const { result } = renderHook(() =>
@@ -163,13 +161,9 @@ describe('useCarSearchForm', () => {
       result.current.form.setValue('endDate', new Date(2026, 7, 3));
     });
 
-    let bookingResult = false;
-
     await act(async () => {
-      bookingResult = await result.current.confirmBooking(car);
+      await result.current.confirmBooking(car);
     });
-
-    expect(bookingResult).toBe(true);
 
     expect(result.current.results.data).toEqual([secondCar]);
     expect(result.current.results.total).toBe(1);
@@ -187,6 +181,28 @@ describe('useCarSearchForm', () => {
       startDate: '2026-08-01',
       endDate: '2026-08-03',
     });
+  });
+
+  it('throws the booking error returned by the API', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: false,
+      status: 409,
+      json: async () => ({
+        message:
+          'You already have an active reservation for the selected dates',
+      }),
+    } as Response);
+
+    const { result } = renderHook(() => useCarSearchForm({ filters }));
+
+    act(() => {
+      result.current.form.setValue('startDate', new Date(2026, 7, 1));
+      result.current.form.setValue('endDate', new Date(2026, 7, 3));
+    });
+
+    await expect(result.current.confirmBooking(car)).rejects.toThrow(
+      'You already have an active reservation for the selected dates'
+    );
   });
 
   it('loads renter details when a car is opened', async () => {

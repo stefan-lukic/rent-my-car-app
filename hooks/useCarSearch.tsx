@@ -116,12 +116,15 @@ export function useCarSearchForm({
     }
   };
 
-  const confirmBooking = async (car: ICar): Promise<boolean> => {
+  const confirmBooking = async (car: ICar): Promise<void> => {
     const { startDate, endDate } = form.getValues();
-    if (!startDate || !endDate) return false;
+    if (!startDate || !endDate) {
+      throw new Error(l.search.selectDatesFirst);
+    }
 
+    let response: Response;
     try {
-      const response = await fetch('/api/book-now', {
+      response = await fetch('/api/book-now', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -131,19 +134,20 @@ export function useCarSearchForm({
           endDate: formatCalendarDate(endDate),
         }),
       });
-
-      if (response.ok) {
-        setResults((prev) => ({
-          ...prev,
-          data: prev.data.filter((c) => c._id !== car._id),
-          total: prev.total - 1,
-        }));
-        return true;
-      }
-      return false;
     } catch {
-      return false;
+      throw new Error(l.carDetailsPage.connectionError);
     }
+
+    const data = await response.json().catch(() => null);
+    if (!response.ok) {
+      throw new Error(data?.message || l.carDetailsPage.bookingFailed);
+    }
+
+    setResults((prev) => ({
+      ...prev,
+      data: prev.data.filter((c) => c._id !== car._id),
+      total: prev.total - 1,
+    }));
   };
 
   return {

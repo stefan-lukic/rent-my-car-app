@@ -17,7 +17,8 @@ describe('BookingDialog', () => {
     startDate: new Date(2026, 7, 1),
     endDate: new Date(2026, 7, 3),
     isUnauthorized: false,
-    bookingFailed: false,
+    bookingError: '',
+    isBooking: false,
     onClose: vi.fn(),
     onBook: vi.fn(),
   };
@@ -116,19 +117,34 @@ describe('BookingDialog', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows booking failed message when bookingFailed is true', async () => {
+  it('shows the booking error returned by the API', async () => {
     const user = userEvent.setup();
-    render(<BookingDialog {...defaultProps} bookingFailed />);
+    render(
+      <BookingDialog
+        {...defaultProps}
+        bookingError="You already have an active reservation for the selected dates"
+      />
+    );
     expect(
-      screen.getByText('Booking failed, please sign in to continue.')
+      screen.getByText(
+        'You already have an active reservation for the selected dates'
+      )
     ).toBeInTheDocument();
   });
 
-  it('does not show booking failed banner when bookingFailed is false', async () => {
+  it('does not show booking error when there is no error message', async () => {
     const user = userEvent.setup();
-    render(<BookingDialog {...defaultProps} bookingFailed={false} />);
+    render(<BookingDialog {...defaultProps} bookingError="" />);
     expect(
-      screen.queryByText('Booking failed, please sign in to continue.')
+      screen.queryByText(
+        'You already have an active reservation for the selected dates'
+      )
     ).not.toBeInTheDocument();
+  });
+
+  it('disables confirmation and shows progress while booking', () => {
+    render(<BookingDialog {...defaultProps} isBooking />);
+
+    expect(screen.getByRole('button', { name: 'Reserving…' })).toBeDisabled();
   });
 });

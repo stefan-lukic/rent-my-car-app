@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { ICar } from '@/lib/model/car/Car';
 import { useAuth } from '@/hooks/useAuth';
+import l from '@/helper/en';
 
 interface UseBookingFlowProps {
-  confirmBooking: (car: ICar) => Promise<boolean>;
+  confirmBooking: (car: ICar) => Promise<void>;
   setSelectedCar: (car: ICar | null) => void;
 }
 
@@ -16,16 +17,25 @@ export function useBookingFlow({
   const { isAuthenticated } = useAuth();
 
   const [modals, setModals] = useState({ booking: false, details: false });
-  const [bookingFailed, setBookingFailed] = useState(false);
+  const [bookingError, setBookingError] = useState('');
+  const [isBooking, setIsBooking] = useState(false);
 
   const handleBooking = async (selectedCar: ICar) => {
-    const ok = await confirmBooking(selectedCar);
-    if (ok) {
+    if (isBooking) return;
+
+    setIsBooking(true);
+    setBookingError('');
+
+    try {
+      await confirmBooking(selectedCar);
       setModals({ booking: false, details: false });
       setSelectedCar(null);
-      setBookingFailed(false);
-    } else {
-      setBookingFailed(true);
+    } catch (error) {
+      setBookingError(
+        error instanceof Error ? error.message : l.carDetailsPage.bookingFailed
+      );
+    } finally {
+      setIsBooking(false);
     }
   };
 
@@ -37,7 +47,7 @@ export function useBookingFlow({
   const closeBooking = () => {
     setModals((prev) => ({ ...prev, booking: false }));
     setSelectedCar(null);
-    setBookingFailed(false);
+    setBookingError('');
   };
 
   const openDetails = (car: ICar, detailsFn: (car: ICar) => void) => {
@@ -53,7 +63,8 @@ export function useBookingFlow({
   return {
     modals,
     setModals,
-    bookingFailed,
+    bookingError,
+    isBooking,
     isUnauthorized: !isAuthenticated,
     handleBooking,
     openBooking,

@@ -32,7 +32,8 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
   const {
     modals,
     setModals,
-    bookingFailed,
+    bookingError,
+    isBooking,
     isUnauthorized,
     handleBooking,
     openBooking,
@@ -195,7 +196,8 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
             startDate={form.getValues('startDate')}
             endDate={form.getValues('endDate')}
             isUnauthorized={isUnauthorized}
-            bookingFailed={bookingFailed}
+            bookingError={bookingError}
+            isBooking={isBooking}
             onClose={closeBooking}
             onBook={() => handleBooking(selectedCar)}
           />
