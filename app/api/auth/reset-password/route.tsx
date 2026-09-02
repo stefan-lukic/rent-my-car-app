@@ -44,6 +44,8 @@ export async function POST(req: NextRequest) {
       {
         $set: { password },
         $unset: { passwordResetToken: 1, passwordResetExpires: 1 },
+        // Revoke existing sessions in the same atomic password update.
+        $inc: { sessionVersion: 1 },
       },
       { new: true }
     );
