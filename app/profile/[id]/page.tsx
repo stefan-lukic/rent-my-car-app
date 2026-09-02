@@ -26,6 +26,7 @@ import {
   canViewContactInfo,
   getProfilePageProjection,
 } from '@/lib/profileAccess';
+import mongoose from 'mongoose';
 
 type ProfileUser = Pick<
   IUser,
@@ -55,6 +56,9 @@ export default async function RenterProfilePage({
 }: {
   params: { id: string };
 }) {
+  // Reject malformed IDs before they reach any MongoDB query.
+  if (!mongoose.Types.ObjectId.isValid(params.id)) notFound();
+
   const session = await getServerSession(authOptions);
   const {
     user: renter,
