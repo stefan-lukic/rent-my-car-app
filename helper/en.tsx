@@ -379,38 +379,8 @@ const l = {
   },
 
   pages: {
-    aboutHeading: 'About RentMyCar',
-    aboutDesc1:
-      'RentMyCar is a leading peer-to-peer car rental platform, connecting car renters with clients to create a seamless and affordable car rental experience.',
-    aboutDesc2:
-      'Founded in 2024, our mission is to revolutionize the car rental industry by providing a secure, flexible, and cost-effective alternative to traditional rental companies.',
-    aboutDesc3:
-      "We're committed to building a community of trust, where car renters can earn extra income and clients can find the perfect vehicle for their needs.",
     contactUs: 'Contact Us',
     sendMessage: 'Send Message',
-    helpCenterHeading: 'Help Center',
-    faqHeading: 'Frequently Asked Questions',
-    faqQ1: 'How do I list my car?',
-    faqA1:
-      "To list your car, log in to your account and click on 'List a Car' in your dashboard. Follow the prompts to add details about your vehicle.",
-    faqQ2: 'What if my car gets damaged?',
-    faqA2:
-      "All rentals include insurance coverage. If your car is damaged, report it immediately through our app or website, and we'll guide you through the claims process.",
-    faqQ3: 'How do I get paid?',
-    faqA3:
-      'Payments are processed automatically after each completed rental. Funds are typically deposited into your linked bank account within 3-5 business days.',
-    cantFind: "Can't find what you're looking for?",
-    contactSupport: 'Contact our support team',
-    termsHeading: 'Terms of Service',
-    termsDesc:
-      'Welcome to RentMyCar. By using our services, you agree to comply with and be bound by the following terms and conditions.',
-    privacyHeading: 'Privacy Policy',
-    privacyDesc1:
-      'At RentMyCar, we are committed to protecting your privacy and ensuring the security of your personal information.',
-    privacyDesc2:
-      'We collect information you provide directly to us, such as when you create an account, list a car, or make a reservation.',
-    privacyDesc3:
-      'We use the information we collect to provide, maintain, and improve our services, as well as to communicate with you.',
     safetyFirst: 'Safety First',
     safetyCommitment: 'Our Commitment to Your Safety',
     safetyDesc:
@@ -455,18 +425,185 @@ const l = {
     errorFallback: 'Something went wrong. Please try again later.',
     backToCatalog: 'Back to Catalog',
     ratingScale: ' / 5.0',
-    acceptanceTerms: '1. Acceptance of Terms',
-    userResponsibilities: '2. User Responsibilities',
-    infoCollect: '1. Information We Collect',
-    howWeUse: '2. How We Use Your Information',
     carImages: 'Car Images',
     clickToUploadPhotos: 'Click to upload photos',
     fileSelected: (n: number) => `${n} file selected`,
     filesSelected: (n: number) => `${n} files selected`,
-    termsAdditional:
-      'By accessing or using RentMyCar, you agree to these Terms of Service and our Privacy Policy.',
-    userResponsibilitiesText:
-      'Users are responsible for maintaining the confidentiality of their accounts and for all activities that occur under their accounts.',
+  },
+
+  informational: {
+    common: {
+      navigationLabel: 'Information pages',
+    },
+    about: {
+      eyebrow: 'About the platform',
+      title: 'Local car sharing, made simpler for Serbia.',
+      description:
+        'RentMyCar connects people looking for a car with local owners who want to make their vehicle available. The platform keeps discovery, reservations and rental history in one clear place.',
+      localTitle: 'Built around local trips',
+      localDescription:
+        'Search by Serbian city and travel dates, then compare locally listed cars without going through a traditional rental fleet.',
+      clearTitle: 'Clear booking details',
+      clearDescription:
+        'See the daily price, vehicle specifications, availability and complete rental period before confirming a reservation.',
+      directTitle: 'People remain in control',
+      directDescription:
+        'Owners manage their own listings, while clients choose the car that suits their trip and coordinate the handover directly.',
+      howEyebrow: 'A straightforward process',
+      howTitle: 'From local search to handover',
+      stepOne: {
+        title: 'Choose a place and dates',
+        description:
+          'Enter where and when you need a car to see listings available for the full selected period.',
+      },
+      stepTwo: {
+        title: 'Review and reserve',
+        description:
+          'Compare photos, specifications, location and total estimated price before sending the reservation.',
+      },
+      stepThree: {
+        title: 'Coordinate directly',
+        description:
+          'After an active reservation, use the available contact details to agree on pickup, return and payment.',
+      },
+      ctaEyebrow: 'Ready when you are',
+      ctaTitle: 'Find a car for your next trip.',
+      ctaDescription:
+        'Browse vehicles available from local owners and choose the dates that work for you.',
+      ctaAction: 'Browse cars',
+    },
+    help: {
+      eyebrow: 'Help centre',
+      title: 'Practical answers before you book or list a car.',
+      description:
+        'Learn how the main RentMyCar flows work, what the platform records and what owners and clients arrange directly.',
+      faqEyebrow: 'Common questions',
+      faqTitle: 'Using RentMyCar',
+      questions: [
+        {
+          question: 'How do I reserve a car?',
+          answer:
+            'Choose a city and rental dates, open a listing and confirm the reservation. Unavailable periods are excluded and the final availability is checked again when you book.',
+        },
+        {
+          question: 'When can I contact the owner?',
+          answer:
+            'The owner’s contact details are available to you while you have an active reservation with that owner. They are hidden from other visitors.',
+        },
+        {
+          question: 'How are payment and deposit handled?',
+          answer:
+            'RentMyCar currently does not process payments or deposits. The owner and client agree on payment, deposit and handover details directly before the trip.',
+        },
+        {
+          question: 'Can I cancel a reservation?',
+          answer:
+            'A client can cancel from My Profile when at least 24 hours remain before the rental begins. Later changes must be discussed directly with the owner.',
+        },
+        {
+          question: 'How do I list my car?',
+          answer:
+            'Sign in, choose List a car and provide accurate vehicle details, location, photos and a daily price. You can review your listings from My Profile.',
+        },
+        {
+          question: 'What should we check at handover?',
+          answer:
+            'Confirm identities, licence and vehicle documents where appropriate, inspect the car together and agree on fuel, mileage, return condition and any deposit in advance.',
+        },
+      ],
+      safetyTitle: 'Important before every handover',
+      safetyDescription:
+        'RentMyCar does not currently provide insurance, payment processing, roadside assistance or background checks. Each user is responsible for confirming legal driving requirements, insurance coverage and the condition of the vehicle before the rental starts.',
+      nextTitle: 'Already have a reservation?',
+      nextDescription:
+        'Open My Profile to review dates, status, rental details and the actions currently available to you.',
+      nextAction: 'View My Profile',
+    },
+    terms: {
+      eyebrow: 'Platform rules',
+      title: 'Terms for using RentMyCar.',
+      description:
+        'These terms explain the role of the platform and the basic responsibilities of owners and clients when arranging a peer-to-peer car rental in Serbia.',
+      sections: [
+        {
+          title: 'The role of RentMyCar',
+          description:
+            'RentMyCar provides tools for publishing vehicle listings, searching availability and recording reservations. It does not own the listed vehicles and is not a party to payment, deposit, insurance or vehicle handover arrangements made directly between users.',
+        },
+        {
+          title: 'Accounts and accurate information',
+          description:
+            'Users must provide accurate account information, protect their login details and use the platform lawfully. A person who intends to drive must be legally permitted to do so and must confirm any licence, age and insurance requirements before the trip.',
+        },
+        {
+          title: 'Vehicle listings',
+          description:
+            'An owner must have the right to offer the vehicle and should keep its description, photos, location, price and availability accurate. Material defects, restrictions and conditions that could affect the rental should be disclosed before handover.',
+        },
+        {
+          title: 'Reservations and cancellations',
+          description:
+            'A reservation records the selected vehicle, dates and estimated total. Clients may cancel through My Profile until 24 hours before the rental starts. RentMyCar does not automatically process refunds, so any payment-related outcome must be agreed directly between the users.',
+        },
+        {
+          title: 'Handover and user responsibility',
+          description:
+            'The owner and client are responsible for confirming identity, driving eligibility, insurance, vehicle condition, keys, fuel, mileage, payment and return arrangements. Users should not proceed when information is incomplete or the vehicle appears unsafe or unlawful to operate.',
+        },
+        {
+          title: 'Acceptable use and availability',
+          description:
+            'The platform must not be used for fraud, misleading listings, unlawful activity, harassment or attempts to access another user’s data. Features may be updated or temporarily unavailable, and records may be retained where needed for security, rental history and legal obligations.',
+        },
+      ],
+      noteTitle: 'Serbian law still applies',
+      noteDescription:
+        'These platform rules do not remove rights or obligations that apply under the laws of the Republic of Serbia, and they do not replace a specific agreement between the vehicle owner and client.',
+      lastUpdated: 'Last updated: 2 September 2026',
+    },
+    privacy: {
+      eyebrow: 'Your data',
+      title: 'Privacy explained in plain language.',
+      description:
+        'This policy describes what personal data RentMyCar uses, why it is needed and the choices available to users under the data protection framework of the Republic of Serbia.',
+      sections: [
+        {
+          title: 'Information you provide',
+          description:
+            'This includes account details such as your name, email address, phone number and profile image; vehicle listing details and photos; and the dates, participants, status and price information connected with a reservation.',
+        },
+        {
+          title: 'How the information is used',
+          description:
+            'Data is used to create and secure accounts, verify email addresses, display listings, check vehicle availability, create and manage reservations, show rental history, send service emails and prevent misuse of the platform.',
+        },
+        {
+          title: 'When information is shared',
+          description:
+            'Public profiles and listings use limited public information. Contact details are shown to the profile owner and to a client with a relevant active reservation. Necessary data may also be processed by hosting, database, email and analytics providers that support the service, or when required by law.',
+        },
+        {
+          title: 'Cookies and technical data',
+          description:
+            'Authentication cookies keep users signed in and help protect restricted pages. The hosting platform and browser may also generate technical request, device and performance information needed to operate, secure and improve the application.',
+        },
+        {
+          title: 'Retention and security',
+          description:
+            'Information is kept while it is needed to provide the account and booking features, preserve legitimate rental history, resolve security issues or meet legal obligations. RentMyCar uses access controls and protected server-side checks, but no online system can guarantee absolute security.',
+        },
+        {
+          title: 'Your choices',
+          description:
+            'You can update profile information through your account. Subject to applicable Serbian law, you may also request access, correction, deletion, restriction, portability or object to certain processing when the legal conditions for that right are met.',
+        },
+      ],
+      rightsTitle: 'Privacy rights in Serbia',
+      rightsDescription:
+        'The Commissioner for Information of Public Importance and Personal Data Protection provides official guidance on personal data rights and how they may be exercised.',
+      rightsAction: 'Read official guidance',
+      lastUpdated: 'Last updated: 2 September 2026',
+    },
   },
 
   carSpecs: {

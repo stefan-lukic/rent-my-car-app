@@ -1,27 +1,52 @@
+import { Scale } from 'lucide-react';
+import InformationalPageLayout from '@/components/InformationalPageLayout';
 import l from '@/helper/en';
-import Link from 'next/link';
 
 export default function TermsOfService() {
+  const content = l.informational.terms;
+
   return (
-    <main className="container mx-auto bg-gradient-to-b p-8">
-      <h1 className="text-4xl font-bold mb-6 text-gray-900">
-        {l.pages.termsHeading}
-      </h1>
-      <p className="text-lg mb-4 text-gray-700">{l.pages.termsDesc}</p>
-      <h2 className="text-2xl font-semibold mt-6 mb-4 text-gray-800">
-        {l.pages.acceptanceTerms}
-      </h2>
-      <p className="text-lg mb-4 text-gray-700">{l.pages.termsAdditional}</p>
-      <h2 className="text-2xl font-semibold mt-6 mb-4 text-gray-800">
-        {l.pages.userResponsibilities}
-      </h2>
-      <p className="text-lg mb-4 text-gray-700">
-        {l.pages.userResponsibilitiesText}
-      </p>
-      {/* Add more sections as needed */}
-      <Link href="/" className="text-blue-600 hover:text-blue-800">
-        {l.common.backToHome}
-      </Link>
-    </main>
+    <InformationalPageLayout
+      currentPath="/terms"
+      eyebrow={content.eyebrow}
+      title={content.title}
+      description={content.description}
+    >
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="space-y-5">
+          {content.sections.map((section, index) => (
+            <section
+              key={section.title}
+              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
+            >
+              <div className="flex gap-4">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                  {index + 1}
+                </span>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-950">
+                    {section.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-slate-600">
+                    {section.description}
+                  </p>
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <aside className="h-fit rounded-2xl border border-blue-100 bg-blue-50 p-6 lg:sticky lg:top-6">
+          <Scale className="h-6 w-6 text-blue-600" />
+          <h2 className="mt-4 font-bold text-slate-950">{content.noteTitle}</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {content.noteDescription}
+          </p>
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            {content.lastUpdated}
+          </p>
+        </aside>
+      </div>
+    </InformationalPageLayout>
   );
 }
