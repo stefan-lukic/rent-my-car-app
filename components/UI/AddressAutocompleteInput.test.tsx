@@ -22,7 +22,7 @@ const defaultProps = {
 
 describe('AddressAutocompleteInput', () => {
   afterEach(() => {
-    delete process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY;
+    delete process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY;
     delete window.google;
     vi.clearAllMocks();
   });
@@ -78,7 +78,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('keeps the fallback input disabled while Google suggestions load', () => {
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
     window.google = {
       maps: {
         importLibrary: vi.fn(() => new Promise<never>(() => {})),
@@ -95,7 +95,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('uses the selected formatted Google address', async () => {
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
 
     const autocompleteElement = document.createElement(
       'div'
@@ -146,7 +146,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('keeps form state synchronized while the user types', async () => {
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
 
     const autocompleteElement = document.createElement(
       'div'
@@ -181,7 +181,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('waits for the Maps API after the script load event', async () => {
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
 
     const autocompleteElement = document.createElement(
       'div'
