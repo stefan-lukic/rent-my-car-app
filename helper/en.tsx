@@ -379,24 +379,6 @@ const l = {
   },
 
   pages: {
-    contactUs: 'Contact Us',
-    sendMessage: 'Send Message',
-    safetyFirst: 'Safety First',
-    safetyCommitment: 'Our Commitment to Your Safety',
-    safetyDesc:
-      "At RentMyCar, your safety is our top priority. We've implemented several measures to ensure a secure experience for both car renters and clients.",
-    safetyTips: 'Safety Tips',
-    insurance: 'Comprehensive insurance coverage for every rental',
-    backgroundChecks: 'Thorough background checks on all users',
-    roadsideAssistance: '24/7 roadside assistance',
-    securePayment: 'Secure payment processing',
-    inAppMessaging: 'In-app messaging for safe communication',
-    meetPublic: 'Always meet in a public place for car handovers',
-    inspectVehicle:
-      'Thoroughly inspect the vehicle before and after each rental',
-    keepCommunication: 'Keep all communication within our platform',
-    trustInstincts:
-      'Trust your instincts - if something feels off, contact our support team',
     cancellationOptions: 'Cancellation Options',
     flexiblePolicy: 'Our Flexible Cancellation Policy',
     cancellationDesc:
@@ -730,30 +712,6 @@ const l = {
     subscribe: 'Subscribe',
     iosInstall: 'To install this app on your iOS device tap:',
     getAppStore: 'Get From App Store',
-  },
-
-  footer: {
-    exclusive: 'Exclusive',
-    subscribe: 'Subscribe',
-    get10Off: 'Get 10% off your first order',
-    enterYourEmail: 'Enter your email',
-    support: 'Support',
-    address: '111 Bijoy sarani, Dhaka, DH 1515, Bangladesh',
-    email: 'exclusive@gmail.com',
-    phone: '+88015-88888-9999',
-    account: 'Account',
-    myAccount: 'My Account',
-    loginRegister: 'Login / Register',
-    cart: 'Cart',
-    wishlist: 'Wishlist',
-    shop: 'Shop',
-    quickLink: 'Quick Link',
-    termsOfUse: 'Terms Of Use',
-    faq: 'FAQ',
-    contact: 'Contact',
-    downloadApp: 'Download App',
-    save3WithApp: 'Save $3 with App New User Only',
-    copyrightRimel: '&copy; Copyright Rimel 2022. All right reserved',
   },
 
   sidebar: {
