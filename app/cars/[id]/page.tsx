@@ -63,8 +63,7 @@ export default async function CarDetailsPage({
     .filter(Boolean)
     .join(', ');
   const encodedMapQuery = encodeURIComponent(mapQuery);
-  const googleMapsApiKey =
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY?.trim();
+  const googleMapsApiKey = process.env.NEXT_GOOGLE_MAPS_EMBED_API_KEY?.trim();
   const googleMapsEmbedUrl = googleMapsApiKey
     ? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodedMapQuery}&zoom=15&language=en&region=RS`
     : null;

@@ -130,7 +130,7 @@ export default function AddressAutocompleteInput({
   const valueRef = useRef(value);
   const [isReady, setIsReady] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_PLACES_API_KEY?.trim();
+  const apiKey = process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY?.trim();
   const addressPlaceholder = placeholder?.trim() || l.cars.egStreetLocation;
 
   useEffect(() => {
