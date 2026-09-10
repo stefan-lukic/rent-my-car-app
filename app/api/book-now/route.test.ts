@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { NextRequest } from 'next/server';
 
 const mocks = vi.hoisted(() => ({
@@ -113,6 +113,8 @@ const createRental = (overrides: Record<string, unknown> = {}) => ({
 
 describe('POST /api/book-now', () => {
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-02-10T12:00:00.000Z'));
     vi.clearAllMocks();
     mocks.getServerSession.mockResolvedValue({
       user: { id: clientId, email: 'client@test.com', name: 'Client' },
@@ -154,6 +156,40 @@ describe('POST /api/book-now', () => {
 
     mocks.create.mockResolvedValue([createRental()]);
     mocks.findOneAndUpdate.mockResolvedValue(createCar());
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('rejects a rental that starts before the current UTC calendar day', async () => {
+    const response = await POST(
+      createRequest({
+        carId,
+        startDate: '2026-02-09',
+        endDate: '2026-02-10',
+      })
+    );
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      message: 'Rental start date cannot be in the past',
+    });
+    expect(Car.findById).not.toHaveBeenCalled();
+    expect(mocks.startSession).not.toHaveBeenCalled();
+  });
+
+  it('allows a rental that starts on the current UTC calendar day', async () => {
+    const response = await POST(
+      createRequest({
+        carId,
+        startDate: '2026-02-10',
+        endDate: '2026-02-10',
+      })
+    );
+
+    expect(response.status).toBe(201);
+    expect(mocks.withTransaction).toHaveBeenCalledOnce();
   });
 
   it('books a car in a transaction', async () => {
