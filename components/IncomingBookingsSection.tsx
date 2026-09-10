@@ -169,6 +169,7 @@ export default function IncomingBookingsSection({
                 );
                 const status = statusPresentation[lifecycleStatus];
                 const pickupLocation = booking.carLocation || car.carLocation;
+                const canViewContact = Boolean(client.email);
 
                 return (
                   <article
@@ -270,78 +271,87 @@ export default function IncomingBookingsSection({
                         </div>
                       </div>
 
-                      <div className="grid gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-2">
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                            Email
-                          </p>
-                          <a
-                            href={`mailto:${client.email}`}
-                            className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
-                          >
-                            {client.email}
-                          </a>
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                            Phone
-                          </p>
-                          {client.contactInfo ? (
-                            <a
-                              href={`tel:${client.contactInfo}`}
-                              className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
-                            >
-                              {client.contactInfo}
-                            </a>
-                          ) : (
-                            <p className="mt-1 text-xs font-medium text-slate-400">
-                              No phone provided
-                            </p>
-                          )}
-                        </div>
-                      </div>
+                      {canViewContact ? (
+                        <>
+                          <div className="grid gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-2">
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                                Email
+                              </p>
+                              <a
+                                href={`mailto:${client.email}`}
+                                className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
+                              >
+                                {client.email}
+                              </a>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                                Phone
+                              </p>
+                              {client.contactInfo ? (
+                                <a
+                                  href={`tel:${client.contactInfo}`}
+                                  className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
+                                >
+                                  {client.contactInfo}
+                                </a>
+                              ) : (
+                                <p className="mt-1 text-xs font-medium text-slate-400">
+                                  No phone provided
+                                </p>
+                              )}
+                            </div>
+                          </div>
 
-                      <div className="grid grid-cols-3 gap-2">
-                        <a
-                          href={`mailto:${client.email}`}
-                          className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                        >
-                          <Mail className="h-4 w-4 flex-shrink-0" />
-                          <span className="truncate">Email</span>
-                        </a>
-                        {client.contactInfo ? (
-                          <a
-                            href={`tel:${client.contactInfo}`}
-                            className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                          >
-                            <Phone className="h-4 w-4 flex-shrink-0" />
-                            <span className="truncate">Call</span>
-                          </a>
-                        ) : (
-                          <button
-                            type="button"
-                            disabled
-                            className="flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-400"
-                          >
-                            <Phone className="h-4 w-4" />
-                            Call
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          disabled
-                          aria-label="Message customer, coming soon"
-                          className="flex min-w-0 flex-col items-center justify-center rounded-xl bg-blue-50 px-2 py-1.5 text-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
-                        >
-                          <span className="flex items-center gap-1 text-xs font-semibold">
-                            <MessageCircle className="h-4 w-4" />
-                            Message
-                          </span>
-                          <span className="text-[9px] font-bold uppercase tracking-wide text-blue-400">
-                            Coming soon
-                          </span>
-                        </button>
-                      </div>
+                          <div className="grid grid-cols-3 gap-2">
+                            <a
+                              href={`mailto:${client.email}`}
+                              className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                            >
+                              <Mail className="h-4 w-4 flex-shrink-0" />
+                              <span className="truncate">Email</span>
+                            </a>
+                            {client.contactInfo ? (
+                              <a
+                                href={`tel:${client.contactInfo}`}
+                                className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                              >
+                                <Phone className="h-4 w-4 flex-shrink-0" />
+                                <span className="truncate">Call</span>
+                              </a>
+                            ) : (
+                              <button
+                                type="button"
+                                disabled
+                                className="flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-400"
+                              >
+                                <Phone className="h-4 w-4" />
+                                Call
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              disabled
+                              aria-label="Message customer, coming soon"
+                              className="flex min-w-0 flex-col items-center justify-center rounded-xl bg-blue-50 px-2 py-1.5 text-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                            >
+                              <span className="flex items-center gap-1 text-xs font-semibold">
+                                <MessageCircle className="h-4 w-4" />
+                                Message
+                              </span>
+                              <span className="text-[9px] font-bold uppercase tracking-wide text-blue-400">
+                                Coming soon
+                              </span>
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500">
+                          Contact details are available only while the
+                          reservation is active.
+                        </div>
+                      )}
 
                       {lifecycleStatus === RentalLifecycleStatus.Completed &&
                         (booking.ownerReview?.submittedAt ? (

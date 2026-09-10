@@ -128,6 +128,36 @@ describe('IncomingBookingsSection', () => {
     expect(screen.getByRole('button', { name: 'Call' })).toBeDisabled();
   });
 
+  it('does not render contact actions when contact details are protected', () => {
+    render(
+      <IncomingBookingsSection
+        bookings={[
+          {
+            ...booking,
+            client: {
+              ...booking.client,
+              email: undefined,
+              contactInfo: undefined,
+            },
+          },
+        ]}
+        currentDate={currentDate}
+      />
+    );
+
+    expect(
+      screen.getByText(
+        'Contact details are available only while the reservation is active.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Email' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Call' })
+    ).not.toBeInTheDocument();
+  });
+
   it('shows a clear empty state when there are no bookings', () => {
     render(<IncomingBookingsSection bookings={[]} currentDate={currentDate} />);
 

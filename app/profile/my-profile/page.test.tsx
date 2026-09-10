@@ -45,6 +45,7 @@ vi.mock('@/components/ProfilePage', () => ({
       </p>
       <p>Rental car: {rentals[0]?.car?.carModel ?? 'missing'}</p>
       <p>Owner booking car: {ownerBookings[0]?.car?.carModel ?? 'missing'}</p>
+      <p>Owner booking email: {ownerBookings[0]?.client?.email ?? 'hidden'}</p>
     </div>
   ),
 }));
@@ -160,5 +161,44 @@ describe('MyProfilePage profile data loading', () => {
 
     expect(screen.getByText('Rental car: X5')).toBeInTheDocument();
     expect(screen.getByText('Owner booking car: X5')).toBeInTheDocument();
+  });
+
+  it('removes client contact details from cancelled owner bookings', async () => {
+    const cancelledBooking = {
+      _id: 'cancelled-booking',
+      car: { _id: 'car-1', carModel: 'X5' },
+      client: {
+        name: 'Ana',
+        email: 'ana@example.com',
+        contactInfo: '+381601234567',
+      },
+      rentalPeriod: {
+        startDate: '2099-01-01T00:00:00.000Z',
+        endDate: '2099-01-05T00:00:00.000Z',
+      },
+      status: 'cancelled',
+    };
+
+    mocks.findRentals.mockImplementation((filter) => {
+      if ('client' in filter) {
+        return {
+          populate: () => ({ lean: () => Promise.resolve(rentals) }),
+        };
+      }
+
+      return {
+        sort: () => ({
+          populate: () => ({
+            populate: () => ({
+              lean: () => Promise.resolve([cancelledBooking]),
+            }),
+          }),
+        }),
+      };
+    });
+
+    render(await MyProfilePage());
+
+    expect(screen.getByText('Owner booking email: hidden')).toBeInTheDocument();
   });
 });
