@@ -47,6 +47,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Compare date-only UTC values so local time zones cannot shift the boundary.
+    const todayUtc = getStartOfTodayUtc();
+    if (rentalStartDate < todayUtc) {
+      return NextResponse.json(
+        { message: 'Rental start date cannot be in the past' },
+        { status: 400 }
+      );
+    }
+
     const car = await Car.findById(carId);
     if (!car) {
       return NextResponse.json({ message: 'Car not found' }, { status: 404 });
@@ -242,6 +251,12 @@ function getUtcDate(value: unknown): Date | null {
 
   return new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
+}
+
+function getStartOfTodayUtc(now = new Date()): Date {
+  return new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
   );
 }
 
