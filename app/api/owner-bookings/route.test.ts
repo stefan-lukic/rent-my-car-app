@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   getServerSession: vi.fn(),
@@ -33,6 +33,10 @@ describe('GET /api/owner-bookings', () => {
     mocks.populateClient.mockReturnValue({ lean: mocks.lean });
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('rejects unauthenticated requests before querying the database', async () => {
     mocks.getServerSession.mockResolvedValue(null);
 
@@ -62,6 +66,55 @@ describe('GET /api/owner-bookings', () => {
       'name email contactInfo images rating ratingCount'
     );
     expect(body).toEqual(bookings);
+  });
+
+  it('returns contact details only for active current or future bookings', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-08-25T12:00:00.000Z'));
+    mocks.getServerSession.mockResolvedValue({ user: { id: 'owner-1' } });
+    mocks.lean.mockResolvedValue([
+      {
+        _id: 'active-booking',
+        status: 'active',
+        rentalPeriod: { endDate: new Date('2026-08-25T00:00:00.000Z') },
+        client: {
+          name: 'Active client',
+          email: 'active@example.com',
+          contactInfo: '+381601111111',
+        },
+      },
+      {
+        _id: 'cancelled-booking',
+        status: 'cancelled',
+        rentalPeriod: { endDate: new Date('2026-09-01T00:00:00.000Z') },
+        client: {
+          name: 'Cancelled client',
+          email: 'cancelled@example.com',
+          contactInfo: '+381602222222',
+        },
+      },
+      {
+        _id: 'completed-booking',
+        status: 'active',
+        rentalPeriod: { endDate: new Date('2026-08-24T00:00:00.000Z') },
+        client: {
+          name: 'Completed client',
+          email: 'completed@example.com',
+          contactInfo: '+381603333333',
+        },
+      },
+    ]);
+
+    const response = await GET();
+    const body = await response.json();
+
+    expect(body[0].client).toEqual({
+      name: 'Active client',
+      email: 'active@example.com',
+      contactInfo: '+381601111111',
+    });
+    expect(body[1].client).toEqual({ name: 'Cancelled client' });
+    expect(body[2].client).toEqual({ name: 'Completed client' });
   });
 
   it('returns a safe error when the query fails', async () => {

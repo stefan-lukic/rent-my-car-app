@@ -9,8 +9,12 @@ import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
+import { protectOwnerBookingContact } from '@/lib/ownerBookingPrivacy';
+import type { OwnerBooking } from '@/types/OwnerBooking';
 
-type SerializedRental = {
+type SerializedRental = Partial<
+  Pick<OwnerBooking, 'status' | 'rentalPeriod' | 'client'>
+> & {
   car: unknown | null;
   carSnapshot?: {
     carId: string;
@@ -79,8 +83,12 @@ export default async function MyProfilePage() {
       ])
     );
     const rentals = serializedRentals.map(restoreHistoricalCar);
-    const ownerBookings = serializedOwnerBookings.map(restoreHistoricalCar);
     const currentDate = new Date().toISOString();
+    const ownerBookings = serializedOwnerBookings
+      .map(restoreHistoricalCar)
+      .map((booking: SerializedRental) =>
+        protectOwnerBookingContact(booking, currentDate)
+      );
 
     const isMobile = isMobileSSR();
 
