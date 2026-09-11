@@ -15,15 +15,42 @@ export type CarSearchFormValues = {
   endDate: Date | null;
 };
 
+const buildSearchQuery = (
+  values: CarSearchFormValues,
+  filters: CarFilterState
+) => {
+  const query = new URLSearchParams();
+
+  if (values.startDate) {
+    query.set('start', formatCalendarDate(values.startDate));
+  }
+  if (values.endDate) query.set('end', formatCalendarDate(values.endDate));
+  if (values.city) query.set('city', values.city);
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) query.set(key, value);
+  });
+
+  return query;
+};
+
 export function useCarSearchForm({
   filters,
   initialCars,
+  initialValues,
+  persistSearch = false,
 }: {
   filters: CarFilterState;
   initialCars?: ICar[];
+  initialValues?: CarSearchFormValues;
+  persistSearch?: boolean;
 }) {
   const form = useForm<CarSearchFormValues>({
-    defaultValues: { city: '', startDate: null, endDate: null },
+    defaultValues: initialValues ?? {
+      city: '',
+      startDate: null,
+      endDate: null,
+    },
   });
   const getValues = form.getValues;
 
@@ -38,6 +65,12 @@ export function useCarSearchForm({
   const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [searchError, setSearchError] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() =>
+    buildSearchQuery(
+      initialValues ?? { city: '', startDate: null, endDate: null },
+      filters
+    ).toString()
+  );
   const [renter, setRenter] = useState<IRenter | null>(null);
   const [renterLoading, setRenterLoading] = useState(false);
   const renterAbortRef = useRef<AbortController | null>(null);
@@ -59,18 +92,21 @@ export function useCarSearchForm({
       setSearchError('');
       setResults((prev) => ({ ...prev, loading: true }));
       try {
-        const query = new URLSearchParams({
-          page: page.toString(),
-          limit: '10',
-          start: formatCalendarDate(values.startDate),
-          end: formatCalendarDate(values.endDate),
-        });
-        if (values.city) query.set('city', values.city);
-
         const parsedFilters: CarFilterState = JSON.parse(filtersJson);
-        Object.entries(parsedFilters).forEach(([key, value]) => {
-          if (value) query.set(key, value);
-        });
+        const persistedQuery = buildSearchQuery(values, parsedFilters);
+        const query = new URLSearchParams(persistedQuery);
+        query.set('page', page.toString());
+        query.set('limit', '10');
+
+        setSearchQuery(persistedQuery.toString());
+        if (persistSearch && typeof window !== 'undefined') {
+          // Keep only the active search in the URL so returning from a car restores it.
+          window.history.replaceState(
+            window.history.state,
+            '',
+            `${window.location.pathname}?${persistedQuery.toString()}#car-search`
+          );
+        }
 
         const res = await fetch(`/api/cars?${query}`, { signal });
         if (res.ok === false) throw new Error('Search request failed');
@@ -89,7 +125,7 @@ export function useCarSearchForm({
         setResults((prev) => ({ ...prev, loading: false }));
       }
     },
-    [filtersJson]
+    [filtersJson, persistSearch]
   );
 
   useEffect(() => {
@@ -160,6 +196,7 @@ export function useCarSearchForm({
     hasSearched,
     searchError,
     startDate,
+    searchQuery,
     onSearch: form.handleSubmit((values) => {
       if (!values.startDate || !values.endDate) {
         setSearchError(l.search.selectDatesFirst);

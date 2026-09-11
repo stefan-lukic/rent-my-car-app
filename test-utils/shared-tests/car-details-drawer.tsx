@@ -92,6 +92,26 @@ export const runCarDetailsDrawerSharedTests = (
     expect(detailsUrl.searchParams.get('end')).toBe('2026-09-12');
   });
 
+  it('keeps the complete search context in the full details link', () => {
+    render(
+      <Component
+        {...defaultProps}
+        searchQuery="start=2026-09-10&end=2026-09-12&city=Belgrade&make=BMW&minSeats=5"
+      />
+    );
+
+    const detailsUrl = new URL(
+      screen
+        .getByRole('link', { name: 'View full details' })
+        .getAttribute('href') ?? '',
+      'http://localhost'
+    );
+
+    expect(detailsUrl.searchParams.get('city')).toBe('Belgrade');
+    expect(detailsUrl.searchParams.get('make')).toBe('BMW');
+    expect(detailsUrl.searchParams.get('minSeats')).toBe('5');
+  });
+
   it('opens How It Works modal when button is clicked', async () => {
     const user = userEvent.setup();
     render(<Component {...defaultProps} />);

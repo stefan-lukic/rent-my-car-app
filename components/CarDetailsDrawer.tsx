@@ -32,6 +32,7 @@ export interface CarDetailsDrawerProps {
   onBookNow: () => void;
   startDate?: Date | null;
   endDate?: Date | null;
+  searchQuery?: string;
 }
 
 interface CarSpec {
@@ -48,6 +49,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   onBookNow,
   startDate,
   endDate,
+  searchQuery,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -61,7 +63,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   const images = car.images ?? [];
   const totalImages = images.length;
   const location = [car.city, car.carLocation].filter(Boolean).join(', ');
-  const detailsQuery = new URLSearchParams();
+  const detailsQuery = new URLSearchParams(searchQuery);
   if (startDate) detailsQuery.set('start', formatCalendarDate(startDate));
   if (endDate) detailsQuery.set('end', formatCalendarDate(endDate));
   const detailsHref = `/cars/${car._id}${

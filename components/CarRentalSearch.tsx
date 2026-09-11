@@ -12,8 +12,23 @@ import CarDetailsDrawer from './CarDetailsDrawer';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
 import { CarResultsSkeleton } from './UI/LoadingSkeletons';
+import type { CarFilterState } from '@/lib/model/car/CarFilterState';
+import type { CarSearchFormValues } from '@/hooks/useCarSearch';
+import type { ICar } from '@/lib/model/car/Car';
 
-const CarRentalSearch = ({ filters, initialCars }: any) => {
+interface CarRentalSearchProps {
+  filters: CarFilterState;
+  initialCars?: ICar[];
+  initialValues?: CarSearchFormValues;
+  persistSearch?: boolean;
+}
+
+const CarRentalSearch = ({
+  filters,
+  initialCars,
+  initialValues,
+  persistSearch,
+}: CarRentalSearchProps) => {
   const {
     form,
     results,
@@ -22,12 +37,18 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
     startDate,
     hasSearched,
     searchError,
+    searchQuery,
     onSearch,
     onPageChange,
     openDetails,
     confirmBooking,
     setSelectedCar,
-  } = useCarSearchForm({ filters, initialCars });
+  } = useCarSearchForm({
+    filters,
+    initialCars,
+    initialValues,
+    persistSearch,
+  });
 
   const {
     modals,
@@ -189,6 +210,7 @@ const CarRentalSearch = ({ filters, initialCars }: any) => {
             onBookNow={() => setModals({ details: false, booking: true })}
             startDate={form.getValues('startDate')}
             endDate={form.getValues('endDate')}
+            searchQuery={searchQuery}
           />
           <BookingDialog
             car={selectedCar}

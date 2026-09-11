@@ -11,6 +11,22 @@ export const formatCalendarDate = (date: Date) => {
   return `${year}-${month}-${day}`;
 };
 
+export const parseCalendarDate = (value: string | null) => {
+  if (!value) return null;
+
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+
+  const [, year, month, day] = match.map(Number);
+  const date = new Date(year, month - 1, day);
+
+  return date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+    ? date
+    : null;
+};
+
 export const countInclusiveCalendarDays = (startDate: Date, endDate: Date) => {
   const startTime = getUtcCalendarTime(startDate);
   const endTime = getUtcCalendarTime(endDate);
