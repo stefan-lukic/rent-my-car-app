@@ -1,8 +1,9 @@
 'use client';
 
 import l from '@/helper/en';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   ArrowRight,
   BadgeEuro,
@@ -20,6 +21,7 @@ import CarRentalSearch from '@/components/CarRentalSearch';
 import MobileCarFilters from '@/components/mobile/MobileCarFilters';
 import MobileCarRentalSearch from '@/components/mobile/MobileCarRentalSearch';
 import { HomePageSkeleton } from '@/components/UI/LoadingSkeletons';
+import { parseCalendarDate } from '@/lib/utils/calendarDate';
 
 const initialFilters: CarFilterState = {
   minPrice: '',
@@ -31,9 +33,30 @@ const initialFilters: CarFilterState = {
 };
 
 export default function Home() {
+  return (
+    <Suspense fallback={<HomePageSkeleton />}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
+  const searchParams = useSearchParams();
   const { loading } = useAuth();
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
-  const [filters, setFilters] = useState<CarFilterState>(initialFilters);
+  const [filters, setFilters] = useState<CarFilterState>(() => ({
+    minPrice: searchParams.get('minPrice') ?? initialFilters.minPrice,
+    maxPrice: searchParams.get('maxPrice') ?? initialFilters.maxPrice,
+    make: searchParams.get('make') ?? initialFilters.make,
+    carType: searchParams.get('carType') ?? initialFilters.carType,
+    engine: searchParams.get('engine') ?? initialFilters.engine,
+    minSeats: searchParams.get('minSeats') ?? initialFilters.minSeats,
+  }));
+  const [initialSearchValues] = useState(() => ({
+    city: searchParams.get('city') ?? '',
+    startDate: parseCalendarDate(searchParams.get('start')),
+    endDate: parseCalendarDate(searchParams.get('end')),
+  }));
 
   if (loading) {
     return <HomePageSkeleton />;
@@ -153,6 +176,8 @@ export default function Home() {
         <div className="md:hidden">
           <MobileCarRentalSearch
             filters={filters}
+            initialValues={initialSearchValues}
+            persistSearch
             filtersSlot={
               <MobileCarFilters filters={filters} setFilters={setFilters} />
             }
@@ -163,7 +188,11 @@ export default function Home() {
           <aside className="sticky top-24">
             <CarFilters filters={filters} setFilters={setFilters} />
           </aside>
-          <CarRentalSearch filters={filters} />
+          <CarRentalSearch
+            filters={filters}
+            initialValues={initialSearchValues}
+            persistSearch
+          />
         </div>
       </section>
 

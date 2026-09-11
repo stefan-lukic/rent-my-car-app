@@ -113,6 +113,47 @@ describe('useCarSearchForm', () => {
     expect(result.current.results.loading).toBe(false);
   });
 
+  it('restores a search and keeps it in the page URL', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        cars: [car],
+        totalCars: 1,
+        totalPages: 1,
+        currentPage: 1,
+      }),
+    } as Response);
+
+    window.history.replaceState({}, '', '/');
+
+    const { result } = renderHook(() =>
+      useCarSearchForm({
+        filters: { ...filters, make: 'BMW', minSeats: '5' },
+        initialValues: {
+          city: 'Belgrade',
+          startDate: new Date(2026, 9, 12),
+          endDate: new Date(2026, 9, 14),
+        },
+        persistSearch: true,
+      })
+    );
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledOnce());
+
+    expect(result.current.form.getValues()).toEqual({
+      city: 'Belgrade',
+      startDate: new Date(2026, 9, 12),
+      endDate: new Date(2026, 9, 14),
+    });
+    expect(window.location.search).toBe(
+      '?start=2026-10-12&end=2026-10-14&city=Belgrade&make=BMW&minSeats=5'
+    );
+    expect(window.location.hash).toBe('#car-search');
+    expect(result.current.searchQuery).toBe(
+      'start=2026-10-12&end=2026-10-14&city=Belgrade&make=BMW&minSeats=5'
+    );
+  });
+
   it('calculates selected rental days', () => {
     const { result } = renderHook(() =>
       useCarSearchForm({

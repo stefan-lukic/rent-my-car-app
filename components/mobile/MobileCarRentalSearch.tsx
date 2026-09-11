@@ -20,15 +20,20 @@ import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useBookingFlow } from '@/hooks/useBookingFlow';
 import l from '@/helper/en';
 import { CarResultsSkeleton } from '../UI/LoadingSkeletons';
+import type { CarSearchFormValues } from '@/hooks/useCarSearch';
 
 interface MobileCarRentalSearchProps {
   filters: CarFilterState;
   filtersSlot?: ReactNode;
+  initialValues?: CarSearchFormValues;
+  persistSearch?: boolean;
 }
 
 const MobileCarRentalSearch = ({
   filters,
   filtersSlot,
+  initialValues,
+  persistSearch,
 }: MobileCarRentalSearchProps) => {
   const {
     form,
@@ -43,7 +48,8 @@ const MobileCarRentalSearch = ({
     daysSelected,
     hasSearched,
     searchError,
-  } = useCarSearchForm({ filters });
+    searchQuery,
+  } = useCarSearchForm({ filters, initialValues, persistSearch });
 
   const {
     modals,
@@ -234,6 +240,7 @@ const MobileCarRentalSearch = ({
             onBookNow={() => setModals({ details: false, booking: true })}
             startDate={form.getValues('startDate')}
             endDate={form.getValues('endDate')}
+            searchQuery={searchQuery}
           />
           <BookingDialog
             car={selectedCar}

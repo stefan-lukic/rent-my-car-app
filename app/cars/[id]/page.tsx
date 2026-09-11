@@ -22,9 +22,21 @@ import CarBookingPanel from '@/components/CarBookingPanel';
 import { getCarDetails } from '@/lib/data/carDetails';
 import l from '@/helper/en';
 
+interface CarDetailsSearchParams {
+  start?: string;
+  end?: string;
+  city?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  make?: string;
+  carType?: string;
+  engine?: string;
+  minSeats?: string;
+}
+
 interface CarDetailsPageProps {
   params: { id: string };
-  searchParams?: { start?: string; end?: string };
+  searchParams?: CarDetailsSearchParams;
 }
 
 interface VehicleSpec {
@@ -58,6 +70,24 @@ export default async function CarDetailsPage({
   if (!car) notFound();
 
   const carName = `${car.make} ${car.carModel}`;
+  const catalogQuery = new URLSearchParams();
+  const activeSearchValues: Array<[string, string | undefined]> = [
+    ['start', searchParams?.start],
+    ['end', searchParams?.end],
+    ['city', searchParams?.city],
+    ['minPrice', searchParams?.minPrice],
+    ['maxPrice', searchParams?.maxPrice],
+    ['make', searchParams?.make],
+    ['carType', searchParams?.carType],
+    ['engine', searchParams?.engine],
+    ['minSeats', searchParams?.minSeats],
+  ];
+  activeSearchValues.forEach(([key, value]) => {
+    if (value) catalogQuery.set(key, value);
+  });
+  const catalogHref = `/${
+    catalogQuery.size > 0 ? `?${catalogQuery.toString()}` : ''
+  }#car-search`;
   const location = [car.city, car.carLocation].filter(Boolean).join(', ');
   const mapQuery = [car.carLocation, car.city, 'Serbia']
     .filter(Boolean)
@@ -114,7 +144,7 @@ export default async function CarDetailsPage({
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.3),_transparent_45%)]" />
           <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
             <Link
-              href="/#car-search"
+              href={catalogHref}
               className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
               <ArrowLeft className="h-4 w-4" />
