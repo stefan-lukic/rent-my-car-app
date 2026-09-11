@@ -5,6 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateVerificationToken } from '@/lib/emailVerification';
 import { sendEmailVerification } from '@/lib/emailService/sendEmail';
 import { isValidPhoneNumber, normalizePhoneNumber } from '@/lib/phoneNumber';
+import {
+  MAX_IMAGE_PIXELS,
+  validateImageUploads,
+} from '@/lib/imageUploadValidation';
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -22,9 +26,18 @@ function isDuplicateKeyError(error: unknown): boolean {
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const images: File[] = Array.from(
+    const imageValidation = validateImageUploads(
       formData.getAll('uploadImages')
-    ) as File[];
+    );
+
+    if (imageValidation.error) {
+      return NextResponse.json(
+        { message: imageValidation.error },
+        { status: 400 }
+      );
+    }
+
+    const images = imageValidation.files;
     const name = formData.get('name');
     const email = formData.get('email');
     const password = formData.get('password') as string;
@@ -85,7 +98,9 @@ export async function POST(req: NextRequest) {
 
         const sharp = (await import('sharp')).default;
 
-        const resizedBuffer = await sharp(buffer)
+        const resizedBuffer = await sharp(buffer, {
+          limitInputPixels: MAX_IMAGE_PIXELS,
+        })
           .resize({ width: 800, height: 600, fit: 'inside' })
           .jpeg({ quality: 60 })
           .toBuffer();

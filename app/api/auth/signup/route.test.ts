@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
   hash: vi.fn(),
   sendEmailVerification: vi.fn(),
   captureUserData: vi.fn(),
+  validateImageUploads: vi.fn(),
 }));
 
 vi.mock('@/lib/db/mongoose', () => ({
@@ -50,6 +51,10 @@ vi.mock('@/lib/emailService/sendEmail', () => ({
   sendEmailVerification: mocks.sendEmailVerification,
 }));
 
+vi.mock('@/lib/imageUploadValidation', () => ({
+  validateImageUploads: mocks.validateImageUploads,
+}));
+
 const createRequest = (phoneNumber?: string) => {
   const formData = new FormData();
   formData.set('name', 'Marko Markovic');
@@ -74,6 +79,7 @@ describe('POST /api/auth/signup', () => {
     mocks.hash.mockResolvedValue('hashed-password');
     mocks.save.mockResolvedValue(undefined);
     mocks.sendEmailVerification.mockResolvedValue(undefined);
+    mocks.validateImageUploads.mockReturnValue({ files: [], error: null });
   });
 
   it('rejects signup without a valid phone number before accessing the database', async () => {
@@ -99,5 +105,20 @@ describe('POST /api/auth/signup', () => {
       token: 'raw-token',
       appUrl: 'http://localhost:3000',
     });
+  });
+
+  it('rejects unsupported profile images before accessing the database', async () => {
+    mocks.validateImageUploads.mockReturnValue({
+      files: [],
+      error: 'Only JPEG, PNG, and WebP images are allowed',
+    });
+
+    const response = await POST(createRequest('+381601234567'));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      message: 'Only JPEG, PNG, and WebP images are allowed',
+    });
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
   });
 });

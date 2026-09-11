@@ -4,6 +4,10 @@ import { authOptions } from '@/lib/authOptions';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import { isValidPhoneNumber, normalizePhoneNumber } from '@/lib/phoneNumber';
+import {
+  MAX_IMAGE_PIXELS,
+  validateImageUploads,
+} from '@/lib/imageUploadValidation';
 
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -14,7 +18,16 @@ export async function PUT(request: NextRequest) {
 
   try {
     const formData = await request.formData();
-    const images: File[] = Array.from(formData.getAll('image')) as File[];
+    const imageValidation = validateImageUploads(formData.getAll('image'));
+
+    if (imageValidation.error) {
+      return NextResponse.json(
+        { message: imageValidation.error },
+        { status: 400 }
+      );
+    }
+
+    const images = imageValidation.files;
 
     const imageBase64Array: string[] = [];
 
@@ -25,7 +38,9 @@ export async function PUT(request: NextRequest) {
 
         const sharp = (await import('sharp')).default;
 
-        const resizedBuffer = await sharp(buffer)
+        const resizedBuffer = await sharp(buffer, {
+          limitInputPixels: MAX_IMAGE_PIXELS,
+        })
           .resize({ width: 800, height: 600, fit: 'inside' })
           .jpeg({ quality: 60 })
           .toBuffer();
