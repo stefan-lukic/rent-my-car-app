@@ -13,6 +13,10 @@ import {
   CAR_MODEL_PATTERN,
   isNumberInRange,
 } from '@/lib/model/car/carValidation';
+import {
+  MAX_IMAGE_PIXELS,
+  validateImageUploads,
+} from '@/lib/imageUploadValidation';
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -24,7 +28,16 @@ export async function POST(request: NextRequest) {
     await connectToDatabase();
 
     const formData = await request.formData();
-    const images: File[] = Array.from(formData.getAll('images')) as File[];
+    const imageValidation = validateImageUploads(formData.getAll('images'));
+
+    if (imageValidation.error) {
+      return NextResponse.json(
+        { message: imageValidation.error },
+        { status: 400 }
+      );
+    }
+
+    const images = imageValidation.files;
 
     const imageBase64Array: string[] = [];
     for (const image of images) {
@@ -36,7 +49,9 @@ export async function POST(request: NextRequest) {
         const sharp = (await import('sharp')).default;
 
         // Resize and compress the image more aggressively
-        const resizedBuffer = await sharp(buffer)
+        const resizedBuffer = await sharp(buffer, {
+          limitInputPixels: MAX_IMAGE_PIXELS,
+        })
           .resize({ width: 800, height: 600, fit: 'inside' })
           .jpeg({ quality: 60 }) // Reduced quality for smaller file size
           .toBuffer();

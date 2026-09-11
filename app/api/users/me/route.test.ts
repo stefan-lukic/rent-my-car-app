@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   getServerSession: vi.fn(),
   connectToDatabase: vi.fn(),
   findByIdAndUpdate: vi.fn(),
+  validateImageUploads: vi.fn(),
 }));
 
 vi.mock('next-auth/next', () => ({
@@ -20,6 +21,10 @@ vi.mock('@/lib/db/mongoose', () => ({
 
 vi.mock('@/lib/model/User', () => ({
   default: { findByIdAndUpdate: mocks.findByIdAndUpdate },
+}));
+
+vi.mock('@/lib/imageUploadValidation', () => ({
+  validateImageUploads: mocks.validateImageUploads,
 }));
 
 const createRequest = (contactInfo: string) => {
@@ -51,6 +56,7 @@ describe('PUT /api/users/me', () => {
       emailVerificationToken: 'hashed-verification-token',
       sessionVersion: 2,
     });
+    mocks.validateImageUploads.mockReturnValue({ files: [], error: null });
   });
 
   it('rejects invalid contact information before accessing the database', async () => {
@@ -86,5 +92,21 @@ describe('PUT /api/users/me', () => {
         images: ['data:image/jpeg;base64,profile'],
       },
     });
+  });
+
+  it('rejects unsupported profile images before accessing the database', async () => {
+    mocks.validateImageUploads.mockReturnValue({
+      files: [],
+      error: 'Only JPEG, PNG, and WebP images are allowed',
+    });
+
+    const response = await PUT(createRequest('+381601234567'));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      message: 'Only JPEG, PNG, and WebP images are allowed',
+    });
+    expect(mocks.connectToDatabase).not.toHaveBeenCalled();
+    expect(mocks.findByIdAndUpdate).not.toHaveBeenCalled();
   });
 });
