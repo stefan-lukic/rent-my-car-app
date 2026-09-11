@@ -41,9 +41,9 @@ const nextConfig = {
   },
 };
 
-const config = withPWA({
+export const pwaConfig = {
   dest: 'public',
-  register: true,
+  register: false,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   // Cache only static assets; auth, API, and protected pages stay network-only.
@@ -71,8 +71,11 @@ const config = withPWA({
       },
     },
   ],
-  buildExcludes: [/middleware-manifest\.json$/],
+  // Exclude Next internals that are unavailable from their emitted public URLs.
+  buildExcludes: [/middleware-manifest\.json$/, /app-build-manifest\.json$/],
   maximumFileSizeToCacheInBytes: 5000000, // 5MB
-})(nextConfig);
+};
+
+const config = withPWA(pwaConfig)(nextConfig);
 
 export default config;
