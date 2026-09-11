@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useAuth } from '@/hooks/useAuth';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import Header from '@/components/UI/Header';
 import HowItWorksModal from '@/components/HowItWorksModal';
 import CarFilters from '@/components/CarFilters';
@@ -43,6 +44,7 @@ export default function Home() {
 function HomeContent() {
   const searchParams = useSearchParams();
   const { loading } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [filters, setFilters] = useState<CarFilterState>(() => ({
     minPrice: searchParams.get('minPrice') ?? initialFilters.minPrice,
@@ -52,13 +54,13 @@ function HomeContent() {
     engine: searchParams.get('engine') ?? initialFilters.engine,
     minSeats: searchParams.get('minSeats') ?? initialFilters.minSeats,
   }));
-  const [initialSearchValues] = useState(() => ({
+  const initialSearchValues = {
     city: searchParams.get('city') ?? '',
     startDate: parseCalendarDate(searchParams.get('start')),
     endDate: parseCalendarDate(searchParams.get('end')),
-  }));
+  };
 
-  if (loading) {
+  if (loading || isMobile === null) {
     return <HomePageSkeleton />;
   }
 
@@ -173,7 +175,8 @@ function HomeContent() {
           </p>
         </div>
 
-        <div className="md:hidden">
+        {/* Mount only the active search view to prevent duplicate IDs and requests. */}
+        {isMobile ? (
           <MobileCarRentalSearch
             filters={filters}
             initialValues={initialSearchValues}
@@ -182,18 +185,18 @@ function HomeContent() {
               <MobileCarFilters filters={filters} setFilters={setFilters} />
             }
           />
-        </div>
-
-        <div className="hidden items-start gap-6 md:grid md:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
-          <aside className="sticky top-24">
-            <CarFilters filters={filters} setFilters={setFilters} />
-          </aside>
-          <CarRentalSearch
-            filters={filters}
-            initialValues={initialSearchValues}
-            persistSearch
-          />
-        </div>
+        ) : (
+          <div className="grid items-start gap-6 md:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
+            <aside className="sticky top-24">
+              <CarFilters filters={filters} setFilters={setFilters} />
+            </aside>
+            <CarRentalSearch
+              filters={filters}
+              initialValues={initialSearchValues}
+              persistSearch
+            />
+          </div>
+        )}
       </section>
 
       <section className="border-t border-slate-200 bg-white">
