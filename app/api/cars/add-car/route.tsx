@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
     }
 
     const carData = Object.fromEntries(formData);
-    delete (carData as Record<string, unknown>).renter;
 
     if (
       !carData.make ||
@@ -220,11 +219,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Build the document from allowed fields so request data cannot set internal state.
     const newCar = new Car({
-      ...carData,
+      make: carData.make,
       carModel,
+      engine: carData.engine,
+      power: String(carData.power).trim(),
       seats,
+      carType: carData.carType,
+      city: carData.city,
+      carLocation: String(carData.carLocation).trim(),
+      firstRegistration: carData.firstRegistration,
+      milage: Number(carData.milage),
+      averageConsumption: String(carData.averageConsumption).trim(),
       images: imageBase64Array,
+      pricePerDay: Number(carData.pricePerDay),
+      description: String(carData.description).trim(),
       renter: session.user.id,
     });
 
