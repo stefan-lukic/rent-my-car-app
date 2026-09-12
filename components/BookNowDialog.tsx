@@ -132,7 +132,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>
-                €{car.pricePerDay} × {days} {l.common.days(days)}
+                €{car.pricePerDay} × {l.common.days(days)}
               </span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
