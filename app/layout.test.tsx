@@ -1,0 +1,51 @@
+import { renderToStaticMarkup } from 'react-dom/server';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('next/font/google', () => ({
+  Inter: () => ({ className: 'inter' }),
+}));
+
+vi.mock('next/script', () => ({
+  default: () => null,
+}));
+
+vi.mock('@/components/Providers', () => ({
+  Providers: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+vi.mock('@/components/mobile/MobileFooter', () => ({
+  default: () => null,
+}));
+
+vi.mock('@/components/ServiceWorkerRegistration', () => ({
+  default: () => null,
+}));
+
+vi.mock('@vercel/analytics/react', () => ({
+  Analytics: () => null,
+}));
+
+vi.mock('@vercel/speed-insights/next', () => ({
+  SpeedInsights: () => null,
+}));
+
+import RootLayout, { viewport } from './layout';
+
+describe('Root layout viewport metadata', () => {
+  it('uses one accessible Next.js viewport configuration', () => {
+    expect(viewport).toEqual({
+      width: 'device-width',
+      initialScale: 1,
+      viewportFit: 'cover',
+      themeColor: '#dbeafe',
+    });
+
+    const markup = renderToStaticMarkup(
+      <RootLayout>
+        <div>Page content</div>
+      </RootLayout>
+    );
+
+    expect(markup).not.toContain('name="viewport"');
+  });
+});
