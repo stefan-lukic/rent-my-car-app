@@ -60,6 +60,21 @@ describe('CustomInput', () => {
     expect(input).toHaveAttribute('placeholder', 'Enter your name');
   });
 
+  it('keeps a visually hidden label associated with the input', () => {
+    renderWithForm({
+      name: 'email',
+      label: 'Email address',
+      type: 'email',
+      visuallyHiddenLabel: true,
+    });
+
+    expect(screen.getByText('Email address')).toHaveClass('sr-only');
+    expect(screen.getByLabelText('Email address')).toHaveAttribute(
+      'type',
+      'email'
+    );
+  });
+
   it('applies maxLength when provided', () => {
     renderWithForm({
       name: 'name',

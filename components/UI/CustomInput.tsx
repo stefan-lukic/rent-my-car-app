@@ -1,7 +1,13 @@
 import React from 'react';
 import { Control, FieldPath } from 'react-hook-form';
 import { z } from 'zod';
-import { FormField, FormLabel, FormControl, FormMessage } from './Form';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from './Form';
 import { Input } from './Input';
 import { authFormSchema } from '@/lib/utils';
 
@@ -15,6 +21,7 @@ interface CustomInput {
   type: string;
   maxLength?: number;
   endAdornment?: React.ReactNode;
+  visuallyHiddenLabel?: boolean;
 }
 
 const CustomInput = ({
@@ -25,14 +32,20 @@ const CustomInput = ({
   type,
   maxLength,
   endAdornment,
+  visuallyHiddenLabel = false,
 }: CustomInput) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <div className="form-item">
-          <FormLabel className="form-label">{label}</FormLabel>
+        // FormItem gives every label and input pair its own accessible ID.
+        <FormItem className="form-item">
+          <FormLabel
+            className={`form-label ${visuallyHiddenLabel ? 'sr-only' : ''}`}
+          >
+            {label}
+          </FormLabel>
           <div className="flex w-full flex-col">
             <div className="relative w-full">
               <FormControl>
@@ -61,7 +74,7 @@ const CustomInput = ({
             </div>
             <FormMessage className="form-message mt-2" />
           </div>
-        </div>
+        </FormItem>
       )}
     />
   );
