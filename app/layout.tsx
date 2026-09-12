@@ -30,10 +30,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  // Let Next.js emit one accessible viewport definition for every page.
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: 'cover', // Ensures the viewport covers the entire screen, including the notch area
   themeColor: '#dbeafe', // Match this with your app's theme color
 };
@@ -46,10 +45,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width; initial-scale=1; viewport-fit=cover"
-        />
         <meta name="theme-color" content="#dbeafe" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
