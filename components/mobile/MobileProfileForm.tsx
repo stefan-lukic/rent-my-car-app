@@ -115,16 +115,18 @@ const MobileProfileForm = ({
             <CustomInput
               control={control}
               name="name"
-              label=""
+              label={l.common.name}
               placeholder={l.common.name}
               type="text"
+              visuallyHiddenLabel
             />
             <CustomInput
               control={control}
               name="phoneNumber"
-              label=""
+              label={l.common.phoneNumber}
               placeholder={l.common.phoneNumber}
               type="tel"
+              visuallyHiddenLabel
             />
             <label
               htmlFor="images"
@@ -154,17 +156,19 @@ const MobileProfileForm = ({
         <CustomInput
           control={control}
           name="email"
-          label=""
+          label={l.common.email}
           placeholder={l.common.email}
           type="email"
+          visuallyHiddenLabel
         />
 
         <CustomInput
           control={control}
           name="password"
-          label=""
+          label={l.common.password}
           placeholder={l.common.password}
           type={isPasswordVisible ? 'text' : 'password'}
+          visuallyHiddenLabel
           endAdornment={
             <button
               type="button"
@@ -186,9 +190,10 @@ const MobileProfileForm = ({
           <CustomInput
             control={control}
             name="confirmPassword"
-            label=""
+            label={l.auth.confirmPassword}
             placeholder={l.auth.confirmPassword}
             type={isConfirmPasswordVisible ? 'text' : 'password'}
+            visuallyHiddenLabel
             endAdornment={
               <button
                 type="button"

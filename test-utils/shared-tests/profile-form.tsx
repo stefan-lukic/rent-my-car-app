@@ -19,8 +19,12 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
   it('renders email and password fields for sign-in', async () => {
     const user = userEvent.setup();
     render(<Component type="sign-in" callbackUrl="/" />);
-    expect(screen.getByPlaceholderText(l.common.email)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(l.common.password)).toBeInTheDocument();
+    const emailInput = screen.getByLabelText(l.common.email);
+    const passwordInput = screen.getByLabelText(l.common.password);
+
+    expect(emailInput).toHaveAttribute('type', 'email');
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    expect(emailInput.id).not.toBe(passwordInput.id);
   });
 
   it('lets the user show and hide the password', async () => {
@@ -40,12 +44,10 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
   it('renders name field and file input for sign-up', async () => {
     const user = userEvent.setup();
     render(<Component type="sign-up" callbackUrl="/" />);
-    expect(screen.getByPlaceholderText(l.common.name)).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText(l.common.phoneNumber)
-    ).toBeInTheDocument();
-    expect(document.getElementById('images')).toBeTruthy();
-    expect(screen.getByPlaceholderText(l.auth.confirmPassword)).toHaveAttribute(
+    expect(screen.getByLabelText(l.common.name)).toBeInTheDocument();
+    expect(screen.getByLabelText(l.common.phoneNumber)).toBeInTheDocument();
+    expect(screen.getByLabelText(l.cars.chooseFiles)).toBeInTheDocument();
+    expect(screen.getByLabelText(l.auth.confirmPassword)).toHaveAttribute(
       'type',
       'password'
     );
