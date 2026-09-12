@@ -59,7 +59,8 @@ describe('BookingDialog', () => {
   it('calculates days and total price including both start and end date', async () => {
     const user = userEvent.setup();
     render(<BookingDialog {...defaultProps} />);
-    expect(screen.getByText(/€50 × 3/)).toBeInTheDocument();
+    expect(screen.getByText('€50 × 3 days')).toBeInTheDocument();
+    expect(screen.queryByText('€50 × 3 3 days')).not.toBeInTheDocument();
     const totals = screen.getAllByText('€150.00');
     expect(totals.length).toBeGreaterThan(0);
   });
