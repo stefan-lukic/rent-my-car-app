@@ -1,13 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Car from '@/lib/model/car/Car';
+import Car, { type ICar } from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 import connectToDatabase from '@/lib/db/mongoose';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
+import type { FilterQuery } from 'mongoose';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 50;
+const CAR_SEARCH_FIELDS =
+  '_id make carModel engine power seats carType city firstRegistration milage averageConsumption images pricePerDay description renter rating ratingCount';
+
+type CarSearchResult = {
+  _id: string;
+  make: ICar['make'];
+  carModel: string;
+  engine: ICar['engine'];
+  power: string;
+  seats?: number;
+  carType: ICar['carType'];
+  city: ICar['city'];
+  firstRegistration?: string;
+  milage: number;
+  averageConsumption: string;
+  images: string[];
+  pricePerDay: number;
+  description?: string;
+  renter: string;
+  rating: number;
+  ratingCount: number;
+};
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -69,7 +92,7 @@ export async function GET(req: NextRequest) {
   await connectToDatabase();
 
   try {
-    const filter: any = {};
+    const filter: FilterQuery<ICar> = {};
     if (minPrice && !isNaN(parseInt(minPrice)))
       filter.pricePerDay = { $gte: parseInt(minPrice) };
     if (maxPrice && !isNaN(parseInt(maxPrice))) {
@@ -86,7 +109,9 @@ export async function GET(req: NextRequest) {
       filter.renter = { $ne: session.user.id };
     }
 
-    const cars = await Car.find(filter).select('+bookedPeriods');
+    const cars = await Car.find(filter)
+      .select(`${CAR_SEARCH_FIELDS} +bookedPeriods`)
+      .slice('images', 1);
 
     const overlappingRentals = await Rental.find({
       car: { $in: cars.map((car) => car._id) },
@@ -130,19 +155,32 @@ export async function GET(req: NextRequest) {
     const totalPages = Math.ceil(totalCars / limit);
     const paginatedCars = availableCars
       .slice((page - 1) * limit, page * limit)
-      .map((car) => {
-        const carData = car.toObject() as any;
-        delete carData.bookedPeriods;
-
-        return carData;
-      });
+      .map<CarSearchResult>((car) => ({
+        // Expose only fields used by the public search experience.
+        _id: car._id.toString(),
+        make: car.make,
+        carModel: car.carModel,
+        engine: car.engine,
+        power: car.power,
+        seats: car.seats,
+        carType: car.carType,
+        city: car.city,
+        firstRegistration: car.firstRegistration?.toISOString(),
+        milage: car.milage,
+        averageConsumption: car.averageConsumption,
+        images: car.images?.slice(0, 1) ?? [],
+        pricePerDay: car.pricePerDay,
+        description: car.description,
+        renter: car.renter.toString(),
+        rating: car.rating ?? 0,
+        ratingCount: car.ratingCount ?? 0,
+      }));
 
     return NextResponse.json({
       cars: paginatedCars,
       currentPage: page,
       totalPages: totalPages,
       totalCars: totalCars,
-      appliedFilters: filter,
     });
   } catch (error) {
     return NextResponse.json(

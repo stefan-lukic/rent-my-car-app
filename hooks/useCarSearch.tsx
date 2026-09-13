@@ -164,8 +164,8 @@ export function useCarSearchForm({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          // The booking API reads the trusted pickup location from the database.
           carId: car._id,
-          carLocation: car.carLocation,
           startDate: formatCalendarDate(startDate),
           endDate: formatCalendarDate(endDate),
         }),

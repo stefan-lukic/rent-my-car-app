@@ -36,10 +36,11 @@ describe('CarSearchResults', () => {
     expect(screen.getByText('/ day')).toBeInTheDocument();
   });
 
-  it('renders city and location', async () => {
+  it('renders the city without exposing the precise pickup location', async () => {
     const user = userEvent.setup();
     render(<CarSearchResults {...defaultProps} />);
-    expect(screen.getByText('Belgrade, Center')).toBeInTheDocument();
+    expect(screen.getByText('Belgrade')).toBeInTheDocument();
+    expect(screen.queryByText(/Center/)).not.toBeInTheDocument();
   });
 
   it('renders car type, engine and consumption tags', async () => {

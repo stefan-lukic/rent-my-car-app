@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   connectToDatabase: vi.fn(),
   findCars: vi.fn(),
   selectCars: vi.fn(),
+  sliceCarImages: vi.fn(),
   findRentals: vi.fn(),
 }));
 
@@ -40,7 +41,8 @@ describe('GET /api/cars pagination', () => {
     mocks.getServerSession.mockResolvedValue(null);
     mocks.connectToDatabase.mockResolvedValue(undefined);
     mocks.findCars.mockReturnValue({ select: mocks.selectCars });
-    mocks.selectCars.mockResolvedValue([]);
+    mocks.selectCars.mockReturnValue({ slice: mocks.sliceCarImages });
+    mocks.sliceCarImages.mockResolvedValue([]);
     mocks.findRentals.mockResolvedValue([]);
   });
 
@@ -94,5 +96,63 @@ describe('GET /api/cars pagination', () => {
     expect(response.status).toBe(200);
     expect(mocks.connectToDatabase).toHaveBeenCalledOnce();
     expect(mocks.findCars).toHaveBeenCalledOnce();
+  });
+
+  it('returns only the public search DTO with one thumbnail', async () => {
+    const car = {
+      _id: { toString: () => 'car-1' },
+      make: 'MERCEDES',
+      carModel: 'C-Class',
+      engine: 'PETROL',
+      power: '150',
+      seats: 5,
+      carType: 'SALOON',
+      city: 'Belgrade',
+      carLocation: 'Exact private address',
+      firstRegistration: new Date('2020-01-01T00:00:00.000Z'),
+      milage: 50000,
+      averageConsumption: '6.5',
+      images: ['/car-1.jpg', '/car-2.jpg'],
+      pricePerDay: 50,
+      description: 'Comfortable car',
+      renter: { toString: () => 'owner-1' },
+      rating: 4.8,
+      ratingCount: 12,
+      status: 'available',
+      bookedPeriods: [],
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-02T00:00:00.000Z'),
+      __v: 0,
+    };
+    mocks.sliceCarImages.mockResolvedValue([car]);
+
+    const response = await GET(createRequest());
+
+    expect(response.status).toBe(200);
+    expect((await response.json()).cars).toEqual([
+      {
+        _id: 'car-1',
+        make: 'MERCEDES',
+        carModel: 'C-Class',
+        engine: 'PETROL',
+        power: '150',
+        seats: 5,
+        carType: 'SALOON',
+        city: 'Belgrade',
+        firstRegistration: '2020-01-01T00:00:00.000Z',
+        milage: 50000,
+        averageConsumption: '6.5',
+        images: ['/car-1.jpg'],
+        pricePerDay: 50,
+        description: 'Comfortable car',
+        renter: 'owner-1',
+        rating: 4.8,
+        ratingCount: 12,
+      },
+    ]);
+    expect(mocks.selectCars).toHaveBeenCalledWith(
+      expect.not.stringContaining('carLocation')
+    );
+    expect(mocks.sliceCarImages).toHaveBeenCalledWith('images', 1);
   });
 });

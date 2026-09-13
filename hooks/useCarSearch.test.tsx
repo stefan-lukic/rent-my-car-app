@@ -218,7 +218,6 @@ describe('useCarSearchForm', () => {
     const bookingRequest = vi.mocked(fetch).mock.calls[0][1];
     expect(JSON.parse(bookingRequest?.body as string)).toEqual({
       carId: 'car-1',
-      carLocation: 'New Belgrade',
       startDate: '2026-08-01',
       endDate: '2026-08-03',
     });
