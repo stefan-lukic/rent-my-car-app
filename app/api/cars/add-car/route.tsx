@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import connectToDatabase from '@/lib/db/mongoose';
 import Car from '@/lib/model/car/Car';
 import { CarType } from '@/lib/model/car/CarType';
@@ -220,7 +221,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build the document from allowed fields so request data cannot set internal state.
-    const newCar = new Car({
+    const newCarData = {
       make: carData.make,
       carModel,
       engine: carData.engine,
@@ -236,13 +237,36 @@ export async function POST(request: NextRequest) {
       pricePerDay: Number(carData.pricePerDay),
       description: String(carData.description).trim(),
       renter: session.user.id,
-    });
+    };
 
-    await newCar.save();
+    const dbSession = await mongoose.startSession();
+    let newCar: InstanceType<typeof Car> | null = null;
 
-    await User.findByIdAndUpdate(session.user.id, {
-      $push: { cars: newCar._id },
-    });
+    try {
+      await dbSession.withTransaction(async () => {
+        // Save the car and its owner reference as one atomic operation.
+        const createdCars = await Car.create([newCarData], {
+          session: dbSession,
+        });
+        newCar = createdCars[0];
+
+        const updatedUser = await User.findByIdAndUpdate(
+          session.user.id,
+          { $push: { cars: newCar._id } },
+          { session: dbSession }
+        );
+
+        if (!updatedUser) {
+          throw new Error('CAR_OWNER_UPDATE_FAILED');
+        }
+      });
+    } finally {
+      await dbSession.endSession();
+    }
+
+    if (!newCar) {
+      throw new Error('CAR_CREATION_FAILED');
+    }
 
     return NextResponse.json(
       { message: 'Car added successfully', car: newCar },
