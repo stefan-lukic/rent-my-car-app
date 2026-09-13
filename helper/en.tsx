@@ -379,29 +379,32 @@ const l = {
   },
 
   pages: {
-    cancellationOptions: 'Cancellation Options',
-    flexiblePolicy: 'Our Flexible Cancellation Policy',
+    cancellationOptions: 'Cancellation Policy',
+    flexiblePolicy: 'Reservation Cancellation Policy',
     cancellationDesc:
-      'Clients can cancel through their profile until 24 hours before the rental starts.',
-    forClients: 'For Clients:',
-    freeCancellationClient:
-      'Cancellation is available until 24 hours before the rental start time',
-    partialRefund: 'No automated refunds are processed through the app',
-    noRefund: 'Contact the owner directly for any refund discussions',
-    forRenters: 'For Car Renters:',
-    freeCancellationRenter:
-      'Free cancellation up to 48 hours before the rental start time',
-    penaltyCancellation:
-      "Cancellations made less than 48 hours before the rental start time may affect your listing's visibility",
-    repeatedCancellations:
-      "Repeated cancellations may affect your listing's visibility",
+      'Clients can cancel an active reservation through My Profile & Rentals when at least 24 hours remain before the rental starts.',
+    forClients: 'For clients:',
+    clientCancellationWindow:
+      'Cancellation is available when at least 24 hours remain before the rental start time',
+    clientCancellationCutoff:
+      'Cancellation is unavailable once less than 24 hours remain',
+    clientCancellationResult:
+      'After cancellation, the reservation is marked as cancelled and the car dates become available again',
+    forCarOwners: 'For car owners:',
+    ownerCancellationUnavailable:
+      'Car owners currently cannot cancel reservations through the application',
+    noOwnerCancellationPenalties:
+      'The application does not apply listing visibility penalties for cancellations',
+    paymentArrangements:
+      'RentMyCar does not process payments, deposits, or refunds; financial arrangements are made directly between the client and owner',
     howToCancel: 'How to Cancel a Reservation',
     stepLogin: 'Log in to your RentMyCar account',
-    stepGoToReservations: 'Go to `My Reservations` in your dashboard',
-    stepFindReservation: 'Find the reservation you want to cancel',
-    stepClickCancel: 'Click on `Cancel Reservation` and follow the prompts',
+    stepGoToReservations: 'Open My Profile & Rentals',
+    stepFindReservation: 'Find the active upcoming reservation',
+    stepClickCancel:
+      'Select Cancel Reservation and confirm your choice when the action is available',
     stepConfirmation:
-      "You'll receive a confirmation email once the cancellation is processed",
+      'Check that the reservation is marked as Cancelled in My Rentals',
     notFound: '404 Not Found',
     pageNotFound: 'Your visited page not found. You may go home page.',
     errorFallback: 'Something went wrong. Please try again later.',

@@ -21,18 +21,18 @@ export default function CancellationOptions() {
               {l.pages.forClients}
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
-              <li>{l.pages.freeCancellationClient}</li>
-              <li>{l.pages.partialRefund}</li>
-              <li>{l.pages.noRefund}</li>
+              <li>{l.pages.clientCancellationWindow}</li>
+              <li>{l.pages.clientCancellationCutoff}</li>
+              <li>{l.pages.clientCancellationResult}</li>
             </ul>
 
             <h3 className="text-md font-medium text-gray-900 mt-6 mb-2">
-              {l.pages.forRenters}
+              {l.pages.forCarOwners}
             </h3>
             <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
-              <li>{l.pages.freeCancellationRenter}</li>
-              <li>{l.pages.penaltyCancellation}</li>
-              <li>{l.pages.repeatedCancellations}</li>
+              <li>{l.pages.ownerCancellationUnavailable}</li>
+              <li>{l.pages.noOwnerCancellationPenalties}</li>
+              <li>{l.pages.paymentArrangements}</li>
             </ul>
           </div>
         </div>
