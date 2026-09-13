@@ -35,6 +35,73 @@ describe('BookingDialog', () => {
     expect(screen.getByText('Book MERCEDES C-Class')).toBeInTheDocument();
   });
 
+  it('exposes an accessible modal name and moves focus inside', () => {
+    render(<BookingDialog {...defaultProps} />);
+
+    const dialog = screen.getByRole('dialog', {
+      name: 'Book MERCEDES C-Class',
+    });
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(dialog).toHaveFocus();
+    expect(
+      screen.getByRole('button', { name: 'Close booking dialog' })
+    ).toBeInTheDocument();
+  });
+
+  it('closes when Escape is pressed', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<BookingDialog {...defaultProps} onClose={onClose} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('keeps keyboard focus inside the dialog', async () => {
+    const user = userEvent.setup();
+    render(<BookingDialog {...defaultProps} />);
+
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole('button', { name: 'Confirm Reservation' })
+    ).toHaveFocus();
+
+    await user.tab();
+    expect(
+      screen.getByRole('button', { name: 'Close booking dialog' })
+    ).toHaveFocus();
+  });
+
+  it('locks page scrolling and restores focus after closing', () => {
+    const originalOverflow = document.body.style.overflow;
+    const { rerender } = render(
+      <>
+        <button type="button">Open booking</button>
+        <BookingDialog {...defaultProps} isOpen={false} />
+      </>
+    );
+    const trigger = screen.getByRole('button', { name: 'Open booking' });
+    trigger.focus();
+
+    rerender(
+      <>
+        <button type="button">Open booking</button>
+        <BookingDialog {...defaultProps} isOpen />
+      </>
+    );
+    expect(document.body.style.overflow).toBe('hidden');
+
+    rerender(
+      <>
+        <button type="button">Open booking</button>
+        <BookingDialog {...defaultProps} isOpen={false} />
+      </>
+    );
+    expect(document.body.style.overflow).toBe(originalOverflow);
+    expect(trigger).toHaveFocus();
+  });
+
   it('displays selected car image or no photo fallback', async () => {
     const user = userEvent.setup();
     render(<BookingDialog {...defaultProps} />);
