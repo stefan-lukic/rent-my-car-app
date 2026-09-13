@@ -34,6 +34,9 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
   const formatText = (text: string) =>
     text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 
+  // Public search shows the city without exposing the precise pickup address.
+  const publicLocation = car.city;
+
   return (
     <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
       <div className="relative h-56 w-full overflow-hidden bg-gray-100">
@@ -136,9 +139,8 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span className="truncate">
-                  {car.city}, {car.carLocation}
-                </span>
+
+                <span className="truncate">{publicLocation}</span>
               </div>
             </div>
 
