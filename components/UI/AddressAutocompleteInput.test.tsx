@@ -20,9 +20,16 @@ const defaultProps = {
   required: true,
 };
 
+const enableGooglePlaces = () => {
+  const config = document.createElement('span');
+  config.id = 'rentmycar-google-places-config';
+  config.dataset.enabled = 'true';
+  document.body.appendChild(config);
+};
+
 describe('AddressAutocompleteInput', () => {
   afterEach(() => {
-    delete process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY;
+    document.getElementById('rentmycar-google-places-config')?.remove();
     delete window.google;
     vi.clearAllMocks();
   });
@@ -78,7 +85,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('keeps the fallback input disabled while Google suggestions load', () => {
-    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    enableGooglePlaces();
     window.google = {
       maps: {
         importLibrary: vi.fn(() => new Promise<never>(() => {})),
@@ -95,7 +102,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('uses the selected formatted Google address', async () => {
-    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    enableGooglePlaces();
 
     const autocompleteElement = document.createElement(
       'div'
@@ -146,7 +153,7 @@ describe('AddressAutocompleteInput', () => {
   });
 
   it('keeps form state synchronized while the user types', async () => {
-    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+    enableGooglePlaces();
 
     const autocompleteElement = document.createElement(
       'div'
@@ -180,8 +187,8 @@ describe('AddressAutocompleteInput', () => {
     expect(defaultProps.onValueChange).toHaveBeenLastCalledWith('Trg');
   });
 
-  it('waits for the Maps API after the script load event', async () => {
-    process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY = 'test-key';
+  it('waits for the Maps API supplied by the server-rendered script', async () => {
+    enableGooglePlaces();
 
     const autocompleteElement = document.createElement(
       'div'
@@ -202,12 +209,6 @@ describe('AddressAutocompleteInput', () => {
 
     render(<AddressAutocompleteInput {...defaultProps} />);
 
-    const mapsScript = document.querySelector<HTMLScriptElement>(
-      'script[data-rentmycar-google-maps]'
-    );
-    expect(mapsScript).not.toBeNull();
-
-    mapsScript?.dispatchEvent(new Event('load'));
     window.google = { maps: { importLibrary } };
 
     await waitFor(() => {

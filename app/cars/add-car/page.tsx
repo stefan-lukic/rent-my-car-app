@@ -4,6 +4,7 @@ import { isMobileSSR } from '@/utils/deviceDetectionSSR';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/authOptions';
+import GooglePlacesScript from '@/components/GooglePlacesScript';
 
 export default async function AddCarPage() {
   // Middleware checks the cookie; this server check enforces session revocation.
@@ -14,8 +15,12 @@ export default async function AddCarPage() {
 
   const isMobile = isMobileSSR();
   return (
-    <div className="h-screen overflow-y-auto bg-slate-50">
-      <main>{isMobile ? <MobileAddCar /> : <AddCar />}</main>
-    </div>
+    <>
+      {/* Load Places from the server for both add-car layouts. */}
+      <GooglePlacesScript />
+      <div className="h-screen overflow-y-auto bg-slate-50">
+        <main>{isMobile ? <MobileAddCar /> : <AddCar />}</main>
+      </div>
+    </>
   );
 }
