@@ -5,9 +5,11 @@ const mocks = vi.hoisted(() => ({
   getServerSession: vi.fn(),
   connectToDatabase: vi.fn(),
   validateImageUploads: vi.fn(),
-  carConstructor: vi.fn(),
-  saveCar: vi.fn(),
+  createCar: vi.fn(),
   findUserByIdAndUpdate: vi.fn(),
+  startSession: vi.fn(),
+  withTransaction: vi.fn(),
+  endSession: vi.fn(),
 }));
 
 vi.mock('next-auth/next', () => ({
@@ -20,23 +22,16 @@ vi.mock('@/lib/db/mongoose', () => ({
   default: mocks.connectToDatabase,
 }));
 
+vi.mock('mongoose', () => ({
+  default: { startSession: mocks.startSession },
+}));
+
 vi.mock('@/lib/imageUploadValidation', () => ({
   validateImageUploads: mocks.validateImageUploads,
 }));
 
 vi.mock('@/lib/model/car/Car', () => ({
-  default: class MockCar {
-    _id = 'car-1';
-
-    constructor(data: object) {
-      mocks.carConstructor(data);
-      Object.assign(this, data);
-    }
-
-    save() {
-      return mocks.saveCar();
-    }
-  },
+  default: { create: mocks.createCar },
 }));
 
 vi.mock('@/lib/model/User', () => ({
@@ -46,6 +41,11 @@ vi.mock('@/lib/model/User', () => ({
 }));
 
 import { POST } from './route';
+
+const dbSession = {
+  withTransaction: mocks.withTransaction,
+  endSession: mocks.endSession,
+};
 
 const validCarData = {
   make: 'MERCEDES',
@@ -82,6 +82,10 @@ describe('POST /api/cars/add-car', () => {
       files: [],
       error: 'Only JPEG, PNG, and WebP images are allowed',
     });
+    mocks.withTransaction.mockImplementation(async (callback) => callback());
+    mocks.startSession.mockResolvedValue(dbSession);
+    mocks.endSession.mockResolvedValue(undefined);
+    mocks.createCar.mockResolvedValue([{ _id: 'car-1' }]);
   });
 
   it('rejects unsupported images before reading or processing them', async () => {
@@ -97,8 +101,7 @@ describe('POST /api/cars/add-car', () => {
 
   it('creates a car from allowed fields and ignores internal fields', async () => {
     mocks.validateImageUploads.mockReturnValue({ files: [] });
-    mocks.saveCar.mockResolvedValue(undefined);
-    mocks.findUserByIdAndUpdate.mockResolvedValue(undefined);
+    mocks.findUserByIdAndUpdate.mockResolvedValue({ _id: 'owner-1' });
 
     const response = await POST(
       createRequest({
@@ -113,26 +116,53 @@ describe('POST /api/cars/add-car', () => {
     );
 
     expect(response.status).toBe(201);
-    expect(mocks.carConstructor).toHaveBeenCalledWith({
-      make: 'MERCEDES',
-      carModel: 'E-Class',
-      engine: 'PETROL',
-      power: '190',
-      seats: 5,
-      carType: 'SALOON',
-      city: 'Belgrade',
-      carLocation: 'City center',
-      firstRegistration: '2022-06-15T00:00:00.000Z',
-      milage: 50000,
-      averageConsumption: '7.2',
-      images: [],
-      pricePerDay: 65,
-      description: 'Comfortable and well maintained.',
-      renter: 'owner-1',
+    expect(mocks.createCar).toHaveBeenCalledWith(
+      [
+        {
+          make: 'MERCEDES',
+          carModel: 'E-Class',
+          engine: 'PETROL',
+          power: '190',
+          seats: 5,
+          carType: 'SALOON',
+          city: 'Belgrade',
+          carLocation: 'City center',
+          firstRegistration: '2022-06-15T00:00:00.000Z',
+          milage: 50000,
+          averageConsumption: '7.2',
+          images: [],
+          pricePerDay: 65,
+          description: 'Comfortable and well maintained.',
+          renter: 'owner-1',
+        },
+      ],
+      { session: dbSession }
+    );
+    expect(mocks.findUserByIdAndUpdate).toHaveBeenCalledWith(
+      'owner-1',
+      { $push: { cars: 'car-1' } },
+      { session: dbSession }
+    );
+    expect(mocks.withTransaction).toHaveBeenCalledOnce();
+    expect(mocks.endSession).toHaveBeenCalledOnce();
+  });
+
+  it('aborts car creation when the owner reference cannot be updated', async () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    mocks.validateImageUploads.mockReturnValue({ files: [] });
+    mocks.findUserByIdAndUpdate.mockResolvedValue(null);
+
+    const response = await POST(createRequest(validCarData));
+
+    expect(response.status).toBe(500);
+    expect(mocks.createCar).toHaveBeenCalledWith(expect.any(Array), {
+      session: dbSession,
     });
-    expect(mocks.saveCar).toHaveBeenCalledOnce();
-    expect(mocks.findUserByIdAndUpdate).toHaveBeenCalledWith('owner-1', {
-      $push: { cars: 'car-1' },
-    });
+    expect(mocks.withTransaction).toHaveBeenCalledOnce();
+    expect(mocks.endSession).toHaveBeenCalledOnce();
+
+    consoleError.mockRestore();
   });
 });

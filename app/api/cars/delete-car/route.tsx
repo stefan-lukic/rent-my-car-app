@@ -9,6 +9,8 @@ import { getServerSession } from 'next-auth/next';
 import connectToDatabase from '@/lib/db/mongoose';
 import { authOptions } from '@/lib/authOptions';
 
+const CAR_DELETE_CONFLICT = 'CAR_DELETE_CONFLICT';
+
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
@@ -57,35 +59,66 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Preserve immutable vehicle details before the listing is physically removed.
-    await Rental.updateMany(
-      {
-        car: car._id,
-        $or: [{ carSnapshot: { $exists: false } }, { carSnapshot: null }],
-      },
-      {
-        $set: {
-          carSnapshot: {
-            carId: car._id,
-            make: car.make,
-            carModel: car.carModel,
-            images: car.images ?? [],
-            city: car.city,
-            carLocation: car.carLocation,
-            pricePerDay: car.pricePerDay,
+    const dbSession = await mongoose.startSession();
+
+    try {
+      await dbSession.withTransaction(async () => {
+        // Preserve history, delete the car, and remove its owner reference atomically.
+        await Rental.updateMany(
+          {
+            car: car._id,
+            $or: [{ carSnapshot: { $exists: false } }, { carSnapshot: null }],
           },
-        },
-      }
+          {
+            $set: {
+              carSnapshot: {
+                carId: car._id,
+                make: car.make,
+                carModel: car.carModel,
+                images: car.images ?? [],
+                city: car.city,
+                carLocation: car.carLocation,
+                pricePerDay: car.pricePerDay,
+              },
+            },
+          },
+          { session: dbSession }
+        );
+
+        const deletedCar = await Car.findOneAndDelete(
+          {
+            _id: car._id,
+            bookedPeriods: {
+              $not: { $elemMatch: { endDate: { $gte: startOfTodayUtc } } },
+            },
+          },
+          { session: dbSession }
+        );
+
+        if (!deletedCar) {
+          throw new Error(CAR_DELETE_CONFLICT);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+          car.renter,
+          { $pull: { cars: _id } },
+          { session: dbSession }
+        );
+
+        if (!updatedUser) {
+          throw new Error('CAR_OWNER_UPDATE_FAILED');
+        }
+      });
+    } finally {
+      await dbSession.endSession();
+    }
+
+    return NextResponse.json(
+      { message: 'Car deleted successfully' },
+      { status: 200 }
     );
-
-    const deletedCar = await Car.findOneAndDelete({
-      _id: car._id,
-      bookedPeriods: {
-        $not: { $elemMatch: { endDate: { $gte: startOfTodayUtc } } },
-      },
-    });
-
-    if (!deletedCar) {
+  } catch (error) {
+    if (error instanceof Error && error.message === CAR_DELETE_CONFLICT) {
       return NextResponse.json(
         {
           message:
@@ -95,15 +128,6 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    await User.findByIdAndUpdate(car.renter, {
-      $pull: { cars: _id },
-    });
-
-    return NextResponse.json(
-      { message: 'Car deleted successfully' },
-      { status: 200 }
-    );
-  } catch (error) {
     const errorId = randomUUID();
     // Keep internal failure details in server logs under a safe reference ID.
     console.error(`[${errorId}] Error deleting car:`, error);
