@@ -114,6 +114,31 @@ describe('PUT /api/cars/update-car', () => {
     expect(mocks.findByIdAndUpdate).not.toHaveBeenCalled();
   });
 
+  it('logs internal failures without exposing their details to the client', async () => {
+    const internalError = new Error('MongoDB connection details');
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    mocks.getServerSession.mockResolvedValue({ user: { id: 'user-a' } });
+    mocks.findById.mockRejectedValue(internalError);
+
+    const response = await PUT(createRequest(validUpdate));
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body).toEqual({
+      message: 'Error updating car',
+      errorId: expect.any(String),
+    });
+    expect(JSON.stringify(body)).not.toContain(internalError.message);
+    expect(consoleError).toHaveBeenCalledWith(
+      `[${body.errorId}] Error updating car:`,
+      internalError
+    );
+
+    consoleError.mockRestore();
+  });
+
   it.each([
     ['horsepower containing letters', { power: 'fast' }],
     ['decimal horsepower', { power: '150.5' }],

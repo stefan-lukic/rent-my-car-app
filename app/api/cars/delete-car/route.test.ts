@@ -98,12 +98,28 @@ describe('DELETE /api/cars/delete-car', () => {
   });
 
   it('does not delete the car when rental history cannot be preserved', async () => {
-    mocks.updateRentals.mockRejectedValue(new Error('Snapshot failed'));
+    const internalError = new Error('Snapshot failed with database details');
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    mocks.updateRentals.mockRejectedValue(internalError);
 
     const response = await DELETE(createRequest());
+    const body = await response.json();
 
     expect(response.status).toBe(500);
+    expect(body).toEqual({
+      message: 'Error deleting car',
+      errorId: expect.any(String),
+    });
+    expect(JSON.stringify(body)).not.toContain(internalError.message);
+    expect(consoleError).toHaveBeenCalledWith(
+      `[${body.errorId}] Error deleting car:`,
+      internalError
+    );
     expect(mocks.findOneAndDelete).not.toHaveBeenCalled();
     expect(mocks.updateUser).not.toHaveBeenCalled();
+
+    consoleError.mockRestore();
   });
 });

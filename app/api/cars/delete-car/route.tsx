@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
+import { randomUUID } from 'crypto';
 
 import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
@@ -103,8 +104,12 @@ export async function DELETE(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    const errorId = randomUUID();
+    // Keep internal failure details in server logs under a safe reference ID.
+    console.error(`[${errorId}] Error deleting car:`, error);
+
     return NextResponse.json(
-      { message: 'Error deleting car', error: (error as Error).message },
+      { message: 'Error deleting car', errorId },
       { status: 500 }
     );
   }

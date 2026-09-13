@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
 
 import Car from '@/lib/model/car/Car';
 import { getServerSession } from 'next-auth/next';
@@ -119,8 +120,12 @@ export async function PUT(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    const errorId = randomUUID();
+    // Keep internal failure details in server logs under a safe reference ID.
+    console.error(`[${errorId}] Error updating car:`, error);
+
     return NextResponse.json(
-      { message: 'Error updating car', error: (error as Error).message },
+      { message: 'Error updating car', errorId },
       { status: 500 }
     );
   }
