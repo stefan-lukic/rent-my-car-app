@@ -4,6 +4,9 @@ import React from 'react';
 import l from '@/helper/en';
 import { countInclusiveCalendarDays } from '@/lib/utils/calendarDate';
 
+const FOCUSABLE_ELEMENTS =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 interface BookingDialogProps {
   car: ICar;
   isOpen: boolean;
@@ -27,7 +30,63 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
   onClose,
   onBook,
 }) => {
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+  const previousFocusRef = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    // Keep keyboard focus and page scrolling contained while the dialog is open.
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      onClose();
+      return;
+    }
+
+    if (event.key !== 'Tab' || !dialogRef.current) return;
+
+    const focusableElements = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS)
+    );
+
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      dialogRef.current.focus();
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (
+      event.shiftKey &&
+      (document.activeElement === firstElement ||
+        document.activeElement === dialogRef.current)
+    ) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  };
 
   const calculateDays = () => {
     if (startDate && endDate) {
@@ -52,23 +111,36 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-3 backdrop-blur-[2px] sm:p-4">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-dialog-title"
+        tabIndex={-1}
+        onKeyDown={handleKeyDown}
+        className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none sm:max-h-[calc(100dvh-2rem)]"
+      >
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-100 px-5 pb-4 pt-5 sm:px-6">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2
+              id="booking-dialog-title"
+              className="text-lg font-bold text-gray-900"
+            >
               {l.booking.bookMakeModel(car.make, car.carModel)}
             </h2>
           </div>
           <button
+            type="button"
+            aria-label="Close booking dialog"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             {l.common.close}
           </button>
         </div>
 
-        <div className="px-6 py-4 flex flex-col gap-4 max-h-[70vh] overflow-y-auto">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-4 sm:px-6">
           <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl">
             <div className="w-20 h-14 relative rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
               {car.images?.[0] ? (
@@ -161,23 +233,28 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         )}
 
         {bookingError && (
-          <div className="mx-6 mb-3 p-3 bg-red-50 border border-red-200 rounded-xl">
+          <div
+            role="alert"
+            className="mx-5 mb-3 rounded-xl border border-red-200 bg-red-50 p-3 sm:mx-6"
+          >
             <p className="text-sm text-red-700 font-medium">{bookingError}</p>
           </div>
         )}
 
-        <div className="flex gap-3 px-6 py-4 border-t border-gray-100">
+        <div className="flex flex-shrink-0 gap-3 border-t border-gray-100 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-4">
           <button
+            type="button"
             onClick={onClose}
-            className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             {l.common.cancel}
           </button>
           <button
+            type="button"
             onClick={onBook}
             disabled={isBooking}
             aria-busy={isBooking}
-            className="flex-1 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isBooking
               ? l.carDetailsPage.reserving
