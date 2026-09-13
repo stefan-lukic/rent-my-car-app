@@ -11,6 +11,7 @@ import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 import { protectOwnerBookingContact } from '@/lib/ownerBookingPrivacy';
 import type { OwnerBooking } from '@/types/OwnerBooking';
+import GooglePlacesScript from '@/components/GooglePlacesScript';
 
 type SerializedRental = Partial<
   Pick<OwnerBooking, 'status' | 'rentalPeriod' | 'client'>
@@ -92,22 +93,28 @@ export default async function MyProfilePage() {
 
     const isMobile = isMobileSSR();
 
-    return isMobile ? (
-      <MobileProfilePage
-        user={user}
-        cars={cars}
-        rentals={rentals}
-        ownerBookings={ownerBookings}
-        currentDate={currentDate}
-      />
-    ) : (
-      <ProfilePage
-        user={user}
-        cars={cars}
-        rentals={rentals}
-        ownerBookings={ownerBookings}
-        currentDate={currentDate}
-      />
+    return (
+      <>
+        {/* Share the server-loaded Places script with the update-car modal. */}
+        <GooglePlacesScript />
+        {isMobile ? (
+          <MobileProfilePage
+            user={user}
+            cars={cars}
+            rentals={rentals}
+            ownerBookings={ownerBookings}
+            currentDate={currentDate}
+          />
+        ) : (
+          <ProfilePage
+            user={user}
+            cars={cars}
+            rentals={rentals}
+            ownerBookings={ownerBookings}
+            currentDate={currentDate}
+          />
+        )}
+      </>
     );
   } catch (error) {
     console.error('Failed to load profile page:', error);

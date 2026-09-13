@@ -50,7 +50,7 @@ interface AddressAutocompleteInputProps {
   required?: boolean;
 }
 
-let googleMapsScriptPromise: Promise<void> | null = null;
+const GOOGLE_PLACES_CONFIG_ID = 'rentmycar-google-places-config';
 
 function waitForGoogleMaps(timeoutMs = 10000): Promise<void> {
   const startedAt = Date.now();
@@ -74,45 +74,6 @@ function waitForGoogleMaps(timeoutMs = 10000): Promise<void> {
   });
 }
 
-function loadGoogleMaps(apiKey: string): Promise<void> {
-  if (window.google?.maps?.importLibrary) return Promise.resolve();
-  if (googleMapsScriptPromise) return googleMapsScriptPromise;
-
-  googleMapsScriptPromise = new Promise((resolve, reject) => {
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[data-rentmycar-google-maps]'
-    );
-
-    if (existingScript) {
-      void waitForGoogleMaps().then(resolve).catch(reject);
-      existingScript.addEventListener(
-        'error',
-        () => reject(new Error('Google Maps failed to load.')),
-        { once: true }
-      );
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&loading=async&libraries=places&v=weekly`;
-    script.async = true;
-    script.dataset.rentmycarGoogleMaps = 'true';
-    script.addEventListener(
-      'load',
-      () => void waitForGoogleMaps().then(resolve).catch(reject),
-      { once: true }
-    );
-    script.addEventListener(
-      'error',
-      () => reject(new Error('Google Maps failed to load.')),
-      { once: true }
-    );
-    document.head.appendChild(script);
-  });
-
-  return googleMapsScriptPromise;
-}
-
 export default function AddressAutocompleteInput({
   label,
   name,
@@ -130,7 +91,7 @@ export default function AddressAutocompleteInput({
   const valueRef = useRef(value);
   const [isReady, setIsReady] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
-  const apiKey = process.env.NEXT_GOOGLE_MAPS_PLACES_API_KEY?.trim();
+  const [isConfigured, setIsConfigured] = useState(true);
   const addressPlaceholder = placeholder?.trim() || l.cars.egStreetLocation;
 
   useEffect(() => {
@@ -138,7 +99,12 @@ export default function AddressAutocompleteInput({
   }, [onValueChange]);
 
   useEffect(() => {
-    if (!apiKey || !city || !containerRef.current) return;
+    const googlePlacesEnabled =
+      document.getElementById(GOOGLE_PLACES_CONFIG_ID)?.dataset.enabled ===
+      'true';
+
+    setIsConfigured(googlePlacesEnabled);
+    if (!googlePlacesEnabled || !city || !containerRef.current) return;
 
     let cancelled = false;
     let autocomplete: GooglePlaceAutocompleteElement | null = null;
@@ -148,7 +114,8 @@ export default function AddressAutocompleteInput({
       try {
         setIsReady(false);
         setLoadFailed(false);
-        await loadGoogleMaps(apiKey);
+        // Wait for the server-rendered script before creating the interactive input.
+        await waitForGoogleMaps();
         if (cancelled || !window.google || !containerRef.current) return;
 
         const { PlaceAutocompleteElement } =
@@ -211,7 +178,7 @@ export default function AddressAutocompleteInput({
       autocomplete?.remove();
       autocompleteRef.current = null;
     };
-  }, [addressPlaceholder, apiKey, city, inputId]);
+  }, [addressPlaceholder, city, inputId]);
 
   useEffect(() => {
     valueRef.current = value;
@@ -244,11 +211,11 @@ export default function AddressAutocompleteInput({
           placeholder={
             !city
               ? l.cars.selectCityFirst
-              : apiKey && !loadFailed
+              : isConfigured && !loadFailed
                 ? l.cars.loadingAddressSuggestions
                 : addressPlaceholder
           }
-          disabled={!city || Boolean(apiKey && !loadFailed)}
+          disabled={!city || Boolean(isConfigured && !loadFailed)}
           required={required}
         />
       ) : (
