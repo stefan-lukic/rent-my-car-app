@@ -5,12 +5,16 @@ import connectToDatabase from '@/lib/db/mongoose';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 10;
+const MAX_LIMIT = 50;
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const start = searchParams.get('start');
   const end = searchParams.get('end');
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const page = Number(searchParams.get('page') ?? DEFAULT_PAGE);
+  const limit = Number(searchParams.get('limit') ?? DEFAULT_LIMIT);
 
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
@@ -31,6 +35,21 @@ export async function GET(req: NextRequest) {
   const endUtc = getUtcDate(end);
   if (!startUtc || !endUtc || endUtc < startUtc) {
     return NextResponse.json({ error: 'Invalid dates' }, { status: 400 });
+  }
+
+  // Reject malformed pagination before database work or array slicing.
+  if (!Number.isSafeInteger(page) || page < 1) {
+    return NextResponse.json(
+      { error: 'Page must be a positive whole number' },
+      { status: 400 }
+    );
+  }
+
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > MAX_LIMIT) {
+    return NextResponse.json(
+      { error: `Limit must be a whole number between 1 and ${MAX_LIMIT}` },
+      { status: 400 }
+    );
   }
 
   const parsedMinSeats = minSeats ? Number(minSeats) : null;
