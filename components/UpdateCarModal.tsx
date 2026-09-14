@@ -105,17 +105,27 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <div className="max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-5 shadow-xl shadow-blue-100/50 sm:p-8">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="update-car-title"
+        className="max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl sm:p-8"
+      >
         <header className="mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-1">
+          <h2
+            id="update-car-title"
+            className="mb-1 font-heading text-2xl font-bold text-slate-950 sm:text-3xl"
+          >
             {l.cars.updateCar}
           </h2>
-          <p className="text-gray-500">{l.cars.editVehicleDesc}</p>
+          <p className="text-sm leading-6 text-slate-500">
+            {l.cars.editVehicleDesc}
+          </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-7">
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
             <FormSelect
               label={l.cars.make}
               name="make"
@@ -201,7 +211,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+          <div className="grid gap-5 border-t border-slate-200 pt-6 sm:grid-cols-2 sm:gap-6">
             <FormSelect
               label={l.cars.city}
               name="city"
@@ -233,7 +243,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             />
           </div>
 
-          <div className="pt-4 border-t border-gray-100">
+          <div className="border-t border-slate-200 pt-6">
             <label className={labelClasses}>{l.common.description}</label>
             <textarea
               name="description"
@@ -246,18 +256,16 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+          <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
             <Button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold transition"
+              variant="secondary"
+              className="sm:min-w-32"
             >
               {l.common.cancel}
             </Button>
-            <Button
-              type="submit"
-              className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition"
-            >
+            <Button type="submit" className="sm:min-w-36">
               {l.common.save}
             </Button>
           </div>

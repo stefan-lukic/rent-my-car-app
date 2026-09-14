@@ -50,20 +50,36 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-        <h2 className="text-xl font-bold mb-2">{l.cars.deleteCar}</h2>
-        <p className="text-gray-500 mb-6">{l.cars.deleteCarConfirm}</p>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-car-title"
+        className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-xl"
+      >
+        <h2
+          id="delete-car-title"
+          className="mb-2 font-heading text-xl font-bold text-slate-950"
+        >
+          {l.cars.deleteCar}
+        </h2>
+        <p className="mb-6 text-sm leading-6 text-slate-500">
+          {l.cars.deleteCarConfirm}
+        </p>
         {errorMessage && (
-          <p className="mb-4 text-sm text-red-600" role="alert">
+          <p
+            className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+            role="alert"
+          >
             {errorMessage}
           </p>
         )}
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button
             type="button"
             onClick={onClose}
-            className="bg-gray-300 hover:bg-gray-400 text-black"
+            variant="secondary"
+            className="sm:min-w-28"
           >
             {l.common.cancel}
           </Button>
@@ -71,7 +87,8 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
             type="button"
             onClick={handleDelete}
             disabled={isDeleting}
-            className="bg-red-500 hover:bg-red-600 text-white"
+            variant="destructive"
+            className="sm:min-w-28"
           >
             {isDeleting ? l.common.deleting : l.common.delete}
           </Button>

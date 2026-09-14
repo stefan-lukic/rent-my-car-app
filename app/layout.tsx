@@ -1,7 +1,7 @@
 import l from '@/helper/en';
 import { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Inter } from 'next/font/google';
+import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/Providers';
 import { Analytics } from '@vercel/analytics/react';
@@ -9,7 +9,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 import MobileFooter from '@/components/mobile/MobileFooter';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' });
 
 export const metadata: Metadata = {
   title: 'Rent My Car',
@@ -34,7 +35,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover', // Ensures the viewport covers the entire screen, including the notch area
-  themeColor: '#dbeafe', // Match this with your app's theme color
+  themeColor: '#F8FAFC',
 };
 
 export default function RootLayout({
@@ -45,7 +46,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#dbeafe" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta
@@ -54,7 +54,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} flex flex-col h-screen overflow-hidden md:overflow-auto`}
+        className={`${inter.variable} ${manrope.variable} flex h-screen flex-col overflow-hidden bg-surface font-body text-ink md:overflow-auto`}
       >
         <Script id="ios-pwa-fix" strategy="afterInteractive">
           {`
@@ -66,14 +66,9 @@ export default function RootLayout({
           `}
         </Script>
         <Providers>
-          {/* Main content area */}
           <main className="flex-1 overflow-y-auto">{children}</main>
-
-          {/* Mobile Footer */}
           <MobileFooter />
         </Providers>
-
-        {/* External components */}
         <Analytics />
         <SpeedInsights />
         <ServiceWorkerRegistration />

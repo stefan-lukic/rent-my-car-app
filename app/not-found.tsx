@@ -3,19 +3,24 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="container mx-auto py-20">
-      <div className="flex flex-col h-[500px] justify-center items-center gap-10">
-        <h1 className="text-8xl font-medium">{l.pages.notFound}</h1>
-
-        <p className="">{l.pages.pageNotFound}</p>
-
+    <div className="mx-auto flex min-h-[calc(100dvh-5rem)] max-w-3xl items-center px-4 py-16 sm:px-6">
+      <section className="w-full rounded-2xl bg-surface-0 px-6 py-14 text-center shadow-sm sm:px-12">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+          Error 404
+        </p>
+        <h1 className="mt-3 font-heading text-5xl font-bold tracking-tight text-ink sm:text-6xl">
+          {l.pages.notFound}
+        </h1>
+        <p className="mx-auto mt-4 max-w-lg text-base leading-7 text-slate-600">
+          {l.pages.pageNotFound}
+        </p>
         <Link
           href="/"
-          className="px-12 py-4 mt-8 rounded-md bg-[var(--button)] text-white"
+          className="mt-8 inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
         >
           {l.common.backToHome}
         </Link>
-      </div>
+      </section>
     </div>
   );
 }

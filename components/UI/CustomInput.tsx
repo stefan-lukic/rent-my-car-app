@@ -53,7 +53,7 @@ const CustomInput = ({
                   <Input
                     type={type}
                     placeholder={placeholder}
-                    className="input-class min-w-16 max-w-24 placeholder:text-base placeholder:text-gray-500"
+                    className="input-class min-w-16 max-w-24 placeholder:text-base placeholder:text-slate-400"
                     maxLength={maxLength}
                     {...field}
                   />
@@ -61,7 +61,7 @@ const CustomInput = ({
                   <Input
                     type={type}
                     placeholder={placeholder}
-                    className={`input-class placeholder:text-gray-500 ${endAdornment ? 'pr-12' : ''}`}
+                    className={`input-class placeholder:text-slate-400 ${endAdornment ? 'pr-12' : ''}`}
                     {...field}
                   />
                 )}

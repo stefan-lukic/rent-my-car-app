@@ -52,7 +52,7 @@ const PaginationButton = ({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-blue-300 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-30"
     >
       <Icon className="h-5 w-5" />
     </button>
@@ -77,8 +77,8 @@ const PageNumbers = ({
           onClick={() => onChange(index)}
           className={`h-9 w-9 rounded-lg text-sm font-semibold transition-colors ${
             current === index
-              ? 'bg-blue-600 text-white'
-              : 'border border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-600'
+              ? 'bg-brand text-white'
+              : 'border border-slate-200 text-slate-500 hover:border-brand/40 hover:text-brand'
           }`}
         >
           {index + 1}
@@ -173,13 +173,13 @@ const ProfileInteractiveSection = ({
   };
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-blue-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
             Your garage
           </p>
-          <h2 className="mt-1 text-xl font-bold text-slate-950">
+          <h2 className="mt-1 font-heading text-xl font-bold text-ink">
             Manage your activity
           </h2>
         </div>
@@ -224,7 +224,7 @@ const ProfileInteractiveSection = ({
         <div className="p-6">
           <div className="mb-5 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="font-heading text-lg font-semibold text-ink">
                 {l.profile.myCarsHeading}
               </h3>
               <p className="mt-1 text-sm text-slate-500">
@@ -234,7 +234,7 @@ const ProfileInteractiveSection = ({
             <button
               type="button"
               onClick={() => router.push('/cars/add-car')}
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+              className="flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
             >
               <Plus className="h-4 w-4" />
               {l.cars.addNewCarBtn}
@@ -243,7 +243,7 @@ const ProfileInteractiveSection = ({
 
           {cars.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <CarFront className="h-6 w-6" />
               </span>
               <p className="mt-4 font-semibold text-slate-800">
@@ -256,7 +256,7 @@ const ProfileInteractiveSection = ({
               <button
                 type="button"
                 onClick={() => router.push('/cars/add-car')}
-                className="mt-5 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-blue-700"
+                className="mt-5 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90"
               >
                 {l.cars.addNewCarBtn}
               </button>
@@ -315,7 +315,7 @@ const ProfileInteractiveSection = ({
             <button
               type="button"
               onClick={() => router.push('/#car-search')}
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+              className="flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
             >
               <Search className="h-4 w-4" />
               Browse Cars
@@ -324,7 +324,7 @@ const ProfileInteractiveSection = ({
 
           {availableRentals.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <Search className="h-6 w-6" />
               </span>
               <p className="mt-4 font-semibold text-slate-800">

@@ -23,9 +23,9 @@ const emptyFilters: CarFilterState = {
   minSeats: '',
 };
 
-const labelClass = 'mb-2 block text-xs font-bold text-slate-600';
+const labelClass = 'mb-2 block text-xs font-semibold text-slate-600';
 const inputClass =
-  'w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100';
+  'w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint';
 
 export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
@@ -41,10 +41,12 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="h-4 w-4 text-blue-600" />
-          <h3 className="font-bold text-slate-900">{l.search.filters}</h3>
+          <SlidersHorizontal className="h-4 w-4 text-brand" />
+          <h3 className="font-heading font-semibold text-ink">
+            {l.search.filters}
+          </h3>
           {activeFilterCount > 0 && (
-            <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold text-white">
+            <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-semibold text-white">
               {activeFilterCount}
             </span>
           )}
@@ -53,7 +55,7 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
           <button
             type="button"
             onClick={() => setFilters(emptyFilters)}
-            className="flex items-center gap-1 text-xs font-semibold text-slate-400 transition hover:text-blue-600"
+            className="flex items-center gap-1 rounded-lg px-1 py-0.5 text-xs font-semibold text-slate-500 transition-colors hover:bg-brand-tint hover:text-brand"
           >
             <X className="h-3.5 w-3.5" /> {l.search.clearFilters}
           </button>

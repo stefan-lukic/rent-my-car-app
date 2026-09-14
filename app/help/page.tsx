@@ -13,16 +13,16 @@ export default function HelpCenter() {
       title={content.title}
       description={content.description}
     >
-      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint text-brand">
             <CircleHelp className="h-5 w-5" />
           </span>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
               {content.faqEyebrow}
             </p>
-            <h2 className="mt-1 text-2xl font-black text-slate-950">
+            <h2 className="mt-1 font-heading text-2xl font-bold text-ink">
               {content.faqTitle}
             </h2>
           </div>
@@ -31,7 +31,9 @@ export default function HelpCenter() {
         <div className="mt-8 grid gap-x-10 gap-y-8 md:grid-cols-2">
           {content.questions.map((faq) => (
             <article key={faq.question}>
-              <h3 className="font-bold text-slate-900">{faq.question}</h3>
+              <h3 className="font-heading font-semibold text-ink-secondary">
+                {faq.question}
+              </h3>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 {faq.answer}
               </p>
@@ -54,14 +56,16 @@ export default function HelpCenter() {
 
       <section className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-bold">{content.nextTitle}</h2>
+          <h2 className="font-heading text-lg font-semibold">
+            {content.nextTitle}
+          </h2>
           <p className="mt-1 text-sm text-slate-300">
             {content.nextDescription}
           </p>
         </div>
         <Link
           href="/profile/my-profile"
-          className="shrink-0 rounded-xl bg-blue-600 px-5 py-3 text-center text-sm font-bold transition hover:bg-blue-500"
+          className="shrink-0 rounded-xl bg-brand px-5 py-3 text-center text-sm font-semibold transition-colors hover:bg-brand/90"
         >
           {content.nextAction}
         </Link>

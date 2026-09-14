@@ -53,20 +53,21 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[110]">
-      <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-        <h2 className="text-xl font-bold mb-2">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-[2px]">
+      <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+        <h2 className="mb-2 font-heading text-xl font-bold text-ink">
           {l.booking.cancelReservation}
         </h2>
-        <p className="text-gray-500 mb-6">
+        <p className="mb-6 text-sm leading-6 text-slate-500">
           {l.booking.cancelReservationConfirm}
         </p>
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button
             type="button"
             onClick={onClose}
             disabled={isCancelling}
-            className="bg-gray-300 hover:bg-gray-400 text-black"
+            variant="outline"
+            className="sm:min-w-32"
           >
             {l.booking.keepReservation}
           </Button>
@@ -74,7 +75,8 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
             type="button"
             onClick={handleCancel}
             disabled={isCancelling}
-            className="bg-red-500 hover:bg-red-600 text-white"
+            variant="destructive"
+            className="sm:min-w-32"
           >
             {isCancelling
               ? l.booking.cancellingReservation

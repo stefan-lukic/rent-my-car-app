@@ -55,16 +55,16 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h3 className="truncate text-lg font-black text-slate-950">
+            <h3 className="truncate font-heading text-lg font-semibold text-ink">
               {carName}
             </h3>
             <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
-              <MapPin className="h-4 w-4 shrink-0 text-blue-500" />
+              <MapPin className="h-4 w-4 shrink-0 text-brand" />
               {car.city}
             </p>
           </div>
 
-          <p className="shrink-0 text-right text-lg font-black text-blue-600">
+          <p className="shrink-0 text-right font-heading text-lg font-bold text-brand">
             €{car.pricePerDay}
             <span className="block text-[11px] font-semibold text-slate-400">
               {l.common.perDay}
@@ -93,7 +93,7 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
         <div className="mt-auto pt-5">
           <Link
             href={`/cars/${car._id.toString()}`}
-            className="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="inline-flex w-full items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.common.details}
           </Link>

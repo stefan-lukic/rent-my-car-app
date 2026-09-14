@@ -96,7 +96,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {cars.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <CarFront className="h-6 w-6" />
               </span>
               <p className="mt-4 text-sm font-semibold text-slate-800">
@@ -128,7 +128,7 @@ const MobileProfileInteractiveSection = ({
         <div>
           {availableRentals.length === 0 ? (
             <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <Search className="h-6 w-6" />
               </span>
               <p className="mt-4 text-sm font-semibold text-slate-800">

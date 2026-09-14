@@ -8,7 +8,7 @@ const steps = [
     description: l.howItWorks.browseDesc,
     icon: (
       <svg
-        className="w-5 h-5 text-blue-500"
+        className="w-5 h-5 text-brand"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -21,7 +21,7 @@ const steps = [
         />
       </svg>
     ),
-    iconBg: 'bg-blue-50',
+    iconBg: 'bg-brand-tint',
   },
   {
     number: '2',
@@ -71,7 +71,7 @@ const steps = [
     description: l.howItWorks.embarkDesc,
     icon: (
       <svg
-        className="w-5 h-5 text-blue-600"
+        className="w-5 h-5 text-brand"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -84,7 +84,7 @@ const steps = [
         />
       </svg>
     ),
-    iconBg: 'bg-blue-50',
+    iconBg: 'bg-brand-tint',
   },
 ];
 
@@ -106,11 +106,11 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg z-10">
+      <div className="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200 bg-white shadow-xl">
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
           <div className="flex items-center gap-2">
             <svg
-              className="w-5 h-5 text-gray-400"
+              className="h-5 w-5 text-slate-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -122,13 +122,13 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 className="font-heading text-lg font-bold text-ink">
               {l.howItWorks.modalTitle}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.common.close}
           </button>
@@ -143,10 +143,10 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
                 {step.icon}
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-900 mb-0.5">
+                <p className="mb-0.5 font-heading text-sm font-semibold text-ink">
                   {step.number}. {step.title}
                 </p>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm leading-relaxed text-slate-500">
                   {step.description}
                 </p>
               </div>
@@ -157,7 +157,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
         <div className="px-6 pb-6 pt-2">
           <button
             onClick={onClose}
-            className="w-full bg-gray-900 text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-colors"
+            className="w-full rounded-xl bg-ink-secondary py-3 font-semibold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.howItWorks.gotIt}
           </button>

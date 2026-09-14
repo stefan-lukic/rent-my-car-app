@@ -40,10 +40,10 @@ export default function RentalStatusFilter({
           role="tab"
           aria-selected={value === option.value}
           onClick={() => onChange(option.value)}
-          className={`flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+          className={`flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
             value === option.value
-              ? 'border-blue-600 bg-blue-600 text-white shadow-sm'
-              : 'border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-700'
+              ? 'border-brand bg-brand text-white shadow-sm'
+              : 'border-slate-200 bg-white text-slate-600 hover:border-brand/20 hover:text-brand'
           }`}
         >
           {option.label}

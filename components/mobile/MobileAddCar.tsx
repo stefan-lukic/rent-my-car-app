@@ -44,10 +44,10 @@ export default function MobileAddCar() {
         <ArrowLeft className="h-4 w-4" /> {l.cars.backToMyCars}
       </Link>
       <header className="mb-6">
-        <div className="mb-3 inline-flex rounded-2xl bg-blue-600 p-3 text-white shadow-lg shadow-blue-200">
+        <div className="mb-3 inline-flex rounded-xl bg-brand p-3 text-white shadow-sm">
           <CarFront className="h-6 w-6" />
         </div>
-        <h1 className="text-3xl font-black tracking-tight text-slate-950">
+        <h1 className="font-heading text-3xl font-bold tracking-tight text-slate-950">
           {l.cars.addNewCar}
         </h1>
         <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -154,7 +154,6 @@ export default function MobileAddCar() {
           <MobileSectionTitle
             icon={<MapPin className="h-5 w-5" />}
             title={l.cars.rentalDetails}
-            violet
           />
           <div className="space-y-4">
             <FormSelect
@@ -231,8 +230,8 @@ export default function MobileAddCar() {
           <p className="mb-4 mt-1 text-sm text-slate-500">
             {l.cars.carImagesDesc}
           </p>
-          <label className="relative flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50/60 text-center">
-            <ImagePlus className="mb-2 h-7 w-7 text-blue-600" />
+          <label className="relative flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-brand/20 bg-brand-tint/60 text-center">
+            <ImagePlus className="mb-2 h-7 w-7 text-brand" />
             <span className="text-sm font-bold text-slate-800">
               {l.common.clickToUpload}
             </span>
@@ -279,7 +278,7 @@ export default function MobileAddCar() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-14 w-full rounded-2xl bg-blue-600 text-base font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-700"
+          className="h-14 w-full text-base"
         >
           {isSubmitting ? l.common.adding : l.cars.publishCar}
         </Button>
@@ -291,20 +290,14 @@ export default function MobileAddCar() {
 function MobileSectionTitle({
   icon,
   title,
-  violet = false,
 }: {
   icon: React.ReactNode;
   title: string;
-  violet?: boolean;
 }) {
   return (
     <div className="mb-5 flex items-center gap-3">
-      <div
-        className={`rounded-xl p-2 ${violet ? 'bg-violet-50 text-violet-600' : 'bg-blue-50 text-blue-600'}`}
-      >
-        {icon}
-      </div>
-      <h2 className="font-bold text-slate-900">{title}</h2>
+      <div className="rounded-xl bg-brand-tint p-2 text-brand">{icon}</div>
+      <h2 className="font-heading font-semibold text-slate-900">{title}</h2>
     </div>
   );
 }

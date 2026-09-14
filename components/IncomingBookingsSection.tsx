@@ -43,7 +43,7 @@ const formatDate = (date: string | Date) =>
 const statusPresentation = {
   [RentalLifecycleStatus.Upcoming]: {
     label: l.status.upcoming,
-    className: 'bg-blue-100 text-blue-700',
+    className: 'bg-brand-tint text-brand/90',
   },
   [RentalLifecycleStatus.Ongoing]: {
     label: l.status.ongoing,
@@ -108,13 +108,13 @@ export default function IncomingBookingsSection({
   }).length;
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-5 sm:items-center sm:px-6">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-blue-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
             Owner dashboard
           </p>
-          <h2 className="mt-1 text-xl font-bold text-slate-950">
+          <h2 className="mt-1 font-heading text-xl font-bold text-ink">
             Bookings for your cars
           </h2>
           <p className="mt-1 text-sm text-slate-500">
@@ -123,7 +123,7 @@ export default function IncomingBookingsSection({
         </div>
 
         {activeBookingCount > 0 && (
-          <span className="flex flex-shrink-0 items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700">
+          <span className="flex flex-shrink-0 items-center gap-1.5 rounded-full bg-brand-tint px-3 py-1.5 text-xs font-bold text-brand/90">
             <Clock3 className="h-3.5 w-3.5" />
             {activeBookingCount} active
           </span>
@@ -132,10 +132,10 @@ export default function IncomingBookingsSection({
 
       {visibleBookings.length === 0 ? (
         <div className="flex flex-col items-center px-6 py-12 text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
             <CalendarDays className="h-6 w-6" />
           </span>
-          <h3 className="mt-4 font-bold text-slate-900">
+          <h3 className="mt-4 font-heading font-semibold text-ink-secondary">
             No bookings for your cars yet
           </h3>
           <p className="mt-1 max-w-md text-sm leading-6 text-slate-500">
@@ -174,7 +174,7 @@ export default function IncomingBookingsSection({
                 return (
                   <article
                     key={booking._id}
-                    className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-blue-200 hover:shadow-md"
+                    className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-brand/20 hover:shadow-md"
                   >
                     <div className="flex gap-4 border-b border-slate-100 bg-slate-50 p-4">
                       <div className="relative h-20 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-200">
@@ -189,10 +189,10 @@ export default function IncomingBookingsSection({
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
-                            <p className="text-[10px] font-bold uppercase tracking-wide text-blue-600">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-brand">
                               Your vehicle
                             </p>
-                            <h3 className="mt-1 truncate font-bold text-slate-950">
+                            <h3 className="mt-1 truncate font-heading font-semibold text-ink">
                               {car.make} {car.carModel}
                             </h3>
                           </div>
@@ -204,7 +204,7 @@ export default function IncomingBookingsSection({
                         </div>
                         {pickupLocation && (
                           <p className="mt-2 flex items-center gap-1.5 truncate text-xs text-slate-500">
-                            <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-blue-500" />
+                            <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-brand" />
                             {pickupLocation}
                           </p>
                         )}
@@ -214,7 +214,7 @@ export default function IncomingBookingsSection({
                     <div className="space-y-4 p-4">
                       <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
                         <p className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                          <CalendarDays className="h-3.5 w-3.5 text-blue-500" />
+                          <CalendarDays className="h-3.5 w-3.5 text-brand" />
                           Reserved period
                         </p>
                         <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-700">
@@ -229,7 +229,7 @@ export default function IncomingBookingsSection({
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <div className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-blue-100 text-blue-700">
+                        <div className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-tint text-brand/90">
                           {client.images?.[0] ? (
                             <Image
                               src={client.images[0]}
@@ -246,7 +246,7 @@ export default function IncomingBookingsSection({
                           <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
                             Booked by
                           </p>
-                          <p className="truncate text-sm font-bold text-slate-900">
+                          <p className="truncate font-heading text-sm font-semibold text-ink-secondary">
                             {client.name || 'RentMyCar user'}
                           </p>
                           {client.ratingCount ? (
@@ -262,7 +262,7 @@ export default function IncomingBookingsSection({
                           )}
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-bold text-blue-600">
+                          <p className="text-sm font-semibold text-brand">
                             €{booking.totalCost}
                           </p>
                           <p className="text-[10px] uppercase tracking-wide text-slate-400">
@@ -280,7 +280,7 @@ export default function IncomingBookingsSection({
                               </p>
                               <a
                                 href={`mailto:${client.email}`}
-                                className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
+                                className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-brand"
                               >
                                 {client.email}
                               </a>
@@ -292,7 +292,7 @@ export default function IncomingBookingsSection({
                               {client.contactInfo ? (
                                 <a
                                   href={`tel:${client.contactInfo}`}
-                                  className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-blue-600"
+                                  className="mt-1 block truncate text-xs font-semibold text-slate-700 transition hover:text-brand"
                                 >
                                   {client.contactInfo}
                                 </a>
@@ -307,7 +307,7 @@ export default function IncomingBookingsSection({
                           <div className="grid grid-cols-3 gap-2">
                             <a
                               href={`mailto:${client.email}`}
-                              className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                              className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-brand/20 hover:bg-brand-tint hover:text-brand/90"
                             >
                               <Mail className="h-4 w-4 flex-shrink-0" />
                               <span className="truncate">Email</span>
@@ -315,7 +315,7 @@ export default function IncomingBookingsSection({
                             {client.contactInfo ? (
                               <a
                                 href={`tel:${client.contactInfo}`}
-                                className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                                className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:border-brand/20 hover:bg-brand-tint hover:text-brand/90"
                               >
                                 <Phone className="h-4 w-4 flex-shrink-0" />
                                 <span className="truncate">Call</span>
@@ -334,13 +334,13 @@ export default function IncomingBookingsSection({
                               type="button"
                               disabled
                               aria-label="Message customer, coming soon"
-                              className="flex min-w-0 flex-col items-center justify-center rounded-xl bg-blue-50 px-2 py-1.5 text-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                              className="flex min-w-0 flex-col items-center justify-center rounded-xl bg-brand-tint px-2 py-1.5 text-brand/90 disabled:cursor-not-allowed disabled:opacity-70"
                             >
                               <span className="flex items-center gap-1 text-xs font-semibold">
                                 <MessageCircle className="h-4 w-4" />
                                 Message
                               </span>
-                              <span className="text-[9px] font-bold uppercase tracking-wide text-blue-400">
+                              <span className="text-[9px] font-bold uppercase tracking-wide text-brand/70">
                                 Coming soon
                               </span>
                             </button>
@@ -363,7 +363,7 @@ export default function IncomingBookingsSection({
                           <button
                             type="button"
                             onClick={() => setBookingToReview(booking)}
-                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700"
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand/90"
                           >
                             <Star className="h-4 w-4" />
                             {l.reviews.rateClient}
@@ -385,7 +385,7 @@ export default function IncomingBookingsSection({
             aria-label="Previous bookings page"
             disabled={currentPage === 0}
             onClick={() => setCurrentPage((page) => page - 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -397,7 +397,7 @@ export default function IncomingBookingsSection({
             aria-label="Next bookings page"
             disabled={currentPage === pageCount - 1}
             onClick={() => setCurrentPage((page) => page + 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

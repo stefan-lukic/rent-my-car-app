@@ -113,11 +113,11 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="car-details-title"
-        className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col bg-white shadow-2xl sm:w-[500px] lg:w-[540px]"
+        className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col bg-white shadow-xl sm:w-[500px] lg:w-[540px]"
       >
         <header className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
               {l.drawer.carDetails}
             </p>
             <p className="mt-0.5 text-xs text-slate-500">
@@ -128,7 +128,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             type="button"
             aria-label={l.carDetailsPage.closeDetails}
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <X className="h-5 w-5" />
           </button>
@@ -201,17 +201,17 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           <div className="space-y-6 px-5 py-6 sm:px-6">
             <section className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <p className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+                <p className="mb-1 text-xs font-bold uppercase tracking-[0.16em] text-brand">
                   {l.carDetailsPage.availableForRent}
                 </p>
                 <h2
                   id="car-details-title"
-                  className="text-2xl font-bold tracking-tight text-slate-950"
+                  className="font-heading text-2xl font-bold tracking-tight text-ink"
                 >
                   {car.make} {car.carModel}
                 </h2>
                 <p className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
-                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
+                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand" />
                   <span>{location}</span>
                 </p>
                 {car.ratingCount ? (
@@ -222,8 +222,8 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 ) : null}
               </div>
 
-              <div className="flex-shrink-0 rounded-2xl bg-blue-50 px-4 py-3 text-right">
-                <p className="text-xl font-bold text-blue-600">
+              <div className="flex-shrink-0 rounded-xl bg-brand-tint px-4 py-3 text-right">
+                <p className="font-heading text-xl font-bold text-brand">
                   €{car.pricePerDay}
                 </p>
                 <p className="text-xs font-medium text-slate-500">
@@ -240,12 +240,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 {specs.map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 p-3.5"
+                    className="rounded-xl border border-slate-200 bg-slate-50 p-3.5"
                   >
-                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-tint text-brand">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
                       {label}
                     </p>
                     <p className="mt-0.5 truncate text-sm font-semibold text-slate-800">
@@ -285,21 +285,21 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
         <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6 sm:pb-4">
           <Link
             href={detailsHref}
-            className="col-span-2 flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="col-span-2 flex items-center justify-center rounded-xl border border-brand/20 bg-brand-tint px-4 py-3 text-sm font-semibold text-brand transition-colors hover:border-brand/40 hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.carDetailsPage.viewFullDetails}
           </Link>
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/40 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.common.howItWorks}
           </button>
           <button
             type="button"
             onClick={onBookNow}
-            className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.common.bookNow}
           </button>

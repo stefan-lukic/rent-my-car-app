@@ -75,10 +75,10 @@ const CarRentalSearch = ({
             {l.search.location}
           </label>
           <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <select
               {...form.register('city')}
-              className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+              className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             >
               <option value="">{l.search.allCities}</option>
               {Object.values(CarCity).map((city) => (
@@ -108,7 +108,7 @@ const CarRentalSearch = ({
         <Button
           type="submit"
           disabled={results.loading}
-          className="flex min-w-[150px] items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex min-w-[150px] items-center justify-center px-6 py-3"
         >
           {results.loading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
@@ -132,10 +132,10 @@ const CarRentalSearch = ({
 
       {!hasSearched && !results.loading && (
         <div className="flex min-h-72 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 text-center">
-          <div className="mb-4 rounded-2xl bg-blue-50 p-3 text-blue-600">
+          <div className="mb-4 rounded-2xl bg-brand-tint p-3 text-brand">
             <CalendarSearch className="h-6 w-6" />
           </div>
-          <h3 className="font-bold text-slate-900">
+          <h3 className="font-heading font-semibold text-ink">
             {l.search.startSearchTitle}
           </h3>
           <p className="mt-1 max-w-sm text-sm text-slate-500">
@@ -146,7 +146,7 @@ const CarRentalSearch = ({
 
       {hasSearched && !results.loading && !searchError && (
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-sm font-bold text-slate-800">
+          <p className="text-sm font-semibold text-ink-secondary">
             {l.search.carsFound(results.total)}
           </p>
         </div>
@@ -175,7 +175,9 @@ const CarRentalSearch = ({
         !searchError &&
         results.data.length === 0 && (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="font-bold text-slate-800">{l.search.noCarsFound}</p>
+            <p className="font-heading font-semibold text-ink-secondary">
+              {l.search.noCarsFound}
+            </p>
             <p className="mt-1 text-sm text-slate-500">
               {l.search.tryDifferentSearch}
             </p>
@@ -183,15 +185,15 @@ const CarRentalSearch = ({
         )}
 
       {results.totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-8">
+        <div className="mt-8 flex justify-center gap-2">
           {pages.map((page) => (
             <button
               key={page}
               onClick={() => onPageChange(page)}
-              className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+              className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                 results.currentPage === page
-                  ? 'bg-blue-600 text-white'
-                  : 'border border-gray-200 text-gray-500 hover:border-blue-400'
+                  ? 'bg-brand text-white'
+                  : 'border border-slate-200 bg-white text-slate-500 hover:border-brand/40 hover:text-brand'
               }`}
             >
               {page}

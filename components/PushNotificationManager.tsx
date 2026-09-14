@@ -3,6 +3,8 @@
 import { subscribeUser, unsubscribeUser } from '@/app/actions';
 import { useState, useEffect } from 'react';
 import l from '@/helper/en';
+import { Button } from '@/components/UI/Button';
+import { Input } from '@/components/UI/Input';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -80,37 +82,42 @@ export function PushNotificationManager() {
   }
 
   if (!isSupported) {
-    return <p>{l.pushNotifications.notSupported}</p>;
+    return (
+      <p className="rounded-xl border border-slate-200 bg-surface-0 p-4 text-sm text-slate-600">
+        {l.pushNotifications.notSupported}
+      </p>
+    );
   }
 
   return (
-    <div>
+    <div className="rounded-2xl border border-slate-200 bg-surface-0 p-5 shadow-sm">
       {subscription ? (
-        <>
-          <p>{l.pushNotifications.subscribed}</p>
-          <button onClick={unsubscribeFromPush}>
+        <div className="space-y-4">
+          <p className="text-sm font-medium text-slate-700">
+            {l.pushNotifications.subscribed}
+          </p>
+          <Button variant="secondary" onClick={unsubscribeFromPush}>
             {l.pushNotifications.unsubscribe}
-          </button>
-          <input
+          </Button>
+          <Input
             type="text"
             placeholder={l.pushNotifications.enterNotificationMsg}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button onClick={sendTestNotification}>
+          <Button onClick={sendTestNotification}>
             {l.pushNotifications.sendTest}
-          </button>
-        </>
+          </Button>
+        </div>
       ) : (
-        <>
-          <p>{l.pushNotifications.notSubscribed}</p>
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-            onClick={subscribeToPush}
-          >
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            {l.pushNotifications.notSubscribed}
+          </p>
+          <Button onClick={subscribeToPush}>
             {l.pushNotifications.subscribe}
-          </button>
-        </>
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -129,29 +136,44 @@ export function InstallPrompt() {
   }, []);
 
   if (isStandalone) {
-    return null; // Don't show install button if already installed
+    return null;
   }
 
   return (
     <div>
       {isIOS && isPopupOpen && (
-        <>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="relative flex justify-end">
-                <button onClick={() => setIsPopupOpen(false)}>✖</button>
-              </div>
-
-              <p>{l.pushNotifications.iosInstall}</p>
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded"
-                onClick={() => null}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="install-app-title"
+            className="w-full max-w-sm rounded-2xl border border-slate-200 bg-surface-0 p-6 shadow-xl"
+          >
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <h2
+                id="install-app-title"
+                className="font-heading text-xl font-bold text-ink"
               >
-                {l.pushNotifications.getAppStore}
+                RentMyCar
+              </h2>
+              <button
+                type="button"
+                onClick={() => setIsPopupOpen(false)}
+                aria-label="Close install instructions"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                <span aria-hidden="true">✕</span>
               </button>
             </div>
+
+            <p className="mb-6 text-sm leading-6 text-slate-600">
+              {l.pushNotifications.iosInstall}
+            </p>
+            <Button className="w-full" onClick={() => null}>
+              {l.pushNotifications.getAppStore}
+            </Button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
