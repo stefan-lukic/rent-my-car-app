@@ -109,9 +109,9 @@ const MobileProfileForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {type === 'sign-up' && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <CustomInput
               control={control}
               name="name"
@@ -130,7 +130,7 @@ const MobileProfileForm = ({
             />
             <label
               htmlFor="images"
-              className="justify-center flex px-2 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600"
+              className="flex cursor-pointer justify-center rounded-xl border border-brand/20 bg-brand-tint px-3 py-3 text-sm font-semibold text-brand transition-colors hover:bg-brand-tint"
             >
               {l.cars.chooseFiles}
             </label>
@@ -144,7 +144,7 @@ const MobileProfileForm = ({
               onChange={handleInputChange}
             />
             {uploadImages.length > 0 && (
-              <span className="text-gray-600">
+              <span className="text-sm text-slate-600">
                 {uploadImages.length === 1
                   ? uploadImages[0].name
                   : `${uploadImages[0].name} ${l.common.andMore(uploadImages.length - 1)}`}
@@ -175,7 +175,7 @@ const MobileProfileForm = ({
               onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
               aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
               aria-pressed={isPasswordVisible}
-              className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               {isPasswordVisible ? (
                 <Eye aria-hidden="true" className="h-5 w-5" />
@@ -206,7 +206,7 @@ const MobileProfileForm = ({
                     : 'Show confirm password'
                 }
                 aria-pressed={isConfirmPasswordVisible}
-                className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {isConfirmPasswordVisible ? (
                   <Eye aria-hidden="true" className="h-5 w-5" />
@@ -218,12 +218,19 @@ const MobileProfileForm = ({
           />
         )}
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && (
+          <p
+            className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
 
         {type === 'sign-up' ? (
           <div className="flex flex-col items-center">
             <button
-              className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full rounded-xl bg-brand py-3.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
               type="submit"
               disabled={isLoading}
             >
@@ -231,7 +238,7 @@ const MobileProfileForm = ({
             </button>
 
             <button
-              className="mt-4 w-full py-2 text-gray-600 border border-gray-300 rounded flex items-center justify-center"
+              className="mt-3 flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white py-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
               type="button"
             >
               <Image
@@ -247,7 +254,7 @@ const MobileProfileForm = ({
         ) : (
           <div className="flex flex-col items-center">
             <button
-              className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full rounded-xl bg-brand py-3.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
               type="submit"
               disabled={isLoading}
             >
@@ -255,7 +262,7 @@ const MobileProfileForm = ({
             </button>
 
             <a
-              className="mt-4 text-blue-500 text-sm hover:underline"
+              className="mt-4 text-sm font-medium text-brand underline-offset-4 hover:underline"
               href="/forgot-password"
             >
               {l.auth.forgotPassword}

@@ -86,7 +86,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
       </div>
 
       <div className="p-4">
-        <h3 className="text-base font-bold text-slate-950">
+        <h3 className="font-heading text-base font-semibold text-ink">
           {car.make} {car.carModel}
         </h3>
         {car.ratingCount ? (
@@ -95,18 +95,18 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
             {car.rating?.toFixed(1)} ({car.ratingCount})
           </p>
         ) : null}
-        <p className="mt-1 text-sm font-bold text-blue-600">
+        <p className="mt-1 text-sm font-semibold text-brand">
           €{car.pricePerDay}
           {l.common.perDay}
         </p>
         <div className="mb-4 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
           <span className="flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-blue-500" />
+            <MapPin className="h-3.5 w-3.5 text-brand" />
             {car.city}
           </span>
           {car.seats ? (
             <span className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-blue-500" />
+              <Users className="h-3.5 w-3.5 text-brand" />
               {car.seats} {l.carSpecs.seats.toLowerCase()}
             </span>
           ) : null}
@@ -116,7 +116,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
           <button
             type="button"
             onClick={() => onUpdate(car)}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand"
           >
             <Pencil className="h-3.5 w-3.5" />
             {l.common.edit}

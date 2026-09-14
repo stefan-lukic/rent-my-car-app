@@ -33,7 +33,9 @@ function StarPicker({
 }) {
   return (
     <fieldset>
-      <legend className="text-sm font-bold text-slate-900">{label}</legend>
+      <legend className="text-sm font-semibold text-ink-secondary">
+        {label}
+      </legend>
       <div className="mt-2 flex gap-1" aria-label={label}>
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
@@ -42,7 +44,7 @@ function StarPicker({
             aria-label={`${rating} ${rating === 1 ? 'star' : 'stars'}`}
             aria-pressed={rating === value}
             onClick={() => onChange(rating)}
-            className="rounded-lg p-1 text-slate-300 transition hover:scale-110 hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="rounded-lg p-1 text-slate-300 transition-colors hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <Star
               className={`h-8 w-8 ${
@@ -144,15 +146,18 @@ export default function RatingModal(props: RatingModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="rating-modal-title"
-        className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl"
+        className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
       >
-        <div className="bg-slate-950 px-6 py-5 text-white">
+        <div className="bg-ink-secondary px-6 py-5 text-white">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand/70">
                 {l.reviews.tripComplete}
               </p>
-              <h2 id="rating-modal-title" className="mt-1 text-xl font-bold">
+              <h2
+                id="rating-modal-title"
+                className="mt-1 font-heading text-xl font-bold"
+              >
                 {isClient ? l.reviews.clientTitle : l.reviews.ownerTitle}
               </h2>
             </div>
@@ -205,7 +210,7 @@ export default function RatingModal(props: RatingModalProps) {
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+              className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
             >
               {l.reviews.cancel}
             </button>
@@ -213,7 +218,7 @@ export default function RatingModal(props: RatingModalProps) {
               type="button"
               onClick={handleSubmit}
               disabled={!isComplete || isSubmitting}
-              className="flex-1 rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand/90 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               {isSubmitting ? l.reviews.submitting : l.reviews.submit}
             </button>

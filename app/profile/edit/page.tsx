@@ -29,7 +29,7 @@ export default async function EditProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24 md:pb-12">
+    <div className="min-h-screen bg-surface pb-24 md:pb-12">
       <div className="hidden md:block">
         <Header />
       </div>

@@ -30,7 +30,7 @@ import { CarType } from '@/lib/model/car/CarType';
 import { CAR_FIELD_LIMITS } from '@/lib/model/car/carValidation';
 
 const sectionClasses =
-  'rounded-3xl border border-slate-200/80 bg-white p-7 shadow-sm';
+  'rounded-2xl border border-slate-200 bg-white p-7 shadow-sm';
 
 export default function AddCar() {
   const {
@@ -49,17 +49,17 @@ export default function AddCar() {
         <div>
           <Link
             href="/profile/my-profile"
-            className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-blue-600"
+            className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-brand"
           >
             <ArrowLeft className="h-4 w-4" />
             {l.cars.backToMyCars}
           </Link>
           <div className="flex items-center gap-4">
-            <div className="rounded-2xl bg-blue-600 p-3 text-white shadow-lg shadow-blue-200">
+            <div className="rounded-xl bg-brand p-3 text-white shadow-sm">
               <CarFront className="h-7 w-7" />
             </div>
             <div>
-              <h1 className="text-3xl font-black tracking-tight text-slate-950">
+              <h1 className="font-heading text-3xl font-bold tracking-tight text-slate-950">
                 {l.cars.addNewCar}
               </h1>
               <p className="mt-1 text-sm text-slate-500">
@@ -84,7 +84,6 @@ export default function AddCar() {
               icon={<CarFront className="h-5 w-5" />}
               title={l.cars.vehicleDetails}
               description={l.cars.vehicleDetailsDesc}
-              color="blue"
             />
             <div className="grid grid-cols-2 gap-x-6 gap-y-5">
               <FormSelect
@@ -178,7 +177,6 @@ export default function AddCar() {
               icon={<MapPin className="h-5 w-5" />}
               title={l.cars.rentalDetails}
               description={l.cars.rentalDetailsDesc}
-              color="violet"
             />
             <div className="grid grid-cols-2 gap-x-6 gap-y-5">
               <FormSelect
@@ -252,8 +250,8 @@ export default function AddCar() {
             <p className="mb-5 mt-1 text-sm text-slate-500">
               {l.cars.carImagesDesc}
             </p>
-            <label className="group relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50/60 px-6 text-center transition hover:border-blue-400 hover:bg-blue-50">
-              <span className="mb-3 rounded-2xl bg-white p-3 text-blue-600 shadow-sm transition group-hover:-translate-y-0.5">
+            <label className="group relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-brand/20 bg-brand-tint/60 px-6 text-center transition hover:border-brand/70 hover:bg-brand-tint">
+              <span className="mb-3 rounded-2xl bg-white p-3 text-brand shadow-sm transition group-hover:-translate-y-0.5">
                 <ImagePlus className="h-6 w-6" />
               </span>
               <span className="text-sm font-bold text-slate-800">
@@ -278,7 +276,7 @@ export default function AddCar() {
                   <span className="font-bold text-slate-700">
                     {l.cars.selectedPhotos}
                   </span>
-                  <span className="rounded-full bg-blue-50 px-2.5 py-1 font-bold text-blue-600">
+                  <span className="rounded-full bg-brand-tint px-2.5 py-1 font-bold text-brand">
                     {carData.images.length}
                   </span>
                 </div>
@@ -310,7 +308,7 @@ export default function AddCar() {
             ) : null}
           </section>
 
-          <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-200">
+          <section className="rounded-2xl bg-slate-950 p-6 text-white shadow-lg">
             <div className="mb-5 flex gap-3">
               <span className="mt-0.5 rounded-full bg-emerald-400/15 p-1 text-emerald-300">
                 <Check className="h-4 w-4" />
@@ -322,7 +320,7 @@ export default function AddCar() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 w-full rounded-xl bg-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-950/40 hover:bg-blue-500"
+              className="h-12 w-full text-sm"
             >
               {isSubmitting ? l.common.adding : l.cars.publishCar}
             </Button>
@@ -337,22 +335,16 @@ function SectionHeading({
   icon,
   title,
   description,
-  color,
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
-  color: 'blue' | 'violet';
 }) {
-  const iconClasses =
-    color === 'blue'
-      ? 'bg-blue-50 text-blue-600'
-      : 'bg-violet-50 text-violet-600';
   return (
     <div className="mb-6 flex items-start gap-3">
-      <div className={`rounded-xl p-2.5 ${iconClasses}`}>{icon}</div>
+      <div className="rounded-xl bg-brand-tint p-2.5 text-brand">{icon}</div>
       <div>
-        <h2 className="font-bold text-slate-900">{title}</h2>
+        <h2 className="font-heading font-semibold text-slate-900">{title}</h2>
         <p className="mt-1 text-sm text-slate-500">{description}</p>
       </div>
     </div>

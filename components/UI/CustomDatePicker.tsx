@@ -4,9 +4,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import l from '@/helper/en';
 
 export const inputClasses =
-  'w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors';
+  'w-full rounded-xl border border-slate-200 bg-surface-0 px-4 py-3 text-sm text-ink shadow-sm transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint';
 
-export const labelClasses = 'mb-2 block text-sm font-semibold text-gray-700';
+export const labelClasses = 'mb-2 block text-sm font-semibold text-slate-700';
 
 type CustomDatePickerProps<T extends FieldValues> = {
   name: Path<T>;
@@ -50,7 +50,7 @@ export default function CustomDatePicker<T extends FieldValues>({
             />
 
             {fieldState.error && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="mt-1 text-sm text-red-600">
                 {fieldState.error.message}
               </p>
             )}

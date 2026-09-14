@@ -29,9 +29,9 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
   return (
     <Link
       href={`/profile/${renter._id}`}
-      className="group flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-3.5 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="group flex items-center gap-3 rounded-2xl border border-brand-tint bg-brand-tint/70 p-3.5 transition hover:border-brand/40 hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
     >
-      <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-blue-200 bg-white text-sm font-bold text-blue-700 shadow-sm">
+      <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-brand/20 bg-white text-sm font-bold text-brand/90 shadow-sm">
         {profileImage ? (
           <Image
             src={profileImage}
@@ -46,7 +46,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate text-sm font-bold text-slate-900">
+          <p className="truncate font-heading text-sm font-semibold text-ink">
             {renter.name}
           </p>
           {renter.rating > 0 && (
@@ -67,7 +67,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
         </p>
       </div>
 
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-blue-600 shadow-sm transition group-hover:translate-x-0.5">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand shadow-sm transition group-hover:translate-x-0.5">
         <ArrowRight className="h-4 w-4" />
       </span>
     </Link>

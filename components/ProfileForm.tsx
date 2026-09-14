@@ -139,7 +139,7 @@ const ProfileForm = ({
               onChange={handleInputChange}
               accept="image/*"
               multiple
-              className="w-full p-2 border rounded"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-tint file:px-3 file:py-2 file:font-semibold file:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             />
           </>
         )}
@@ -166,7 +166,7 @@ const ProfileForm = ({
               onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
               aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
               aria-pressed={isPasswordVisible}
-              className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               {isPasswordVisible ? (
                 <Eye aria-hidden="true" className="h-5 w-5" />
@@ -197,7 +197,7 @@ const ProfileForm = ({
                     : 'Show confirm password'
                 }
                 aria-pressed={isConfirmPasswordVisible}
-                className="rounded-md p-1 text-slate-500 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {isConfirmPasswordVisible ? (
                   <Eye aria-hidden="true" className="h-5 w-5" />
@@ -209,12 +209,19 @@ const ProfileForm = ({
           />
         )}
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && (
+          <p
+            className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
 
         {type === 'sign-up' ? (
-          <div className="flex-center flex-col">
+          <div className="flex flex-col items-center">
             <button
-              className="w-full p-4 bg-red-500 text-white rounded hover:bg-red-600"
+              className="w-full rounded-xl bg-brand p-3.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
               type="submit"
               disabled={isLoading}
             >
@@ -222,7 +229,7 @@ const ProfileForm = ({
             </button>
 
             <button
-              className="mt-4 w-full p-4 text-base font-normal border border-gray-300 rounded flex items-center justify-center"
+              className="mt-3 flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
               type="button"
             >
               <Image
@@ -236,9 +243,9 @@ const ProfileForm = ({
             </button>
           </div>
         ) : (
-          <div className="flex-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
-              className="px-12 py-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600"
+              className="rounded-xl bg-brand px-10 py-3.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
               type="submit"
               disabled={isLoading}
             >
@@ -246,7 +253,7 @@ const ProfileForm = ({
             </button>
 
             <a
-              className="text-[var(--secondary-2)] hover:underline hover:underline-offset-4"
+              className="text-sm font-medium text-brand underline-offset-4 hover:underline"
               href="/forgot-password"
             >
               {l.auth.forgotPassword}

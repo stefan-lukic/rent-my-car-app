@@ -19,7 +19,7 @@ export default function CarDetailsGallery({
 
   return (
     <section aria-label={l.carDetailsPage.photoGallery(carName)}>
-      <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-slate-200 shadow-sm lg:aspect-[16/9]">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-slate-200 shadow-sm lg:aspect-[16/9]">
         <Image
           src={galleryImages[selectedIndex]}
           alt={l.carDetailsPage.photoAlt(carName, selectedIndex + 1)}
@@ -68,9 +68,9 @@ export default function CarDetailsGallery({
               aria-label={l.carDetailsPage.showPhoto(index + 1)}
               aria-current={selectedIndex === index ? 'true' : undefined}
               onClick={() => setSelectedIndex(index)}
-              className={`relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-xl border-2 transition ${
+              className={`relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${
                 selectedIndex === index
-                  ? 'border-blue-600'
+                  ? 'border-brand'
                   : 'border-transparent opacity-70 hover:opacity-100'
               }`}
             >

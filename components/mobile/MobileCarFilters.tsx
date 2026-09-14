@@ -22,9 +22,9 @@ const emptyFilters: CarFilterState = {
   minSeats: '',
 };
 
-const labelClass = 'mb-1.5 block text-xs font-bold text-slate-600';
+const labelClass = 'mb-1.5 block text-xs font-semibold text-slate-600';
 const inputClass =
-  'w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100';
+  'w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint';
 
 export default function MobileCarFilters({
   filters,
@@ -48,11 +48,11 @@ export default function MobileCarFilters({
         aria-expanded={isOpen}
         className="flex w-full items-center justify-between px-4 py-3.5 text-left"
       >
-        <span className="flex items-center gap-2 text-sm font-bold text-slate-800">
-          <SlidersHorizontal className="h-4 w-4 text-blue-600" />
+        <span className="flex items-center gap-2 text-sm font-semibold text-ink-secondary">
+          <SlidersHorizontal className="h-4 w-4 text-brand" />
           {l.search.filters}
           {activeFilterCount > 0 && (
-            <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] text-white">
+            <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] text-white">
               {activeFilterCount}
             </span>
           )}
@@ -130,7 +130,7 @@ export default function MobileCarFilters({
             <button
               type="button"
               onClick={() => setFilters(emptyFilters)}
-              className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-100 py-3 text-sm font-bold text-slate-600"
+              className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-100 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-200"
             >
               <X className="h-4 w-4" /> {l.search.clearFilters}
             </button>

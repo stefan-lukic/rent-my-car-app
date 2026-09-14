@@ -38,8 +38,8 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
   const publicLocation = car.city;
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
-      <div className="relative h-56 w-full overflow-hidden bg-gray-100">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
+      <div className="relative h-56 w-full overflow-hidden bg-slate-100">
         <Image
           src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
@@ -103,13 +103,13 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
         )}
       </div>
 
-      <div className="p-5 flex-grow flex flex-col justify-between">
+      <div className="flex flex-grow flex-col justify-between p-5">
         <div>
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-lg font-bold text-gray-900 uppercase">
+              <h3 className="font-heading text-lg font-semibold text-ink">
                 {car.make}{' '}
-                <span className="text-gray-600 lowercase">{car.carModel}</span>
+                <span className="text-slate-600">{car.carModel}</span>
               </h3>
 
               {car.ratingCount ? (
@@ -119,7 +119,7 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
                 </p>
               ) : null}
 
-              <div className="flex items-center text-sm text-gray-500 mt-1">
+              <div className="mt-1 flex items-center text-sm text-slate-500">
                 <svg
                   className="w-4 h-4 text-emerald-500 mr-1 flex-shrink-0"
                   fill="none"
@@ -145,49 +145,49 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
             </div>
 
             <div className="text-right">
-              <span className="text-lg font-bold text-gray-900">
+              <span className="font-heading text-lg font-bold text-ink">
                 €{car.pricePerDay}
               </span>
-              <span className="block text-xs text-gray-500 font-medium">
+              <span className="block text-xs font-medium text-slate-500">
                 {l.common.perDay}
               </span>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2 mt-4 mb-6">
-            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
               {formatText(car.carType)}
             </span>
-            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
               {formatText(car.engine)}
             </span>
-            <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
               {car.averageConsumption} l/100km
             </span>
             {car.seats ? (
-              <span className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-lg border border-gray-100">
+              <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
                 {car.seats} {l.carSpecs.seats.toLowerCase()}
               </span>
             ) : null}
           </div>
         </div>
 
-        <div className="flex gap-3 mt-auto border-t border-gray-100 pt-4">
+        <div className="mt-auto flex gap-3 border-t border-slate-100 pt-4">
           <button
-            className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors text-sm"
+            className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
             onClick={onViewDetails}
           >
             {l.common.details}
           </button>
           <button
-            className="flex-1 bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-colors shadow-sm text-sm"
+            className="flex-1 rounded-xl bg-brand py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
             onClick={onBookNow}
           >
             {l.common.bookNow}
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -46,10 +46,10 @@ const AuthForm = ({ type }: { type: string }) => {
   }
 
   return (
-    <div className="flex items-center bg-blue-100 justify-center h-full overflow-hidden">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 p-4 border border-blue-50 transition-all">
-        <header className="mb-10 text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
+    <main className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
+      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-surface-0 p-5 shadow-lg sm:p-8">
+        <header className="mb-8 text-center">
+          <h1 className="mb-3 font-heading text-3xl font-bold tracking-tight text-ink">
             {isMobile
               ? type === 'sign-up'
                 ? l.auth.joinUs
@@ -58,12 +58,12 @@ const AuthForm = ({ type }: { type: string }) => {
                 ? l.auth.logInToRentMyCar
                 : l.auth.createAnAccount}
           </h1>
-          <p className="text-gray-500 font-medium">
+          <p className="text-sm leading-6 text-slate-500">
             {type === 'sign-in' ? l.auth.enterDetails : l.auth.startJourney}
           </p>
         </header>
 
-        <div className="mb-8">
+        <div className="mb-7">
           {isMobile ? (
             <MobileProfileForm type={type} callbackUrl={callbackUrl} />
           ) : (
@@ -71,14 +71,14 @@ const AuthForm = ({ type }: { type: string }) => {
           )}
         </div>
 
-        <footer className="text-center pt-6 border-t border-gray-100">
-          <p className="text-gray-500 font-medium text-sm">
+        <footer className="border-t border-slate-100 pt-6 text-center">
+          <p className="text-sm text-slate-500">
             {type !== 'sign-up' ? (
               <>
                 {l.auth.dontHaveAccount}
                 <Link
                   href="/sign-up"
-                  className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
+                  className="ml-2 font-semibold text-brand underline-offset-4 hover:underline"
                 >
                   {l.common.signUp}
                 </Link>
@@ -88,7 +88,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 {l.auth.alreadyHaveAccount}
                 <Link
                   href="/sign-in"
-                  className="text-blue-600 font-bold ml-2 hover:underline decoration-2 underline-offset-4"
+                  className="ml-2 font-semibold text-brand underline-offset-4 hover:underline"
                 >
                   {l.common.logIn}
                 </Link>
@@ -96,8 +96,8 @@ const AuthForm = ({ type }: { type: string }) => {
             )}
           </p>
         </footer>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

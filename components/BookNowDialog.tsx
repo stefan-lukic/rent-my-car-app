@@ -119,13 +119,13 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         aria-labelledby="booking-dialog-title"
         tabIndex={-1}
         onKeyDown={handleKeyDown}
-        className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none sm:max-h-[calc(100dvh-2rem)]"
+        className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl outline-none sm:max-h-[calc(100dvh-2rem)]"
       >
-        <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-100 px-5 pb-4 pt-5 sm:px-6">
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-100 px-5 pb-4 pt-5 sm:px-6">
           <div>
             <h2
               id="booking-dialog-title"
-              className="text-lg font-bold text-gray-900"
+              className="font-heading text-lg font-bold text-ink"
             >
               {l.booking.bookMakeModel(car.make, car.carModel)}
             </h2>
@@ -134,15 +134,15 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             type="button"
             aria-label="Close booking dialog"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.common.close}
           </button>
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-4 sm:px-6">
-          <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl">
-            <div className="w-20 h-14 relative rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+          <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-3">
+            <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100">
               {car.images?.[0] ? (
                 <Image
                   src={car.images[0]}
@@ -151,19 +151,19 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">
                   {l.common.noPhoto}
                 </div>
               )}
             </div>
             <div>
-              <p className="font-semibold text-gray-900">
+              <p className="font-heading font-semibold text-ink">
                 {car.make} {car.carModel}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-slate-500">
                 {capitalize(car.carType)} • {car.city}
               </p>
-              <p className="text-sm text-blue-500 font-medium">
+              <p className="text-sm font-medium text-brand">
                 €{car.pricePerDay}
                 {l.common.perDay}
               </p>
@@ -172,43 +172,43 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {l.search.pickUpDate}
               </p>
-              <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2.5 bg-gray-50">
-                <span className="text-gray-400 text-sm">📅</span>
-                <span className="text-sm text-gray-700">
+              <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+                <span className="text-sm text-slate-400">📅</span>
+                <span className="text-sm text-slate-700">
                   {formatDate(startDate)}
                 </span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {l.search.returnDateLabel}
               </p>
-              <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2.5 bg-gray-50">
-                <span className="text-gray-400 text-sm">📅</span>
-                <span className="text-sm text-gray-700">
+              <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+                <span className="text-sm text-slate-400">📅</span>
+                <span className="text-sm text-slate-700">
                   {formatDate(endDate)}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {l.common.estimatedTotal}
               </p>
             </div>
-            <div className="flex justify-between text-sm text-gray-600 mb-1">
+            <div className="mb-1 flex justify-between text-sm text-slate-600">
               <span>
                 €{car.pricePerDay} × {l.common.days(days)}
               </span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
-            <div className="border-t border-gray-200 pt-2 mt-2 flex justify-between font-semibold text-gray-900">
+            <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 font-semibold text-ink">
               <span>{l.common.total}</span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
@@ -241,11 +241,11 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
           </div>
         )}
 
-        <div className="flex flex-shrink-0 gap-3 border-t border-gray-100 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-4">
+        <div className="flex flex-shrink-0 gap-3 border-t border-slate-100 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.common.cancel}
           </button>
@@ -254,7 +254,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             onClick={onBook}
             disabled={isBooking}
             aria-busy={isBooking}
-            className="flex-1 rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 rounded-xl bg-brand py-3 text-sm font-semibold text-white transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isBooking
               ? l.carDetailsPage.reserving

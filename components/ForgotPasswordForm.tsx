@@ -8,13 +8,13 @@ const ForgotPasswordForm = () => {
     useForgotPassword();
 
   return (
-    <div className="h-[calc(100%-80px)] flex items-center justify-center overflow-hidden">
-      <div className="w-full max-w-md space-y-8 p-10 bg-white">
+    <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
+      <section className="w-full max-w-md space-y-8 rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="space-y-3">
-          <h1 className="text-3xl font-normal text-center">
+          <h1 className="text-center font-heading text-3xl font-bold text-ink">
             {l.auth.forgotPasswordHeading}
           </h1>
-          <p className="text-gray-600 text-center">
+          <p className="text-center text-sm leading-6 text-slate-500">
             {l.auth.forgotPasswordDesc}
           </p>
         </div>
@@ -25,45 +25,49 @@ const ForgotPasswordForm = () => {
               type="email"
               placeholder={l.auth.enterEmail}
               {...register('email', { required: l.auth.emailRequired })}
-              className="w-full p-4 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
+              className="w-full rounded-xl border border-slate-200 bg-white p-4 text-ink shadow-sm placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="mt-1 text-sm text-red-600">
                 {errors.email.message}
               </p>
             )}
           </div>
 
           {successMessage && (
-            <p className="text-green-600 text-sm">{successMessage}</p>
+            <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              {successMessage}
+            </p>
           )}
 
           {errors.root && (
-            <p className="text-red-500 text-sm">{errors.root.message}</p>
+            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {errors.root.message}
+            </p>
           )}
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full p-4 bg-[var(--secondary-2)] text-white rounded hover:bg-red-600 disabled:opacity-50"
+            className="w-full rounded-xl bg-brand p-4 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
           >
             {isSubmitting ? l.common.sending : l.auth.sendResetLink}
           </button>
         </form>
 
         <div className="text-center">
-          <p className="text-black/[0.6] text-xs">
+          <p className="text-xs text-slate-500">
             {l.common.rememberedIt}
             <a
               href="/sign-in"
-              className="underline underline-offset-[6px] ml-2"
+              className="ml-2 font-semibold text-brand underline-offset-4 hover:underline"
             >
               {l.common.backToLogin}
             </a>
           </p>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

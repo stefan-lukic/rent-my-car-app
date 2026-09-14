@@ -38,10 +38,10 @@ export default function About() {
               key={item.title}
               className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint text-brand">
                 <Icon className="h-5 w-5" />
               </span>
-              <h2 className="mt-5 text-lg font-bold text-slate-950">
+              <h2 className="mt-5 font-heading text-lg font-semibold text-ink">
                 {item.title}
               </h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -52,11 +52,11 @@ export default function About() {
         })}
       </section>
 
-      <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
           {content.howEyebrow}
         </p>
-        <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">
+        <h2 className="mt-3 font-heading text-2xl font-bold tracking-tight text-ink">
           {content.howTitle}
         </h2>
 
@@ -68,7 +68,9 @@ export default function About() {
                   {index + 1}
                 </span>
                 <div>
-                  <h3 className="font-bold text-slate-900">{step.title}</h3>
+                  <h3 className="font-heading font-semibold text-ink-secondary">
+                    {step.title}
+                  </h3>
                   <p className="mt-1 text-sm leading-6 text-slate-600">
                     {step.description}
                   </p>
@@ -79,22 +81,24 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mt-8 flex flex-col gap-5 rounded-3xl bg-blue-600 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <section className="mt-8 flex flex-col gap-5 rounded-2xl bg-brand p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
-          <div className="flex items-center gap-2 text-blue-100">
+          <div className="flex items-center gap-2 text-brand-tint">
             <CarFront className="h-5 w-5" />
             <span className="text-xs font-bold uppercase tracking-[0.18em]">
               {content.ctaEyebrow}
             </span>
           </div>
-          <h2 className="mt-3 text-2xl font-black">{content.ctaTitle}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-blue-100">
+          <h2 className="mt-3 font-heading text-2xl font-bold">
+            {content.ctaTitle}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-brand-tint">
             {content.ctaDescription}
           </p>
         </div>
         <Link
           href="/"
-          className="shrink-0 rounded-xl bg-white px-5 py-3 text-center text-sm font-bold text-blue-700 transition hover:bg-blue-50"
+          className="shrink-0 rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-brand transition-colors hover:bg-brand-tint"
         >
           {content.ctaAction}
         </Link>

@@ -33,13 +33,13 @@ function VerifyEmailForm() {
   };
 
   return (
-    <div className="flex items-center bg-blue-100 justify-center min-h-[400px]">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 p-8 border border-blue-50 transition-all">
+    <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
+      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
         <header className="mb-8 text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
+          <h1 className="mb-3 font-heading text-3xl font-bold tracking-tight text-ink">
             {l.auth.verifyEmailHeading}
           </h1>
-          <p className="text-gray-500 font-medium">
+          <p className="text-sm leading-6 text-slate-500">
             {token ? l.auth.verificationSent : l.auth.checkYourInbox}
           </p>
         </header>
@@ -49,7 +49,7 @@ function VerifyEmailForm() {
             <button
               onClick={handleVerify}
               disabled={isLoading}
-              className="w-full py-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="w-full rounded-xl bg-brand py-4 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
             >
               {isLoading ? l.auth.verifying : l.auth.verifyButton}
             </button>
@@ -58,12 +58,12 @@ function VerifyEmailForm() {
 
         {isSuccess && (
           <div className="flex flex-col items-center gap-4">
-            <p className="text-green-600 font-medium text-center">
+            <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
               {l.auth.verificationSuccess}
             </p>
             <Link
               href="/sign-in"
-              className="text-blue-600 font-bold hover:underline"
+              className="font-semibold text-brand underline-offset-4 hover:underline"
             >
               {l.auth.backToLogin}
             </Link>
@@ -71,21 +71,23 @@ function VerifyEmailForm() {
         )}
 
         {error && !isSuccess && (
-          <p className="text-red-500 text-center mt-4">{error}</p>
+          <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700">
+            {error}
+          </p>
         )}
 
         {!token && !isSuccess && (
           <div className="mt-6 text-center">
             <Link
               href="/sign-in"
-              className="text-blue-600 font-bold hover:underline"
+              className="font-semibold text-brand underline-offset-4 hover:underline"
             >
               {l.auth.backToLogin}
             </Link>
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 

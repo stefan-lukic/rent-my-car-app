@@ -2,34 +2,37 @@ import l from '@/helper/en';
 
 export default function CancellationOptions() {
   return (
-    <main className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+    <main className="min-h-screen bg-surface px-4 py-10 text-ink sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+          RentMyCar policy
+        </p>
+        <h1 className="mb-6 mt-2 font-heading text-3xl font-bold text-ink">
           {l.pages.cancellationOptions}
         </h1>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="px-4 py-5 sm:p-6">
-            <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+            <h2 className="mb-4 font-heading text-lg font-semibold leading-6 text-ink">
               {l.pages.flexiblePolicy}
             </h2>
-            <p className="text-base text-gray-500 mb-4">
+            <p className="mb-4 text-sm leading-7 text-slate-600">
               {l.pages.cancellationDesc}
             </p>
 
-            <h3 className="text-md font-medium text-gray-900 mt-6 mb-2">
+            <h3 className="mb-2 mt-6 font-heading font-semibold text-ink-secondary">
               {l.pages.forClients}
             </h3>
-            <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
+            <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600 marker:text-brand">
               <li>{l.pages.clientCancellationWindow}</li>
               <li>{l.pages.clientCancellationCutoff}</li>
               <li>{l.pages.clientCancellationResult}</li>
             </ul>
 
-            <h3 className="text-md font-medium text-gray-900 mt-6 mb-2">
+            <h3 className="mb-2 mt-6 font-heading font-semibold text-ink-secondary">
               {l.pages.forCarOwners}
             </h3>
-            <ul className="list-disc pl-5 space-y-2 text-base text-gray-500">
+            <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600 marker:text-brand">
               <li>{l.pages.ownerCancellationUnavailable}</li>
               <li>{l.pages.noOwnerCancellationPenalties}</li>
               <li>{l.pages.paymentArrangements}</li>
@@ -37,12 +40,12 @@ export default function CancellationOptions() {
           </div>
         </div>
 
-        <div className="mt-8 bg-white shadow sm:rounded-lg">
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+            <h2 className="mb-4 font-heading text-lg font-semibold leading-6 text-ink">
               {l.pages.howToCancel}
-            </h3>
-            <ol className="list-decimal pl-5 space-y-2 text-base text-gray-500">
+            </h2>
+            <ol className="list-decimal space-y-2 pl-5 text-sm leading-6 text-slate-600 marker:font-semibold marker:text-brand">
               <li>{l.pages.stepLogin}</li>
               <li>{l.pages.stepGoToReservations}</li>
               <li>{l.pages.stepFindReservation}</li>

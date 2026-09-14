@@ -42,22 +42,19 @@ export default function EditProfileForm({
     <div className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 md:py-8 lg:px-8">
       <Link
         href="/profile/my-profile"
-        className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+        className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-brand"
       >
         <ArrowLeft className="h-4 w-4" />
         {l.profile.backToProfile}
       </Link>
 
-      <header className="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-7 shadow-xl shadow-slate-200/70 sm:px-8 md:py-9">
-        <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="absolute -bottom-24 left-1/3 h-48 w-48 rounded-full bg-blue-600/10 blur-3xl" />
-
-        <div className="relative max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200">
+      <header className="overflow-hidden rounded-2xl bg-ink px-6 py-7 shadow-md sm:px-8 md:py-9">
+        <div className="max-w-2xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-brand/20">
             <UserRound className="h-3.5 w-3.5" />
             {l.profile.accountSettingsTag}
           </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+          <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             {l.profile.editProfileHeroTitle}
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 md:text-base">
@@ -70,18 +67,18 @@ export default function EditProfileForm({
         onSubmit={handleSubmit}
         className="mt-5 grid items-start gap-5 lg:grid-cols-[0.8fr_1.2fr]"
       >
-        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-100 px-6 py-5">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
               {l.profile.profilePhoto}
             </p>
-            <h2 className="mt-1 text-xl font-bold text-slate-950">
+            <h2 className="mt-1 font-heading text-xl font-bold text-ink">
               {l.profile.publicIdentity}
             </h2>
           </div>
 
           <div className="flex flex-col items-center px-6 py-8 text-center">
-            <div className="relative h-36 w-36 overflow-hidden rounded-3xl border-4 border-white bg-slate-100 shadow-lg ring-1 ring-slate-200">
+            <div className="relative h-36 w-36 overflow-hidden rounded-2xl border-4 border-white bg-slate-100 shadow-sm ring-1 ring-slate-200">
               <Image
                 src={imagePreview || '/placeholder-user.svg'}
                 alt="Profile preview"
@@ -103,7 +100,7 @@ export default function EditProfileForm({
             />
             <label
               htmlFor="profile-image"
-              className="mt-6 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-400 peer-focus-visible:ring-offset-2"
+              className="mt-6 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 peer-focus-visible:ring-2 peer-focus-visible:ring-brand peer-focus-visible:ring-offset-2"
             >
               <Camera className="h-4 w-4" />
               {l.profile.chooseNewPhoto}
@@ -112,8 +109,8 @@ export default function EditProfileForm({
             <p className="mt-3 text-xs leading-5 text-slate-500">
               {l.profile.photoFileHint}
             </p>
-            <div className="mt-6 flex w-full items-start gap-3 rounded-2xl bg-blue-50 p-4 text-left">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
+            <div className="mt-6 flex w-full items-start gap-3 rounded-2xl bg-brand-tint p-4 text-left">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-brand" />
               <p className="text-xs leading-5 text-slate-600">
                 {l.profile.photoTrustHint}
               </p>
@@ -121,12 +118,12 @@ export default function EditProfileForm({
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-100 px-6 py-5 sm:px-7">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
               {l.profile.personalDetails}
             </p>
-            <h2 className="mt-1 text-xl font-bold text-slate-950">
+            <h2 className="mt-1 font-heading text-xl font-bold text-ink">
               {l.profile.howPeopleReachYou}
             </h2>
           </div>
@@ -194,14 +191,14 @@ export default function EditProfileForm({
             <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
               <Link
                 href="/profile/my-profile"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
               >
                 {l.common.cancel}
               </Link>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:cursor-not-allowed disabled:bg-brand/70"
               >
                 <Save className="h-4 w-4" />
                 {isSubmitting ? l.common.saving : l.common.save}

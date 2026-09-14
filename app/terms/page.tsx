@@ -20,11 +20,11 @@ export default function TermsOfService() {
               className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
             >
               <div className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-tint text-sm font-bold text-brand/90">
                   {index + 1}
                 </span>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-950">
+                  <h2 className="font-heading text-lg font-semibold text-ink">
                     {section.title}
                   </h2>
                   <p className="mt-2 text-sm leading-7 text-slate-600">
@@ -36,9 +36,11 @@ export default function TermsOfService() {
           ))}
         </div>
 
-        <aside className="h-fit rounded-2xl border border-blue-100 bg-blue-50 p-6 lg:sticky lg:top-6">
-          <Scale className="h-6 w-6 text-blue-600" />
-          <h2 className="mt-4 font-bold text-slate-950">{content.noteTitle}</h2>
+        <aside className="h-fit rounded-2xl border border-brand-tint bg-brand-tint p-6 lg:sticky lg:top-6">
+          <Scale className="h-6 w-6 text-brand" />
+          <h2 className="mt-4 font-heading font-semibold text-ink">
+            {content.noteTitle}
+          </h2>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             {content.noteDescription}
           </p>

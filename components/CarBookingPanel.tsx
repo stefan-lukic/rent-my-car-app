@@ -160,13 +160,13 @@ export default function CarBookingPanel({
   };
 
   return (
-    <aside className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/60 lg:sticky lg:top-6 lg:p-6">
+    <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lg lg:sticky lg:top-6 lg:p-6">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
             {l.carDetailsPage.reserveThisCar}
           </p>
-          <p className="mt-2 text-3xl font-black text-slate-950">
+          <p className="mt-2 font-heading text-3xl font-bold text-ink">
             €{pricePerDay}
             <span className="ml-1 text-sm font-semibold text-slate-500">
               {l.common.perDay}
@@ -194,7 +194,7 @@ export default function CarBookingPanel({
             excludeDateIntervals={unavailablePeriods}
             placeholderText={l.carDetailsPage.selectPickup}
             dateFormat="dd/MM/yyyy"
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             wrapperClassName="w-full"
           />
         </div>
@@ -216,15 +216,15 @@ export default function CarBookingPanel({
             excludeDateIntervals={unavailablePeriods}
             placeholderText={l.carDetailsPage.selectReturn}
             dateFormat="dd/MM/yyyy"
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             wrapperClassName="w-full"
           />
         </div>
       </div>
 
       <div className="mt-5 rounded-2xl bg-slate-50 p-4">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500">
-          <CalendarDays className="h-4 w-4 text-blue-600" />
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <CalendarDays className="h-4 w-4 text-brand" />
           {l.carDetailsPage.priceEstimate}
         </div>
         <div className="mt-3 flex items-center justify-between text-sm text-slate-600">
@@ -233,7 +233,7 @@ export default function CarBookingPanel({
               ? l.carDetailsPage.days(selectedDays)
               : l.carDetailsPage.chooseDates}
           </span>
-          <span className="text-lg font-black text-slate-950">
+          <span className="font-heading text-lg font-bold text-ink">
             €{estimatedTotal}
           </span>
         </div>
@@ -283,7 +283,7 @@ export default function CarBookingPanel({
         type="button"
         onClick={handleBooking}
         disabled={isSubmitting || result?.type === 'success'}
-        className="mt-5 w-full rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-5 w-full rounded-xl bg-brand px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? l.carDetailsPage.reserving : l.carDetailsPage.bookNow}
       </button>
@@ -293,20 +293,20 @@ export default function CarBookingPanel({
       </p>
 
       <section className="mt-6 border-t border-slate-200 pt-6">
-        <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
           {l.carDetailsPage.tripTerms}
         </h2>
 
         <div className="mt-4 divide-y divide-slate-100">
           <div className="flex gap-3 pb-4">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-tint text-brand">
               <RotateCcw className="h-5 w-5" />
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
                 {l.carDetailsPage.cancellationPolicy}
               </p>
-              <p className="mt-1 text-sm font-bold text-slate-900">
+              <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.flexibleCancellation}
               </p>
               <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -314,7 +314,7 @@ export default function CarBookingPanel({
               </p>
               <Link
                 href="/cancellation"
-                className="mt-2 inline-flex text-xs font-bold text-blue-600 transition hover:text-blue-700"
+                className="mt-2 inline-flex text-xs font-semibold text-brand transition-colors hover:text-brand/90"
               >
                 {l.carDetailsPage.viewCancellationPolicy}
               </Link>
@@ -329,7 +329,7 @@ export default function CarBookingPanel({
               <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
                 {l.carDetailsPage.paymentOptions}
               </p>
-              <p className="mt-1 text-sm font-bold text-slate-900">
+              <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.payInPerson}
               </p>
               <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -339,14 +339,14 @@ export default function CarBookingPanel({
           </div>
 
           <div className="flex gap-3 pt-4">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-tint text-brand">
               <Milestone className="h-5 w-5" />
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
                 {l.carDetailsPage.distanceIncluded}
               </p>
-              <p className="mt-1 text-sm font-bold text-slate-900">
+              <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.unlimitedDistance}
               </p>
               <p className="mt-1 text-xs leading-5 text-slate-500">

@@ -31,7 +31,7 @@ interface RentalCardProps {
 }
 
 const statusStyles: Record<string, string> = {
-  upcoming: 'bg-blue-100 text-blue-700',
+  upcoming: 'bg-brand-tint text-brand/90',
   ongoing: 'bg-emerald-100 text-emerald-700',
   completed: 'bg-slate-100 text-slate-600',
   cancelled: 'bg-red-100 text-red-700',
@@ -133,19 +133,19 @@ const RentalCard: React.FC<RentalCardProps> = ({
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-slate-950">
+            <h3 className="font-heading text-base font-semibold text-ink">
               {car.make} {car.carModel}
             </h3>
             <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
-              <MapPin className="h-3.5 w-3.5 text-blue-500" />
+              <MapPin className="h-3.5 w-3.5 text-brand" />
               {car.city}
             </p>
-            <p className="mt-2 text-xs font-bold text-blue-600">
+            <p className="mt-2 text-xs font-semibold text-brand">
               €{car.pricePerDay} {l.common.perDay}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-sm font-bold text-blue-600">€{totalCost}</p>
+            <p className="text-sm font-semibold text-brand">€{totalCost}</p>
             <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
               {l.common.total}
             </p>
@@ -154,7 +154,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
 
         <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
           <p className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-400">
-            <CalendarDays className="h-3.5 w-3.5 text-blue-500" />
+            <CalendarDays className="h-3.5 w-3.5 text-brand" />
             Rental period
           </p>
           <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-700">
@@ -170,7 +170,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <button
               type="button"
               onClick={() => onCancel(rental._id)}
-              className="mt-3 w-full rounded-xl border border-red-200 py-2.5 text-xs font-bold text-red-600 transition hover:bg-red-50"
+              className="mt-3 w-full rounded-xl border border-red-200 py-2.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50"
             >
               {l.booking.cancelReservation}
             </button>
@@ -190,7 +190,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <button
               type="button"
               onClick={() => setIsRatingOpen(true)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand/90"
             >
               <Star className="h-4 w-4" />
               {l.reviews.rateTrip}

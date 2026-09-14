@@ -62,7 +62,7 @@ const MobileFooter = () => {
                 key={href}
                 href={href}
                 aria-current={active ? 'page' : undefined}
-                className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+                className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                   active
                     ? 'bg-white/10 text-white'
                     : 'text-slate-400 hover:bg-white/5 hover:text-slate-100'
@@ -70,7 +70,7 @@ const MobileFooter = () => {
               >
                 <Icon
                   aria-hidden="true"
-                  className={`h-5 w-5 ${active ? 'text-blue-400' : ''}`}
+                  className={`h-5 w-5 ${active ? 'text-brand/70' : ''}`}
                 />
                 <span>{label}</span>
               </Link>
