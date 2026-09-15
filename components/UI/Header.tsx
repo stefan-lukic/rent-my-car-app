@@ -1,10 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import LogoutButton from '../LogoutButton';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
-import { Compass } from 'lucide-react';
 import l from '@/helper/en';
 
 const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
@@ -17,9 +17,13 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md">
       <div className="flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
-          <div className="rounded-xl bg-brand p-2 text-white shadow-sm">
-            <Compass className="h-4 w-4" />
-          </div>
+          <Image
+            src="/icons/icon-192x192.png"
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-xl object-cover shadow-sm"
+          />
           <span className="font-heading text-base font-bold tracking-tight text-ink">
             RentMy<span className="text-brand">Car</span>
           </span>
@@ -52,9 +56,13 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
 
       <div className="mx-auto hidden max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:flex lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="rounded-xl bg-brand p-2.5 text-white shadow-sm">
-            <Compass className="h-5 w-5" />
-          </div>
+          <Image
+            src="/icons/icon-192x192.png"
+            alt=""
+            width={48}
+            height={48}
+            className="h-12 w-12 rounded-xl object-cover shadow-sm"
+          />
           <div>
             <span className="font-heading text-xl font-bold tracking-tight text-ink">
               RentMy<span className="text-brand">Car</span>
