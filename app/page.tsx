@@ -2,6 +2,7 @@
 
 import l from '@/helper/en';
 import { Suspense, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -9,7 +10,6 @@ import {
   BadgeEuro,
   CalendarCheck,
   CarFront,
-  Compass,
   KeyRound,
 } from 'lucide-react';
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
@@ -227,9 +227,13 @@ function HomeContent() {
       <footer className="border-t border-slate-800 bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-7 sm:px-6 md:flex-row lg:px-8">
           <div className="flex items-center gap-2.5">
-            <div className="rounded-xl bg-slate-800 p-2 text-brand/70">
-              <Compass className="h-4 w-4" />
-            </div>
+            <Image
+              src="/icons/icon-192x192.png"
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-xl object-cover"
+            />
             <div className="text-left">
               <p className="font-heading text-sm font-bold tracking-tight text-white">
                 RentMy<span className="text-brand/70">Car</span>

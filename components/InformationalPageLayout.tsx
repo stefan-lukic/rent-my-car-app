@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Compass } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import l from '@/helper/en';
 
 type InformationalPagePath = '/about' | '/help' | '/terms' | '/privacy';
@@ -34,9 +35,13 @@ export default function InformationalPageLayout({
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="rounded-xl bg-brand p-2 text-white shadow-sm">
-              <Compass className="h-5 w-5" />
-            </span>
+            <Image
+              src="/icons/icon-192x192.png"
+              alt=""
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-xl object-cover shadow-sm"
+            />
 
             <span className="font-heading text-lg font-bold tracking-tight">
               RentMy<span className="text-brand">Car</span>
