@@ -37,14 +37,14 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
   const images = car.images ?? [];
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="relative h-44 w-full bg-slate-100">
+    <article className="group overflow-hidden rounded-2xl border border-border bg-surface-0 shadow-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      <div className="relative h-48 w-full bg-slate-100">
         <Image
           src={images[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
           fill
           sizes="(max-width: 1024px) 50vw, 320px"
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />
 
         <span
@@ -64,7 +64,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
                 setCurrentImageIndex((index) => Math.max(0, index - 1))
               }
               disabled={currentImageIndex === 0}
-              className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow disabled:opacity-40"
+              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -77,7 +77,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onUpdate, onDeleteClick }) => {
                 )
               }
               disabled={currentImageIndex === images.length - 1}
-              className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow disabled:opacity-40"
+              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

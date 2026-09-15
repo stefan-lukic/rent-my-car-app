@@ -43,7 +43,7 @@ export default function RentalStatusFilter({
           className={`flex flex-shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
             value === option.value
               ? 'border-brand bg-brand text-white shadow-sm'
-              : 'border-slate-200 bg-white text-slate-600 hover:border-brand/20 hover:text-brand'
+              : 'border-border bg-white text-body hover:border-brand/40 hover:bg-brand-tint hover:text-brand-dark'
           }`}
         >
           {option.label}

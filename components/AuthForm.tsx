@@ -47,7 +47,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
-      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-surface-0 p-5 shadow-lg sm:p-8">
+      <section className="w-full max-w-md rounded-2xl border border-border bg-surface-0 p-5 shadow-lg sm:p-8">
         <header className="mb-8 text-center">
           <h1 className="mb-3 font-heading text-3xl font-bold tracking-tight text-ink">
             {isMobile
@@ -58,7 +58,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 ? l.auth.logInToRentMyCar
                 : l.auth.createAnAccount}
           </h1>
-          <p className="text-sm leading-6 text-slate-500">
+          <p className="text-sm leading-6 text-body">
             {type === 'sign-in' ? l.auth.enterDetails : l.auth.startJourney}
           </p>
         </header>
@@ -71,8 +71,8 @@ const AuthForm = ({ type }: { type: string }) => {
           )}
         </div>
 
-        <footer className="border-t border-slate-100 pt-6 text-center">
-          <p className="text-sm text-slate-500">
+        <footer className="border-t border-border pt-6 text-center">
+          <p className="text-sm text-body">
             {type !== 'sign-up' ? (
               <>
                 {l.auth.dontHaveAccount}

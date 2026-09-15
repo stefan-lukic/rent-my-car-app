@@ -77,7 +77,7 @@ const ProfilePage = ({
 
             <div className="min-w-0 flex-1">
               <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand/20">
+                <span className="rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-light">
                   My account
                 </span>
               </div>
@@ -87,11 +87,11 @@ const ProfilePage = ({
 
               <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300">
                 <span className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-brand/70" />
+                  <Mail className="h-4 w-4 text-brand-light" />
                   {user.email}
                 </span>
                 <span className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-brand/70" />
+                  <Phone className="h-4 w-4 text-brand-light" />
                   {user.contactInfo || l.profile.noPhoneNumber}
                 </span>
                 <span className="flex items-center gap-2">
@@ -113,13 +113,13 @@ const ProfilePage = ({
 
         <section
           aria-label="Profile statistics"
-          className="grid grid-cols-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+          className="grid grid-cols-3 overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
         >
           {stats.map(({ icon: Icon, value, label }, index) => (
             <div
               key={label}
               className={`flex items-center justify-center gap-4 px-6 py-5 ${
-                index > 0 ? 'border-l border-slate-200' : ''
+                index > 0 ? 'border-l border-border' : ''
               }`}
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint text-brand">

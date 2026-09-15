@@ -1,6 +1,7 @@
 import { ICar } from '@/lib/model/car/Car';
 import Image from 'next/image';
 import React from 'react';
+import { CalendarDays } from 'lucide-react';
 import l from '@/helper/en';
 import { countInclusiveCalendarDays } from '@/lib/utils/calendarDate';
 
@@ -111,7 +112,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-3 backdrop-blur-[2px] sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/60 p-3 backdrop-blur-[2px] sm:p-4">
       <div
         ref={dialogRef}
         role="dialog"
@@ -119,9 +120,9 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         aria-labelledby="booking-dialog-title"
         tabIndex={-1}
         onKeyDown={handleKeyDown}
-        className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl outline-none sm:max-h-[calc(100dvh-2rem)]"
+        className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border bg-surface-0 shadow-xl outline-none sm:max-h-[calc(100dvh-2rem)]"
       >
-        <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-100 px-5 pb-4 pt-5 sm:px-6">
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-border px-5 pb-4 pt-5 sm:px-6">
           <div>
             <h2
               id="booking-dialog-title"
@@ -134,15 +135,15 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             type="button"
             aria-label="Close booking dialog"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-xl leading-none text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.common.close}
           </button>
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-4 sm:px-6">
-          <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-3">
-            <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100">
+          <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+            <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-surface">
               {car.images?.[0] ? (
                 <Image
                   src={car.images[0]}
@@ -151,7 +152,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                   className="object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">
+                <div className="flex h-full w-full items-center justify-center text-xs text-body">
                   {l.common.noPhoto}
                 </div>
               )}
@@ -160,7 +161,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
               <p className="font-heading font-semibold text-ink">
                 {car.make} {car.carModel}
               </p>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-body">
                 {capitalize(car.carType)} • {car.city}
               </p>
               <p className="text-sm font-medium text-brand">
@@ -172,43 +173,47 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-body">
                 {l.search.pickUpDate}
               </p>
-              <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-                <span className="text-sm text-slate-400">📅</span>
-                <span className="text-sm text-slate-700">
+              <div className="flex min-h-11 items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2.5">
+                <CalendarDays
+                  aria-hidden="true"
+                  className="h-4 w-4 text-brand"
+                />
+                <span className="text-sm text-body">
                   {formatDate(startDate)}
                 </span>
               </div>
             </div>
             <div>
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-body">
                 {l.search.returnDateLabel}
               </p>
-              <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-                <span className="text-sm text-slate-400">📅</span>
-                <span className="text-sm text-slate-700">
-                  {formatDate(endDate)}
-                </span>
+              <div className="flex min-h-11 items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2.5">
+                <CalendarDays
+                  aria-hidden="true"
+                  className="h-4 w-4 text-brand"
+                />
+                <span className="text-sm text-body">{formatDate(endDate)}</span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div className="rounded-xl border border-border bg-surface p-4">
             <div className="flex items-center gap-2 mb-3">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-body">
                 {l.common.estimatedTotal}
               </p>
             </div>
-            <div className="mb-1 flex justify-between text-sm text-slate-600">
+            <div className="mb-1 flex justify-between text-sm text-body">
               <span>
                 €{car.pricePerDay} × {l.common.days(days)}
               </span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
-            <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 font-semibold text-ink">
+            <div className="mt-2 flex justify-between border-t border-border pt-2 font-semibold text-ink">
               <span>{l.common.total}</span>
               <span>€{totalPrice.toFixed(2)}</span>
             </div>
@@ -218,7 +223,9 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         {isUnauthorized && (
           <div className="mx-6 mb-3 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-amber-500">🔒</span>
+              <span aria-hidden="true" className="text-amber-600">
+                !
+              </span>
               <p className="text-sm text-amber-800 font-medium">
                 {l.common.signInToReserve}
               </p>

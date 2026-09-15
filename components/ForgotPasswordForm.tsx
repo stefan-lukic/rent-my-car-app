@@ -49,7 +49,7 @@ const ForgotPasswordForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-xl bg-brand p-4 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-50"
+            className="min-h-11 w-full rounded-xl bg-brand px-4 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? l.common.sending : l.auth.sendResetLink}
           </button>

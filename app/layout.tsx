@@ -54,7 +54,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${manrope.variable} flex h-screen flex-col overflow-hidden bg-surface font-body text-ink md:overflow-auto`}
+        className={`${inter.variable} ${manrope.variable} flex min-h-screen flex-col bg-surface font-body text-body`}
       >
         <Script id="ios-pwa-fix" strategy="afterInteractive">
           {`
@@ -66,7 +66,7 @@ export default function RootLayout({
           `}
         </Script>
         <Providers>
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="min-h-0 flex-1">{children}</main>
           <MobileFooter />
         </Providers>
         <Analytics />

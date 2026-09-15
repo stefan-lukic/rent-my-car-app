@@ -31,7 +31,7 @@ interface RentalCardProps {
 }
 
 const statusStyles: Record<string, string> = {
-  upcoming: 'bg-brand-tint text-brand/90',
+  upcoming: 'bg-brand-tint text-brand-dark',
   ongoing: 'bg-emerald-100 text-emerald-700',
   completed: 'bg-slate-100 text-slate-600',
   cancelled: 'bg-red-100 text-red-700',
@@ -56,7 +56,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
 
   if (!rental.car) {
     return (
-      <div className="flex min-h-64 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-500">
+      <div className="flex min-h-64 items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-sm text-body">
         {l.common.unavailable}
       </div>
     );
@@ -79,10 +79,10 @@ const RentalCard: React.FC<RentalCardProps> = ({
       className={`overflow-hidden rounded-2xl border shadow-sm ${
         isCancelled
           ? 'border-slate-300 bg-slate-100 opacity-70 grayscale'
-          : 'border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-md'
+          : 'border-border bg-white transition hover:-translate-y-0.5 hover:shadow-md'
       }`}
     >
-      <div className="relative h-44 w-full bg-slate-100">
+      <div className="relative h-48 w-full bg-slate-100">
         <Image
           src={images[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
@@ -109,7 +109,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 setCurrentImageIndex((index) => Math.max(0, index - 1))
               }
               disabled={currentImageIndex === 0}
-              className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow disabled:opacity-40"
+              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -122,7 +122,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 )
               }
               disabled={currentImageIndex === images.length - 1}
-              className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow disabled:opacity-40"
+              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -152,7 +152,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
+        <div className="mt-4 rounded-xl border border-border bg-surface p-3">
           <p className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-400">
             <CalendarDays className="h-3.5 w-3.5 text-brand" />
             Rental period
@@ -170,19 +170,19 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <button
               type="button"
               onClick={() => onCancel(rental._id)}
-              className="mt-3 w-full rounded-xl border border-red-200 py-2.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50"
+              className="mt-3 min-h-11 w-full rounded-xl border border-red-200 py-2.5 text-xs font-semibold text-danger transition-colors hover:bg-danger-tint"
             >
               {l.booking.cancelReservation}
             </button>
           ) : (
-            <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2.5 text-center text-xs font-semibold text-slate-500">
+            <p className="mt-3 rounded-xl bg-surface px-3 py-2.5 text-center text-xs font-semibold text-body">
               {l.booking.cancellationCutoffPassed}
             </p>
           ))}
 
         {status === RentalLifecycleStatus.Completed &&
           (rental.clientReview?.submittedAt ? (
-            <div className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-emerald-50 py-2.5 text-xs font-bold text-emerald-700">
+            <div className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-success-tint py-2.5 text-xs font-bold text-success">
               <CheckCircle2 className="h-4 w-4" />
               {l.reviews.carAndOwnerRated}
             </div>
@@ -190,7 +190,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <button
               type="button"
               onClick={() => setIsRatingOpen(true)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand/90"
+              className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand-dark"
             >
               <Star className="h-4 w-4" />
               {l.reviews.rateTrip}

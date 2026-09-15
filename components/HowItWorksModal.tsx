@@ -100,13 +100,18 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/10 p-4">
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+        className="fixed inset-0 bg-ink/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200 bg-white shadow-xl">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="how-it-works-title"
+        className="relative z-10 w-full max-w-lg rounded-2xl border border-border bg-white shadow-xl"
+      >
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
           <div className="flex items-center gap-2">
             <svg
@@ -122,7 +127,10 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h2 className="font-heading text-lg font-bold text-ink">
+            <h2
+              id="how-it-works-title"
+              className="font-heading text-lg font-bold text-ink"
+            >
               {l.howItWorks.modalTitle}
             </h2>
           </div>
@@ -157,7 +165,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
         <div className="px-6 pb-6 pt-2">
           <button
             onClick={onClose}
-            className="w-full rounded-xl bg-ink-secondary py-3 font-semibold text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+            className="min-h-11 w-full rounded-xl bg-ink-secondary py-3 font-semibold text-white transition-colors hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.howItWorks.gotIt}
           </button>

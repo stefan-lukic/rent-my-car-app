@@ -136,7 +136,7 @@ export default function RatingModal(props: RatingModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget && !isSubmitting) onClose();
@@ -146,7 +146,7 @@ export default function RatingModal(props: RatingModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="rating-modal-title"
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+        className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white shadow-xl"
       >
         <div className="bg-ink-secondary px-6 py-5 text-white">
           <div className="flex items-start justify-between gap-4">
@@ -210,7 +210,7 @@ export default function RatingModal(props: RatingModalProps) {
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+              className="flex min-h-11 flex-1 rounded-xl border border-border px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-surface"
             >
               {l.reviews.cancel}
             </button>
@@ -218,7 +218,7 @@ export default function RatingModal(props: RatingModalProps) {
               type="button"
               onClick={handleSubmit}
               disabled={!isComplete || isSubmitting}
-              className="flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand/90 disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="flex min-h-11 flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               {isSubmitting ? l.reviews.submitting : l.reviews.submit}
             </button>

@@ -45,7 +45,7 @@ const MobileProfilePage = ({
           <button
             type="button"
             onClick={() => router.push('/cars/add-car')}
-            className="flex items-center justify-center gap-2 rounded-xl bg-brand px-3 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand px-3 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             <Plus className="h-4 w-4" />
             {l.profile.addNewCar}
@@ -53,7 +53,7 @@ const MobileProfilePage = ({
           <button
             type="button"
             onClick={() => router.push('/#car-search')}
-            className="flex items-center justify-center gap-2 rounded-xl border border-brand/20 bg-white px-3 py-3.5 text-sm font-semibold text-brand shadow-sm transition-colors hover:bg-brand-tint"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-brand-light bg-white px-3 py-3.5 text-sm font-semibold text-brand shadow-sm transition-colors hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             <Search className="h-4 w-4" />
             Browse Cars
@@ -68,16 +68,14 @@ const MobileProfilePage = ({
         <div
           role="tablist"
           aria-label="Profile activity"
-          className="flex gap-1 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm"
+          className="flex gap-1 rounded-2xl border border-border bg-white p-1.5 shadow-sm"
         >
           <button
             type="button"
             role="tab"
             aria-selected={activeTab === 'cars'}
             className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${
-              activeTab === 'cars'
-                ? 'bg-brand-tint text-brand'
-                : 'text-slate-500'
+              activeTab === 'cars' ? 'bg-brand-tint text-brand' : 'text-body'
             }`}
             onClick={() => setActiveTab('cars')}
           >
@@ -89,9 +87,7 @@ const MobileProfilePage = ({
             role="tab"
             aria-selected={activeTab === 'rentals'}
             className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${
-              activeTab === 'rentals'
-                ? 'bg-brand-tint text-brand'
-                : 'text-slate-500'
+              activeTab === 'rentals' ? 'bg-brand-tint text-brand' : 'text-body'
             }`}
             onClick={() => setActiveTab('rentals')}
           >

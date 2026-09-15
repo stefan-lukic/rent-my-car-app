@@ -6,8 +6,13 @@
   :root {
     --ink: #020617;
     --ink-secondary: #0f172a;
+    --body: #334155;
+    --border: #e2e8f0;
     --brand: #2563eb;
+    --brand-dark: #1d4ed8;
+    --brand-light: #dbeafe;
     --brand-tint: #eff6ff;
+    --button: #dc2626;
     --surface: #f8fafc;
     --surface-0: #ffffff;
     --background: 210 40% 98%;
@@ -39,11 +44,10 @@ body {
     env(safe-area-inset-bottom) env(safe-area-inset-left);
   min-height: 100vh;
   min-height: -webkit-fill-available; /* Fix for iOS Safari */
-  overflow: hidden;
-  position: fixed;
+  overflow-x: hidden;
   width: 100%;
   background-color: var(--surface);
-  color: var(--ink);
+  color: var(--body);
   font-family: var(--font-inter), sans-serif;
 }
 
@@ -86,6 +90,35 @@ html {
   }
 }
 
+* {
+  border-color: var(--border);
+}
+
+::selection {
+  background: var(--brand-light);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+}
+
 @supports (-webkit-touch-callout: none) {
   .min-h-screen {
     min-height: -webkit-fill-available;
@@ -95,7 +128,7 @@ html {
 .rentmycar-place-autocomplete {
   width: 100%;
   min-height: 3rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--surface-0);
   color: var(--ink-secondary);
