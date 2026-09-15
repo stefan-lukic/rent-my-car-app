@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
 
 export const inputClasses =
-  'w-full rounded-xl border border-slate-200 bg-surface-0 px-4 py-3 text-sm text-ink shadow-sm transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint disabled:cursor-not-allowed disabled:bg-slate-100';
+  'min-h-11 w-full rounded-xl border border-border bg-surface-0 px-4 py-3 text-sm text-ink shadow-sm transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint disabled:cursor-not-allowed disabled:bg-slate-100';
 
-export const labelClasses = 'mb-2 block text-sm font-semibold text-slate-700';
+export const labelClasses = 'mb-2 block text-sm font-semibold text-body';
 
 interface FormSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
@@ -39,7 +39,7 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1 text-sm text-danger">{error}</p>}
       </div>
     );
   }

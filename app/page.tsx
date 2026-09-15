@@ -68,17 +68,19 @@ function HomeContent() {
     <main className="min-h-screen bg-surface text-ink">
       <Header onHowItWorksClick={() => setIsHowItWorksOpen(true)} />
 
-      <section className="relative overflow-hidden border-b border-slate-800 bg-ink">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.28),_transparent_45%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+      <section className="relative overflow-hidden border-b border-ink-secondary bg-ink">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.24),_transparent_48%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20 lg:px-8">
           <div className="max-w-3xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand/10 px-3 py-1.5 text-xs font-semibold text-brand/20">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3 py-1.5 text-xs font-semibold text-brand-light">
               <CarFront className="h-4 w-4" />
               {l.landing.localCarMarketplace}
             </div>
             <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
               {l.landing.heroTitle}{' '}
-              <span className="text-brand/70">{l.landing.heroHighlight}</span>
+              <span className="text-brand-light">
+                {l.landing.heroHighlight}
+              </span>
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
               {l.landing.heroDescription}
@@ -87,7 +89,7 @@ function HomeContent() {
             <div className="mt-6">
               <a
                 href="#car-search"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               >
                 {l.landing.findACar}
                 <ArrowRight className="h-4 w-4" />
@@ -97,7 +99,7 @@ function HomeContent() {
         </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-white">
+      <section className="border-b border-border bg-white">
         <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-10 lg:px-8">
           <div className="relative grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
@@ -114,7 +116,7 @@ function HomeContent() {
 
               <Link
                 href="/cars/add-car"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:w-auto"
+                className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:w-auto"
               >
                 {l.landing.addYourCar}
                 <ArrowRight className="h-4 w-4" />
@@ -141,7 +143,7 @@ function HomeContent() {
               ].map(({ icon: Icon, title, description }) => (
                 <div
                   key={title}
-                  className="rounded-2xl border border-slate-200 bg-surface p-4"
+                  className="rounded-2xl border border-border bg-surface p-4"
                 >
                   <div className="mb-3 inline-flex rounded-xl bg-brand/10 p-2 text-brand/70">
                     <Icon className="h-5 w-5" />
@@ -199,7 +201,7 @@ function HomeContent() {
         )}
       </section>
 
-      <section className="border-t border-slate-200 bg-white">
+      <section className="border-t border-border bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div className="flex items-start gap-3">
             <div className="rounded-xl bg-brand-tint p-2.5 text-brand">
@@ -217,14 +219,14 @@ function HomeContent() {
           <button
             type="button"
             onClick={() => setIsHowItWorksOpen(true)}
-            className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/40 hover:bg-brand-tint hover:text-brand"
+            className="min-h-11 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-body transition-colors hover:border-brand-light hover:bg-brand-tint hover:text-brand-dark"
           >
             {l.navigation.howItWorksNav}
           </button>
         </div>
       </section>
 
-      <footer className="border-t border-slate-800 bg-slate-950">
+      <footer className="border-t border-ink-secondary bg-ink">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-7 sm:px-6 md:flex-row lg:px-8">
           <div className="flex items-center gap-2.5">
             <Image
@@ -238,7 +240,7 @@ function HomeContent() {
               <p className="font-heading text-sm font-bold tracking-tight text-white">
                 RentMy<span className="text-brand/70">Car</span>
               </p>
-              <p className="mt-0.5 text-[10px] text-slate-500">
+              <p className="mt-0.5 text-[10px] text-slate-400">
                 {l.landing.copyright}
               </p>
             </div>
@@ -246,7 +248,7 @@ function HomeContent() {
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-wrap justify-center gap-x-5 gap-y-3 text-xs font-semibold text-slate-400 md:gap-x-6"
+            className="flex flex-wrap justify-center gap-x-5 gap-y-3 text-sm font-semibold text-slate-300 md:gap-x-6"
           >
             {[
               { href: '/about', label: l.landing.aboutUs },
@@ -257,7 +259,7 @@ function HomeContent() {
               <Link
                 key={href}
                 href={href}
-                className="transition-colors hover:text-brand/70 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
+                className="transition-colors hover:text-brand-light focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-light"
               >
                 {label}
               </Link>

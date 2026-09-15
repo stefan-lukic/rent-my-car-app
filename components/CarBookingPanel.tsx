@@ -160,7 +160,7 @@ export default function CarBookingPanel({
   };
 
   return (
-    <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lg lg:sticky lg:top-6 lg:p-6">
+    <aside className="rounded-2xl border border-border bg-white p-5 shadow-md lg:sticky lg:top-6 lg:p-6">
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
@@ -194,7 +194,7 @@ export default function CarBookingPanel({
             excludeDateIntervals={unavailablePeriods}
             placeholderText={l.carDetailsPage.selectPickup}
             dateFormat="dd/MM/yyyy"
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
+            className="min-h-11 w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             wrapperClassName="w-full"
           />
         </div>
@@ -216,13 +216,13 @@ export default function CarBookingPanel({
             excludeDateIntervals={unavailablePeriods}
             placeholderText={l.carDetailsPage.selectReturn}
             dateFormat="dd/MM/yyyy"
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
+            className="min-h-11 w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             wrapperClassName="w-full"
           />
         </div>
       </div>
 
-      <div className="mt-5 rounded-2xl bg-slate-50 p-4">
+      <div className="mt-5 rounded-2xl border border-border bg-surface p-4">
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
           <CalendarDays className="h-4 w-4 text-brand" />
           {l.carDetailsPage.priceEstimate}

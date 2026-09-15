@@ -77,17 +77,17 @@ const MobileCarRentalSearch = ({
     <div className="space-y-4 pb-10">
       <form
         onSubmit={onSearch}
-        className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+        className="space-y-4 rounded-2xl border border-border bg-white p-4 shadow-sm"
       >
         <div>
-          <label className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-body">
             {l.search.location}
           </label>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand" />
             <select
               {...form.register('city')}
-              className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-4 pl-10 pr-4 text-sm text-ink shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand-tint"
+              className="min-h-11 w-full appearance-none rounded-xl border border-border bg-white py-3.5 pl-10 pr-4 text-sm text-ink shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand-tint"
             >
               <option value="">{l.search.allCitiesMobile}</option>
               {Object.values(CarCity).map((city) => (
@@ -117,7 +117,7 @@ const MobileCarRentalSearch = ({
         <button
           type="submit"
           disabled={results.loading}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-4 font-semibold text-white shadow-sm transition-colors hover:bg-brand/90 disabled:opacity-60"
+          className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand py-3.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark disabled:opacity-60"
         >
           {results.loading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
@@ -167,7 +167,7 @@ const MobileCarRentalSearch = ({
             <div className="mb-3 rounded-xl bg-brand-tint p-3 text-brand">
               <CalendarSearch className="h-5 w-5" />
             </div>
-            <h3 className="text-sm font-bold text-slate-900">
+            <h3 className="text-sm font-bold text-ink">
               {l.search.startSearchTitle}
             </h3>
             <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -195,7 +195,7 @@ const MobileCarRentalSearch = ({
               !results.loading &&
               !searchError &&
               allCars.length === 0 && (
-                <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
+                <div className="rounded-2xl border border-dashed border-border bg-white px-5 py-12 text-center">
                   <p className="font-bold text-slate-800">
                     {l.search.noCarsFound}
                   </p>
@@ -211,7 +211,7 @@ const MobileCarRentalSearch = ({
           <button
             onClick={() => onPageChange(results.currentPage + 1)}
             disabled={results.loading}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-4 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-ink disabled:opacity-50"
+            className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white py-3.5 text-sm font-semibold text-body transition-colors hover:bg-surface hover:text-ink disabled:opacity-50"
           >
             {results.loading ? (
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />

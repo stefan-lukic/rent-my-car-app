@@ -106,7 +106,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
       <div
         aria-hidden="true"
         onClick={onClose}
-        className="fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-[2px]"
+        className="fixed inset-0 z-[60] bg-ink/60 backdrop-blur-[2px]"
       />
 
       <aside
@@ -115,7 +115,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
         aria-labelledby="car-details-title"
         className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col bg-white shadow-xl sm:w-[500px] lg:w-[540px]"
       >
-        <header className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+        <header className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
               {l.drawer.carDetails}
@@ -128,7 +128,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             type="button"
             aria-label={l.carDetailsPage.closeDetails}
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-body transition hover:border-brand-light hover:bg-brand-tint hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <X className="h-5 w-5" />
           </button>

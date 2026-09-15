@@ -29,7 +29,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
   return (
     <Link
       href={`/profile/${renter._id}`}
-      className="group flex items-center gap-3 rounded-2xl border border-brand-tint bg-brand-tint/70 p-3.5 transition hover:border-brand/40 hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      className="group flex min-h-16 items-center gap-3 rounded-2xl border border-brand-light bg-brand-tint/70 p-3.5 transition hover:border-brand/60 hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
     >
       <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-brand/20 bg-white text-sm font-bold text-brand/90 shadow-sm">
         {profileImage ? (
@@ -62,9 +62,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
             </span>
           )}
         </div>
-        <p className="mt-0.5 text-xs text-slate-500">
-          {l.profile.viewOwnerProfile}
-        </p>
+        <p className="mt-0.5 text-xs text-body">{l.profile.viewOwnerProfile}</p>
       </div>
 
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand shadow-sm transition group-hover:translate-x-0.5">

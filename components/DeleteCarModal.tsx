@@ -50,16 +50,16 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-car-title"
-        className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-xl"
+        className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-xl"
       >
         <h2
           id="delete-car-title"
-          className="mb-2 font-heading text-xl font-bold text-slate-950"
+          className="mb-2 font-heading text-xl font-bold text-ink"
         >
           {l.cars.deleteCar}
         </h2>

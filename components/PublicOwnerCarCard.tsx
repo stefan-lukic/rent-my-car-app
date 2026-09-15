@@ -41,14 +41,14 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
   ];
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative h-48 w-full shrink-0 bg-slate-100">
         <Image
           src={car.images?.[0] || '/placeholder-car.svg'}
           alt={carName}
           fill
           sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />
       </div>
 
@@ -83,7 +83,7 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
           {specifications.map((specification) => (
             <span
               key={specification}
-              className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600"
+              className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-body"
             >
               {specification}
             </span>
@@ -93,7 +93,7 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
         <div className="mt-auto pt-5">
           <Link
             href={`/cars/${car._id.toString()}`}
-            className="inline-flex w-full items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           >
             {l.common.details}
           </Link>

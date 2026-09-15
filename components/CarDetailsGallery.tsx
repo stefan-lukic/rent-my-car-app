@@ -28,7 +28,7 @@ export default function CarDetailsGallery({
           sizes="(max-width: 1024px) 100vw, 760px"
           className="object-cover"
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-950/55 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink/55 to-transparent" />
 
         <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-slate-950/75 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-sm">
           <Images className="h-4 w-4" />

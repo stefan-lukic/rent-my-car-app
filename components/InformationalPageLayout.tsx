@@ -32,7 +32,7 @@ export default function InformationalPageLayout({
 }: InformationalPageLayoutProps) {
   return (
     <div className="min-h-full bg-surface pb-28 text-ink md:pb-16">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-border bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
@@ -50,7 +50,7 @@ export default function InformationalPageLayout({
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-slate-600 transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="inline-flex min-h-10 items-center gap-2 rounded-lg text-sm font-semibold text-body transition-colors hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <ArrowLeft className="h-4 w-4" />
 
@@ -62,7 +62,7 @@ export default function InformationalPageLayout({
 
       <section className="bg-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand/40">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-light">
             {eyebrow}
           </p>
 
@@ -70,7 +70,7 @@ export default function InformationalPageLayout({
             {title}
           </h1>
 
-          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
             {description}
           </p>
 
@@ -88,8 +88,8 @@ export default function InformationalPageLayout({
                   aria-current={isCurrent ? 'page' : undefined}
                   className={`w-full rounded-xl border px-4 py-2 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 sm:w-auto ${
                     isCurrent
-                      ? 'border-brand/70 bg-brand text-white'
-                      : 'border-slate-700 bg-slate-900/60 text-slate-300 hover:border-slate-500 hover:text-white'
+                      ? 'border-brand bg-brand text-white'
+                      : 'border-slate-700 bg-ink-secondary text-slate-200 hover:border-brand/60 hover:text-white'
                   }`}
                 >
                   {link.label}

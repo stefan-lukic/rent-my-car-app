@@ -23,9 +23,9 @@ const emptyFilters: CarFilterState = {
   minSeats: '',
 };
 
-const labelClass = 'mb-2 block text-xs font-semibold text-slate-600';
+const labelClass = 'mb-2 block text-xs font-semibold text-body';
 const inputClass =
-  'w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint';
+  'w-full rounded-xl border border-border bg-surface-0 px-3 py-2.5 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint';
 
 export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
@@ -38,7 +38,7 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-border bg-surface-0 p-5 shadow-sm">
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="h-4 w-4 text-brand" />

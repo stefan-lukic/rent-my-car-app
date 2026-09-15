@@ -4,18 +4,20 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex min-h-10 items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-[background-color,border-color,color,box-shadow,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:translate-y-px',
   {
     variants: {
       variant: {
-        default: 'bg-brand text-white shadow-sm hover:bg-brand/90',
-        destructive: 'bg-red-600 text-white shadow-sm hover:bg-red-700',
+        default: 'bg-brand bg-primary text-white shadow-sm hover:bg-brand-dark',
+        destructive:
+          'bg-danger bg-[var(--button)] text-white shadow-sm hover:bg-red-700',
         outline:
-          'border border-slate-200 bg-surface-0 text-ink hover:border-slate-300 hover:bg-slate-50',
+          'border border-border bg-surface-0 text-ink hover:border-brand-light hover:bg-brand-tint',
         secondary: 'bg-slate-100 text-ink-secondary hover:bg-slate-200',
-        ghost: 'text-slate-600 hover:bg-slate-100 hover:text-ink',
+        ghost: 'text-body hover:bg-brand-tint hover:text-brand-dark',
         link: 'text-brand underline-offset-4 hover:underline',
-        danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700',
+        danger:
+          'bg-danger bg-[var(--button)] text-white shadow-sm hover:bg-red-700',
       },
       size: {
         default: 'h-10 px-4 py-2',

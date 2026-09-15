@@ -14,7 +14,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
   if (pathname === '/sign-in' || pathname === '/sign-up') return null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-md">
       <div className="flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -42,8 +42,8 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
               <div className="flex items-center gap-3">
                 <LogoutButton />
                 <Link href="/profile/my-profile">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-slate-100 transition-colors hover:border-brand">
-                    <span className="text-xs font-bold uppercase text-slate-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
+                    <span className="text-xs font-bold uppercase text-body">
                       {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>
                   </div>
@@ -73,19 +73,22 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
           </div>
         </Link>
 
-        <nav className="flex gap-8 text-xs font-semibold text-slate-600">
-          <Link href="/" className="transition-colors hover:text-brand">
+        <nav
+          aria-label={l.navigation.catalog}
+          className="flex gap-8 text-sm font-semibold text-body"
+        >
+          <Link href="/" className="transition-colors hover:text-brand-dark">
             {l.navigation.catalog}
           </Link>
           <button
             onClick={onHowItWorksClick}
-            className="transition-colors hover:text-brand"
+            className="transition-colors hover:text-brand-dark"
           >
             {l.navigation.howItWorksNav}
           </button>
           <Link
             href="/profile/my-profile"
-            className="transition-colors hover:text-brand"
+            className="transition-colors hover:text-brand-dark"
           >
             {l.navigation.myProfileRentals}
           </Link>
@@ -97,13 +100,13 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
               <>
                 <Link
                   href="/sign-in"
-                  className="text-xs font-semibold text-slate-600 transition-colors hover:text-brand"
+                  className="text-sm font-semibold text-body transition-colors hover:text-brand-dark"
                 >
                   {l.navigation.signIn}
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="rounded-xl bg-brand px-4 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
+                  className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
                 >
                   {l.common.getStarted}
                 </Link>
@@ -112,8 +115,8 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
               <>
                 <LogoutButton />
                 <Link href="/profile/my-profile">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-100 transition-colors hover:border-brand">
-                    <span className="text-xs font-bold uppercase text-slate-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
+                    <span className="text-xs font-bold uppercase text-body">
                       {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>
                   </div>

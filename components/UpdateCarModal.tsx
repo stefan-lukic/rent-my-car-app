@@ -105,17 +105,17 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="update-car-title"
-        className="max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-xl sm:p-8"
+        className="max-h-[calc(100dvh-2rem-env(safe-area-inset-bottom))] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-white p-5 shadow-xl sm:p-8"
       >
         <header className="mb-8">
           <h2
             id="update-car-title"
-            className="mb-1 font-heading text-2xl font-bold text-slate-950 sm:text-3xl"
+            className="mb-1 font-heading text-2xl font-bold text-ink sm:text-3xl"
           >
             {l.cars.updateCar}
           </h2>
