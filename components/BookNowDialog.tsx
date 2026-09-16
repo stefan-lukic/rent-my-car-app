@@ -119,8 +119,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         aria-modal="true"
         aria-labelledby="booking-dialog-title"
         tabIndex={-1}
-        onKeyDown={handleKeyDown}
         className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border bg-surface-0 shadow-xl outline-none sm:max-h-[calc(100dvh-2rem)]"
+        onKeyDown={handleKeyDown}
       >
         <div className="flex flex-shrink-0 items-center justify-between border-b border-border px-5 pb-4 pt-5 sm:px-6">
           <div>
