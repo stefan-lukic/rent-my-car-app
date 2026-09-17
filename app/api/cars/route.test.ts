@@ -5,9 +5,12 @@ const mocks = vi.hoisted(() => ({
   getServerSession: vi.fn(),
   connectToDatabase: vi.fn(),
   findCars: vi.fn(),
+  countCars: vi.fn(),
   selectCars: vi.fn(),
   sliceCarImages: vi.fn(),
-  findRentals: vi.fn(),
+  skipCars: vi.fn(),
+  limitCars: vi.fn(),
+  distinctRentalCars: vi.fn(),
 }));
 
 vi.mock('next-auth/next', () => ({
@@ -21,11 +24,14 @@ vi.mock('@/lib/db/mongoose', () => ({
 }));
 
 vi.mock('@/lib/model/car/Car', () => ({
-  default: { find: mocks.findCars },
+  default: {
+    find: mocks.findCars,
+    countDocuments: mocks.countCars,
+  },
 }));
 
 vi.mock('@/lib/model/Rental', () => ({
-  default: { find: mocks.findRentals },
+  default: { distinct: mocks.distinctRentalCars },
 }));
 
 import { GET } from './route';
@@ -42,8 +48,11 @@ describe('GET /api/cars pagination', () => {
     mocks.connectToDatabase.mockResolvedValue(undefined);
     mocks.findCars.mockReturnValue({ select: mocks.selectCars });
     mocks.selectCars.mockReturnValue({ slice: mocks.sliceCarImages });
-    mocks.sliceCarImages.mockResolvedValue([]);
-    mocks.findRentals.mockResolvedValue([]);
+    mocks.sliceCarImages.mockReturnValue({ skip: mocks.skipCars });
+    mocks.skipCars.mockReturnValue({ limit: mocks.limitCars });
+    mocks.limitCars.mockResolvedValue([]);
+    mocks.countCars.mockResolvedValue(0);
+    mocks.distinctRentalCars.mockResolvedValue([]);
   });
 
   it.each(['0', '-1', '1.5', 'abc', '2abc'])(
@@ -98,6 +107,48 @@ describe('GET /api/cars pagination', () => {
     expect(mocks.findCars).toHaveBeenCalledOnce();
   });
 
+  it('filters availability and paginates in MongoDB', async () => {
+    mocks.distinctRentalCars.mockResolvedValue(['unavailable-car']);
+    mocks.countCars.mockResolvedValue(12);
+
+    const response = await GET(createRequest('&page=2&limit=5'));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(mocks.distinctRentalCars).toHaveBeenCalledWith(
+      'car',
+      expect.objectContaining({
+        status: { $ne: 'cancelled' },
+        'rentalPeriod.startDate': { $lte: expect.any(Date) },
+        'rentalPeriod.endDate': { $gte: expect.any(Date) },
+      })
+    );
+
+    const availabilityFilter = mocks.findCars.mock.calls[0][0];
+    expect(availabilityFilter).toEqual(
+      expect.objectContaining({
+        _id: { $nin: ['unavailable-car'] },
+        bookedPeriods: {
+          $not: {
+            $elemMatch: {
+              startDate: { $lte: expect.any(Date) },
+              endDate: { $gte: expect.any(Date) },
+            },
+          },
+        },
+      })
+    );
+    expect(mocks.countCars).toHaveBeenCalledWith(availabilityFilter);
+    expect(mocks.skipCars).toHaveBeenCalledWith(5);
+    expect(mocks.limitCars).toHaveBeenCalledWith(5);
+    expect(body).toEqual({
+      cars: [],
+      currentPage: 2,
+      totalPages: 3,
+      totalCars: 12,
+    });
+  });
+
   it('returns only the public search DTO with one thumbnail', async () => {
     const car = {
       _id: { toString: () => 'car-1' },
@@ -124,7 +175,7 @@ describe('GET /api/cars pagination', () => {
       updatedAt: new Date('2026-01-02T00:00:00.000Z'),
       __v: 0,
     };
-    mocks.sliceCarImages.mockResolvedValue([car]);
+    mocks.limitCars.mockResolvedValue([car]);
 
     const response = await GET(createRequest());
 
