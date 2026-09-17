@@ -1,6 +1,5 @@
 import l from '@/helper/en';
 import { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/Providers';
@@ -56,15 +55,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${manrope.variable} flex min-h-screen flex-col bg-surface font-body text-body`}
       >
-        <Script id="ios-pwa-fix" strategy="afterInteractive">
-          {`
-            if (window.navigator.standalone) {
-              document.documentElement.style.height = '100vh';
-              document.body.style.height = '100vh';
-              document.body.style.overflow = 'hidden';
-            }
-          `}
-        </Script>
+        {/* Keep native document scrolling available in installed iOS PWAs. */}
         <Providers>
           <main className="min-h-0 flex-1">{children}</main>
           <MobileFooter />

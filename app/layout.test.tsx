@@ -2,11 +2,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('next/font/google', () => ({
-  Inter: () => ({ className: 'inter' }),
-}));
-
-vi.mock('next/script', () => ({
-  default: () => null,
+  Inter: () => ({ variable: 'inter' }),
+  Manrope: () => ({ variable: 'manrope' }),
 }));
 
 vi.mock('@/components/Providers', () => ({
@@ -37,7 +34,7 @@ describe('Root layout viewport metadata', () => {
       width: 'device-width',
       initialScale: 1,
       viewportFit: 'cover',
-      themeColor: '#dbeafe',
+      themeColor: '#F8FAFC',
     });
 
     const markup = renderToStaticMarkup(
@@ -47,5 +44,7 @@ describe('Root layout viewport metadata', () => {
     );
 
     expect(markup).not.toContain('name="viewport"');
+    expect(markup).not.toContain('ios-pwa-fix');
+    expect(markup).not.toContain("overflow = 'hidden'");
   });
 });
