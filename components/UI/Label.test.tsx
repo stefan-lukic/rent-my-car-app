@@ -10,7 +10,7 @@ describe('Input', () => {
     const input = screen.getByPlaceholderText('Email');
 
     expect(input).toBeInTheDocument();
-    expect(input).toHaveClass('h-10');
+    expect(input).toHaveClass('min-h-11');
     expect(input).toHaveClass('w-full');
   });
 
