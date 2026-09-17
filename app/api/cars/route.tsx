@@ -109,72 +109,55 @@ export async function GET(req: NextRequest) {
       filter.renter = { $ne: session.user.id };
     }
 
-    const cars = await Car.find(filter)
-      .select(`${CAR_SEARCH_FIELDS} +bookedPeriods`)
-      .slice('images', 1);
-
-    const overlappingRentals = await Rental.find({
-      car: { $in: cars.map((car) => car._id) },
+    const unavailableCarIds = await Rental.distinct('car', {
       status: { $ne: 'cancelled' },
-      $or: [
-        {
-          'rentalPeriod.startDate': {
-            $lte: endUtc,
-            $gte: startUtc,
-          },
-        },
-        {
-          'rentalPeriod.endDate': {
-            $lte: endUtc,
-            $gte: startUtc,
-          },
-        },
-        {
-          $and: [
-            { 'rentalPeriod.startDate': { $lte: startUtc } },
-            { 'rentalPeriod.endDate': { $gte: endUtc } },
-          ],
-        },
-      ],
+      'rentalPeriod.startDate': { $lte: endUtc },
+      'rentalPeriod.endDate': { $gte: startUtc },
     });
 
-    const unavailableCarIds = new Set(
-      overlappingRentals.map((rental) => rental.car.toString())
-    );
+    const availableCarFilter: FilterQuery<ICar> = {
+      ...filter,
+      _id: { $nin: unavailableCarIds },
+      bookedPeriods: {
+        $not: {
+          $elemMatch: {
+            startDate: { $lte: endUtc },
+            endDate: { $gte: startUtc },
+          },
+        },
+      },
+    };
 
-    const availableCars = cars.filter((car) => {
-      if (unavailableCarIds.has(car._id.toString())) return false;
-
-      const periods = car.bookedPeriods || [];
-      return !periods.some(
-        (period) => period.startDate <= endUtc && period.endDate >= startUtc
-      );
-    });
-
-    const totalCars = availableCars.length;
+    // Filter and paginate in MongoDB so only the requested card page reaches Node.js.
+    const [totalCars, cars] = await Promise.all([
+      Car.countDocuments(availableCarFilter),
+      Car.find(availableCarFilter)
+        .select(CAR_SEARCH_FIELDS)
+        .slice('images', 1)
+        .skip((page - 1) * limit)
+        .limit(limit),
+    ]);
     const totalPages = Math.ceil(totalCars / limit);
-    const paginatedCars = availableCars
-      .slice((page - 1) * limit, page * limit)
-      .map<CarSearchResult>((car) => ({
-        // Expose only fields used by the public search experience.
-        _id: car._id.toString(),
-        make: car.make,
-        carModel: car.carModel,
-        engine: car.engine,
-        power: car.power,
-        seats: car.seats,
-        carType: car.carType,
-        city: car.city,
-        firstRegistration: car.firstRegistration?.toISOString(),
-        milage: car.milage,
-        averageConsumption: car.averageConsumption,
-        images: car.images?.slice(0, 1) ?? [],
-        pricePerDay: car.pricePerDay,
-        description: car.description,
-        renter: car.renter.toString(),
-        rating: car.rating ?? 0,
-        ratingCount: car.ratingCount ?? 0,
-      }));
+    const paginatedCars = cars.map<CarSearchResult>((car) => ({
+      // Expose only fields used by the public search experience.
+      _id: car._id.toString(),
+      make: car.make,
+      carModel: car.carModel,
+      engine: car.engine,
+      power: car.power,
+      seats: car.seats,
+      carType: car.carType,
+      city: car.city,
+      firstRegistration: car.firstRegistration?.toISOString(),
+      milage: car.milage,
+      averageConsumption: car.averageConsumption,
+      images: car.images?.slice(0, 1) ?? [],
+      pricePerDay: car.pricePerDay,
+      description: car.description,
+      renter: car.renter.toString(),
+      rating: car.rating ?? 0,
+      ratingCount: car.ratingCount ?? 0,
+    }));
 
     return NextResponse.json({
       cars: paginatedCars,
