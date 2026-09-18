@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 import MobileFooter from '@/components/mobile/MobileFooter';
+import AppHeader from '@/components/AppHeader';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' });
@@ -51,6 +52,8 @@ export default function RootLayout({
       >
         {/* Keep native document scrolling available in installed iOS PWAs. */}
         <Providers>
+          {/* Mount shared navigation once so new application routes inherit it. */}
+          <AppHeader />
           <div className="min-h-0 flex-1">{children}</div>
           <MobileFooter />
         </Providers>

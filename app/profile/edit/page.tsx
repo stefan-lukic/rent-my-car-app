@@ -4,7 +4,6 @@ import { authOptions } from '@/lib/authOptions';
 import connectToDatabase from '@/lib/db/mongoose';
 import User from '@/lib/model/User';
 import EditProfileForm from '@/components/EditProfileForm';
-import Header from '@/components/UI/Header';
 
 export default async function EditProfilePage() {
   const session = await getServerSession(authOptions);
@@ -30,9 +29,7 @@ export default async function EditProfilePage() {
 
   return (
     <main className="min-h-screen bg-surface pb-24 md:pb-12">
-      <div className="hidden md:block">
-        <Header />
-      </div>
+      {/* Shared navigation now stays consistent across both profile layouts. */}
       <EditProfileForm initialProfile={initialProfile} />
     </main>
   );

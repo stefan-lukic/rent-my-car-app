@@ -15,7 +15,6 @@ import {
 import { CarFilterState } from '@/lib/model/car/CarFilterState';
 import { useAuth } from '@/hooks/useAuth';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import Header from '@/components/UI/Header';
 import HowItWorksModal from '@/components/HowItWorksModal';
 import CarFilters from '@/components/CarFilters';
 import CarRentalSearch from '@/components/CarRentalSearch';
@@ -66,8 +65,6 @@ function HomeContent() {
 
   return (
     <main className="min-h-screen bg-surface text-ink">
-      <Header onHowItWorksClick={() => setIsHowItWorksOpen(true)} />
-
       <section className="relative overflow-hidden border-b border-ink-secondary bg-ink">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.24),_transparent_48%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20 lg:px-8">
@@ -268,6 +265,7 @@ function HomeContent() {
         </div>
       </footer>
 
+      {/* Keep the homepage CTA connected to the same guidance dialog. */}
       <HowItWorksModal
         isOpen={isHowItWorksOpen}
         onClose={() => setIsHowItWorksOpen(false)}

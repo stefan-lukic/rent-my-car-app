@@ -14,6 +14,10 @@ vi.mock('@/components/mobile/MobileFooter', () => ({
   default: () => null,
 }));
 
+vi.mock('@/components/AppHeader', () => ({
+  default: () => null,
+}));
+
 vi.mock('@/components/ServiceWorkerRegistration', () => ({
   default: () => null,
 }));

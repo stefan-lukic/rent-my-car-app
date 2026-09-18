@@ -13,7 +13,6 @@ import {
   Star,
   UserRound,
 } from 'lucide-react';
-import OwnerProfileHeader from '@/components/OwnerProfileHeader';
 import PublicOwnerCarCard, {
   PublicOwnerCar,
 } from '@/components/PublicOwnerCarCard';
@@ -80,8 +79,7 @@ export default async function RenterProfilePage({
 
   return (
     <div className="min-h-screen bg-surface pb-20 text-ink md:pb-0">
-      <OwnerProfileHeader />
-
+      {/* Public profiles inherit the same application navigation as listings. */}
       <main>
         <section className="bg-ink">
           <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 md:pb-20 md:pt-8 lg:px-8">

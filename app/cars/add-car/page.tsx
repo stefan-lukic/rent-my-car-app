@@ -18,7 +18,8 @@ export default async function AddCarPage() {
     <>
       {/* Load Places from the server for both add-car layouts. */}
       <GooglePlacesScript />
-      <div className="h-screen overflow-y-auto bg-surface">
+      {/* Use document scrolling so the shared header does not create a nested viewport. */}
+      <div className="min-h-full bg-surface">
         <main>{isMobile ? <MobileAddCar /> : <AddCar />}</main>
       </div>
     </>

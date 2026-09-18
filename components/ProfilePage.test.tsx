@@ -12,11 +12,6 @@ vi.mock('next/image', () => ({
   },
 }));
 
-vi.mock('@/components/UI/Header', () => ({
-  __esModule: true,
-  default: () => <header data-testid="header">Header</header>,
-}));
-
 vi.mock('./ProfileInteractiveSection', () => ({
   __esModule: true,
   default: ({ cars, rentals }: any) => (
@@ -77,12 +72,6 @@ describe('ProfilePage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  it('renders Header component', () => {
-    render(<ProfilePage {...defaultProps} />);
-
-    expect(screen.getByTestId('header')).toBeInTheDocument();
   });
 
   it('renders user name in hero section', () => {
