@@ -88,14 +88,13 @@ export default async function CarDetailsPage({
   const catalogHref = `/${
     catalogQuery.size > 0 ? `?${catalogQuery.toString()}` : ''
   }#car-search`;
-  const location = [car.city, car.carLocation].filter(Boolean).join(', ');
-  const mapQuery = [car.carLocation, car.city, 'Serbia']
-    .filter(Boolean)
-    .join(', ');
+  // Public details show only the city until a reservation is confirmed.
+  const location = car.city;
+  const mapQuery = [car.city, 'Serbia'].join(', ');
   const encodedMapQuery = encodeURIComponent(mapQuery);
   const googleMapsApiKey = process.env.NEXT_GOOGLE_MAPS_EMBED_API_KEY?.trim();
   const googleMapsEmbedUrl = googleMapsApiKey
-    ? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodedMapQuery}&zoom=15&language=en&region=RS`
+    ? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodedMapQuery}&zoom=11&language=en&region=RS`
     : null;
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedMapQuery}`;
   const registrationYear = car.firstRegistration

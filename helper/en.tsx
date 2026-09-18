@@ -624,15 +624,16 @@ const l = {
     description: 'Description',
     missingDescription:
       'The owner has not added a description yet. Review the vehicle specifications and contact the owner after booking for handover details.',
-    pickupLocation: 'Pickup location',
-    findTheCar: 'Find the car on the map',
-    openInGoogleMaps: 'Open in Google Maps',
-    mapTitle: (carName: string) => `${carName} pickup location`,
+    // Public location copy makes the privacy boundary explicit before booking.
+    pickupLocation: 'Pickup area',
+    findTheCar: 'Explore the pickup city',
+    openInGoogleMaps: 'Open city in Google Maps',
+    mapTitle: (carName: string) => `${carName} pickup city`,
     mapUnavailable: 'Map preview is currently unavailable',
     mapUnavailableDescription:
-      'You can still open this location directly in Google Maps.',
+      'You can still open the pickup city directly in Google Maps.',
     handoverLocationNote:
-      'Confirm the exact pickup point and handover details with the owner before your trip.',
+      'For privacy, the exact pickup point is shared with the renter after the reservation is confirmed.',
     yourHost: 'Your host',
     meetOwner: 'Meet the car owner',
     carRating: 'Car rating',

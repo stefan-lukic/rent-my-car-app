@@ -43,7 +43,7 @@ describe('getCarDetails', () => {
     mocks.lean.mockReturnValue({ exec: mocks.exec });
   });
 
-  it('maps the location and rating data used by the details page', async () => {
+  it('maps public details without exposing the precise pickup location', async () => {
     mocks.exec.mockResolvedValue({
       _id: { toString: () => 'car-1' },
       make: 'TOYOTA',
@@ -75,10 +75,13 @@ describe('getCarDetails', () => {
     expect(result).toEqual(
       expect.objectContaining({
         city: 'Novi Sad',
-        carLocation: 'Center',
         rating: 4.7,
         ratingCount: 3,
       })
+    );
+    expect(result).not.toHaveProperty('carLocation');
+    expect(mocks.select).toHaveBeenCalledWith(
+      expect.not.stringContaining('carLocation')
     );
   });
 
