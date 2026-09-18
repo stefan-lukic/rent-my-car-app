@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from './UI/Button';
+import { Dialog } from './UI/Dialog';
 import { RentalWithCar } from '@/types/RentalWithCar';
 import l from '@/helper/en';
 
@@ -53,46 +54,45 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-ink/60 p-4 backdrop-blur-[2px]">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cancel-rental-title"
-        className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-xl"
+    <Dialog
+      onClose={onClose}
+      ariaLabelledBy="cancel-rental-title"
+      overlayClassName="z-[110] bg-ink/60 p-4 backdrop-blur-[2px]"
+      panelClassName="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-xl"
+    >
+      {/* Keep cancellation controls inside the shared keyboard boundary. */}
+      <h2
+        id="cancel-rental-title"
+        className="mb-2 font-heading text-xl font-bold text-ink"
       >
-        <h2
-          id="cancel-rental-title"
-          className="mb-2 font-heading text-xl font-bold text-ink"
+        {l.booking.cancelReservation}
+      </h2>
+      <p className="mb-6 text-sm leading-6 text-slate-500">
+        {l.booking.cancelReservationConfirm}
+      </p>
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <Button
+          type="button"
+          onClick={onClose}
+          disabled={isCancelling}
+          variant="outline"
+          className="sm:min-w-32"
         >
-          {l.booking.cancelReservation}
-        </h2>
-        <p className="mb-6 text-sm leading-6 text-slate-500">
-          {l.booking.cancelReservationConfirm}
-        </p>
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <Button
-            type="button"
-            onClick={onClose}
-            disabled={isCancelling}
-            variant="outline"
-            className="sm:min-w-32"
-          >
-            {l.booking.keepReservation}
-          </Button>
-          <Button
-            type="button"
-            onClick={handleCancel}
-            disabled={isCancelling}
-            variant="destructive"
-            className="sm:min-w-32"
-          >
-            {isCancelling
-              ? l.booking.cancellingReservation
-              : l.booking.cancelReservation}
-          </Button>
-        </div>
+          {l.booking.keepReservation}
+        </Button>
+        <Button
+          type="button"
+          onClick={handleCancel}
+          disabled={isCancelling}
+          variant="destructive"
+          className="sm:min-w-32"
+        >
+          {isCancelling
+            ? l.booking.cancellingReservation
+            : l.booking.cancelReservation}
+        </Button>
       </div>
-    </div>
+    </Dialog>
   );
 };
 
