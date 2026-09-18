@@ -90,12 +90,15 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
           >
             {l.navigation.howItWorksNav}
           </button>
-          <Link
-            href="/profile/my-profile"
-            className="transition-colors hover:text-brand-dark"
-          >
-            {l.navigation.myProfileRentals}
-          </Link>
+          {/* Protected navigation appears only after authentication is known. */}
+          {!loading && isAuthenticated ? (
+            <Link
+              href="/profile/my-profile"
+              className="transition-colors hover:text-brand-dark"
+            >
+              {l.navigation.myProfileRentals}
+            </Link>
+          ) : null}
         </nav>
 
         {!loading && (

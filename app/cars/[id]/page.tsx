@@ -16,7 +16,6 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react';
-import OwnerProfileHeader from '@/components/OwnerProfileHeader';
 import CarDetailsGallery from '@/components/CarDetailsGallery';
 import CarBookingPanel from '@/components/CarBookingPanel';
 import { getCarDetails } from '@/lib/data/carDetails';
@@ -85,6 +84,7 @@ export default async function CarDetailsPage({
   activeSearchValues.forEach(([key, value]) => {
     if (value) catalogQuery.set(key, value);
   });
+  // Preserve active search filters when returning to the catalog.
   const catalogHref = `/${
     catalogQuery.size > 0 ? `?${catalogQuery.toString()}` : ''
   }#car-search`;
@@ -137,8 +137,6 @@ export default async function CarDetailsPage({
 
   return (
     <div className="min-h-screen bg-surface pb-20 text-ink md:pb-0">
-      <OwnerProfileHeader />
-
       <main>
         <section className="bg-ink">
           <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">

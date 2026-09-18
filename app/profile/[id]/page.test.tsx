@@ -40,10 +40,6 @@ vi.mock('next/navigation', () => ({
   notFound: mocks.notFound,
 }));
 
-vi.mock('@/components/OwnerProfileHeader', () => ({
-  default: () => <div data-testid="owner-profile-header" />,
-}));
-
 vi.mock('next/image', () => ({
   default: ({ alt }: { alt: string }) => <span>{alt}</span>,
 }));

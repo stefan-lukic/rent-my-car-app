@@ -87,7 +87,7 @@ describe('Header', () => {
     expect(screen.getAllByText(/Car/).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders desktop navigation links', async () => {
+  it('hides protected desktop navigation from unauthenticated users', async () => {
     const user = userEvent.setup();
     mocks.mockUsePathname.mockReturnValue('/');
     mocks.mockUseAuth.mockReturnValue({
@@ -100,7 +100,9 @@ describe('Header', () => {
 
     expect(screen.getByText(l.navigation.catalog)).toBeInTheDocument();
     expect(screen.getByText(l.navigation.howItWorksNav)).toBeInTheDocument();
-    expect(screen.getByText(l.navigation.myProfileRentals)).toBeInTheDocument();
+    expect(
+      screen.queryByText(l.navigation.myProfileRentals)
+    ).not.toBeInTheDocument();
   });
 
   it('shows Sign In and Sign Up for unauthenticated users', async () => {
@@ -137,6 +139,7 @@ describe('Header', () => {
       1
     );
     expect(screen.getAllByText('M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(l.navigation.myProfileRentals)).toBeInTheDocument();
   });
 
   it('shows profile initial fallback when user name is missing', async () => {
