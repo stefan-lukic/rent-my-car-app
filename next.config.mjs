@@ -45,6 +45,7 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: false,
   images: {
     domains: ['localhost'],
     remotePatterns: [
@@ -77,7 +78,6 @@ const nextConfig = {
     ];
   },
   webpack: (config, { isServer }) => {
-    config.devtool = 'source-map';
     if (!isServer) {
       config.resolve.fallback = {
         net: false,
@@ -118,8 +118,12 @@ export const pwaConfig = {
       },
     },
   ],
-  // Exclude Next internals that are unavailable from their emitted public URLs.
-  buildExcludes: [/middleware-manifest\.json$/, /app-build-manifest\.json$/],
+  // Keep unavailable manifests and public source maps out of the PWA precache.
+  buildExcludes: [
+    /middleware-manifest\.json$/,
+    /app-build-manifest\.json$/,
+    /\.map$/,
+  ],
   maximumFileSizeToCacheInBytes: 5000000, // 5MB
 };
 
