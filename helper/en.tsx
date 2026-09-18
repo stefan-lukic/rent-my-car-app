@@ -338,14 +338,15 @@ const l = {
   },
 
   landing: {
-    premiumMarketplace: 'Premium Marketplace Network in Serbia',
+    // Public copy describes only features and policies the demo currently supports.
+    premiumMarketplace: 'Peer-to-peer car rental across Serbia',
     findBookCars: 'Find and Book Cars Across Serbia',
-    fastEasyTrusted: 'Fast, Easy, Trusted',
+    fastEasyTrusted: 'Simple, Local, Transparent',
     landingDesc:
-      'Inspect vehicle specifications, calculate real-time day rates, and book from trusted local renters in Novi Sad and Belgrade.',
-    premiumRides: 'Premium Rides',
+      'Inspect vehicle specifications, calculate real-time day rates, and reserve cars listed by local owners in Novi Sad and Belgrade.',
+    premiumRides: 'Local Cars',
     kilometersLogged: 'Kilometers Logged',
-    verifiedHosts: 'Verified Hosts',
+    verifiedHosts: 'Local Owners',
     rentMy: 'RentMy',
     carBrand: 'Car',
     copyright: 'Serbia Marketplace • © 2026',
@@ -353,7 +354,7 @@ const l = {
     helpCenter: 'Help Center',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    verifiedVehicles: 'Verified Vehicles. Trusted Renters.',
+    verifiedVehicles: 'Local cars. Clear bookings.',
     localCarMarketplace: 'Peer-to-peer car rental in Serbia',
     heroTitle: 'Your next car is closer than you think.',
     heroHighlight: 'Find it locally.',
@@ -666,18 +667,18 @@ const l = {
       'Unavailable dates are disabled. Availability is checked again before confirmation.',
     tripTerms: 'Trip terms',
     cancellationPolicy: 'Cancellation policy',
-    flexibleCancellation: 'Flexible cancellation',
+    flexibleCancellation: 'Cancellation up to 24 hours before pickup',
     cancellationSummary:
-      'Cancel before the trip begins. Payment and deposit arrangements are handled directly with the owner.',
+      'Cancel through My Rentals until 24 hours before pickup. Payment and deposit arrangements are handled directly with the owner.',
     viewCancellationPolicy: 'View cancellation policy',
     paymentOptions: 'Payment options',
     payInPerson: 'Pay in person',
     paymentSummary:
       'Pay the owner at pickup or return, as agreed. A refundable security deposit may be requested at handover.',
-    distanceIncluded: 'Distance included',
-    unlimitedDistance: 'Unlimited',
+    distanceIncluded: 'Mileage terms',
+    unlimitedDistance: 'Agree with the owner',
     distanceSummary:
-      'RentMyCar applies no mileage limit to this listing. Confirm any special usage with the owner before pickup.',
+      'RentMyCar does not define a mileage allowance for this listing. Confirm permitted mileage and any extra-kilometre cost with the owner before booking.',
     carNotFound: 'Car not found',
     carNotFoundDescription:
       'This listing may have been removed or the link is no longer valid.',
