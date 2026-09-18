@@ -109,7 +109,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 setCurrentImageIndex((index) => Math.max(0, index - 1))
               }
               disabled={currentImageIndex === 0}
-              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
+              className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -122,7 +122,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 )
               }
               disabled={currentImageIndex === images.length - 1}
-              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
+              className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

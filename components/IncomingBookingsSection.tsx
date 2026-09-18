@@ -385,7 +385,7 @@ export default function IncomingBookingsSection({
             aria-label="Previous bookings page"
             disabled={currentPage === 0}
             onClick={() => setCurrentPage((page) => page - 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-body-muted transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-body-muted transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -397,7 +397,7 @@ export default function IncomingBookingsSection({
             aria-label="Next bookings page"
             disabled={currentPage === pageCount - 1}
             onClick={() => setCurrentPage((page) => page + 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-body-muted transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-body-muted transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

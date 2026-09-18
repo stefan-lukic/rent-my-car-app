@@ -52,7 +52,7 @@ const PaginationButton = ({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-border bg-white text-body transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-border bg-white text-body transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-30"
     >
       <Icon className="h-5 w-5" />
     </button>
@@ -75,7 +75,7 @@ const PageNumbers = ({
           type="button"
           key={index}
           onClick={() => onChange(index)}
-          className={`h-9 w-9 rounded-lg text-sm font-semibold transition-colors ${
+          className={`h-11 w-11 rounded-lg text-sm font-semibold transition-colors ${
             current === index
               ? 'bg-brand text-white'
               : 'border border-border text-body-subtle hover:border-brand/40 hover:text-brand'

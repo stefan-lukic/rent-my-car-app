@@ -51,7 +51,9 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
         {car.images && car.images.length > 1 && (
           <div className="absolute inset-0 flex justify-between items-center px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
-              className={`flex items-center justify-center w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition-all ${currentImageIndex === 0 ? 'hidden' : ''}`}
+              type="button"
+              aria-label={l.carDetailsPage.previousImage}
+              className={`flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-all hover:bg-black/60 ${currentImageIndex === 0 ? 'hidden' : ''}`}
               onClick={handlePrevImage}
               disabled={currentImageIndex === 0}
             >
@@ -70,7 +72,9 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
               </svg>
             </button>
             <button
-              className={`flex items-center justify-center w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition-all ml-auto ${currentImageIndex === car.images.length - 1 ? 'hidden' : ''}`}
+              type="button"
+              aria-label={l.carDetailsPage.nextImage}
+              className={`ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-all hover:bg-black/60 ${currentImageIndex === car.images.length - 1 ? 'hidden' : ''}`}
               onClick={handleNextImage}
               disabled={currentImageIndex === car.images.length - 1}
             >
@@ -174,13 +178,13 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
 
         <div className="mt-auto flex gap-3 border-t border-surface-muted pt-4">
           <button
-            className="flex-1 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface hover:text-ink"
+            className="min-h-11 flex-1 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface hover:text-ink"
             onClick={onViewDetails}
           >
             {l.common.details}
           </button>
           <button
-            className="flex-1 rounded-xl bg-brand py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
+            className="min-h-11 flex-1 rounded-xl bg-brand py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
             onClick={onBookNow}
           >
             {l.common.bookNow}

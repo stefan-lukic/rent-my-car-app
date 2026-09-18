@@ -55,7 +55,9 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
           <>
             <div className="absolute inset-0 flex justify-between items-center px-3 opacity-0 hover:opacity-100 transition-opacity">
               <button
-                className={`w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center ${currentImageIndex === 0 ? 'hidden' : ''}`}
+                type="button"
+                aria-label={l.carDetailsPage.previousImage}
+                className={`flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white ${currentImageIndex === 0 ? 'hidden' : ''}`}
                 onClick={handlePrevImage}
               >
                 <svg
@@ -73,7 +75,9 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
                 </svg>
               </button>
               <button
-                className={`w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center ml-auto ${currentImageIndex === car.images.length - 1 ? 'hidden' : ''}`}
+                type="button"
+                aria-label={l.carDetailsPage.nextImage}
+                className={`ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white ${currentImageIndex === car.images.length - 1 ? 'hidden' : ''}`}
                 onClick={handleNextImage}
               >
                 <svg
@@ -152,14 +156,14 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
         <div className="flex gap-2 pt-1 border-t border-surface-muted">
           <button
             onClick={onViewDetails}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface"
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface"
           >
             <Eye className="w-3.5 h-3.5" />
             {l.common.specs}
           </button>
           <button
             onClick={onBookNow}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-brand py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl bg-brand py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand/90"
           >
             <Zap className="w-3.5 h-3.5" />
             {l.common.bookNow}

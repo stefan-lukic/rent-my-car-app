@@ -156,11 +156,12 @@ export function InstallPrompt() {
               >
                 RentMyCar
               </h2>
+
               <button
                 type="button"
                 onClick={() => setIsPopupOpen(false)}
                 aria-label="Close install instructions"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="flex h-11 w-11 items-center justify-center rounded-lg text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 <span aria-hidden="true">✕</span>
               </button>

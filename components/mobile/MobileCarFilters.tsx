@@ -67,8 +67,8 @@ export default function MobileCarFilters({
 
       {isOpen && (
         <div className="space-y-4 border-t border-surface-muted px-4 pb-4 pt-4">
-          <div>
-            <label className={labelClass}>{l.search.priceRangeEur}</label>
+          <fieldset>
+            <legend className={labelClass}>{l.search.priceRangeEur}</legend>
             <div className="grid grid-cols-2 gap-2">
               <input
                 type="number"
@@ -91,7 +91,7 @@ export default function MobileCarFilters({
                 aria-label={l.search.maxPlaceholder}
               />
             </div>
-          </div>
+          </fieldset>
 
           <MobileSelect
             label={l.search.carMake}

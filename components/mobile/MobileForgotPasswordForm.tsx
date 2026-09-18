@@ -21,7 +21,11 @@ const MobileForgotPasswordForm = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div>
+            <label htmlFor="mobile-forgot-password-email" className="sr-only">
+              {l.auth.enterEmail}
+            </label>
             <input
+              id="mobile-forgot-password-email"
               {...register('email', { required: l.auth.emailRequired })}
               type="email"
               placeholder={l.auth.enterEmail}

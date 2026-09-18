@@ -44,7 +44,7 @@ function StarPicker({
             aria-label={`${rating} ${rating === 1 ? 'star' : 'stars'}`}
             aria-pressed={rating === value}
             onClick={() => onChange(rating)}
-            className="rounded-lg p-1 text-border-strong transition-colors hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-brand"
+            className="min-h-11 min-w-11 rounded-lg p-1 text-border-strong transition-colors hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <Star
               className={`h-8 w-8 ${
@@ -147,7 +147,7 @@ export default function RatingModal(props: RatingModalProps) {
             aria-label="Close rating form"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-full p-1.5 text-border-strong transition hover:bg-white/10 hover:text-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-border-strong transition hover:bg-white/10 hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>

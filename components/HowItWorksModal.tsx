@@ -131,11 +131,12 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
             {l.howItWorks.modalTitle}
           </h2>
         </div>
+
         <button
           type="button"
           aria-label={l.common.close}
           onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-body-faint transition-colors hover:bg-surface-muted hover:text-body-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex h-11 w-11 items-center justify-center rounded-full text-body-faint transition-colors hover:bg-surface-muted hover:text-body-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           {l.common.close}
         </button>

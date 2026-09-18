@@ -72,12 +72,16 @@ const CarRentalSearch = ({
         className="mb-6 grid gap-4 rounded-2xl border border-border bg-white p-5 shadow-sm lg:grid-cols-[1fr_1.4fr_auto] lg:items-end"
       >
         <div className="flex-1 w-full">
-          <label className="mb-2 block text-sm font-semibold text-body">
+          <label
+            htmlFor="desktop-search-city"
+            className="mb-2 block text-sm font-semibold text-body"
+          >
             {l.search.location}
           </label>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-body-faint" />
             <select
+              id="desktop-search-city"
               {...form.register('city')}
               className="w-full appearance-none rounded-xl border border-border bg-white py-3 pl-10 pr-4 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             >
@@ -191,7 +195,7 @@ const CarRentalSearch = ({
             <button
               key={page}
               onClick={() => onPageChange(page)}
-              className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
+              className={`h-11 w-11 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                 results.currentPage === page
                   ? 'bg-brand text-white'
                   : 'border border-border bg-white text-body-subtle hover:border-brand/40 hover:text-brand'
