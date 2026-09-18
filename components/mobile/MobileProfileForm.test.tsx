@@ -1,8 +1,10 @@
 ﻿import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
+import { render, screen } from '@testing-library/react';
 import MobileProfileForm from './MobileProfileForm';
 import { runProfileFormSharedTests } from '@/test-utils/shared-tests/profile-form';
+import l from '@/helper/en';
 
 const mocks = vi.hoisted(() => ({
   push: vi.fn(),
@@ -59,5 +61,18 @@ describe('MobileProfileForm', () => {
   runProfileFormSharedTests({
     Component: MobileProfileForm,
     mocks,
+  });
+
+  it('shows Google sign-up as coming soon and disabled', () => {
+    render(<MobileProfileForm type="sign-up" callbackUrl="/" />);
+
+    expect(
+      screen.getByRole('button', {
+        name: /sign up with google coming soon/i,
+      })
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText(l.common.profilePhotoOptional)
+    ).not.toBeRequired();
   });
 });

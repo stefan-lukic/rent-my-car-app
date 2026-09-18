@@ -5,6 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProfileForm from './ProfileForm';
 import { runProfileFormSharedTests } from '@/test-utils/shared-tests/profile-form';
+import l from '@/helper/en';
 
 process.on('unhandledRejection', (err) => {
   if (err && typeof err === 'object' && '_zod' in err) {
@@ -70,10 +71,17 @@ describe('ProfileForm', () => {
     mocks,
   });
 
-  it('shows Google sign-up button for sign-up', async () => {
-    const user = userEvent.setup();
+  it('shows Google sign-up as coming soon and disabled', () => {
     render(<ProfileForm type="sign-up" callbackUrl="/" />);
-    expect(screen.getByText(/sign up with google/i)).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('button', {
+        name: /sign up with google coming soon/i,
+      })
+    ).toBeDisabled();
+    expect(
+      screen.getByLabelText(l.common.profilePhotoOptional)
+    ).not.toBeRequired();
   });
 
   it('shows loading state on button when submitting', async () => {
