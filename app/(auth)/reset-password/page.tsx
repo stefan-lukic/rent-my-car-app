@@ -10,14 +10,14 @@ const ResetPasswordPage = ({ searchParams }: ResetPasswordPageProps) => {
     typeof searchParams.token === 'string' ? searchParams.token : '';
 
   return (
-    <>
+    <main>
       <div className="hidden min-[681px]:block">
         <ResetPasswordForm token={token} />
       </div>
       <div className="min-[681px]:hidden">
         <MobileResetPasswordForm token={token} />
       </div>
-    </>
+    </main>
   );
 };
 

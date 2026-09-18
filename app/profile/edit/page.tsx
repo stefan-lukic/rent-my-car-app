@@ -29,11 +29,11 @@ export default async function EditProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface pb-24 md:pb-12">
+    <main className="min-h-screen bg-surface pb-24 md:pb-12">
       <div className="hidden md:block">
         <Header />
       </div>
       <EditProfileForm initialProfile={initialProfile} />
-    </div>
+    </main>
   );
 }

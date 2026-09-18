@@ -13,7 +13,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
     useResetPassword(token);
 
   return (
-    <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
       <section className="w-full max-w-md space-y-8 rounded-2xl border border-border bg-white p-8 shadow-lg">
         <div className="space-y-3 text-center">
           <h1 className="font-heading text-3xl font-bold text-ink">
@@ -99,7 +99,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
           </form>
         )}
       </section>
-    </main>
+    </div>
   );
 };
 

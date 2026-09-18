@@ -57,7 +57,7 @@ export default function RootLayout({
       >
         {/* Keep native document scrolling available in installed iOS PWAs. */}
         <Providers>
-          <main className="min-h-0 flex-1">{children}</main>
+          <div className="min-h-0 flex-1">{children}</div>
           <MobileFooter />
         </Providers>
         <Analytics />

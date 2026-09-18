@@ -13,7 +13,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
     useResetPassword(token);
 
   return (
-    <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-8">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-8">
       <section className="w-full max-w-md space-y-7 rounded-2xl border border-border bg-white p-6 shadow-lg">
         <div className="space-y-3 text-center">
           <h1 className="font-heading text-3xl font-bold text-ink">
@@ -101,7 +101,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
           </form>
         )}
       </section>
-    </main>
+    </div>
   );
 };
 
