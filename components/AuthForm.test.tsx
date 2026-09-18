@@ -125,7 +125,7 @@ describe('AuthForm', () => {
     expect(screen.getByPlaceholderText(l.common.password)).toBeInTheDocument();
   });
 
-  it('renders Google sign-up button on sign-up form', () => {
+  it('renders Google sign-up button as disabled and coming soon', () => {
     mocks.useSession.mockReturnValue({
       data: null,
       status: 'unauthenticated',
@@ -134,7 +134,9 @@ describe('AuthForm', () => {
     render(<AuthForm type="sign-up" />);
 
     expect(
-      screen.getByText(l.common.signUpWithGoogle).closest('button')
-    ).toBeInTheDocument();
+      screen.getByRole('button', {
+        name: /sign up with google coming soon/i,
+      })
+    ).toBeDisabled();
   });
 });

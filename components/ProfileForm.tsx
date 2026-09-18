@@ -129,18 +129,23 @@ const ProfileForm = ({
               type="tel"
               visuallyHiddenLabel
             />
-            <label htmlFor="images" className="sr-only">
-              {l.cars.chooseFiles}
-            </label>
-            <input
-              type="file"
-              id="images"
-              name="images"
-              onChange={handleInputChange}
-              accept="image/*"
-              multiple
-              className="w-full rounded-xl border border-border bg-white p-3 text-sm text-body-muted file:mr-3 file:rounded-lg file:border-0 file:bg-brand-tint file:px-3 file:py-2 file:font-semibold file:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            />
+            <div className="space-y-2">
+              <label
+                htmlFor="images"
+                className="block text-sm font-medium text-body"
+              >
+                {l.common.profilePhotoOptional}
+              </label>
+              <input
+                type="file"
+                id="images"
+                name="images"
+                onChange={handleInputChange}
+                accept="image/*"
+                multiple
+                className="w-full cursor-pointer rounded-xl border border-border bg-white p-3 text-sm text-body-muted transition-all file:mr-3 file:rounded-lg file:border-0 file:bg-brand-tint file:px-3 file:py-2 file:font-semibold file:text-brand hover:border-brand hover:bg-brand-tint hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              />
+            </div>
           </>
         )}
 
@@ -229,17 +234,20 @@ const ProfileForm = ({
             </button>
 
             <button
-              className="mt-3 flex w-full items-center justify-center rounded-xl border border-border bg-white p-3.5 text-sm font-medium text-body transition-colors hover:bg-surface"
+              className="mt-3 flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-border bg-surface p-3.5 text-sm font-medium text-body-muted opacity-70"
               type="button"
+              disabled
             >
               <Image
-                className="mr-2"
                 src="/icons/icon-google.svg"
-                alt="Google logo"
+                alt=""
                 width={20}
                 height={20}
               />
-              {l.common.signUpWithGoogle}
+              <span>{l.common.signUpWithGoogle}</span>
+              <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-semibold text-body-subtle">
+                {l.common.comingSoon}
+              </span>
             </button>
           </div>
         ) : (

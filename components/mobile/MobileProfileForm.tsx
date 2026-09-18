@@ -130,9 +130,9 @@ const MobileProfileForm = ({
             />
             <label
               htmlFor="images"
-              className="flex cursor-pointer justify-center rounded-xl border border-brand/20 bg-brand-tint px-3 py-3 text-sm font-semibold text-brand transition-colors hover:bg-brand-tint"
+              className="flex cursor-pointer justify-center rounded-xl border border-brand/20 bg-brand-tint px-3 py-3 text-sm font-semibold text-brand transition-all hover:border-brand hover:shadow-sm"
             >
-              {l.cars.chooseFiles}
+              {l.common.profilePhotoOptional}
             </label>
             <input
               type="file"
@@ -238,17 +238,20 @@ const MobileProfileForm = ({
             </button>
 
             <button
-              className="mt-3 flex w-full items-center justify-center rounded-xl border border-border bg-white py-3.5 text-sm font-medium text-body transition-colors hover:bg-surface"
+              className="mt-3 flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3.5 text-sm font-medium text-body-muted opacity-70"
               type="button"
+              disabled
             >
               <Image
-                className="mr-2"
                 src="/icons/icon-google.svg"
-                alt="Google logo"
-                width={40}
-                height={40}
+                alt=""
+                width={20}
+                height={20}
               />
-              {l.common.signUpWithGoogle}
+              <span>{l.common.signUpWithGoogle}</span>
+              <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-semibold text-body-subtle">
+                {l.common.comingSoon}
+              </span>
             </button>
           </div>
         ) : (

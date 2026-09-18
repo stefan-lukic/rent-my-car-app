@@ -26,6 +26,8 @@ const l = {
     logOut: 'Log out',
     signUpNow: 'Sign Up Now',
     signUpWithGoogle: 'Sign up with Google',
+    comingSoon: 'Coming soon',
+    profilePhotoOptional: 'Upload a profile photo (optional)',
     search: 'Search',
     searchCars: 'Search Cars',
     loadMore: 'Load more',

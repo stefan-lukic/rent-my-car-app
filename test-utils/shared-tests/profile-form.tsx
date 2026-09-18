@@ -46,7 +46,9 @@ export const runProfileFormSharedTests = (config: ProfileFormSharedConfig) => {
     render(<Component type="sign-up" callbackUrl="/" />);
     expect(screen.getByLabelText(l.common.name)).toBeInTheDocument();
     expect(screen.getByLabelText(l.common.phoneNumber)).toBeInTheDocument();
-    expect(screen.getByLabelText(l.cars.chooseFiles)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(l.common.profilePhotoOptional)
+    ).toBeInTheDocument();
     expect(screen.getByLabelText(l.auth.confirmPassword)).toHaveAttribute(
       'type',
       'password'
