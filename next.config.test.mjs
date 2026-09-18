@@ -45,11 +45,17 @@ describe('Next.js browser security headers', () => {
 });
 
 describe('Next.js PWA configuration', () => {
-  it('uses the custom registrar and excludes unavailable build manifests', () => {
+  it('keeps production source maps out of the browser and PWA precache', () => {
     expect(pwaConfig.register).toBe(false);
+    expect(config.productionBrowserSourceMaps).toBe(false);
     expect(
       pwaConfig.buildExcludes.some((pattern) =>
         pattern.test('app-build-manifest.json')
+      )
+    ).toBe(true);
+    expect(
+      pwaConfig.buildExcludes.some((pattern) =>
+        pattern.test('static/chunks/app/page.js.map')
       )
     ).toBe(true);
   });
