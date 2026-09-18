@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
     if (!nameStr || nameStr.length < 3) {
       return NextResponse.json(
-        { message: 'Name must be at least 3 characters' },
+        { message: 'Name must be at least 3 characters long' },
         { status: 400 }
       );
     }
