@@ -37,9 +37,11 @@ describe('CarBookingPanel', () => {
   it('shows the trip cancellation, payment and distance terms', () => {
     render(<CarBookingPanel {...defaultProps} />);
 
-    expect(screen.getByText('Flexible cancellation')).toBeInTheDocument();
+    expect(
+      screen.getByText('Cancellation up to 24 hours before pickup')
+    ).toBeInTheDocument();
     expect(screen.getByText('Pay in person')).toBeInTheDocument();
-    expect(screen.getByText('Unlimited')).toBeInTheDocument();
+    expect(screen.getByText('Agree with the owner')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'View cancellation policy' })
     ).toHaveAttribute('href', '/cancellation');
