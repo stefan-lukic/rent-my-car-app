@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   populate: vi.fn(),
   lean: vi.fn(),
   exec: vi.fn(),
+  userModel: { modelName: 'User' },
 }));
 
 vi.mock('react', async (importOriginal) => ({
@@ -29,6 +30,10 @@ vi.mock('@/lib/db/mongoose', () => ({
 
 vi.mock('@/lib/model/car/Car', () => ({
   default: { findById: mocks.findById },
+}));
+
+vi.mock('@/lib/model/User', () => ({
+  default: mocks.userModel,
 }));
 
 import { getCarDetails } from './carDetails';
@@ -83,6 +88,11 @@ describe('getCarDetails', () => {
     expect(mocks.select).toHaveBeenCalledWith(
       expect.not.stringContaining('carLocation')
     );
+    expect(mocks.populate).toHaveBeenCalledWith({
+      path: 'renter',
+      model: mocks.userModel,
+      select: '_id name rating images createdAt',
+    });
   });
 
   it('does not query the database for an invalid car ID', async () => {
