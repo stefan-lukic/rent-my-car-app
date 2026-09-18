@@ -40,6 +40,7 @@ const MobileCarRentalSearch = ({
     results,
     selectedCar,
     renter,
+    renterLoading,
     onSearch,
     onPageChange,
     openDetails,
@@ -235,6 +236,8 @@ const MobileCarRentalSearch = ({
           <MobileCarDetailsDrawer
             car={selectedCar}
             renter={renter}
+            // Keep the mobile owner state synchronized with the shared drawer.
+            renterLoading={renterLoading}
             isOpen={modals.details}
             onClose={closeDetails}
             onBookNow={() => setModals({ details: false, booking: true })}

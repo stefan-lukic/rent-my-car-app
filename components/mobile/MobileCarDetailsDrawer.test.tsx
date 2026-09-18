@@ -46,6 +46,7 @@ describe('MobileCarDetailsDrawer', () => {
   const defaultProps = {
     car: mockCar,
     renter: mockRenter,
+    renterLoading: false,
     isOpen: true,
     onClose: vi.fn(),
     onBookNow: vi.fn(),
@@ -76,7 +77,9 @@ describe('MobileCarDetailsDrawer', () => {
 
   it('shows no renter info when renter is null', async () => {
     render(<MobileCarDetailsDrawer {...defaultProps} renter={null} />);
-    expect(screen.getByText('No renter info available')).toBeInTheDocument();
+    expect(
+      screen.getByText('Owner information is not available.')
+    ).toBeInTheDocument();
   });
 
   runCarDetailsDrawerSharedTests({

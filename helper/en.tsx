@@ -299,9 +299,11 @@ const l = {
   },
 
   drawer: {
+    // Separate pending owner data from a completed request with no result.
     carDetails: 'Car Details',
     renter: 'Renter',
-    noRenterInfo: 'No renter info available',
+    loadingOwner: 'Loading owner details...',
+    noRenterInfo: 'Owner information is not available.',
   },
 
   howItWorks: {

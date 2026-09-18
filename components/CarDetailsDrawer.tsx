@@ -28,6 +28,7 @@ import { Dialog } from '@/components/UI/Dialog';
 export interface CarDetailsDrawerProps {
   car: ICar | null;
   renter: IRenter | null;
+  renterLoading: boolean;
   isOpen: boolean;
   onClose: () => void;
   onBookNow: () => void;
@@ -42,9 +43,18 @@ interface CarSpec {
   value: string;
 }
 
+// Keep registration dates stable across browsers and aligned with Serbia's day-first format.
+const registrationDateFormatter = new Intl.DateTimeFormat('en-GB', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+  timeZone: 'Europe/Belgrade',
+});
+
 const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
   car,
   renter,
+  renterLoading,
   isOpen,
   onClose,
   onBookNow,
@@ -96,7 +106,9 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           {
             icon: CalendarDays,
             label: l.carSpecs.registration,
-            value: new Date(car.firstRegistration).toLocaleDateString(),
+            value: registrationDateFormatter.format(
+              new Date(car.firstRegistration)
+            ),
           },
         ]
       : []),
@@ -268,7 +280,11 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-body-subtle">
                 {l.carDetailsPage.listedBy}
               </h3>
-              {renter ? (
+              {renterLoading ? (
+                <p className="rounded-2xl border border-border bg-surface p-4 text-sm text-body-subtle">
+                  {l.drawer.loadingOwner}
+                </p>
+              ) : renter ? (
                 <RenterCard renter={renter} />
               ) : (
                 <p className="rounded-2xl border border-dashed border-border-strong bg-surface p-4 text-sm text-body-subtle">

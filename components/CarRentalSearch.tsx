@@ -34,6 +34,7 @@ const CarRentalSearch = ({
     results,
     selectedCar,
     renter,
+    renterLoading,
     startDate,
     hasSearched,
     searchError,
@@ -207,6 +208,8 @@ const CarRentalSearch = ({
           <CarDetailsDrawer
             car={selectedCar}
             renter={renter}
+            // Distinguish a pending owner request from genuinely unavailable owner data.
+            renterLoading={renterLoading}
             isOpen={modals.details}
             onClose={closeDetails}
             onBookNow={() => setModals({ details: false, booking: true })}
