@@ -12,14 +12,16 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' });
 
 export const metadata: Metadata = {
-  title: 'Rent My Car',
-  description: 'Rent a car easily',
+  title: 'RentMyCar',
+  description: 'Find and rent cars from local owners across Serbia.',
   manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'RentMyCar',
+  },
   other: {
     'mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'apple-mobile-web-app-title': 'RentCar',
   },
   icons: {
     apple: [
@@ -30,11 +32,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Let Next.js emit one accessible viewport definition for every page.
+  // Keep browser chrome aligned with the manifest brand color.
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover', // Ensures the viewport covers the entire screen, including the notch area
-  themeColor: '#F8FAFC',
+  themeColor: '#2563eb',
 };
 
 export default function RootLayout({
@@ -44,14 +46,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
-      </head>
       <body
         className={`${inter.variable} ${manrope.variable} flex min-h-screen flex-col bg-surface font-body text-body`}
       >
