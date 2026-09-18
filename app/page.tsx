@@ -82,7 +82,7 @@ function HomeContent() {
                 {l.landing.heroHighlight}
               </span>
             </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-border-strong sm:text-base">
               {l.landing.heroDescription}
             </p>
 
@@ -110,7 +110,7 @@ function HomeContent() {
               <h2 className="max-w-xl font-heading text-2xl font-bold tracking-tight text-ink md:text-3xl">
                 {l.landing.putYourCarToWork}
               </h2>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+              <p className="mt-3 max-w-xl text-sm leading-6 text-body-muted">
                 {l.landing.ownerDescription}
               </p>
 
@@ -151,7 +151,7 @@ function HomeContent() {
                   <h3 className="font-heading text-sm font-semibold text-ink">
                     {title}
                   </h3>
-                  <p className="mt-1.5 text-xs leading-5 text-slate-500">
+                  <p className="mt-1.5 text-xs leading-5 text-body-subtle">
                     {description}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ function HomeContent() {
           <h2 className="mt-1 font-heading text-2xl font-bold tracking-tight text-ink md:text-3xl">
             {l.search.findPerfectRide}
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-body-subtle">
             {l.search.findCompareChoose}
           </p>
         </div>
@@ -211,7 +211,7 @@ function HomeContent() {
               <h2 className="font-heading font-semibold text-ink">
                 {l.landing.newToRentMyCar}
               </h2>
-              <p className="mt-1 max-w-xl text-sm text-slate-500">
+              <p className="mt-1 max-w-xl text-sm text-body-subtle">
                 {l.landing.howItWorksDescription}
               </p>
             </div>
@@ -240,7 +240,7 @@ function HomeContent() {
               <p className="font-heading text-sm font-bold tracking-tight text-white">
                 RentMy<span className="text-brand/70">Car</span>
               </p>
-              <p className="mt-0.5 text-[10px] text-slate-400">
+              <p className="mt-0.5 text-[10px] text-body-faint">
                 {l.landing.copyright}
               </p>
             </div>
@@ -248,7 +248,7 @@ function HomeContent() {
 
           <nav
             aria-label="Footer navigation"
-            className="flex flex-wrap justify-center gap-x-5 gap-y-3 text-sm font-semibold text-slate-300 md:gap-x-6"
+            className="flex flex-wrap justify-center gap-x-5 gap-y-3 text-sm font-semibold text-border-strong md:gap-x-6"
           >
             {[
               { href: '/about', label: l.landing.aboutUs },

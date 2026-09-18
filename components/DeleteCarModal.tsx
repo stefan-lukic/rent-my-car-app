@@ -64,7 +64,7 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
       >
         {l.cars.deleteCar}
       </h2>
-      <p className="mb-6 text-sm leading-6 text-slate-500">
+      <p className="mb-6 text-sm leading-6 text-body-subtle">
         {l.cars.deleteCarConfirm}
       </p>
       {errorMessage && (

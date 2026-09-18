@@ -67,7 +67,7 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
             <span className="font-heading text-xl font-bold tracking-tight text-ink">
               RentMy<span className="text-brand">Car</span>
             </span>
-            <p className="mt-0.5 hidden text-[9px] font-semibold uppercase leading-none tracking-widest text-slate-400 sm:block">
+            <p className="mt-0.5 hidden text-[9px] font-semibold uppercase leading-none tracking-widest text-body-faint sm:block">
               {l.landing.verifiedVehicles}
             </p>
           </div>

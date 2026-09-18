@@ -68,17 +68,17 @@ const CarRentalSearch = ({
     <div className="flex w-full flex-col">
       <form
         onSubmit={onSearch}
-        className="mb-6 grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:grid-cols-[1fr_1.4fr_auto] lg:items-end"
+        className="mb-6 grid gap-4 rounded-2xl border border-border bg-white p-5 shadow-sm lg:grid-cols-[1fr_1.4fr_auto] lg:items-end"
       >
         <div className="flex-1 w-full">
-          <label className="mb-2 block text-sm font-semibold text-slate-700">
+          <label className="mb-2 block text-sm font-semibold text-body">
             {l.search.location}
           </label>
           <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-body-faint" />
             <select
               {...form.register('city')}
-              className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
+              className="w-full appearance-none rounded-xl border border-border bg-white py-3 pl-10 pr-4 text-sm text-ink shadow-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand-tint"
             >
               <option value="">{l.search.allCities}</option>
               {Object.values(CarCity).map((city) => (
@@ -131,14 +131,14 @@ const CarRentalSearch = ({
       )}
 
       {!hasSearched && !results.loading && (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 text-center">
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-2xl border border-dashed border-border-strong bg-white px-6 text-center">
           <div className="mb-4 rounded-2xl bg-brand-tint p-3 text-brand">
             <CalendarSearch className="h-6 w-6" />
           </div>
           <h3 className="font-heading font-semibold text-ink">
             {l.search.startSearchTitle}
           </h3>
-          <p className="mt-1 max-w-sm text-sm text-slate-500">
+          <p className="mt-1 max-w-sm text-sm text-body-subtle">
             {l.search.startSearchDescription}
           </p>
         </div>
@@ -174,11 +174,11 @@ const CarRentalSearch = ({
         !results.loading &&
         !searchError &&
         results.data.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-border-strong bg-white px-6 py-16 text-center">
             <p className="font-heading font-semibold text-ink-secondary">
               {l.search.noCarsFound}
             </p>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-body-subtle">
               {l.search.tryDifferentSearch}
             </p>
           </div>
@@ -193,7 +193,7 @@ const CarRentalSearch = ({
               className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                 results.currentPage === page
                   ? 'bg-brand text-white'
-                  : 'border border-slate-200 bg-white text-slate-500 hover:border-brand/40 hover:text-brand'
+                  : 'border border-border bg-white text-body-subtle hover:border-brand/40 hover:text-brand'
               }`}
             >
               {page}

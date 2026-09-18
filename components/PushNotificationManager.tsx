@@ -83,17 +83,17 @@ export function PushNotificationManager() {
 
   if (!isSupported) {
     return (
-      <p className="rounded-xl border border-slate-200 bg-surface-0 p-4 text-sm text-slate-600">
+      <p className="rounded-xl border border-border bg-surface-0 p-4 text-sm text-body-muted">
         {l.pushNotifications.notSupported}
       </p>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface-0 p-5 shadow-sm">
+    <div className="rounded-2xl border border-border bg-surface-0 p-5 shadow-sm">
       {subscription ? (
         <div className="space-y-4">
-          <p className="text-sm font-medium text-slate-700">
+          <p className="text-sm font-medium text-body">
             {l.pushNotifications.subscribed}
           </p>
           <Button variant="secondary" onClick={unsubscribeFromPush}>
@@ -111,7 +111,7 @@ export function PushNotificationManager() {
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-body-muted">
             {l.pushNotifications.notSubscribed}
           </p>
           <Button onClick={subscribeToPush}>
@@ -142,12 +142,12 @@ export function InstallPrompt() {
   return (
     <div>
       {isIOS && isPopupOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="install-app-title"
-            className="w-full max-w-sm rounded-2xl border border-slate-200 bg-surface-0 p-6 shadow-xl"
+            className="w-full max-w-sm rounded-2xl border border-border bg-surface-0 p-6 shadow-xl"
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <h2
@@ -160,13 +160,13 @@ export function InstallPrompt() {
                 type="button"
                 onClick={() => setIsPopupOpen(false)}
                 aria-label="Close install instructions"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 <span aria-hidden="true">✕</span>
               </button>
             </div>
 
-            <p className="mb-6 text-sm leading-6 text-slate-600">
+            <p className="mb-6 text-sm leading-6 text-body-muted">
               {l.pushNotifications.iosInstall}
             </p>
             <Button className="w-full" onClick={() => null}>

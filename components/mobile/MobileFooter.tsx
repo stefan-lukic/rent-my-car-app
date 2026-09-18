@@ -65,7 +65,7 @@ const MobileFooter = () => {
                 className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
                   active
                     ? 'bg-brand-tint text-brand-dark'
-                    : 'text-slate-500 hover:bg-surface hover:text-ink'
+                    : 'text-body-subtle hover:bg-surface hover:text-ink'
                 }`}
               >
                 <Icon

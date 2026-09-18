@@ -33,7 +33,7 @@ This audit reviews the current RentMyCar frontend as a complete product, with ex
 - Why it matters: The product looks functional but not intentionally designed. Future styling changes will drift because the app does not consistently express a shared semantic palette.
 - Recommended direction: Expand the semantic system and enforce it in shared primitives. Reserve raw colors for one-off exceptions only. Use the existing tokens as the default language for backgrounds, cards, borders, text, and interactions.
 - Desktop/mobile: both
-- Implementation status: in progress; semantic tokens are expanded and applied to the foundation, shell, landing, filters, cards, dialogs, auth, profile, and mobile search surfaces. Remaining raw colors are localized legacy styles in untouched route-specific components.
+- Implementation status: completed; remaining direct blue, slate, and gray utility colors were migrated to the shared semantic token system across desktop, mobile, and shared UI surfaces.
 
 ### 4) Search and filter surfaces are effective but visually inconsistent in density and affordance
 - Route: `/`

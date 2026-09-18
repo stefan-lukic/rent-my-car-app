@@ -156,21 +156,21 @@ const MobileCarRentalSearch = ({
             <h2 className="font-heading text-lg font-bold text-ink">
               {l.search.availableCars}
             </h2>
-            <span className="text-xs font-semibold text-slate-500">
+            <span className="text-xs font-semibold text-body-subtle">
               {l.search.carsFound(results.total)}
             </span>
           </div>
         )}
 
         {!hasSearched && !results.loading && (
-          <div className="flex min-h-52 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 text-center">
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-2xl border border-dashed border-border-strong bg-white px-5 text-center">
             <div className="mb-3 rounded-xl bg-brand-tint p-3 text-brand">
               <CalendarSearch className="h-5 w-5" />
             </div>
             <h3 className="text-sm font-bold text-ink">
               {l.search.startSearchTitle}
             </h3>
-            <p className="mt-1 text-xs leading-5 text-slate-500">
+            <p className="mt-1 text-xs leading-5 text-body-subtle">
               {l.search.startSearchDescription}
             </p>
           </div>
@@ -196,10 +196,10 @@ const MobileCarRentalSearch = ({
               !searchError &&
               allCars.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-border bg-white px-5 py-12 text-center">
-                  <p className="font-bold text-slate-800">
+                  <p className="font-bold text-ink-secondary">
                     {l.search.noCarsFound}
                   </p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-body-subtle">
                     {l.search.tryDifferentSearch}
                   </p>
                 </div>
@@ -214,7 +214,7 @@ const MobileCarRentalSearch = ({
             className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white py-3.5 text-sm font-semibold text-body transition-colors hover:bg-surface hover:text-ink disabled:opacity-50"
           >
             {results.loading ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-body-faint border-t-transparent" />
             ) : (
               <>
                 <ChevronDown size={16} /> {l.common.loadMore}
@@ -224,7 +224,7 @@ const MobileCarRentalSearch = ({
         )}
 
         {results.currentPage >= results.totalPages && allCars.length > 0 && (
-          <p className="py-4 text-center text-xs text-slate-400">
+          <p className="py-4 text-center text-xs text-body-faint">
             {l.common.allCarsLoaded}
           </p>
         )}

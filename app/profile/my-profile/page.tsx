@@ -119,7 +119,7 @@ export default async function MyProfilePage() {
   } catch (error) {
     console.error('Failed to load profile page:', error);
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface px-4 text-center text-slate-500">
+      <div className="flex min-h-screen items-center justify-center bg-surface px-4 text-center text-body-subtle">
         {l.pages.errorFallback}
       </div>
     );

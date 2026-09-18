@@ -55,7 +55,7 @@ const RenterCard: React.FC<RenterCardProps> = ({ renter }) => {
               className="flex items-center gap-1 text-xs text-amber-500"
             >
               <Star className="h-3.5 w-3.5 fill-current" />
-              <span className="font-semibold text-slate-600">
+              <span className="font-semibold text-body-muted">
                 {renter.rating.toFixed(1)}
                 {renter.ratingCount ? ` (${renter.ratingCount})` : ''}
               </span>

@@ -44,7 +44,7 @@ function StarPicker({
             aria-label={`${rating} ${rating === 1 ? 'star' : 'stars'}`}
             aria-pressed={rating === value}
             onClick={() => onChange(rating)}
-            className="rounded-lg p-1 text-slate-300 transition-colors hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-brand"
+            className="rounded-lg p-1 text-border-strong transition-colors hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <Star
               className={`h-8 w-8 ${
@@ -147,12 +147,12 @@ export default function RatingModal(props: RatingModalProps) {
             aria-label="Close rating form"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-full p-1.5 text-slate-300 transition hover:bg-white/10 hover:text-white"
+            className="rounded-full p-1.5 text-border-strong transition hover:bg-white/10 hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
-        <p className="mt-2 text-sm leading-6 text-slate-300">
+        <p className="mt-2 text-sm leading-6 text-border-strong">
           {isClient ? l.reviews.clientDescription : l.reviews.ownerDescription}
         </p>
       </div>
@@ -197,7 +197,7 @@ export default function RatingModal(props: RatingModalProps) {
             type="button"
             onClick={handleSubmit}
             disabled={!isComplete || isSubmitting}
-            className="flex min-h-11 flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="flex min-h-11 flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-border-strong"
           >
             {isSubmitting ? l.reviews.submitting : l.reviews.submit}
           </button>

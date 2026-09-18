@@ -15,6 +15,14 @@ This document defines the locked design system to be used for the Phase 2 implem
 - `brand-light`: `#DBEAFE` — subdued emphasis backgrounds
 - `brand-tint`: `#EFF6FF` — soft brand backgrounds and support surfaces
 
+### Neutral token extensions
+- `body-muted`: `#475569` - supporting body copy
+- `body-subtle`: `#64748B` - metadata and secondary labels
+- `body-faint`: `#94A3B8` - placeholders and low-emphasis UI text
+- `border-strong`: `#CBD5E1` - stronger separators and disabled outlines
+- `surface-muted`: `#F1F5F9` - disabled controls and subtle neutral fills
+
+These tokens preserve the existing Slate values while replacing direct palette references with reusable semantic roles.
 ### Semantic usage
 - Primary actions: `brand`
 - Hover/pressed states: `brand-dark`
@@ -22,14 +30,14 @@ This document defines the locked design system to be used for the Phase 2 implem
 - App background: `surface`
 - Elevated cards: `surface-0`
 - Strong text: `ink`
-- Muted text: `ink-secondary` with reduced opacity or `slate-500` equivalent when needed
+- Muted text: `body-muted`, `body-subtle`, or `body-faint` according to emphasis
 - Dividers and neutral cards: `border`
 
 ### Support colors
 - Success: `emerald-600 / emerald-100`
 - Warning: `amber-500 / amber-100`
 - Error: `red-600 / red-100`
-- Neutral muted: `slate-500 / slate-100`
+- Neutral muted: `body-subtle / surface-muted`
 
 The legacy `--button` variable remains as a compatibility alias for destructive button styling and resolves to the semantic danger color. New UI should use `danger` tokens directly.
 
@@ -113,12 +121,12 @@ Use a consistent 4px-based rhythm for all layout systems:
 - Height: `h-10` default, `h-11` large
 
 ### Secondary
-- Background: `bg-slate-100` or semantic neutral equivalent
+- Background: `bg-surface-muted`
 - Text: `ink-secondary`
-- Hover: `bg-slate-200`
+- Hover: `bg-border`
 
 ### Outline
-- Border: `border border-slate-200`
+- Border: `border border-border`
 - Background: white or `surface-0`
 - Text: `ink`
 - Hover: subtle tinted fill
@@ -163,7 +171,7 @@ Use a consistent 4px-based rhythm for all layout systems:
 - Validation states should use semantic color with clear explanatory text.
 
 ### Form pattern
-- `labelClass`: `text-xs font-semibold text-slate-600`
+- `labelClass`: `text-xs font-semibold text-body-muted`
 - `inputClass`: neutral surface, border, rounded-input, focus ring
 - Keep desktop and mobile control density aligned to avoid mismatch
 

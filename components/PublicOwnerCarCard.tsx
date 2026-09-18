@@ -42,7 +42,7 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md">
-      <div className="relative h-48 w-full shrink-0 bg-slate-100">
+      <div className="relative h-48 w-full shrink-0 bg-surface-muted">
         <Image
           src={car.images?.[0] || '/placeholder-car.svg'}
           alt={carName}
@@ -58,7 +58,7 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
             <h3 className="truncate font-heading text-lg font-semibold text-ink">
               {carName}
             </h3>
-            <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
+            <p className="mt-1 flex items-center gap-1.5 text-sm text-body-subtle">
               <MapPin className="h-4 w-4 shrink-0 text-brand" />
               {car.city}
             </p>
@@ -66,14 +66,14 @@ export default function PublicOwnerCarCard({ car }: { car: PublicOwnerCar }) {
 
           <p className="shrink-0 text-right font-heading text-lg font-bold text-brand">
             €{car.pricePerDay}
-            <span className="block text-[11px] font-semibold text-slate-400">
+            <span className="block text-[11px] font-semibold text-body-faint">
               {l.common.perDay}
             </span>
           </p>
         </div>
 
         {car.ratingCount ? (
-          <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-slate-600">
+          <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-body-muted">
             <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
             {car.rating?.toFixed(1)} ({car.ratingCount})
           </p>

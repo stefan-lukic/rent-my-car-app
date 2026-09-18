@@ -117,7 +117,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
               {l.drawer.carDetails}
             </p>
-            <p className="mt-0.5 text-xs text-slate-500">
+            <p className="mt-0.5 text-xs text-body-subtle">
               {l.carDetailsPage.reviewBeforeBooking}
             </p>
           </div>
@@ -132,7 +132,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
         </header>
 
         <div className="flex-1 overflow-y-auto">
-          <section className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+          <section className="relative aspect-[16/10] overflow-hidden bg-surface-muted">
             <Image
               src={images[currentImageIndex] || '/placeholder-car.svg'}
               alt={`${car.make} ${car.carModel}`}
@@ -141,10 +141,10 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
               className="object-cover"
               priority
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/65 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink/65 to-transparent" />
 
             {totalImages > 0 && (
-              <span className="absolute bottom-4 right-4 rounded-full bg-slate-950/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+              <span className="absolute bottom-4 right-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                 {currentImageIndex + 1} / {totalImages}
               </span>
             )}
@@ -158,7 +158,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     setCurrentImageIndex((index) => Math.max(index - 1, 0))
                   }
                   disabled={currentImageIndex === 0}
-                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -171,7 +171,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     )
                   }
                   disabled={currentImageIndex === totalImages - 1}
-                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
@@ -207,12 +207,12 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 >
                   {car.make} {car.carModel}
                 </h2>
-                <p className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
+                <p className="mt-2 flex items-start gap-1.5 text-sm text-body-subtle">
                   <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand" />
                   <span>{location}</span>
                 </p>
                 {car.ratingCount ? (
-                  <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                  <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-body">
                     <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                     {car.rating?.toFixed(1)} ({car.ratingCount})
                   </p>
@@ -223,29 +223,29 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                 <p className="font-heading text-xl font-bold text-brand">
                   €{car.pricePerDay}
                 </p>
-                <p className="text-xs font-medium text-slate-500">
+                <p className="text-xs font-medium text-body-subtle">
                   {l.common.perDay}
                 </p>
               </div>
             </section>
 
             <section>
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-body-subtle">
                 {l.carDetailsPage.vehicleOverview}
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 {specs.map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="rounded-xl border border-slate-200 bg-slate-50 p-3.5"
+                    className="rounded-xl border border-border bg-surface p-3.5"
                   >
                     <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-tint text-brand">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-body-faint">
                       {label}
                     </p>
-                    <p className="mt-0.5 truncate text-sm font-semibold text-slate-800">
+                    <p className="mt-0.5 truncate text-sm font-semibold text-ink-secondary">
                       {value}
                     </p>
                   </div>
@@ -254,24 +254,24 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             </section>
 
             {car.description && (
-              <section className="rounded-2xl border border-slate-200 bg-white p-4">
-                <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <section className="rounded-2xl border border-border bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-body-subtle">
                   {l.common.description}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
+                <p className="mt-2 text-sm leading-6 text-body-muted">
                   {car.description}
                 </p>
               </section>
             )}
 
             <section>
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-body-subtle">
                 {l.carDetailsPage.listedBy}
               </h3>
               {renter ? (
                 <RenterCard renter={renter} />
               ) : (
-                <p className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+                <p className="rounded-2xl border border-dashed border-border-strong bg-surface p-4 text-sm text-body-subtle">
                   {l.drawer.noRenterInfo}
                 </p>
               )}
@@ -279,7 +279,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           </div>
         </div>
 
-        <footer className="grid grid-cols-2 gap-3 border-t border-slate-200 bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6 sm:pb-4">
+        <footer className="grid grid-cols-2 gap-3 border-t border-border bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-12px_30px_rgba(15,23,42,0.06)] sm:px-6 sm:pb-4">
           <Link
             href={detailsHref}
             className="col-span-2 flex items-center justify-center rounded-xl border border-brand/20 bg-brand-tint px-4 py-3 text-sm font-semibold text-brand transition-colors hover:border-brand/40 hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
@@ -289,7 +289,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/40 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="rounded-xl border border-border-strong px-4 py-3 text-sm font-semibold text-body transition-colors hover:border-brand/40 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {l.common.howItWorks}
           </button>

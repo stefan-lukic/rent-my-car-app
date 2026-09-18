@@ -38,8 +38,8 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
   const publicLocation = car.city;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
-      <div className="relative h-56 w-full overflow-hidden bg-slate-100">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
+      <div className="relative h-56 w-full overflow-hidden bg-surface-muted">
         <Image
           src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
@@ -109,17 +109,17 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
             <div>
               <h3 className="font-heading text-lg font-semibold text-ink">
                 {car.make}{' '}
-                <span className="text-slate-600">{car.carModel}</span>
+                <span className="text-body-muted">{car.carModel}</span>
               </h3>
 
               {car.ratingCount ? (
-                <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-600">
+                <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-body-muted">
                   <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                   {car.rating?.toFixed(1)} ({car.ratingCount})
                 </p>
               ) : null}
 
-              <div className="mt-1 flex items-center text-sm text-slate-500">
+              <div className="mt-1 flex items-center text-sm text-body-subtle">
                 <svg
                   className="w-4 h-4 text-emerald-500 mr-1 flex-shrink-0"
                   fill="none"
@@ -148,33 +148,33 @@ const CarSearchResults: React.FC<SearchResultsProps> = ({
               <span className="font-heading text-lg font-bold text-ink">
                 €{car.pricePerDay}
               </span>
-              <span className="block text-xs font-medium text-slate-500">
+              <span className="block text-xs font-medium text-body-subtle">
                 {l.common.perDay}
               </span>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2 mt-4 mb-6">
-            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
+            <span className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-body-muted">
               {formatText(car.carType)}
             </span>
-            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
+            <span className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-body-muted">
               {formatText(car.engine)}
             </span>
-            <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
+            <span className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-body-muted">
               {car.averageConsumption} l/100km
             </span>
             {car.seats ? (
-              <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600">
+              <span className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-body-muted">
                 {car.seats} {l.carSpecs.seats.toLowerCase()}
               </span>
             ) : null}
           </div>
         </div>
 
-        <div className="mt-auto flex gap-3 border-t border-slate-100 pt-4">
+        <div className="mt-auto flex gap-3 border-t border-surface-muted pt-4">
           <button
-            className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-ink"
+            className="flex-1 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface hover:text-ink"
             onClick={onViewDetails}
           >
             {l.common.details}

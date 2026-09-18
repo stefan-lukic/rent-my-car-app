@@ -17,7 +17,7 @@ export default function TermsOfService() {
           {content.sections.map((section, index) => (
             <section
               key={section.title}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
+              className="rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-7"
             >
               <div className="flex gap-4">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-tint text-sm font-bold text-brand/90">
@@ -27,7 +27,7 @@ export default function TermsOfService() {
                   <h2 className="font-heading text-lg font-semibold text-ink">
                     {section.title}
                   </h2>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">
+                  <p className="mt-2 text-sm leading-7 text-body-muted">
                     {section.description}
                   </p>
                 </div>
@@ -41,10 +41,10 @@ export default function TermsOfService() {
           <h2 className="mt-4 font-heading font-semibold text-ink">
             {content.noteTitle}
           </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 text-sm leading-6 text-body-muted">
             {content.noteDescription}
           </p>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-body-subtle">
             {content.lastUpdated}
           </p>
         </aside>

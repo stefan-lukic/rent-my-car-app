@@ -223,11 +223,11 @@ export const howItWorksContent = [
 ];
 
 export const howItWorksIcons = [
-  <FaKey className="text-blue-600" />,
-  <FaUserFriends className="text-blue-600" />,
-  <FaComments className="text-blue-600" />,
-  <FaCheckCircle className="text-blue-600" />,
-  <FaCar className="text-blue-600" />,
-  <FaKey className="text-blue-600" />,
-  <FaKey className="text-blue-600" />,
+  <FaKey className="text-brand" />,
+  <FaUserFriends className="text-brand" />,
+  <FaComments className="text-brand" />,
+  <FaCheckCircle className="text-brand" />,
+  <FaCar className="text-brand" />,
+  <FaKey className="text-brand" />,
+  <FaKey className="text-brand" />,
 ];

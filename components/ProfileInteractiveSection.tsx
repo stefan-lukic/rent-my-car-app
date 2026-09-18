@@ -52,7 +52,7 @@ const PaginationButton = ({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-border bg-white text-body transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-30"
     >
       <Icon className="h-5 w-5" />
     </button>
@@ -78,7 +78,7 @@ const PageNumbers = ({
           className={`h-9 w-9 rounded-lg text-sm font-semibold transition-colors ${
             current === index
               ? 'bg-brand text-white'
-              : 'border border-slate-200 text-slate-500 hover:border-brand/40 hover:text-brand'
+              : 'border border-border text-body-subtle hover:border-brand/40 hover:text-brand'
           }`}
         >
           {index + 1}
@@ -173,8 +173,8 @@ const ProfileInteractiveSection = ({
   };
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+    <section className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="flex items-center justify-between border-b border-border px-6 py-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
             Your garage
@@ -187,7 +187,7 @@ const ProfileInteractiveSection = ({
         <div
           role="tablist"
           aria-label="Profile activity"
-          className="flex gap-1 rounded-xl bg-slate-100 p-1"
+          className="flex gap-1 rounded-xl bg-surface-muted p-1"
         >
           <button
             type="button"
@@ -196,8 +196,8 @@ const ProfileInteractiveSection = ({
             onClick={() => setActiveTab('cars')}
             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
               activeTab === 'cars'
-                ? 'bg-white text-slate-950 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-white text-ink shadow-sm'
+                : 'text-body-subtle hover:text-ink-secondary'
             }`}
           >
             <CarFront className="h-4 w-4" />
@@ -210,8 +210,8 @@ const ProfileInteractiveSection = ({
             onClick={() => setActiveTab('rentals')}
             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
               activeTab === 'rentals'
-                ? 'bg-white text-slate-950 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-white text-ink shadow-sm'
+                : 'text-body-subtle hover:text-ink-secondary'
             }`}
           >
             <CalendarDays className="h-4 w-4" />
@@ -227,7 +227,7 @@ const ProfileInteractiveSection = ({
               <h3 className="font-heading text-lg font-semibold text-ink">
                 {l.profile.myCarsHeading}
               </h3>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-body-subtle">
                 Update your listings, availability and vehicle details.
               </p>
             </div>
@@ -242,14 +242,14 @@ const ProfileInteractiveSection = ({
           </div>
 
           {cars.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-12 text-center">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <CarFront className="h-6 w-6" />
               </span>
-              <p className="mt-4 font-semibold text-slate-800">
+              <p className="mt-4 font-semibold text-ink-secondary">
                 {l.profile.noCarsListed}
               </p>
-              <p className="mt-1 max-w-sm text-sm text-slate-500">
+              <p className="mt-1 max-w-sm text-sm text-body-subtle">
                 Create your first listing and make your car available to local
                 renters.
               </p>
@@ -305,10 +305,10 @@ const ProfileInteractiveSection = ({
         <div className="p-6">
           <div className="mb-5 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-bold text-ink-secondary">
                 {l.profile.myRentalsHeading}
               </h3>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-body-subtle">
                 Review your reservations, dates and current rental status.
               </p>
             </div>
@@ -323,14 +323,14 @@ const ProfileInteractiveSection = ({
           </div>
 
           {availableRentals.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-12 text-center">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <Search className="h-6 w-6" />
               </span>
-              <p className="mt-4 font-semibold text-slate-800">
+              <p className="mt-4 font-semibold text-ink-secondary">
                 {l.profile.noRentalsYet}
               </p>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-body-subtle">
                 Browse available cars and reserve one for your next trip.
               </p>
             </div>
@@ -348,7 +348,7 @@ const ProfileInteractiveSection = ({
                 />
               </div>
               {filteredRentals.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-sm text-slate-500">
+                <div className="rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-10 text-center text-sm text-body-subtle">
                   No reservations match this status.
                 </div>
               ) : (

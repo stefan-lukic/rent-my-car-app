@@ -13,7 +13,7 @@ export default function HelpCenter() {
       title={content.title}
       description={content.description}
     >
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-tint text-brand">
             <CircleHelp className="h-5 w-5" />
@@ -34,7 +34,7 @@ export default function HelpCenter() {
               <h3 className="font-heading font-semibold text-ink-secondary">
                 {faq.question}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mt-2 text-sm leading-6 text-body-muted">
                 {faq.answer}
               </p>
             </article>
@@ -54,12 +54,12 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      <section className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+      <section className="mt-8 flex flex-col gap-4 rounded-2xl border border-border bg-ink-secondary p-6 text-white sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-heading text-lg font-semibold">
             {content.nextTitle}
           </h2>
-          <p className="mt-1 text-sm text-slate-300">
+          <p className="mt-1 text-sm text-border-strong">
             {content.nextDescription}
           </p>
         </div>

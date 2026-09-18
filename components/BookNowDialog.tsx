@@ -179,11 +179,11 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         </div>
       )}
 
-      <div className="flex flex-shrink-0 gap-3 border-t border-slate-100 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-4">
+      <div className="flex flex-shrink-0 gap-3 border-t border-surface-muted px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pb-4">
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex-1 rounded-xl border border-border py-3 text-sm font-medium text-body transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           {l.common.cancel}
         </button>

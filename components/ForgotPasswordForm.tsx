@@ -9,12 +9,12 @@ const ForgotPasswordForm = () => {
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
-      <section className="w-full max-w-md space-y-8 rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
+      <section className="w-full max-w-md space-y-8 rounded-2xl border border-border bg-white p-8 shadow-lg">
         <div className="space-y-3">
           <h1 className="text-center font-heading text-3xl font-bold text-ink">
             {l.auth.forgotPasswordHeading}
           </h1>
-          <p className="text-center text-sm leading-6 text-slate-500">
+          <p className="text-center text-sm leading-6 text-body-subtle">
             {l.auth.forgotPasswordDesc}
           </p>
         </div>
@@ -25,7 +25,7 @@ const ForgotPasswordForm = () => {
               type="email"
               placeholder={l.auth.enterEmail}
               {...register('email', { required: l.auth.emailRequired })}
-              className="w-full rounded-xl border border-slate-200 bg-white p-4 text-ink shadow-sm placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
+              className="w-full rounded-xl border border-border bg-white p-4 text-ink shadow-sm placeholder:text-body-faint focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
             />
             {errors.email && (
               <p className="mt-1 text-sm text-red-600">
@@ -56,7 +56,7 @@ const ForgotPasswordForm = () => {
         </form>
 
         <div className="text-center">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-body-subtle">
             {l.common.rememberedIt}
             <a
               href="/sign-in"
