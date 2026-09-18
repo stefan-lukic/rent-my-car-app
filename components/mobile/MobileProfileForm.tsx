@@ -144,7 +144,7 @@ const MobileProfileForm = ({
               onChange={handleInputChange}
             />
             {uploadImages.length > 0 && (
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-body-muted">
                 {uploadImages.length === 1
                   ? uploadImages[0].name
                   : `${uploadImages[0].name} ${l.common.andMore(uploadImages.length - 1)}`}
@@ -175,7 +175,7 @@ const MobileProfileForm = ({
               onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
               aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
               aria-pressed={isPasswordVisible}
-              className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="rounded-lg p-1 text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               {isPasswordVisible ? (
                 <Eye aria-hidden="true" className="h-5 w-5" />
@@ -206,7 +206,7 @@ const MobileProfileForm = ({
                     : 'Show confirm password'
                 }
                 aria-pressed={isConfirmPasswordVisible}
-                className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="rounded-lg p-1 text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {isConfirmPasswordVisible ? (
                   <Eye aria-hidden="true" className="h-5 w-5" />
@@ -238,7 +238,7 @@ const MobileProfileForm = ({
             </button>
 
             <button
-              className="mt-3 flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white py-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              className="mt-3 flex w-full items-center justify-center rounded-xl border border-border bg-white py-3.5 text-sm font-medium text-body transition-colors hover:bg-surface"
               type="button"
             >
               <Image

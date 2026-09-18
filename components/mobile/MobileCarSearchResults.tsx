@@ -36,8 +36,8 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
     : null;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="relative h-52 w-full overflow-hidden bg-surface-muted">
         <Image
           src={car.images?.[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
@@ -48,9 +48,7 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
 
         <div className="absolute top-3 right-3 flex items-center gap-1 bg-white/95 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm">
           <MapPin className="w-3 h-3 text-brand" />
-          <span className="text-xs font-semibold text-slate-700">
-            {car.city}
-          </span>
+          <span className="text-xs font-semibold text-body">{car.city}</span>
         </div>
 
         {car.images && car.images.length > 1 && (
@@ -114,13 +112,13 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
             <h3 className="font-heading text-base font-semibold leading-tight text-ink">
               {car.carModel}{' '}
               {year && (
-                <span className="text-slate-400 font-normal text-sm">
+                <span className="text-body-faint font-normal text-sm">
                   ({year})
                 </span>
               )}
             </h3>
             {car.ratingCount ? (
-              <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-slate-600">
+              <p className="mt-1 flex items-center gap-1 text-xs font-semibold text-body-muted">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                 {car.rating?.toFixed(1)} ({car.ratingCount})
               </p>
@@ -130,31 +128,31 @@ const MobileCarSearchResults: React.FC<CarSearchResultsProps> = ({
             <p className="font-heading text-xl font-bold text-ink">
               €{car.pricePerDay}
             </p>
-            <p className="text-[10px] text-slate-400 font-medium">/ DAY</p>
+            <p className="text-[10px] text-body-faint font-medium">/ DAY</p>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
+          <span className="text-xs text-body-subtle bg-surface border border-surface-muted px-2.5 py-1 rounded-lg font-medium">
             {formatText(car.carType)}
           </span>
-          <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
+          <span className="text-xs text-body-subtle bg-surface border border-surface-muted px-2.5 py-1 rounded-lg font-medium">
             {formatText(car.engine)}
           </span>
-          <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
+          <span className="text-xs text-body-subtle bg-surface border border-surface-muted px-2.5 py-1 rounded-lg font-medium">
             {car.averageConsumption} l/100km
           </span>
           {car.seats ? (
-            <span className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg font-medium">
+            <span className="text-xs text-body-subtle bg-surface border border-surface-muted px-2.5 py-1 rounded-lg font-medium">
               {car.seats} {l.carSpecs.seats.toLowerCase()}
             </span>
           ) : null}
         </div>
 
-        <div className="flex gap-2 pt-1 border-t border-slate-100">
+        <div className="flex gap-2 pt-1 border-t border-surface-muted">
           <button
             onClick={onViewDetails}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-white py-2.5 text-sm font-semibold text-body transition-colors hover:bg-surface"
           >
             <Eye className="w-3.5 h-3.5" />
             {l.common.specs}

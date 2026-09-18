@@ -34,12 +34,12 @@ function VerifyEmailForm() {
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-10">
-      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
+      <section className="w-full max-w-md rounded-2xl border border-border bg-white p-8 shadow-lg">
         <header className="mb-8 text-center">
           <h1 className="mb-3 font-heading text-3xl font-bold tracking-tight text-ink">
             {l.auth.verifyEmailHeading}
           </h1>
-          <p className="text-sm leading-6 text-slate-500">
+          <p className="text-sm leading-6 text-body-subtle">
             {token ? l.auth.verificationSent : l.auth.checkYourInbox}
           </p>
         </header>

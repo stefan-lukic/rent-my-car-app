@@ -8,7 +8,7 @@ export default function Skeleton({ className, ...props }: SkeletonProps) {
     <div
       aria-hidden="true"
       className={cn(
-        'animate-pulse rounded-lg bg-slate-200/80 motion-reduce:animate-none',
+        'animate-pulse rounded-lg bg-border/80 motion-reduce:animate-none',
         className
       )}
       {...props}

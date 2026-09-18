@@ -168,7 +168,7 @@ export default function CarBookingPanel({
           </p>
           <p className="mt-2 font-heading text-3xl font-bold text-ink">
             €{pricePerDay}
-            <span className="ml-1 text-sm font-semibold text-slate-500">
+            <span className="ml-1 text-sm font-semibold text-body-subtle">
               {l.common.perDay}
             </span>
           </p>
@@ -182,7 +182,7 @@ export default function CarBookingPanel({
         <div>
           <label
             htmlFor="car-booking-start-date"
-            className="mb-2 block text-sm font-semibold text-slate-700"
+            className="mb-2 block text-sm font-semibold text-body"
           >
             {l.carDetailsPage.pickupDate}
           </label>
@@ -201,7 +201,7 @@ export default function CarBookingPanel({
         <div>
           <label
             htmlFor="car-booking-end-date"
-            className="mb-2 block text-sm font-semibold text-slate-700"
+            className="mb-2 block text-sm font-semibold text-body"
           >
             {l.carDetailsPage.returnDate}
           </label>
@@ -223,11 +223,11 @@ export default function CarBookingPanel({
       </div>
 
       <div className="mt-5 rounded-2xl border border-border bg-surface p-4">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-body-subtle">
           <CalendarDays className="h-4 w-4 text-brand" />
           {l.carDetailsPage.priceEstimate}
         </div>
-        <div className="mt-3 flex items-center justify-between text-sm text-slate-600">
+        <div className="mt-3 flex items-center justify-between text-sm text-body-muted">
           <span>
             {selectedDays > 0
               ? l.carDetailsPage.days(selectedDays)
@@ -288,28 +288,28 @@ export default function CarBookingPanel({
         {isSubmitting ? l.carDetailsPage.reserving : l.carDetailsPage.bookNow}
       </button>
 
-      <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+      <p className="mt-3 text-center text-xs leading-5 text-body-subtle">
         {l.carDetailsPage.availabilityNote}
       </p>
 
-      <section className="mt-6 border-t border-slate-200 pt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+      <section className="mt-6 border-t border-border pt-6">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-body-subtle">
           {l.carDetailsPage.tripTerms}
         </h2>
 
-        <div className="mt-4 divide-y divide-slate-100">
+        <div className="mt-4 divide-y divide-surface-muted">
           <div className="flex gap-3 pb-4">
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-tint text-brand">
               <RotateCcw className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+              <p className="text-xs font-bold uppercase tracking-wide text-body-faint">
                 {l.carDetailsPage.cancellationPolicy}
               </p>
               <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.flexibleCancellation}
               </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 text-xs leading-5 text-body-subtle">
                 {l.carDetailsPage.cancellationSummary}
               </p>
               <Link
@@ -326,13 +326,13 @@ export default function CarBookingPanel({
               <Banknote className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+              <p className="text-xs font-bold uppercase tracking-wide text-body-faint">
                 {l.carDetailsPage.paymentOptions}
               </p>
               <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.payInPerson}
               </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 text-xs leading-5 text-body-subtle">
                 {l.carDetailsPage.paymentSummary}
               </p>
             </div>
@@ -343,13 +343,13 @@ export default function CarBookingPanel({
               <Milestone className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+              <p className="text-xs font-bold uppercase tracking-wide text-body-faint">
                 {l.carDetailsPage.distanceIncluded}
               </p>
               <p className="mt-1 text-sm font-semibold text-ink-secondary">
                 {l.carDetailsPage.unlimitedDistance}
               </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 text-xs leading-5 text-body-subtle">
                 {l.carDetailsPage.distanceSummary}
               </p>
             </div>

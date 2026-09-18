@@ -50,7 +50,7 @@ export default function MobileProfileUserInfoCard({
     <section className="overflow-hidden rounded-2xl bg-ink shadow-md">
       <div className="relative px-5 pb-5 pt-6">
         <div className="relative flex items-start gap-4">
-          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 bg-slate-800">
+          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 bg-ink-secondary">
             <Image
               src={user.images?.[0] || '/placeholder-user.svg'}
               alt={user.name || 'User'}
@@ -68,7 +68,7 @@ export default function MobileProfileUserInfoCard({
             <h1 className="mt-1 truncate font-heading text-xl font-bold text-white">
               {user.name}
             </h1>
-            <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-slate-300">
+            <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-border-strong">
               <Mail className="h-3.5 w-3.5 text-brand/70" />
               {user.email}
             </p>
@@ -77,13 +77,13 @@ export default function MobileProfileUserInfoCard({
           <Link
             href="/profile/edit"
             aria-label={l.profile.editProfile}
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white text-slate-900 shadow-sm transition hover:bg-brand-tint"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white text-ink-secondary shadow-sm transition hover:bg-brand-tint"
           >
             <Pencil className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="relative mt-5 grid gap-2 text-xs text-slate-300">
+        <div className="relative mt-5 grid gap-2 text-xs text-border-strong">
           <p className="flex items-center gap-2">
             <Phone className="h-3.5 w-3.5 text-brand/70" />
             {user.contactInfo || l.profile.noPhoneNumber}
@@ -105,7 +105,7 @@ export default function MobileProfileUserInfoCard({
           >
             <Icon className="mb-1 h-4 w-4 text-brand/70" />
             <span className="text-base font-bold text-white">{value}</span>
-            <span className="text-[11px] text-slate-400">{label}</span>
+            <span className="text-[11px] text-body-faint">{label}</span>
           </div>
         ))}
       </div>

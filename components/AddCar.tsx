@@ -30,7 +30,7 @@ import { CarType } from '@/lib/model/car/CarType';
 import { CAR_FIELD_LIMITS } from '@/lib/model/car/carValidation';
 
 const sectionClasses =
-  'rounded-2xl border border-slate-200 bg-white p-7 shadow-sm';
+  'rounded-2xl border border-border bg-white p-7 shadow-sm';
 
 export default function AddCar() {
   const {
@@ -49,7 +49,7 @@ export default function AddCar() {
         <div>
           <Link
             href="/profile/my-profile"
-            className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-brand"
+            className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-body-subtle transition-colors hover:text-brand"
           >
             <ArrowLeft className="h-4 w-4" />
             {l.cars.backToMyCars}
@@ -59,10 +59,10 @@ export default function AddCar() {
               <CarFront className="h-7 w-7" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold tracking-tight text-slate-950">
+              <h1 className="font-heading text-3xl font-bold tracking-tight text-ink">
                 {l.cars.addNewCar}
               </h1>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-body-subtle">
                 {l.cars.addVehicleDesc}
               </p>
             </div>
@@ -246,18 +246,18 @@ export default function AddCar() {
 
         <aside className="space-y-5 lg:sticky lg:top-24">
           <section className={sectionClasses}>
-            <h2 className="font-bold text-slate-900">{l.cars.carImages}</h2>
-            <p className="mb-5 mt-1 text-sm text-slate-500">
+            <h2 className="font-bold text-ink-secondary">{l.cars.carImages}</h2>
+            <p className="mb-5 mt-1 text-sm text-body-subtle">
               {l.cars.carImagesDesc}
             </p>
             <label className="group relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-brand/20 bg-brand-tint/60 px-6 text-center transition hover:border-brand/70 hover:bg-brand-tint">
               <span className="mb-3 rounded-2xl bg-white p-3 text-brand shadow-sm transition group-hover:-translate-y-0.5">
                 <ImagePlus className="h-6 w-6" />
               </span>
-              <span className="text-sm font-bold text-slate-800">
+              <span className="text-sm font-bold text-ink-secondary">
                 {l.common.clickToUpload}
               </span>
-              <span className="mt-1 text-xs text-slate-500">
+              <span className="mt-1 text-xs text-body-subtle">
                 {l.cars.imageHint}
               </span>
               <input
@@ -273,7 +273,7 @@ export default function AddCar() {
             {carData.images.length > 0 ? (
               <div className="mt-4">
                 <div className="mb-3 flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-700">
+                  <span className="font-bold text-body">
                     {l.cars.selectedPhotos}
                   </span>
                   <span className="rounded-full bg-brand-tint px-2.5 py-1 font-bold text-brand">
@@ -284,7 +284,7 @@ export default function AddCar() {
                   {carData.images.map(({ file, id }) => (
                     <div
                       key={id}
-                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                      className="relative aspect-square overflow-hidden rounded-xl border border-border bg-surface-muted"
                     >
                       <Image
                         src={URL.createObjectURL(file)}
@@ -297,7 +297,7 @@ export default function AddCar() {
                         type="button"
                         onClick={() => removeImage(id)}
                         aria-label={l.cars.removeImage}
-                        className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950/75 text-white transition hover:bg-red-500"
+                        className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/75 text-white transition hover:bg-red-500"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -308,12 +308,12 @@ export default function AddCar() {
             ) : null}
           </section>
 
-          <section className="rounded-2xl bg-slate-950 p-6 text-white shadow-lg">
+          <section className="rounded-2xl bg-ink p-6 text-white shadow-lg">
             <div className="mb-5 flex gap-3">
               <span className="mt-0.5 rounded-full bg-emerald-400/15 p-1 text-emerald-300">
                 <Check className="h-4 w-4" />
               </span>
-              <p className="text-sm leading-6 text-slate-300">
+              <p className="text-sm leading-6 text-border-strong">
                 {l.cars.publishHint}
               </p>
             </div>
@@ -344,8 +344,10 @@ function SectionHeading({
     <div className="mb-6 flex items-start gap-3">
       <div className="rounded-xl bg-brand-tint p-2.5 text-brand">{icon}</div>
       <div>
-        <h2 className="font-heading font-semibold text-slate-900">{title}</h2>
-        <p className="mt-1 text-sm text-slate-500">{description}</p>
+        <h2 className="font-heading font-semibold text-ink-secondary">
+          {title}
+        </h2>
+        <p className="mt-1 text-sm text-body-subtle">{description}</p>
       </div>
     </div>
   );

@@ -7,7 +7,11 @@
     --ink: #020617;
     --ink-secondary: #0f172a;
     --body: #334155;
+    --body-muted: #475569;
+    --body-subtle: #64748b;
+    --body-faint: #94a3b8;
     --border: #e2e8f0;
+    --border-strong: #cbd5e1;
     --brand: #2563eb;
     --brand-dark: #1d4ed8;
     --brand-light: #dbeafe;
@@ -15,6 +19,7 @@
     --button: #dc2626;
     --surface: #f8fafc;
     --surface-0: #ffffff;
+    --surface-muted: #f1f5f9;
     --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;

@@ -18,7 +18,7 @@ export default async function AddCarPage() {
     <>
       {/* Load Places from the server for both add-car layouts. */}
       <GooglePlacesScript />
-      <div className="h-screen overflow-y-auto bg-slate-50">
+      <div className="h-screen overflow-y-auto bg-surface">
         <main>{isMobile ? <MobileAddCar /> : <AddCar />}</main>
       </div>
     </>

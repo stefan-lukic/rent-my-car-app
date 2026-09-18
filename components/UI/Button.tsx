@@ -14,7 +14,7 @@ const buttonVariants = cva(
           'bg-danger bg-[var(--button)] text-white shadow-sm hover:bg-red-700',
         outline:
           'border border-border bg-surface-0 text-ink hover:border-brand-light hover:bg-brand-tint',
-        secondary: 'bg-slate-100 text-ink-secondary hover:bg-slate-200',
+        secondary: 'bg-surface-muted text-ink-secondary hover:bg-border',
         ghost: 'text-body hover:bg-brand-tint hover:text-brand-dark',
         link: 'text-brand underline-offset-4 hover:underline',
         danger:

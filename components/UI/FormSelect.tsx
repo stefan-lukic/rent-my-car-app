@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 
 export const inputClasses =
-  'min-h-11 w-full rounded-xl border border-border bg-surface-0 px-4 py-3 text-sm text-ink shadow-sm transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint disabled:cursor-not-allowed disabled:bg-slate-100';
+  'min-h-11 w-full rounded-xl border border-border bg-surface-0 px-4 py-3 text-sm text-ink shadow-sm transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint disabled:cursor-not-allowed disabled:bg-surface-muted';
 
 export const labelClasses = 'mb-2 block text-sm font-semibold text-body';
 

@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
           {content.sections.map((section, index) => (
             <section
               key={section.title}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
+              className="rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-7"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
                 {String(index + 1).padStart(2, '0')}
@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
               <h2 className="mt-3 font-heading text-lg font-semibold text-ink">
                 {section.title}
               </h2>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
+              <p className="mt-2 text-sm leading-7 text-body-muted">
                 {section.description}
               </p>
             </section>
@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
           <h2 className="mt-4 font-heading font-semibold text-ink">
             {content.rightsTitle}
           </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 text-sm leading-6 text-body-muted">
             {content.rightsDescription}
           </p>
           <Link
@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
             {content.rightsAction}
             <ExternalLink className="h-4 w-4" />
           </Link>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-body-subtle">
             {content.lastUpdated}
           </p>
         </aside>

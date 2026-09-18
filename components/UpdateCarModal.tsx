@@ -120,7 +120,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
         >
           {l.cars.updateCar}
         </h2>
-        <p className="text-sm leading-6 text-slate-500">
+        <p className="text-sm leading-6 text-body-subtle">
           {l.cars.editVehicleDesc}
         </p>
       </header>
@@ -212,7 +212,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
           />
         </div>
 
-        <div className="grid gap-5 border-t border-slate-200 pt-6 sm:grid-cols-2 sm:gap-6">
+        <div className="grid gap-5 border-t border-border pt-6 sm:grid-cols-2 sm:gap-6">
           <FormSelect
             label={l.cars.city}
             name="city"
@@ -244,7 +244,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
           />
         </div>
 
-        <div className="border-t border-slate-200 pt-6">
+        <div className="border-t border-border pt-6">
           <label className={labelClasses}>{l.common.description}</label>
           <textarea
             name="description"
@@ -257,7 +257,7 @@ const UpdateCarModal: React.FC<UpdateCarModalProps> = ({
           />
         </div>
 
-        <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
           <Button
             type="button"
             onClick={onClose}

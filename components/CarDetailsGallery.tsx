@@ -19,7 +19,7 @@ export default function CarDetailsGallery({
 
   return (
     <section aria-label={l.carDetailsPage.photoGallery(carName)}>
-      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-slate-200 shadow-sm lg:aspect-[16/9]">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-border shadow-sm lg:aspect-[16/9]">
         <Image
           src={galleryImages[selectedIndex]}
           alt={l.carDetailsPage.photoAlt(carName, selectedIndex + 1)}
@@ -30,7 +30,7 @@ export default function CarDetailsGallery({
         />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink/55 to-transparent" />
 
-        <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-slate-950/75 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-sm">
+        <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-ink/75 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-sm">
           <Images className="h-4 w-4" />
           {selectedIndex + 1} / {galleryImages.length}
         </span>
@@ -42,7 +42,7 @@ export default function CarDetailsGallery({
               aria-label={l.carDetailsPage.previousPhoto}
               disabled={selectedIndex === 0}
               onClick={() => setSelectedIndex((index) => index - 1)}
-              className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+              className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -51,7 +51,7 @@ export default function CarDetailsGallery({
               aria-label={l.carDetailsPage.nextPhoto}
               disabled={selectedIndex === galleryImages.length - 1}
               onClick={() => setSelectedIndex((index) => index + 1)}
-              className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+              className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

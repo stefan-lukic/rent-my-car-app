@@ -53,7 +53,7 @@ describe('RentalCard', () => {
 
     expect(screen.getByText(l.status.cancelled)).toBeInTheDocument();
     expect(container.querySelector('article')).toHaveClass(
-      'bg-slate-100',
+      'bg-surface-muted',
       'opacity-70',
       'grayscale'
     );

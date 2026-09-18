@@ -67,7 +67,7 @@ const CancelRentalModal: React.FC<CancelRentalModalProps> = ({
       >
         {l.booking.cancelReservation}
       </h2>
-      <p className="mb-6 text-sm leading-6 text-slate-500">
+      <p className="mb-6 text-sm leading-6 text-body-subtle">
         {l.booking.cancelReservationConfirm}
       </p>
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">

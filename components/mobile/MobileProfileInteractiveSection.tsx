@@ -95,14 +95,14 @@ const MobileProfileInteractiveSection = ({
       {activeTab === 'cars' && (
         <div>
           {cars.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-white px-5 py-10 text-center">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <CarFront className="h-6 w-6" />
               </span>
-              <p className="mt-4 text-sm font-semibold text-slate-800">
+              <p className="mt-4 text-sm font-semibold text-ink-secondary">
                 {l.profile.noCarsListed}
               </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 text-xs leading-5 text-body-subtle">
                 Add your first vehicle using the button above.
               </p>
             </div>
@@ -127,14 +127,14 @@ const MobileProfileInteractiveSection = ({
       {activeTab === 'rentals' && (
         <div>
           {availableRentals.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-white px-5 py-10 text-center">
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <Search className="h-6 w-6" />
               </span>
-              <p className="mt-4 text-sm font-semibold text-slate-800">
+              <p className="mt-4 text-sm font-semibold text-ink-secondary">
                 {l.profile.noRentalsYet}
               </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 text-xs leading-5 text-body-subtle">
                 Your future reservations will appear here.
               </p>
             </div>
@@ -147,7 +147,7 @@ const MobileProfileInteractiveSection = ({
                 onChange={setRentalStatusFilter}
               />
               {filteredRentals.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center text-sm text-slate-500">
+                <div className="rounded-2xl border border-dashed border-border-strong bg-white px-5 py-10 text-center text-sm text-body-subtle">
                   No reservations match this status.
                 </div>
               ) : null}

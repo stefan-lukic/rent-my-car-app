@@ -70,7 +70,7 @@ export default function InformationalPageLayout({
             {title}
           </h1>
 
-          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-border sm:text-lg">
             {description}
           </p>
 
@@ -89,7 +89,7 @@ export default function InformationalPageLayout({
                   className={`w-full rounded-xl border px-4 py-2 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 sm:w-auto ${
                     isCurrent
                       ? 'border-brand bg-brand text-white'
-                      : 'border-slate-700 bg-ink-secondary text-slate-200 hover:border-brand/60 hover:text-white'
+                      : 'border-body bg-ink-secondary text-border hover:border-brand/60 hover:text-white'
                   }`}
                 >
                   {link.label}

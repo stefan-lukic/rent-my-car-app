@@ -144,7 +144,7 @@ export default async function CarDetailsPage({
           <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
             <Link
               href={catalogHref}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-border-strong transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
             >
               <ArrowLeft className="h-4 w-4" />
               {l.carDetailsPage.backToCatalog}
@@ -159,7 +159,7 @@ export default async function CarDetailsPage({
                 <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
                   {carName}
                 </h1>
-                <p className="mt-3 flex items-center gap-2 text-sm text-slate-300 sm:text-base">
+                <p className="mt-3 flex items-center gap-2 text-sm text-border-strong sm:text-base">
                   <MapPin className="h-4 w-4 text-brand/70" />
                   {location}
                 </p>
@@ -169,7 +169,7 @@ export default async function CarDetailsPage({
                 <p className="font-heading text-3xl font-bold text-white">
                   €{car.pricePerDay}
                 </p>
-                <p className="text-xs font-semibold text-slate-300">
+                <p className="text-xs font-semibold text-border-strong">
                   {l.carDetailsPage.perDay}
                 </p>
                 <div
@@ -186,12 +186,12 @@ export default async function CarDetailsPage({
                       <span className="font-bold text-white">
                         {(car.rating ?? 0).toFixed(1)}
                       </span>
-                      <span className="text-slate-300">
+                      <span className="text-border-strong">
                         {l.carDetailsPage.ratingCount(car.ratingCount)}
                       </span>
                     </>
                   ) : (
-                    <span className="font-medium text-slate-300">
+                    <span className="font-medium text-border-strong">
                       {l.carDetailsPage.noRatings}
                     </span>
                   )}
@@ -205,7 +205,7 @@ export default async function CarDetailsPage({
           <div className="min-w-0 space-y-8">
             <CarDetailsGallery images={car.images} carName={carName} />
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+            <section className="rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-7">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
                 {l.carDetailsPage.vehicleOverview}
               </p>
@@ -217,15 +217,15 @@ export default async function CarDetailsPage({
                 {specs.map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                    className="rounded-2xl border border-border bg-surface p-4"
                   >
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-tint text-brand">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <p className="mt-3 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                    <p className="mt-3 text-[10px] font-semibold uppercase tracking-wide text-body-faint">
                       {label}
                     </p>
-                    <p className="mt-1 break-words text-sm font-semibold text-slate-800">
+                    <p className="mt-1 break-words text-sm font-semibold text-ink-secondary">
                       {value}
                     </p>
                   </div>
@@ -233,19 +233,19 @@ export default async function CarDetailsPage({
               </div>
             </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+            <section className="rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-7">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
                 {l.carDetailsPage.aboutThisCar}
               </p>
               <h2 className="mt-2 font-heading text-2xl font-bold tracking-tight">
                 {l.carDetailsPage.description}
               </h2>
-              <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 sm:text-base">
+              <p className="mt-4 whitespace-pre-line text-sm leading-7 text-body-muted sm:text-base">
                 {car.description || l.carDetailsPage.missingDescription}
               </p>
             </section>
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <section className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
               <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
@@ -254,7 +254,7 @@ export default async function CarDetailsPage({
                   <h2 className="mt-2 font-heading text-2xl font-bold tracking-tight">
                     {l.carDetailsPage.findTheCar}
                   </h2>
-                  <p className="mt-2 flex items-start gap-2 text-sm text-slate-600">
+                  <p className="mt-2 flex items-start gap-2 text-sm text-body-muted">
                     <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand" />
                     <span>{location}</span>
                   </p>
@@ -264,7 +264,7 @@ export default async function CarDetailsPage({
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold text-body transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                 >
                   {l.carDetailsPage.openInGoogleMaps}
                   <ExternalLink className="h-4 w-4" />
@@ -281,7 +281,7 @@ export default async function CarDetailsPage({
                   referrerPolicy="strict-origin-when-cross-origin"
                 />
               ) : (
-                <div className="flex min-h-64 items-center justify-center border-t border-slate-200 bg-slate-950 px-6 py-10 text-center text-white">
+                <div className="flex min-h-64 items-center justify-center border-t border-border bg-ink px-6 py-10 text-center text-white">
                   <div className="max-w-md">
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/15 text-brand/40">
                       <MapPin className="h-6 w-6" />
@@ -289,19 +289,19 @@ export default async function CarDetailsPage({
                     <p className="mt-4 font-bold">
                       {l.carDetailsPage.mapUnavailable}
                     </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                    <p className="mt-2 text-sm leading-6 text-border-strong">
                       {l.carDetailsPage.mapUnavailableDescription}
                     </p>
                   </div>
                 </div>
               )}
 
-              <p className="border-t border-slate-200 bg-slate-50 px-5 py-3 text-xs leading-5 text-slate-500 sm:px-7">
+              <p className="border-t border-border bg-surface px-5 py-3 text-xs leading-5 text-body-subtle sm:px-7">
                 {l.carDetailsPage.handoverLocationNote}
               </p>
             </section>
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <section className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
               <div className="bg-ink-secondary p-5 text-white sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand/40">
                   {l.carDetailsPage.yourHost}
@@ -313,7 +313,7 @@ export default async function CarDetailsPage({
 
               {car.owner ? (
                 <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-7">
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100">
+                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-surface-muted">
                     <Image
                       src={car.owner.images[0] || '/placeholder-user.svg'}
                       alt={car.owner.name}
@@ -326,7 +326,7 @@ export default async function CarDetailsPage({
                     <h3 className="font-heading text-xl font-bold text-ink">
                       {car.owner.name || l.profile.rentMyCarOwner}
                     </h3>
-                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
+                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm text-body-subtle">
                       <span className="flex items-center gap-1.5">
                         <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                         {car.owner.rating > 0
@@ -343,13 +343,13 @@ export default async function CarDetailsPage({
                   </div>
                   <Link
                     href={`/profile/${car.owner._id}`}
-                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand"
+                    className="inline-flex items-center justify-center rounded-xl border border-border px-5 py-3 text-sm font-semibold text-body transition-colors hover:border-brand/20 hover:bg-brand-tint hover:text-brand"
                   >
                     {l.carDetailsPage.viewOwnerProfile}
                   </Link>
                 </div>
               ) : (
-                <p className="p-7 text-sm text-slate-500">
+                <p className="p-7 text-sm text-body-subtle">
                   {l.carDetailsPage.ownerUnavailable}
                 </p>
               )}

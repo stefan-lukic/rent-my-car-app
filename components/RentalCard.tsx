@@ -33,7 +33,7 @@ interface RentalCardProps {
 const statusStyles: Record<string, string> = {
   upcoming: 'bg-brand-tint text-brand-dark',
   ongoing: 'bg-emerald-100 text-emerald-700',
-  completed: 'bg-slate-100 text-slate-600',
+  completed: 'bg-surface-muted text-body-muted',
   cancelled: 'bg-red-100 text-red-700',
 };
 
@@ -78,11 +78,11 @@ const RentalCard: React.FC<RentalCardProps> = ({
     <article
       className={`overflow-hidden rounded-2xl border shadow-sm ${
         isCancelled
-          ? 'border-slate-300 bg-slate-100 opacity-70 grayscale'
+          ? 'border-border-strong bg-surface-muted opacity-70 grayscale'
           : 'border-border bg-white transition hover:-translate-y-0.5 hover:shadow-md'
       }`}
     >
-      <div className="relative h-48 w-full bg-slate-100">
+      <div className="relative h-48 w-full bg-surface-muted">
         <Image
           src={images[currentImageIndex] || '/placeholder-car.svg'}
           alt={`${car.make} ${car.carModel}`}
@@ -109,7 +109,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 setCurrentImageIndex((index) => Math.max(0, index - 1))
               }
               disabled={currentImageIndex === 0}
-              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
+              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -122,7 +122,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
                 )
               }
               disabled={currentImageIndex === images.length - 1}
-              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md transition hover:bg-white disabled:opacity-40"
+              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-ink-secondary shadow-md transition hover:bg-white disabled:opacity-40"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -136,7 +136,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <h3 className="font-heading text-base font-semibold text-ink">
               {car.make} {car.carModel}
             </h3>
-            <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+            <p className="mt-1 flex items-center gap-1.5 text-xs text-body-subtle">
               <MapPin className="h-3.5 w-3.5 text-brand" />
               {car.city}
             </p>
@@ -146,20 +146,20 @@ const RentalCard: React.FC<RentalCardProps> = ({
           </div>
           <div className="text-right">
             <p className="text-sm font-semibold text-brand">€{totalCost}</p>
-            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-body-faint">
               {l.common.total}
             </p>
           </div>
         </div>
 
         <div className="mt-4 rounded-xl border border-border bg-surface p-3">
-          <p className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-400">
+          <p className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-body-faint">
             <CalendarDays className="h-3.5 w-3.5 text-brand" />
             Rental period
           </p>
-          <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-700">
+          <div className="flex items-center justify-between gap-2 text-xs font-semibold text-body">
             <span>{formatDate(rentalPeriod.startDate)}</span>
-            <span className="text-slate-400">→</span>
+            <span className="text-body-faint">→</span>
             <span>{formatDate(rentalPeriod.endDate)}</span>
           </div>
         </div>

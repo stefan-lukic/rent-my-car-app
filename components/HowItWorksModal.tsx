@@ -112,7 +112,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
       <div className="flex items-center justify-between px-6 pt-6 pb-4">
         <div className="flex items-center gap-2">
           <svg
-            className="h-5 w-5 text-slate-400"
+            className="h-5 w-5 text-body-faint"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -135,7 +135,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
           type="button"
           aria-label={l.common.close}
           onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-body-faint transition-colors hover:bg-surface-muted hover:text-body-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           {l.common.close}
         </button>
@@ -153,7 +153,7 @@ const HowItWorksModal: React.FC<HowItWorksModalProps> = ({
               <p className="mb-0.5 font-heading text-sm font-semibold text-ink">
                 {step.number}. {step.title}
               </p>
-              <p className="text-sm leading-relaxed text-slate-500">
+              <p className="text-sm leading-relaxed text-body-subtle">
                 {step.description}
               </p>
             </div>

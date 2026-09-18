@@ -14,12 +14,12 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-surface px-4 py-8">
-      <section className="w-full max-w-md space-y-7 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
+      <section className="w-full max-w-md space-y-7 rounded-2xl border border-border bg-white p-6 shadow-lg">
         <div className="space-y-3 text-center">
           <h1 className="font-heading text-3xl font-bold text-ink">
             {l.auth.resetPasswordHeading}
           </h1>
-          <p className="text-sm leading-6 text-slate-500">
+          <p className="text-sm leading-6 text-body-subtle">
             {l.auth.resetPasswordDesc}
           </p>
         </div>
@@ -39,7 +39,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-700">
+              <span className="mb-2 block text-sm font-semibold text-body">
                 {l.auth.newPassword}
               </span>
               <input
@@ -50,7 +50,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
                   minLength: { value: 8, message: l.auth.passwordMinLength },
                   maxLength: { value: 128, message: l.auth.passwordMaxLength },
                 })}
-                className="w-full rounded-xl border border-slate-200 p-4 text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
+                className="w-full rounded-xl border border-border p-4 text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
               />
               {errors.password && (
                 <span className="mt-1 block text-sm text-red-600">
@@ -60,7 +60,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-700">
+              <span className="mb-2 block text-sm font-semibold text-body">
                 {l.auth.confirmPassword}
               </span>
               <input
@@ -71,7 +71,7 @@ const MobileResetPasswordForm = ({ token }: MobileResetPasswordFormProps) => {
                   validate: (value, formValues) =>
                     value === formValues.password || l.auth.passwordsDoNotMatch,
                 })}
-                className="w-full rounded-xl border border-slate-200 p-4 text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
+                className="w-full rounded-xl border border-border p-4 text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-tint"
               />
               {errors.confirmPassword && (
                 <span className="mt-1 block text-sm text-red-600">

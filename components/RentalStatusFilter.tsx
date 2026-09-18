@@ -49,7 +49,7 @@ export default function RentalStatusFilter({
           {option.label}
           <span
             className={`rounded-full px-1.5 py-0.5 text-[10px] ${
-              value === option.value ? 'bg-white/20' : 'bg-slate-100'
+              value === option.value ? 'bg-white/20' : 'bg-surface-muted'
             }`}
           >
             {counts[option.value]}

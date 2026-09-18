@@ -42,7 +42,7 @@ export default function EditProfileForm({
     <div className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 md:py-8 lg:px-8">
       <Link
         href="/profile/my-profile"
-        className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-brand"
+        className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-body-subtle transition hover:text-brand"
       >
         <ArrowLeft className="h-4 w-4" />
         {l.profile.backToProfile}
@@ -57,7 +57,7 @@ export default function EditProfileForm({
           <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight text-white md:text-4xl">
             {l.profile.editProfileHeroTitle}
           </h1>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 md:text-base">
+          <p className="mt-3 max-w-xl text-sm leading-6 text-border-strong md:text-base">
             {l.profile.editProfileHeroDesc}
           </p>
         </div>
@@ -67,8 +67,8 @@ export default function EditProfileForm({
         onSubmit={handleSubmit}
         className="mt-5 grid items-start gap-5 lg:grid-cols-[0.8fr_1.2fr]"
       >
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-100 px-6 py-5">
+        <section className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+          <div className="border-b border-surface-muted px-6 py-5">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
               {l.profile.profilePhoto}
             </p>
@@ -78,7 +78,7 @@ export default function EditProfileForm({
           </div>
 
           <div className="flex flex-col items-center px-6 py-8 text-center">
-            <div className="relative h-36 w-36 overflow-hidden rounded-2xl border-4 border-white bg-slate-100 shadow-sm ring-1 ring-slate-200">
+            <div className="relative h-36 w-36 overflow-hidden rounded-2xl border-4 border-white bg-surface-muted shadow-sm ring-1 ring-border">
               <Image
                 src={imagePreview || '/placeholder-user.svg'}
                 alt="Profile preview"
@@ -106,20 +106,20 @@ export default function EditProfileForm({
               {l.profile.chooseNewPhoto}
             </label>
 
-            <p className="mt-3 text-xs leading-5 text-slate-500">
+            <p className="mt-3 text-xs leading-5 text-body-subtle">
               {l.profile.photoFileHint}
             </p>
             <div className="mt-6 flex w-full items-start gap-3 rounded-2xl bg-brand-tint p-4 text-left">
               <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-brand" />
-              <p className="text-xs leading-5 text-slate-600">
+              <p className="text-xs leading-5 text-body-muted">
                 {l.profile.photoTrustHint}
               </p>
             </div>
           </div>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-100 px-6 py-5 sm:px-7">
+        <section className="rounded-2xl border border-border bg-white shadow-sm">
+          <div className="border-b border-surface-muted px-6 py-5 sm:px-7">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
               {l.profile.personalDetails}
             </p>
@@ -131,7 +131,7 @@ export default function EditProfileForm({
           <div className="space-y-6 px-6 py-6 sm:px-7">
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="relative">
-                <UserRound className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-slate-400" />
+                <UserRound className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-body-faint" />
                 <FormInput
                   label={l.profile.fullName}
                   name="name"
@@ -145,7 +145,7 @@ export default function EditProfileForm({
               </div>
 
               <div className="relative">
-                <Phone className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-slate-400" />
+                <Phone className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-body-faint" />
                 <FormInput
                   label={l.common.phoneNumber}
                   name="contactInfo"
@@ -160,19 +160,19 @@ export default function EditProfileForm({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-slate-400" />
+                <Mail className="pointer-events-none absolute left-4 top-[43px] z-10 h-4 w-4 text-body-faint" />
                 <FormInput
                   label={l.common.email}
                   name="email"
                   type="email"
                   value={initialProfile.email}
                   disabled
-                  className="cursor-not-allowed bg-slate-100 pl-11 text-slate-500"
+                  className="cursor-not-allowed bg-surface-muted pl-11 text-body-subtle"
                 />
               </div>
-              <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-slate-500">
+              <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-body-subtle">
                 <LockKeyhole className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
                 {l.profile.emailLockedHint}
               </p>
@@ -188,10 +188,10 @@ export default function EditProfileForm({
               </div>
             )}
 
-            <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-3 border-t border-surface-muted pt-6 sm:flex-row sm:justify-end">
               <Link
                 href="/profile/my-profile"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-border bg-white px-6 py-3 text-sm font-semibold text-body transition-colors hover:bg-surface"
               >
                 {l.common.cancel}
               </Link>

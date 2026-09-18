@@ -139,7 +139,7 @@ const ProfileForm = ({
               onChange={handleInputChange}
               accept="image/*"
               multiple
-              className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-tint file:px-3 file:py-2 file:font-semibold file:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="w-full rounded-xl border border-border bg-white p-3 text-sm text-body-muted file:mr-3 file:rounded-lg file:border-0 file:bg-brand-tint file:px-3 file:py-2 file:font-semibold file:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             />
           </>
         )}
@@ -166,7 +166,7 @@ const ProfileForm = ({
               onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
               aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
               aria-pressed={isPasswordVisible}
-              className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="rounded-lg p-1 text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               {isPasswordVisible ? (
                 <Eye aria-hidden="true" className="h-5 w-5" />
@@ -197,7 +197,7 @@ const ProfileForm = ({
                     : 'Show confirm password'
                 }
                 aria-pressed={isConfirmPasswordVisible}
-                className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="rounded-lg p-1 text-body-subtle transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {isConfirmPasswordVisible ? (
                   <Eye aria-hidden="true" className="h-5 w-5" />
@@ -229,7 +229,7 @@ const ProfileForm = ({
             </button>
 
             <button
-              className="mt-3 flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              className="mt-3 flex w-full items-center justify-center rounded-xl border border-border bg-white p-3.5 text-sm font-medium text-body transition-colors hover:bg-surface"
               type="button"
             >
               <Image

@@ -11,7 +11,7 @@ export default function NotFound() {
         <h1 className="mt-3 font-heading text-5xl font-bold tracking-tight text-ink sm:text-6xl">
           {l.pages.notFound}
         </h1>
-        <p className="mx-auto mt-4 max-w-lg text-base leading-7 text-slate-600">
+        <p className="mx-auto mt-4 max-w-lg text-base leading-7 text-body-muted">
           {l.pages.pageNotFound}
         </p>
         <Link

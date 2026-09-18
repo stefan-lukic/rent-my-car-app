@@ -64,7 +64,7 @@ const ProfilePage = ({
       <main className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 lg:px-8">
         <section className="overflow-hidden rounded-2xl bg-ink px-7 py-8 shadow-md">
           <div className="flex items-center gap-6">
-            <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border-4 border-white/15 bg-slate-800 shadow-sm">
+            <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border-4 border-white/15 bg-ink-secondary shadow-sm">
               <Image
                 src={user.images?.[0] || '/placeholder-user.svg'}
                 alt={user.name}
@@ -85,7 +85,7 @@ const ProfilePage = ({
                 {user.name}
               </h1>
 
-              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300">
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-border-strong">
                 <span className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-brand-light" />
                   {user.email}
@@ -129,7 +129,7 @@ const ProfilePage = ({
                 <p className="font-heading text-xl font-bold text-ink">
                   {value}
                 </p>
-                <p className="text-xs font-medium text-slate-500">{label}</p>
+                <p className="text-xs font-medium text-body-subtle">{label}</p>
               </div>
             </div>
           ))}
