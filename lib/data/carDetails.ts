@@ -2,6 +2,7 @@ import { cache } from 'react';
 import mongoose from 'mongoose';
 import connectToDatabase from '@/lib/db/mongoose';
 import Car from '@/lib/model/car/Car';
+import User from '@/lib/model/User';
 import type { CarDetailsData } from '@/types/CarDetails';
 
 // Keep the public details query allowlisted so private car fields cannot leak by default.
@@ -16,7 +17,11 @@ export const getCarDetails = cache(
 
     const car = await Car.findById(carId)
       .select(PUBLIC_CAR_DETAILS_FIELDS)
-      .populate('renter', '_id name rating images createdAt')
+      .populate({
+        path: 'renter',
+        model: User,
+        select: '_id name rating images createdAt',
+      })
       .lean()
       .exec();
 
