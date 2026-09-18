@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button } from './UI/Button';
+import { Dialog } from './UI/Dialog';
 import l from '@/helper/en';
 
 interface DeleteCarModalProps {
@@ -50,51 +51,50 @@ const DeleteCarModal: React.FC<DeleteCarModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="delete-car-title"
-        className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-xl"
+    <Dialog
+      onClose={onClose}
+      ariaLabelledBy="delete-car-title"
+      overlayClassName="z-[100] bg-ink/60 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+      panelClassName="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-xl"
+    >
+      {/* Keep destructive confirmation isolated from background controls. */}
+      <h2
+        id="delete-car-title"
+        className="mb-2 font-heading text-xl font-bold text-ink"
       >
-        <h2
-          id="delete-car-title"
-          className="mb-2 font-heading text-xl font-bold text-ink"
+        {l.cars.deleteCar}
+      </h2>
+      <p className="mb-6 text-sm leading-6 text-slate-500">
+        {l.cars.deleteCarConfirm}
+      </p>
+      {errorMessage && (
+        <p
+          className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          role="alert"
         >
-          {l.cars.deleteCar}
-        </h2>
-        <p className="mb-6 text-sm leading-6 text-slate-500">
-          {l.cars.deleteCarConfirm}
+          {errorMessage}
         </p>
-        {errorMessage && (
-          <p
-            className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
-            role="alert"
-          >
-            {errorMessage}
-          </p>
-        )}
-        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <Button
-            type="button"
-            onClick={onClose}
-            variant="secondary"
-            className="sm:min-w-28"
-          >
-            {l.common.cancel}
-          </Button>
-          <Button
-            type="button"
-            onClick={handleDelete}
-            disabled={isDeleting}
-            variant="destructive"
-            className="sm:min-w-28"
-          >
-            {isDeleting ? l.common.deleting : l.common.delete}
-          </Button>
-        </div>
+      )}
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <Button
+          type="button"
+          onClick={onClose}
+          variant="secondary"
+          className="sm:min-w-28"
+        >
+          {l.common.cancel}
+        </Button>
+        <Button
+          type="button"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          variant="destructive"
+          className="sm:min-w-28"
+        >
+          {isDeleting ? l.common.deleting : l.common.delete}
+        </Button>
       </div>
-    </div>
+    </Dialog>
   );
 };
 

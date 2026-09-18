@@ -76,11 +76,11 @@ describe('UpdateCarModal', () => {
   });
 
   it('renders above mobile navigation and respects the safe viewport', () => {
-    const { container } = render(
+    render(
       <UpdateCarModal isOpen car={car} onUpdate={vi.fn()} onClose={vi.fn()} />
     );
-    const overlay = container.firstChild;
-    const modal = overlay?.firstChild;
+    const modal = screen.getByRole('dialog', { name: l.cars.updateCar });
+    const overlay = modal.parentElement;
 
     expect(overlay).toHaveClass(
       'z-[100]',

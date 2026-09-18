@@ -14,7 +14,7 @@ describe('Button', () => {
     });
 
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('bg-brand');
     expect(button).toHaveClass('h-10');
   });
 

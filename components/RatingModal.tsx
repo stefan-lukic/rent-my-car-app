@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useState } from 'react';
 import { Star, X } from 'lucide-react';
 import l from '@/helper/en';
 import type { ClientReview, OwnerReview } from '@/types/Review';
+import { Dialog } from '@/components/UI/Dialog';
 
 type RatingModalBaseProps = {
   rentalId: string;
@@ -67,21 +67,6 @@ export default function RatingModal(props: RatingModalProps) {
   const isClient = reviewerRole === 'client';
   const isComplete = personRating > 0 && (!isClient || carRating > 0);
 
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !isSubmitting) onClose();
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isSubmitting, onClose]);
-
   const handleSubmit = async () => {
     if (!isComplete || isSubmitting) return;
 
@@ -134,98 +119,90 @@ export default function RatingModal(props: RatingModalProps) {
     }
   };
 
-  return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm"
-      role="presentation"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget && !isSubmitting) onClose();
-      }}
+  return (
+    <Dialog
+      onClose={onClose}
+      ariaLabelledBy="rating-modal-title"
+      closeOnBackdrop
+      dismissible={!isSubmitting}
+      overlayClassName="z-50 bg-ink/60 p-4 backdrop-blur-sm"
+      panelClassName="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white shadow-xl"
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="rating-modal-title"
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white shadow-xl"
-      >
-        <div className="bg-ink-secondary px-6 py-5 text-white">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand/70">
-                {l.reviews.tripComplete}
-              </p>
-              <h2
-                id="rating-modal-title"
-                className="mt-1 font-heading text-xl font-bold"
-              >
-                {isClient ? l.reviews.clientTitle : l.reviews.ownerTitle}
-              </h2>
-            </div>
-            <button
-              type="button"
-              aria-label="Close rating form"
-              onClick={onClose}
-              disabled={isSubmitting}
-              className="rounded-full p-1.5 text-slate-300 transition hover:bg-white/10 hover:text-white"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-          <p className="mt-2 text-sm leading-6 text-slate-300">
-            {isClient
-              ? l.reviews.clientDescription
-              : l.reviews.ownerDescription}
-          </p>
-        </div>
-
-        <div className="space-y-5 p-6">
-          {isClient && (
-            <StarPicker
-              label={l.reviews.rateCar}
-              value={carRating}
-              onChange={setCarRating}
-            />
-          )}
-          <StarPicker
-            label={
-              isClient
-                ? `${l.reviews.rateOwner}: ${targetName}`
-                : `${l.reviews.rateClientLabel}: ${targetName}`
-            }
-            value={personRating}
-            onChange={setPersonRating}
-          />
-
-          {error && (
-            <p
-              role="alert"
-              className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              {error}
+      {/* Prevent rating submission state from escaping its modal boundary. */}
+      <div className="bg-ink-secondary px-6 py-5 text-white">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand/70">
+              {l.reviews.tripComplete}
             </p>
-          )}
-
-          <div className="flex gap-3 pt-1">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isSubmitting}
-              className="flex min-h-11 flex-1 rounded-xl border border-border px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-surface"
+            <h2
+              id="rating-modal-title"
+              className="mt-1 font-heading text-xl font-bold"
             >
-              {l.reviews.cancel}
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={!isComplete || isSubmitting}
-              className="flex min-h-11 flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-slate-300"
-            >
-              {isSubmitting ? l.reviews.submitting : l.reviews.submit}
-            </button>
+              {isClient ? l.reviews.clientTitle : l.reviews.ownerTitle}
+            </h2>
           </div>
+          <button
+            type="button"
+            aria-label="Close rating form"
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="rounded-full p-1.5 text-slate-300 transition hover:bg-white/10 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <p className="mt-2 text-sm leading-6 text-slate-300">
+          {isClient ? l.reviews.clientDescription : l.reviews.ownerDescription}
+        </p>
+      </div>
+
+      <div className="space-y-5 p-6">
+        {isClient && (
+          <StarPicker
+            label={l.reviews.rateCar}
+            value={carRating}
+            onChange={setCarRating}
+          />
+        )}
+        <StarPicker
+          label={
+            isClient
+              ? `${l.reviews.rateOwner}: ${targetName}`
+              : `${l.reviews.rateClientLabel}: ${targetName}`
+          }
+          value={personRating}
+          onChange={setPersonRating}
+        />
+
+        {error && (
+          <p
+            role="alert"
+            className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700"
+          >
+            {error}
+          </p>
+        )}
+
+        <div className="flex gap-3 pt-1">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="flex min-h-11 flex-1 rounded-xl border border-border px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-surface"
+          >
+            {l.reviews.cancel}
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!isComplete || isSubmitting}
+            className="flex min-h-11 flex-1 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-slate-300"
+          >
+            {isSubmitting ? l.reviews.submitting : l.reviews.submit}
+          </button>
         </div>
       </div>
-    </div>,
-    document.body
+    </Dialog>
   );
 }

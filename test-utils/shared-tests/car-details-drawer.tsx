@@ -55,9 +55,10 @@ export const runCarDetailsDrawerSharedTests = (
     render(<Component {...defaultProps} />);
 
     const dialog = screen.getByRole('dialog');
+    const overlay = dialog.parentElement;
     const actions = screen.getByText('Book Now').closest('footer');
 
-    expect(dialog).toHaveClass('z-[70]');
+    expect(overlay).toHaveClass('z-[60]');
     expect(actions).toHaveClass(
       'pb-[max(1rem,env(safe-area-inset-bottom))]',
       'sm:pb-4'

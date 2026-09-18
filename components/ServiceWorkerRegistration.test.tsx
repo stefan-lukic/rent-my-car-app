@@ -1,16 +1,19 @@
 import React from 'react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ServiceWorkerRegistrar from './ServiceWorkerRegistration';
 
 const mockServiceWorker = vi.fn();
 const mockCacheDelete = vi.fn();
+const mockCacheKeys = vi.fn();
+const mockGetRegistrations = vi.fn();
 
 Object.defineProperty(navigator, 'serviceWorker', {
   value: {
     register: mockServiceWorker.mockResolvedValue({
       scope: '/',
     }),
+    getRegistrations: mockGetRegistrations,
   },
   writable: true,
   configurable: true,
@@ -19,6 +22,7 @@ Object.defineProperty(navigator, 'serviceWorker', {
 Object.defineProperty(window, 'caches', {
   value: {
     delete: mockCacheDelete,
+    keys: mockCacheKeys,
   },
   writable: true,
   configurable: true,
@@ -29,11 +33,29 @@ describe('ServiceWorkerRegistrar', () => {
     vi.clearAllMocks();
     mockServiceWorker.mockResolvedValue({ scope: '/' });
     mockCacheDelete.mockResolvedValue(true);
+    mockCacheKeys.mockResolvedValue([]);
+    mockGetRegistrations.mockResolvedValue([]);
     (
-      window as unknown as { caches: { delete: typeof mockCacheDelete } }
+      navigator as unknown as { serviceWorker: ServiceWorkerContainer }
+    ).serviceWorker = {
+      register: mockServiceWorker,
+      getRegistrations: mockGetRegistrations,
+    } as unknown as ServiceWorkerContainer;
+    (
+      window as unknown as {
+        caches: {
+          delete: typeof mockCacheDelete;
+          keys: typeof mockCacheKeys;
+        };
+      }
     ).caches = {
       delete: mockCacheDelete,
+      keys: mockCacheKeys,
     };
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it('renders no visible UI', () => {
@@ -56,6 +78,22 @@ describe('ServiceWorkerRegistrar', () => {
     await vi.waitFor(() => {
       expect(mockCacheDelete).toHaveBeenCalledWith('offlineCache');
     });
+  });
+
+  it('removes stale workers and caches instead of registering in development', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const unregister = vi.fn().mockResolvedValue(true);
+    mockGetRegistrations.mockResolvedValue([{ unregister }]);
+    mockCacheKeys.mockResolvedValue(['static-resources', 'workbox-precache']);
+
+    render(<ServiceWorkerRegistrar />);
+
+    await vi.waitFor(() => {
+      expect(unregister).toHaveBeenCalledOnce();
+      expect(mockCacheDelete).toHaveBeenCalledWith('static-resources');
+      expect(mockCacheDelete).toHaveBeenCalledWith('workbox-precache');
+    });
+    expect(mockServiceWorker).not.toHaveBeenCalled();
   });
 
   it('still registers when the Cache API is unavailable', async () => {

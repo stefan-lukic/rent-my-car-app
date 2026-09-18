@@ -23,6 +23,7 @@ import HowItWorksModal from './HowItWorksModal';
 import RenterCard from './RenterCard';
 import l from '@/helper/en';
 import { formatCalendarDate } from '@/lib/utils/calendarDate';
+import { Dialog } from '@/components/UI/Dialog';
 
 export interface CarDetailsDrawerProps {
   car: ICar | null;
@@ -103,18 +104,14 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        onClick={onClose}
-        className="fixed inset-0 z-[60] bg-ink/60 backdrop-blur-[2px]"
-      />
-
-      <aside
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="car-details-title"
-        className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col bg-white shadow-xl sm:w-[500px] lg:w-[540px]"
+      <Dialog
+        onClose={onClose}
+        ariaLabelledBy="car-details-title"
+        closeOnBackdrop
+        overlayClassName="z-[60] items-stretch justify-end bg-ink/60 backdrop-blur-[2px]"
+        panelClassName="flex h-full w-full flex-col bg-white shadow-xl sm:w-[500px] lg:w-[540px]"
       >
+        {/* Give the drawer the same focus boundary and restoration as modal dialogs. */}
         <header className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
@@ -304,7 +301,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             {l.common.bookNow}
           </button>
         </footer>
-      </aside>
+      </Dialog>
 
       <HowItWorksModal
         isOpen={isModalOpen}

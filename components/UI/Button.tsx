@@ -8,7 +8,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-brand bg-primary text-white shadow-sm hover:bg-brand-dark',
+        // Keep primary actions on the shared brand color across the app.
+        default: 'bg-brand text-white shadow-sm hover:bg-brand-dark',
         destructive:
           'bg-danger bg-[var(--button)] text-white shadow-sm hover:bg-red-700',
         outline:
