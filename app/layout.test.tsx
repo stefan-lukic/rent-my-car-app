@@ -26,7 +26,7 @@ vi.mock('@vercel/speed-insights/next', () => ({
   SpeedInsights: () => null,
 }));
 
-import RootLayout, { viewport } from './layout';
+import RootLayout, { metadata, viewport } from './layout';
 
 describe('Root layout viewport metadata', () => {
   it('uses one accessible Next.js viewport configuration', () => {
@@ -34,7 +34,21 @@ describe('Root layout viewport metadata', () => {
       width: 'device-width',
       initialScale: 1,
       viewportFit: 'cover',
-      themeColor: '#F8FAFC',
+      themeColor: '#2563eb',
+    });
+
+    expect(metadata).toMatchObject({
+      title: 'RentMyCar',
+      description: 'Find and rent cars from local owners across Serbia.',
+      manifest: '/manifest.json',
+      appleWebApp: {
+        capable: true,
+        statusBarStyle: 'black-translucent',
+        title: 'RentMyCar',
+      },
+      other: {
+        'mobile-web-app-capable': 'yes',
+      },
     });
 
     const markup = renderToStaticMarkup(
@@ -45,6 +59,7 @@ describe('Root layout viewport metadata', () => {
 
     expect(markup.match(/<main/g)).toHaveLength(1);
     expect(markup).not.toContain('name="viewport"');
+    expect(markup).not.toContain('apple-mobile-web-app');
     expect(markup).not.toContain('ios-pwa-fix');
     expect(markup).not.toContain("overflow = 'hidden'");
   });
