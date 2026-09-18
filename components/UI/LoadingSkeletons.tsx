@@ -57,7 +57,7 @@ export function CarResultsSkeleton({ mobile = false }: { mobile?: boolean }) {
 export function AuthFormSkeleton() {
   return (
     <LoadingRegion>
-      <div className="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-surface px-4">
+      <main className="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-surface px-4">
         <div className="w-full max-w-md rounded-2xl border border-border bg-surface-0 p-6 shadow-lg">
           <div className="mb-10 flex flex-col items-center gap-3">
             <Skeleton className="h-8 w-52" />
@@ -73,7 +73,7 @@ export function AuthFormSkeleton() {
             <Skeleton className="mx-auto h-4 w-56 max-w-full" />
           </div>
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }
@@ -81,7 +81,7 @@ export function AuthFormSkeleton() {
 export function AuthActionSkeleton() {
   return (
     <LoadingRegion>
-      <div className="flex min-h-[400px] items-center justify-center bg-surface px-4">
+      <main className="flex min-h-[400px] items-center justify-center bg-surface px-4">
         <div className="w-full max-w-md rounded-2xl border border-border bg-surface-0 p-8 shadow-lg">
           <div className="mb-8 flex flex-col items-center gap-3">
             <Skeleton className="h-8 w-52" />
@@ -89,7 +89,7 @@ export function AuthActionSkeleton() {
           </div>
           <Skeleton className="h-12 w-full bg-brand-tint" />
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }
@@ -97,7 +97,7 @@ export function AuthActionSkeleton() {
 export function HomePageSkeleton() {
   return (
     <LoadingRegion>
-      <div className="min-h-screen bg-surface">
+      <main className="min-h-screen bg-surface">
         <div className="border-b border-surface-muted bg-white px-4 py-5 md:px-8">
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Skeleton className="h-9 w-36" />
@@ -120,7 +120,7 @@ export function HomePageSkeleton() {
             <Skeleton className="h-44 w-full bg-white" />
           </div>
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }
@@ -128,7 +128,7 @@ export function HomePageSkeleton() {
 export function ProfilePageSkeleton() {
   return (
     <LoadingRegion>
-      <div className="min-h-screen bg-surface">
+      <main className="min-h-screen bg-surface">
         <div className="hidden border-b border-surface-muted bg-white px-6 py-5 md:block">
           <Skeleton className="mx-auto h-10 max-w-5xl" />
         </div>
@@ -164,7 +164,7 @@ export function ProfilePageSkeleton() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }
@@ -172,7 +172,7 @@ export function ProfilePageSkeleton() {
 export function OwnerProfileSkeleton() {
   return (
     <LoadingRegion>
-      <div className="min-h-screen bg-surface">
+      <main className="min-h-screen bg-surface">
         <div className="border-b border-surface-muted bg-white px-4 py-4">
           <Skeleton className="mx-auto h-10 max-w-7xl" />
         </div>
@@ -213,7 +213,7 @@ export function OwnerProfileSkeleton() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }
@@ -221,7 +221,7 @@ export function OwnerProfileSkeleton() {
 export function DetailPageSkeleton() {
   return (
     <LoadingRegion>
-      <div className="min-h-screen bg-surface">
+      <main className="min-h-screen bg-surface">
         <div className="border-b border-surface-muted bg-white px-4 py-4">
           <Skeleton className="mx-auto h-10 max-w-7xl" />
         </div>
@@ -240,7 +240,7 @@ export function DetailPageSkeleton() {
           </div>
           <Skeleton className="h-[520px] w-full rounded-2xl bg-white" />
         </div>
-      </div>
+      </main>
     </LoadingRegion>
   );
 }

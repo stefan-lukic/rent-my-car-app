@@ -39,10 +39,11 @@ describe('Root layout viewport metadata', () => {
 
     const markup = renderToStaticMarkup(
       <RootLayout>
-        <div>Page content</div>
+        <main>Page content</main>
       </RootLayout>
     );
 
+    expect(markup.match(/<main/g)).toHaveLength(1);
     expect(markup).not.toContain('name="viewport"');
     expect(markup).not.toContain('ios-pwa-fix');
     expect(markup).not.toContain("overflow = 'hidden'");

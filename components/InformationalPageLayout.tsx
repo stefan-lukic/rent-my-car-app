@@ -31,7 +31,7 @@ export default function InformationalPageLayout({
   children,
 }: InformationalPageLayoutProps) {
   return (
-    <div className="min-h-full bg-surface pb-28 text-ink md:pb-16">
+    <main className="min-h-full bg-surface pb-28 text-ink md:pb-16">
       <header className="border-b border-border bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2.5">
@@ -103,6 +103,6 @@ export default function InformationalPageLayout({
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         {children}
       </div>
-    </div>
+    </main>
   );
 }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-5rem)] max-w-3xl items-center px-4 py-16 sm:px-6">
+    <main className="mx-auto flex min-h-[calc(100dvh-5rem)] max-w-3xl items-center px-4 py-16 sm:px-6">
       <section className="w-full rounded-2xl border border-border bg-surface-0 px-6 py-14 text-center shadow-sm sm:px-12">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand">
           Error 404
@@ -21,6 +21,6 @@ export default function NotFound() {
           {l.common.backToHome}
         </Link>
       </section>
-    </div>
+    </main>
   );
 }
