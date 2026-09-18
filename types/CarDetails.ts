@@ -7,6 +7,7 @@ export interface CarDetailsOwner {
 }
 
 export interface CarDetailsData {
+  // Public car details deliberately omit the private pickup address.
   _id: string;
   make: string;
   carModel: string;
@@ -15,7 +16,6 @@ export interface CarDetailsData {
   seats?: number;
   carType: string;
   city: string;
-  carLocation: string;
   firstRegistration?: string;
   milage: number;
   averageConsumption: string;

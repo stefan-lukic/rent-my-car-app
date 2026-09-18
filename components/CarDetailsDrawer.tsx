@@ -73,7 +73,8 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
 
   const images = car.images ?? [];
   const totalImages = images.length;
-  const location = [car.city, car.carLocation].filter(Boolean).join(', ');
+  // Search previews expose the city, never the owner's precise pickup address.
+  const location = car.city;
   const detailsQuery = new URLSearchParams(searchQuery);
   if (startDate) detailsQuery.set('start', formatCalendarDate(startDate));
   if (endDate) detailsQuery.set('end', formatCalendarDate(endDate));

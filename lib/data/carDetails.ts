@@ -4,6 +4,10 @@ import connectToDatabase from '@/lib/db/mongoose';
 import Car from '@/lib/model/car/Car';
 import type { CarDetailsData } from '@/types/CarDetails';
 
+// Keep the public details query allowlisted so private car fields cannot leak by default.
+const PUBLIC_CAR_DETAILS_FIELDS =
+  '_id make carModel engine power seats carType city firstRegistration milage averageConsumption images pricePerDay description rating ratingCount renter +bookedPeriods';
+
 export const getCarDetails = cache(
   async (carId: string): Promise<CarDetailsData | null> => {
     if (!mongoose.Types.ObjectId.isValid(carId)) return null;
@@ -11,7 +15,7 @@ export const getCarDetails = cache(
     await connectToDatabase();
 
     const car = await Car.findById(carId)
-      .select('+bookedPeriods')
+      .select(PUBLIC_CAR_DETAILS_FIELDS)
       .populate('renter', '_id name rating images createdAt')
       .lean()
       .exec();
@@ -36,7 +40,6 @@ export const getCarDetails = cache(
       seats: car.seats,
       carType: car.carType,
       city: car.city,
-      carLocation: car.carLocation,
       firstRegistration: car.firstRegistration?.toISOString(),
       milage: car.milage,
       averageConsumption: car.averageConsumption,

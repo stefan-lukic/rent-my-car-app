@@ -41,6 +41,19 @@ export const runCarDetailsDrawerSharedTests = (
     expect(screen.getByText('01/01/2020')).toBeInTheDocument();
   });
 
+  it('shows only the public city and hides the precise pickup address', () => {
+    const privateAddress = 'Kralja Petra 42';
+    render(
+      <Component
+        {...defaultProps}
+        car={{ ...mockCar, carLocation: privateAddress }}
+      />
+    );
+
+    expect(screen.getByText(mockCar.city)).toBeInTheDocument();
+    expect(screen.queryByText(privateAddress)).not.toBeInTheDocument();
+  });
+
   it('shows a neutral message while owner details are loading', () => {
     render(<Component {...defaultProps} renter={null} renterLoading={true} />);
     expect(screen.getByText('Loading owner details...')).toBeInTheDocument();
