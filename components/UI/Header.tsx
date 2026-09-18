@@ -41,8 +41,12 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
             ) : (
               <div className="flex items-center gap-3">
                 <LogoutButton />
-                <Link href="/profile/my-profile">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
+
+                <Link
+                  href="/profile/my-profile"
+                  aria-label={l.navigation.myProfileRentals}
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
                     <span className="text-xs font-bold uppercase text-body">
                       {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>
@@ -114,8 +118,11 @@ const Header = ({ onHowItWorksClick }: { onHowItWorksClick?: () => void }) => {
             ) : (
               <>
                 <LogoutButton />
-                <Link href="/profile/my-profile">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
+                <Link
+                  href="/profile/my-profile"
+                  aria-label={l.navigation.myProfileRentals}
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand hover:bg-brand-tint">
                     <span className="text-xs font-bold uppercase text-body">
                       {user?.name?.charAt(0) ?? l.common.profileInitial}
                     </span>

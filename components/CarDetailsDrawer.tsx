@@ -137,7 +137,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
             type="button"
             aria-label={l.carDetailsPage.closeDetails}
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-body transition hover:border-brand-light hover:bg-brand-tint hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-body transition hover:border-brand-light hover:bg-brand-tint hover:text-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <X className="h-5 w-5" />
           </button>
@@ -170,7 +170,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     setCurrentImageIndex((index) => Math.max(index - 1, 0))
                   }
                   disabled={currentImageIndex === 0}
-                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -183,7 +183,7 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                     )
                   }
                   disabled={currentImageIndex === totalImages - 1}
-                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-secondary shadow-lg transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
@@ -195,12 +195,16 @@ const CarDetailsDrawer: React.FC<CarDetailsDrawerProps> = ({
                       key={`${image}-${index}`}
                       aria-label={l.carDetailsPage.showImage(index + 1)}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`h-1.5 rounded-full transition-all ${
-                        index === currentImageIndex
-                          ? 'w-6 bg-white'
-                          : 'w-1.5 bg-white/60 hover:bg-white'
-                      }`}
-                    />
+                      className="flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      <span
+                        className={`h-1.5 rounded-full transition-all ${
+                          index === currentImageIndex
+                            ? 'w-6 bg-white'
+                            : 'w-1.5 bg-white/60'
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </>

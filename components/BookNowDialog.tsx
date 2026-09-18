@@ -70,11 +70,12 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             {l.booking.bookMakeModel(car.make, car.carModel)}
           </h2>
         </div>
+
         <button
           type="button"
           aria-label="Close booking dialog"
           onClick={onClose}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-xl leading-none text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          className="flex h-11 w-11 items-center justify-center rounded-full text-xl leading-none text-body transition-colors hover:bg-surface hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
         >
           {l.common.close}
         </button>

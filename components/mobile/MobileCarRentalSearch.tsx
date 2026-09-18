@@ -81,12 +81,16 @@ const MobileCarRentalSearch = ({
         className="space-y-4 rounded-2xl border border-border bg-white p-4 shadow-sm"
       >
         <div>
-          <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-body">
+          <label
+            htmlFor="mobile-search-city"
+            className="mb-2 block text-xs font-semibold uppercase tracking-widest text-body"
+          >
             {l.search.location}
           </label>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand" />
             <select
+              id="mobile-search-city"
               {...form.register('city')}
               className="min-h-11 w-full appearance-none rounded-xl border border-border bg-white py-3.5 pl-10 pr-4 text-sm text-ink shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand-tint"
             >

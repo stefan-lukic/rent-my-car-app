@@ -77,7 +77,7 @@ export default function MobileProfileUserInfoCard({
           <Link
             href="/profile/edit"
             aria-label={l.profile.editProfile}
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white text-ink-secondary shadow-sm transition hover:bg-brand-tint"
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white text-ink-secondary shadow-sm transition hover:bg-brand-tint"
           >
             <Pencil className="h-4 w-4" />
           </Link>

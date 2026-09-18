@@ -15,7 +15,7 @@ describe('Button', () => {
 
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('bg-brand');
-    expect(button).toHaveClass('h-10');
+    expect(button).toHaveClass('h-11');
   });
 
   it('poziva prosledjenu funkciju kada korisnik klikne', async () => {

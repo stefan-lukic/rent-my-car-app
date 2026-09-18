@@ -21,7 +21,11 @@ const ForgotPasswordForm = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div>
+            <label htmlFor="forgot-password-email" className="sr-only">
+              {l.auth.enterEmail}
+            </label>
             <input
+              id="forgot-password-email"
               type="email"
               placeholder={l.auth.enterEmail}
               {...register('email', { required: l.auth.emailRequired })}

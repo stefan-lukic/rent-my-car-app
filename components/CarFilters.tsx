@@ -63,8 +63,8 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
       </div>
 
       <div className="space-y-4">
-        <div>
-          <label className={labelClass}>{l.search.priceRangeEur}</label>
+        <fieldset>
+          <legend className={labelClass}>{l.search.priceRangeEur}</legend>
           <div className="grid grid-cols-2 gap-2">
             <input
               type="number"
@@ -87,7 +87,7 @@ export default function CarFilters({ filters, setFilters }: CarFiltersProps) {
               aria-label={l.search.maxPlaceholder}
             />
           </div>
-        </div>
+        </fieldset>
 
         <FilterSelect
           label={l.search.carMake}
