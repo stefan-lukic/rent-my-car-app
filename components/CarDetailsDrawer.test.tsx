@@ -17,6 +17,7 @@ describe('CarDetailsDrawer', () => {
   const defaultProps = {
     car: mockCar,
     renter: mockRenter,
+    renterLoading: false,
     isOpen: true,
     onClose: vi.fn(),
     onBookNow: vi.fn(),

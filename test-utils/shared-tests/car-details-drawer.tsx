@@ -20,6 +20,7 @@ export const runCarDetailsDrawerSharedTests = (
   const defaultProps: CarDetailsDrawerProps = {
     car: mockCar,
     renter: mockRenter,
+    renterLoading: false,
     isOpen: true,
     onClose: vi.fn(),
     onBookNow: vi.fn(),
@@ -33,6 +34,19 @@ export const runCarDetailsDrawerSharedTests = (
   it('renders nothing when car is missing', async () => {
     render(<Component {...defaultProps} car={null} />);
     expect(screen.queryByText('Car Details')).not.toBeInTheDocument();
+  });
+
+  it('formats registration dates consistently', () => {
+    render(<Component {...defaultProps} />);
+    expect(screen.getByText('01/01/2020')).toBeInTheDocument();
+  });
+
+  it('shows a neutral message while owner details are loading', () => {
+    render(<Component {...defaultProps} renter={null} renterLoading={true} />);
+    expect(screen.getByText('Loading owner details...')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Owner information is not available.')
+    ).not.toBeInTheDocument();
   });
 
   it('requests close when close button is clicked', async () => {
