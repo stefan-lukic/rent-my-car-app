@@ -107,7 +107,7 @@ describe('POST /api/auth/signup', () => {
     });
   });
 
-  it('rejects unsupported profile images before accessing the database', async () => {
+  it('rejects unsupported images before accessing the database', async () => {
     mocks.validateImageUploads.mockReturnValue({
       files: [],
       error: 'Only JPEG, PNG, and WebP images are allowed',
