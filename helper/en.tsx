@@ -234,6 +234,8 @@ const l = {
     reservationAlreadyCancelled: 'This reservation is already cancelled',
     cancellationCutoffPassed:
       'Cancellation is unavailable less than 24 hours before the rental starts',
+    ownerCancelledReservation: 'The car owner cancelled this reservation.',
+    youCancelledReservation: 'You cancelled this reservation.',
     cannotCancelReservation:
       'You are not authorized to cancel this reservation',
   },
@@ -386,8 +388,9 @@ const l = {
   pages: {
     cancellationOptions: 'Cancellation Policy',
     flexiblePolicy: 'Reservation Cancellation Policy',
+    // Cancellation copy distinguishes the client's notice period from the owner's pickup deadline.
     cancellationDesc:
-      'Clients can cancel an active reservation through My Profile & Rentals when at least 24 hours remain before the rental starts.',
+      'Clients can cancel at least 24 hours before pickup. Car owners can cancel an incoming reservation until the rental starts.',
     forClients: 'For clients:',
     clientCancellationWindow:
       'Cancellation is available when at least 24 hours remain before the rental start time',
@@ -397,7 +400,7 @@ const l = {
       'After cancellation, the reservation is marked as cancelled and the car dates become available again',
     forCarOwners: 'For car owners:',
     ownerCancellationUnavailable:
-      'Car owners currently cannot cancel reservations through the application',
+      'Car owners can cancel an incoming reservation any time before the rental starts',
     noOwnerCancellationPenalties:
       'The application does not apply listing visibility penalties for cancellations',
     paymentArrangements:
@@ -488,7 +491,7 @@ const l = {
         {
           question: 'Can I cancel a reservation?',
           answer:
-            'A client can cancel from My Profile when at least 24 hours remain before the rental begins. Later changes must be discussed directly with the owner.',
+            'Clients can cancel from My Profile at least 24 hours before pickup. Car owners can cancel an incoming reservation until the rental starts.',
         },
         {
           question: 'How do I list my car?',
@@ -533,7 +536,7 @@ const l = {
         {
           title: 'Reservations and cancellations',
           description:
-            'A reservation records the selected vehicle, dates and estimated total. Clients may cancel through My Profile until 24 hours before the rental starts. RentMyCar does not automatically process refunds, so any payment-related outcome must be agreed directly between the users.',
+            'A reservation records the selected vehicle, dates and estimated total. Clients may cancel through My Profile at least 24 hours before pickup; car owners may cancel until the rental starts. RentMyCar does not automatically process refunds, so any payment-related outcome must be agreed directly between the users.',
         },
         {
           title: 'Handover and user responsibility',
@@ -709,6 +712,8 @@ const l = {
     completed: 'Completed',
     inactive: 'Inactive',
     cancelled: 'Cancelled',
+    cancelledByOwner: 'Cancelled by owner',
+    cancelledByYou: 'Cancelled by you',
   },
 
   pushNotifications: {

@@ -28,6 +28,17 @@ describe('canCancelRental', () => {
     expect(canCancelRental(rental, '2026-09-01T12:00:00.001Z')).toBe(false);
   });
 
+  it('lets the owner cancel inside 24 hours but not after pickup begins', () => {
+    const rental = createRental('2026-09-02T12:00:00.000Z', '2026-09-05');
+
+    expect(canCancelRental(rental, '2026-09-02T11:59:59.000Z', 'owner')).toBe(
+      true
+    );
+    expect(canCancelRental(rental, '2026-09-02T12:00:00.000Z', 'owner')).toBe(
+      false
+    );
+  });
+
   it('never allows an already cancelled rental to be cancelled again', () => {
     const rental = createRental(
       '2026-09-05T12:00:00.000Z',
@@ -36,6 +47,9 @@ describe('canCancelRental', () => {
     );
 
     expect(canCancelRental(rental, '2026-09-01T12:00:00.000Z')).toBe(false);
+    expect(canCancelRental(rental, '2026-09-01T12:00:00.000Z', 'owner')).toBe(
+      false
+    );
   });
 });
 

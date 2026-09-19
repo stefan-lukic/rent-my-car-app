@@ -109,6 +109,23 @@ describe('MobileProfileInteractiveSection', () => {
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
   });
 
+  it('keeps an owner-cancelled reservation in mobile history', async () => {
+    const user = userEvent.setup();
+    render(
+      <MobileProfileInteractiveSection
+        {...defaultProps}
+        activeTab="rentals"
+        rentals={[{ ...mockRentals[0], status: 'cancelled' }]}
+      />
+    );
+
+    await user.click(screen.getByRole('tab', { name: /Cancelled/i }));
+
+    expect(screen.getByTestId('mobile-rental-card')).toHaveTextContent(
+      'BMW X5'
+    );
+  });
+
   it('shows empty message when no cars are listed', async () => {
     const user = userEvent.setup();
     render(<MobileProfileInteractiveSection {...defaultProps} cars={[]} />);

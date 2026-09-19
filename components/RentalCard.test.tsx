@@ -59,6 +59,36 @@ describe('RentalCard', () => {
     );
   });
 
+  it('identifies an owner cancellation in the client history', () => {
+    const cancelledRental = createMockRental({
+      status: RentalStatus.Cancelled,
+      renter: 'owner-1',
+      cancelledBy: 'owner-1',
+    });
+
+    render(<RentalCard {...defaultProps} rental={cancelledRental} />);
+
+    expect(screen.getByText(l.status.cancelledByOwner)).toBeInTheDocument();
+    expect(
+      screen.getByText(l.booking.ownerCancelledReservation)
+    ).toBeInTheDocument();
+  });
+
+  it('identifies a client cancellation separately', () => {
+    const cancelledRental = createMockRental({
+      status: RentalStatus.Cancelled,
+      renter: 'owner-1',
+      cancelledBy: 'client-1',
+    });
+
+    render(<RentalCard {...defaultProps} rental={cancelledRental} />);
+
+    expect(screen.getByText(l.status.cancelledByYou)).toBeInTheDocument();
+    expect(
+      screen.getByText(l.booking.youCancelledReservation)
+    ).toBeInTheDocument();
+  });
+
   it('uses rental status instead of car availability status', () => {
     const activeRentalWithInactiveCar = createMockRental({
       status: RentalStatus.Active,

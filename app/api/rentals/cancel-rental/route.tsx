@@ -50,18 +50,22 @@ export async function DELETE(req: NextRequest) {
     }
 
     const userId = session.user.id;
-    if (rental.client.toString() !== userId) {
+    // Apply the client notice period without blocking owners before pickup.
+    const isClient = rental.client.toString() === userId;
+    const isOwner = rental.renter?.toString() === userId;
+    if (!isClient && !isOwner) {
       return NextResponse.json(
         { message: 'Not authorized to cancel this reservation' },
         { status: 403 }
       );
     }
 
-    if (!canCancelRental(rental, new Date())) {
+    if (!canCancelRental(rental, new Date(), isOwner ? 'owner' : 'client')) {
       return NextResponse.json(
         {
-          message:
-            'Reservations can only be cancelled at least 24 hours before the start time',
+          message: isOwner
+            ? 'Reservations cannot be cancelled after the rental starts'
+            : 'Reservations can only be cancelled at least 24 hours before the start time',
         },
         { status: 409 }
       );
@@ -114,9 +118,16 @@ export async function DELETE(req: NextRequest) {
 
     const car = await Car.findById(rental.car).lean().exec();
 
-    const cancelledByName =
-      (client?._id?.toString() === userId ? client?.name : owner?.name) ||
-      'Someone';
+    const cancelledByName = isOwner
+      ? owner?.name
+        ? `the car owner (${owner.name})`
+        : 'the car owner'
+      : client?.name || 'the client';
+    const carName = car
+      ? `${car.make} ${car.carModel}`
+      : rental.carSnapshot
+        ? `${rental.carSnapshot.make} ${rental.carSnapshot.carModel}`
+        : 'your booking';
 
     const emailTasks: { label: string; promise: Promise<void> }[] = [];
 
@@ -126,7 +137,7 @@ export async function DELETE(req: NextRequest) {
         promise: sendCancellationNotificationToCustomer({
           customerEmail: client.email,
           customerName: client.name || 'Customer',
-          carName: car ? `${car.make} ${car.carModel}` : 'your booking',
+          carName,
           startDate: rental.rentalPeriod.startDate,
           endDate: rental.rentalPeriod.endDate,
           cancelledByName,
@@ -140,7 +151,7 @@ export async function DELETE(req: NextRequest) {
         promise: sendCancellationNotificationToOwner({
           email: owner.email,
           ownerName: owner.name || 'Owner',
-          carName: car ? `${car.make} ${car.carModel}` : 'your car',
+          carName,
           customerName: client?.name || 'Customer',
           startDate: rental.rentalPeriod.startDate,
           endDate: rental.rentalPeriod.endDate,

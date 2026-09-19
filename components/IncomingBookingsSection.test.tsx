@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import IncomingBookingsSection from './IncomingBookingsSection';
@@ -75,6 +75,73 @@ describe('IncomingBookingsSection', () => {
         name: 'Message customer, coming soon',
       })
     ).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: l.booking.cancelReservation })
+    ).toBeInTheDocument();
+  });
+
+  it('offers owner cancellation inside 24 hours but not after pickup starts', () => {
+    const { rerender } = render(
+      <IncomingBookingsSection
+        bookings={[booking]}
+        currentDate="2026-08-31T23:30:00.000Z"
+      />
+    );
+
+    expect(
+      screen.getByRole('button', { name: l.booking.cancelReservation })
+    ).toBeInTheDocument();
+
+    rerender(
+      <IncomingBookingsSection
+        bookings={[booking]}
+        currentDate="2026-09-01T00:00:00.000Z"
+      />
+    );
+
+    expect(
+      screen.queryByRole('button', { name: l.booking.cancelReservation })
+    ).not.toBeInTheDocument();
+  });
+
+  it('updates an incoming booking after the owner cancels it', async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.spyOn(global, 'fetch').mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          rental: { ...booking, status: RentalStatus.Cancelled },
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      )
+    );
+
+    render(
+      <IncomingBookingsSection bookings={[booking]} currentDate={currentDate} />
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: l.booking.cancelReservation })
+    );
+    await user.click(
+      within(screen.getByRole('dialog')).getByRole('button', {
+        name: l.booking.cancelReservation,
+      })
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/rentals/cancel-rental',
+      expect.objectContaining({
+        method: 'DELETE',
+        body: JSON.stringify({ rentalId: booking._id }),
+      })
+    );
+    expect(await screen.findAllByText('Cancelled')).toHaveLength(2);
+    expect(screen.queryByText('ana@example.com')).not.toBeInTheDocument();
+    expect(screen.queryByText('+381601234567')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: l.booking.cancelReservation })
+    ).not.toBeInTheDocument();
+    fetchMock.mockRestore();
   });
 
   it('shows two bookings per page and navigates horizontally', async () => {
