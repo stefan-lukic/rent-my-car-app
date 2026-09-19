@@ -18,12 +18,14 @@ import {
 import { OwnerBooking } from '@/types/OwnerBooking';
 import RentalStatusFilter from './RentalStatusFilter';
 import {
+  canCancelRental,
   getRentalLifecycleStatus,
   RentalLifecycleStatus,
   RentalStatusFilterValue,
 } from '@/lib/rentalLifecycle';
 import l from '@/helper/en';
 import RatingModal from './RatingModal';
+import CancelRentalModal from './CancelRentalModal';
 
 interface IncomingBookingsSectionProps {
   bookings: OwnerBooking[];
@@ -66,6 +68,9 @@ export default function IncomingBookingsSection({
   const [bookings, setBookings] = useState(initialBookings);
   const [currentPage, setCurrentPage] = useState(0);
   const [bookingToReview, setBookingToReview] = useState<OwnerBooking | null>(
+    null
+  );
+  const [bookingToCancel, setBookingToCancel] = useState<OwnerBooking | null>(
     null
   );
   const [statusFilter, setStatusFilter] =
@@ -170,6 +175,11 @@ export default function IncomingBookingsSection({
                 const status = statusPresentation[lifecycleStatus];
                 const pickupLocation = booking.carLocation || car.carLocation;
                 const canViewContact = Boolean(client.email);
+                const cancellationAllowed = canCancelRental(
+                  booking,
+                  currentDate,
+                  'owner'
+                );
 
                 return (
                   <article
@@ -353,6 +363,17 @@ export default function IncomingBookingsSection({
                         </div>
                       )}
 
+                      {/* Owners can cancel before pickup, including inside the client's 24-hour cutoff. */}
+                      {cancellationAllowed && (
+                        <button
+                          type="button"
+                          onClick={() => setBookingToCancel(booking)}
+                          className="flex min-h-11 w-full items-center justify-center rounded-xl border border-red-200 px-4 py-2.5 text-xs font-semibold text-red-700 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                        >
+                          {l.booking.cancelReservation}
+                        </button>
+                      )}
+
                       {lifecycleStatus === RentalLifecycleStatus.Completed &&
                         (booking.ownerReview?.submittedAt ? (
                           <div className="flex items-center justify-center gap-2 rounded-xl bg-emerald-50 py-2.5 text-xs font-bold text-emerald-700">
@@ -423,6 +444,32 @@ export default function IncomingBookingsSection({
             );
             setBookingToReview(null);
           }}
+        />
+      )}
+
+      {bookingToCancel && (
+        <CancelRentalModal
+          isOpen
+          rentalId={bookingToCancel._id}
+          onCancelled={() => {
+            setBookings((currentBookings) =>
+              currentBookings.map((booking) =>
+                booking._id === bookingToCancel._id
+                  ? {
+                      ...booking,
+                      status: 'cancelled',
+                      client: booking.client && {
+                        ...booking.client,
+                        email: undefined,
+                        contactInfo: undefined,
+                      },
+                    }
+                  : booking
+              )
+            );
+            setBookingToCancel(null);
+          }}
+          onClose={() => setBookingToCancel(null)}
         />
       )}
     </section>

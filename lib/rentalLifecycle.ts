@@ -26,7 +26,8 @@ const getUtcDay = (value: string | Date) => {
 
 export function canCancelRental(
   rental: RentalLifecycleInput,
-  currentDate: string | Date
+  currentDate: string | Date,
+  cancelledBy: 'client' | 'owner' = 'client'
 ) {
   if (rental.status === RentalStatus.Cancelled) return false;
 
@@ -35,6 +36,9 @@ export function canCancelRental(
 
   if (!Number.isFinite(startTime) || !Number.isFinite(currentTime))
     return false;
+
+  // Owners may cancel until pickup, while clients still need 24 hours' notice.
+  if (cancelledBy === 'owner') return startTime > currentTime;
 
   // Exactly 24 hours before the rental starts is still inside the allowed window.
   return startTime - currentTime >= CANCELLATION_CUTOFF_MS;

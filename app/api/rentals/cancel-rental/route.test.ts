@@ -13,6 +13,8 @@ const mocks = vi.hoisted(() => ({
   updateOne: vi.fn(),
   findCarById: vi.fn(),
   findUserById: vi.fn(),
+  sendCustomerEmail: vi.fn(),
+  sendOwnerEmail: vi.fn(),
 }));
 
 vi.mock('next-auth/next', () => ({
@@ -61,8 +63,8 @@ vi.mock('@/lib/model/User', () => ({
 }));
 
 vi.mock('@/lib/emailService/sendEmail', () => ({
-  sendCancellationNotificationToCustomer: vi.fn(),
-  sendCancellationNotificationToOwner: vi.fn(),
+  sendCancellationNotificationToCustomer: mocks.sendCustomerEmail,
+  sendCancellationNotificationToOwner: mocks.sendOwnerEmail,
 }));
 
 import { DELETE } from './route';
@@ -97,11 +99,25 @@ const createUpcomingRental = (overrides: Record<string, unknown> = {}) => ({
   ...overrides,
 });
 
+const mockNotificationRecipients = () => {
+  const users = new Map([
+    [clientId, { _id: clientId, name: 'Ana', email: 'ana@example.com' }],
+    [ownerId, { _id: ownerId, name: 'Milan', email: 'milan@example.com' }],
+  ]);
+  mocks.findUserById.mockImplementation((id: { toString(): string }) => ({
+    select: () => ({
+      lean: () => ({ exec: async () => users.get(id.toString()) ?? null }),
+    }),
+  }));
+};
+
 describe('DELETE /api/rentals/cancel-rental', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(currentTime);
     vi.clearAllMocks();
+    mocks.sendCustomerEmail.mockReset().mockResolvedValue(undefined);
+    mocks.sendOwnerEmail.mockReset().mockResolvedValue(undefined);
     mocks.getServerSession.mockResolvedValue({ user: { id: clientId } });
     mocks.isValidObjectId.mockReturnValue(true);
     mocks.findById.mockResolvedValue(createUpcomingRental());
@@ -186,6 +202,137 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     expect(mocks.startSession).toHaveBeenCalledOnce();
   });
 
+  it('allows the car owner to cancel an upcoming reservation', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { id: ownerId } });
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.findOneAndUpdate).toHaveBeenCalledWith(
+      { _id: rentalId, status: 'active' },
+      expect.objectContaining({
+        $set: expect.objectContaining({
+          status: 'cancelled',
+          cancelledBy: expect.anything(),
+        }),
+      }),
+      expect.objectContaining({ new: true, session: expect.anything() })
+    );
+    expect(
+      mocks.findOneAndUpdate.mock.calls[0][1].$set.cancelledBy.toString()
+    ).toBe(ownerId);
+    expect(mocks.updateOne).toHaveBeenCalledOnce();
+  });
+
+  it('lets the owner cancel inside the client 24-hour cutoff', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { id: ownerId } });
+    mocks.findById.mockResolvedValue(
+      createUpcomingRental({
+        rentalPeriod: {
+          startDate: new Date(Date.now() + 23 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 2 * 86_400_000),
+        },
+      })
+    );
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.updateOne).toHaveBeenCalledOnce();
+  });
+
+  it('blocks the owner once the rental starts', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { id: ownerId } });
+    mocks.findById.mockResolvedValue(
+      createUpcomingRental({
+        rentalPeriod: {
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now() + 2 * 86_400_000),
+        },
+      })
+    );
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      message: 'Reservations cannot be cancelled after the rental starts',
+    });
+    expect(mocks.startSession).not.toHaveBeenCalled();
+  });
+
+  it('emails both parties only after the owner cancellation commits', async () => {
+    const rental = createUpcomingRental();
+    let committed = false;
+    mocks.getServerSession.mockResolvedValue({ user: { id: ownerId } });
+    mocks.findById.mockResolvedValue(rental);
+    mockNotificationRecipients();
+    mocks.withTransaction.mockImplementation(async (callback) => {
+      await callback();
+      committed = true;
+    });
+    mocks.sendCustomerEmail.mockImplementation(async () => {
+      expect(committed).toBe(true);
+    });
+    mocks.sendOwnerEmail.mockImplementation(async () => {
+      expect(committed).toBe(true);
+    });
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.sendCustomerEmail).toHaveBeenCalledWith({
+      customerEmail: 'ana@example.com',
+      customerName: 'Ana',
+      carName: 'Audi A4',
+      startDate: rental.rentalPeriod.startDate,
+      endDate: rental.rentalPeriod.endDate,
+      cancelledByName: 'the car owner (Milan)',
+    });
+    expect(mocks.sendOwnerEmail).toHaveBeenCalledOnce();
+  });
+
+  it('keeps a committed owner cancellation successful if email fails', async () => {
+    const emailError = new Error('SMTP unavailable');
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    mocks.getServerSession.mockResolvedValue({ user: { id: ownerId } });
+    mockNotificationRecipients();
+    mocks.sendCustomerEmail.mockRejectedValue(emailError);
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.updateOne).toHaveBeenCalledOnce();
+    expect(mocks.sendOwnerEmail).toHaveBeenCalledOnce();
+    expect(consoleError).toHaveBeenCalledWith(
+      'Failed to send customer cancellation:',
+      emailError
+    );
+    consoleError.mockRestore();
+  });
+
+  it('does not break client cancellation when a historical rental lacks an owner', async () => {
+    mocks.findById.mockResolvedValue(createUpcomingRental({ renter: null }));
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(200);
+    expect(mocks.updateOne).toHaveBeenCalledOnce();
+  });
+
+  it('rejects cancellation by a user outside the reservation', async () => {
+    mocks.getServerSession.mockResolvedValue({
+      user: { id: '507f1f77bcf86cd799439099' },
+    });
+
+    const response = await DELETE(createRequest());
+
+    expect(response.status).toBe(403);
+    expect(mocks.startSession).not.toHaveBeenCalled();
+  });
+
   it('cancels the rental and releases its booked period in one transaction', async () => {
     const response = await DELETE(createRequest());
 
@@ -244,6 +391,8 @@ describe('DELETE /api/rentals/cancel-rental', () => {
     });
     expect(mocks.findOneAndUpdate).toHaveBeenCalledOnce();
     expect(mocks.endSession).toHaveBeenCalledOnce();
+    expect(mocks.sendCustomerEmail).not.toHaveBeenCalled();
+    expect(mocks.sendOwnerEmail).not.toHaveBeenCalled();
   });
 
   it('returns conflict without starting a transaction when already cancelled', async () => {

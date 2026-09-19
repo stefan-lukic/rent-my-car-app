@@ -65,6 +65,19 @@ const RentalCard: React.FC<RentalCardProps> = ({
   const { car, rentalPeriod, totalCost } = rental;
   const status = getRentalLifecycleStatus(rental, currentDate);
   const isCancelled = status === RentalLifecycleStatus.Cancelled;
+  // The saved booking owner identifies who cancelled, even if the car changes later.
+  const cancellationActor =
+    isCancelled && rental.cancelledBy && rental.renter
+      ? rental.cancelledBy.toString() === rental.renter.toString()
+        ? 'owner'
+        : 'client'
+      : null;
+  const displayedStatus =
+    cancellationActor === 'owner'
+      ? l.status.cancelledByOwner
+      : cancellationActor === 'client'
+        ? l.status.cancelledByYou
+        : statusLabel[status];
   const cancellationAllowed = canCancelRental(rental, currentDate);
   const images = car.images ?? [];
   const formatDate = (date: Date) =>
@@ -96,7 +109,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
               statusStyles[status]
             }`}
           >
-            {statusLabel[status]}
+            {displayedStatus}
           </span>
         )}
 
@@ -163,6 +176,14 @@ const RentalCard: React.FC<RentalCardProps> = ({
             <span>{formatDate(rentalPeriod.endDate)}</span>
           </div>
         </div>
+
+        {cancellationActor && (
+          <p className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-xs font-semibold text-red-800">
+            {cancellationActor === 'owner'
+              ? l.booking.ownerCancelledReservation
+              : l.booking.youCancelledReservation}
+          </p>
+        )}
 
         {status === RentalLifecycleStatus.Upcoming &&
           onCancel &&

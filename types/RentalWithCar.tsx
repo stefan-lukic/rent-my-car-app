@@ -15,6 +15,8 @@ export type RentalWithCar = {
   };
   totalCost: number;
   status?: RentalStatus;
+  // Keep the booking owner for cancellation attribution after listing changes.
+  renter?: string;
   cancelledAt?: Date;
   cancelledBy?: string;
   clientReview?: ClientReview;

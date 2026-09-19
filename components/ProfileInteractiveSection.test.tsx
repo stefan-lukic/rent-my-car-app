@@ -9,6 +9,7 @@ import { CarMake } from '@/lib/model/car/CarMake';
 import { createNextNavigationMock } from '@/test-utils/mocks/next-navigation';
 import { createMockCar } from '@/test-utils/fixtures/car';
 import { createMockRental } from '@/test-utils/fixtures/rental';
+import { RentalStatus } from '@/types/RentalWithCar';
 createNextNavigationMock();
 
 const mockPush = vi.fn();
@@ -105,6 +106,29 @@ describe('ProfileInteractiveSection', () => {
     const rentalCards = screen.getAllByTestId('rental-card');
 
     expect(rentalCards.length).toBe(1);
+  });
+
+  it('keeps an owner-cancelled reservation in client history', async () => {
+    const user = userEvent.setup();
+    const cancelledRental = createMockRental({
+      status: RentalStatus.Cancelled,
+      renter: 'owner-1',
+      cancelledBy: 'owner-1',
+    });
+    render(
+      <ProfileInteractiveSection
+        {...defaultProps}
+        rentals={[cancelledRental]}
+      />
+    );
+
+    await user.click(screen.getByRole('tab', { name: /My Rentals/i }));
+    await user.click(screen.getByRole('tab', { name: /Cancelled/i }));
+
+    expect(screen.getByTestId('rental-card')).toHaveAttribute(
+      'data-rental-id',
+      cancelledRental._id
+    );
   });
 
   it('shows empty message when no cars are listed', async () => {
