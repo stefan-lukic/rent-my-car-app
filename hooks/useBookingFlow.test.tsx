@@ -102,6 +102,7 @@ describe('useBookingFlow', () => {
     });
 
     expect(result.current.bookingError).toBe('Booking period is unavailable');
+    expect(result.current.bookingSuccess).toBe('');
 
     act(() => {
       result.current.closeBooking();
@@ -109,6 +110,7 @@ describe('useBookingFlow', () => {
 
     expect(result.current.modals.booking).toBe(false);
     expect(result.current.bookingError).toBe('');
+    expect(result.current.bookingSuccess).toBe('');
     expect(setSelectedCar).toHaveBeenLastCalledWith(null);
   });
 
@@ -139,7 +141,22 @@ describe('useBookingFlow', () => {
     });
 
     expect(result.current.bookingError).toBe('');
+    expect(result.current.bookingSuccess).toBe(
+      'BMW X5 is reserved. You can review the trip in My Rentals.'
+    );
     expect(setSelectedCar).toHaveBeenLastCalledWith(null);
+
+    act(() => {
+      result.current.dismissBookingSuccess();
+    });
+
+    expect(result.current.bookingSuccess).toBe('');
+
+    act(() => {
+      result.current.openBooking(car);
+    });
+
+    expect(result.current.bookingSuccess).toBe('');
   });
 
   it('prevents another booking submission while one is pending', async () => {
