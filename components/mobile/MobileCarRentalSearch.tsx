@@ -8,7 +8,10 @@ import {
   Search,
   Info,
   ChevronDown,
+  CheckCircle2,
+  X,
 } from 'lucide-react';
+import Link from 'next/link';
 import { CarCity } from '@/lib/model/car/CarCity';
 import MobileCarSearchResults from './MobileCarSearchResults';
 import BookingDialog from '../BookNowDialog';
@@ -56,6 +59,8 @@ const MobileCarRentalSearch = ({
     modals,
     setModals,
     bookingError,
+    bookingSuccess,
+    dismissBookingSuccess,
     isBooking,
     isUnauthorized,
     handleBooking,
@@ -144,6 +149,35 @@ const MobileCarRentalSearch = ({
           </div>
         )}
       </form>
+
+      {bookingSuccess && (
+        <div
+          role="status"
+          className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] left-4 right-4 z-[110] flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 pr-2 text-sm text-emerald-800 shadow-xl"
+        >
+          <CheckCircle2
+            aria-hidden="true"
+            className="mt-0.5 h-5 w-5 shrink-0"
+          />
+          <div>
+            <p>{bookingSuccess}</p>
+            <Link
+              href="/profile/my-profile"
+              className="mt-1 inline-block font-semibold underline"
+            >
+              {l.carDetailsPage.viewMyRentals}
+            </Link>
+          </div>
+          <button
+            type="button"
+            onClick={dismissBookingSuccess}
+            aria-label="Dismiss booking confirmation"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          >
+            <X aria-hidden="true" className="h-4 w-4" />
+          </button>
+        </div>
+      )}
 
       {searchError && (
         <div

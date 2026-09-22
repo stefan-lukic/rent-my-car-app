@@ -109,6 +109,8 @@ describe('MobileCarRentalSearch', () => {
     mocks.useBookingFlow.mockReturnValue({
       modals: { booking: false, details: false },
       bookingError: '',
+      bookingSuccess: '',
+      dismissBookingSuccess: vi.fn(),
       isBooking: false,
       isUnauthorized: false,
       handleBooking: vi.fn(),
@@ -132,6 +134,27 @@ describe('MobileCarRentalSearch', () => {
     render(<MobileCarRentalSearch filters={mockFilters} />);
 
     expect(screen.getByText('BMW X5')).toBeInTheDocument();
+  });
+
+  it('shows booking confirmation and a link to rentals', () => {
+    const dismissBookingSuccess = vi.fn();
+    mocks.useBookingFlow.mockReturnValue({
+      ...mocks.useBookingFlow(),
+      bookingSuccess: 'BMW X5 is reserved.',
+      dismissBookingSuccess,
+    });
+
+    render(<MobileCarRentalSearch filters={mockFilters} />);
+
+    expect(screen.getByRole('status')).toHaveTextContent('BMW X5 is reserved.');
+    expect(
+      screen.getByRole('link', { name: l.carDetailsPage.viewMyRentals })
+    ).toHaveAttribute('href', '/profile/my-profile');
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Dismiss booking confirmation' })
+    );
+    expect(dismissBookingSuccess).toHaveBeenCalledOnce();
   });
 
   it('calls onSearch when search button is clicked', () => {

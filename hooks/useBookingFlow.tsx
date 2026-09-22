@@ -18,6 +18,7 @@ export function useBookingFlow({
 
   const [modals, setModals] = useState({ booking: false, details: false });
   const [bookingError, setBookingError] = useState('');
+  const [bookingSuccess, setBookingSuccess] = useState('');
   const [isBooking, setIsBooking] = useState(false);
 
   const handleBooking = async (selectedCar: ICar) => {
@@ -28,6 +29,11 @@ export function useBookingFlow({
 
     try {
       await confirmBooking(selectedCar);
+      setBookingSuccess(
+        l.carDetailsPage.bookingSuccessful(
+          `${selectedCar.make} ${selectedCar.carModel}`
+        )
+      );
       setModals({ booking: false, details: false });
       setSelectedCar(null);
     } catch (error) {
@@ -40,6 +46,7 @@ export function useBookingFlow({
   };
 
   const openBooking = (car: ICar) => {
+    setBookingSuccess('');
     setSelectedCar(car);
     setModals({ booking: true, details: false });
   };
@@ -49,6 +56,8 @@ export function useBookingFlow({
     setSelectedCar(null);
     setBookingError('');
   };
+
+  const dismissBookingSuccess = () => setBookingSuccess('');
 
   const openDetails = (car: ICar, detailsFn: (car: ICar) => void) => {
     detailsFn(car);
@@ -64,6 +73,8 @@ export function useBookingFlow({
     modals,
     setModals,
     bookingError,
+    bookingSuccess,
+    dismissBookingSuccess,
     isBooking,
     isUnauthorized: !isAuthenticated,
     handleBooking,
