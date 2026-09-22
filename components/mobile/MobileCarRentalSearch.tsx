@@ -110,12 +110,14 @@ const MobileCarRentalSearch = ({
             control={form.control}
             label={l.search.pickUp}
             minDate={new Date()}
+            centerOnScreen
           />
           <CustomDatePicker
             name="endDate"
             control={form.control}
             label={l.search.returnDate}
             minDate={form.watch('startDate') || new Date()}
+            centerOnScreen
           />
         </div>
 

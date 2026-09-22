@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Controller, Control, FieldValues, Path } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,6 +16,7 @@ type CustomDatePickerProps<T extends FieldValues> = {
   maxDate?: Date;
   minDate?: Date;
   placeholderText?: string;
+  centerOnScreen?: boolean;
 };
 
 export default function CustomDatePicker<T extends FieldValues>({
@@ -24,8 +26,10 @@ export default function CustomDatePicker<T extends FieldValues>({
   maxDate,
   minDate,
   placeholderText = l.cars.selectDate,
+  centerOnScreen = false,
 }: CustomDatePickerProps<T>) {
   const inputId = `${name}-input`;
+  const datePickerRef = useRef<DatePicker>(null);
 
   return (
     <div className="w-full">
@@ -39,9 +43,15 @@ export default function CustomDatePicker<T extends FieldValues>({
         render={({ field, fieldState }) => (
           <>
             <DatePicker
+              ref={datePickerRef}
               id={inputId}
               selected={field.value ?? null}
-              onChange={field.onChange}
+              onChange={(date) => {
+                field.onChange(date);
+                datePickerRef.current?.setOpen(false);
+              }}
+              shouldCloseOnSelect
+              withPortal={centerOnScreen}
               dateFormat="MM/dd/yyyy"
               maxDate={maxDate}
               minDate={minDate}
