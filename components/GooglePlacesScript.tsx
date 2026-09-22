@@ -17,7 +17,7 @@ export default function GooglePlacesScript() {
         <Script
           id="rentmycar-google-places-script"
           src={`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&loading=async&libraries=places&v=weekly`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       ) : null}
     </>

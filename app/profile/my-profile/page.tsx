@@ -11,12 +11,27 @@ import Car from '@/lib/model/car/Car';
 import Rental from '@/lib/model/Rental';
 import { protectOwnerBookingContact } from '@/lib/ownerBookingPrivacy';
 import type { OwnerBooking } from '@/types/OwnerBooking';
+import type { RentalWithCar, RentalStatus } from '@/types/RentalWithCar';
+import type { ICar } from '@/lib/model/car/Car';
+import type { IUser } from '@/lib/model/User';
 import GooglePlacesScript from '@/components/GooglePlacesScript';
 
-type SerializedRental = Partial<
-  Pick<OwnerBooking, 'status' | 'rentalPeriod' | 'client'>
-> & {
-  car: unknown | null;
+type SerializedCar = Pick<
+  ICar,
+  '_id' | 'make' | 'carModel' | 'city' | 'images' | 'pricePerDay'
+> &
+  Partial<Pick<ICar, 'carLocation' | 'renter'>>;
+
+type SerializedRental = {
+  _id: string;
+  car: SerializedCar | null;
+  rentalPeriod: RentalWithCar['rentalPeriod'];
+  totalCost: number;
+  status?: RentalStatus;
+  renter?: string;
+  cancelledAt?: string;
+  cancelledBy?: string;
+  clientReview?: RentalWithCar['clientReview'];
   carSnapshot?: {
     carId: string;
     make: string;
@@ -26,10 +41,17 @@ type SerializedRental = Partial<
     carLocation: string;
     pricePerDay: number;
   } | null;
-  [key: string]: unknown;
 };
 
-const restoreHistoricalCar = (rental: SerializedRental) => {
+type SerializedOwnerBooking = OwnerBooking & {
+  carSnapshot?: SerializedRental['carSnapshot'];
+};
+
+const restoreHistoricalCar = <
+  Rental extends SerializedRental | SerializedOwnerBooking,
+>(
+  rental: Rental
+) => {
   const { carSnapshot, ...rentalData } = rental;
 
   if (rental.car || !carSnapshot) {
@@ -41,6 +63,26 @@ const restoreHistoricalCar = (rental: SerializedRental) => {
     ...rentalData,
     car: { _id: carId, ...carData },
   };
+};
+
+const reusePopulatedCars = <
+  Car extends { _id: string },
+  Rental extends { car: Car | null },
+>(
+  rentals: Rental[]
+) => {
+  const carCache = new Map<string, Car>();
+
+  return rentals.map((rental) => {
+    if (!rental.car) return rental;
+
+    const carId = rental.car._id.toString();
+    const cachedCar = carCache.get(carId);
+    if (cachedCar) return { ...rental, car: cachedCar };
+
+    carCache.set(carId, rental.car);
+    return rental;
+  });
 };
 
 export default async function MyProfilePage() {
@@ -63,8 +105,16 @@ export default async function MyProfilePage() {
         .select('name email contactInfo images rating ratingCount createdAt')
         .lean(),
       Car.find({ renter: session.user.id }).lean(),
-      Rental.find({ client: session.user.id }).populate('car').lean(),
+      Rental.find({ client: session.user.id })
+        .select(
+          'car renter rentalPeriod totalCost status cancelledAt cancelledBy clientReview carSnapshot'
+        )
+        .populate('car', 'make carModel images city pricePerDay renter')
+        .lean(),
       Rental.find({ renter: session.user.id })
+        .select(
+          'car client carLocation rentalPeriod totalCost status ownerReview carSnapshot'
+        )
         .sort({ 'rentalPeriod.startDate': 1 })
         .populate('car', 'make carModel images city carLocation')
         .populate('client', 'name email contactInfo images rating ratingCount')
@@ -82,14 +132,39 @@ export default async function MyProfilePage() {
         rentalsDocuments,
         ownerBookingsDocuments,
       ])
-    );
-    const rentals = serializedRentals.map(restoreHistoricalCar);
+    ) as [IUser, ICar[], SerializedRental[], SerializedOwnerBooking[]];
+
+    const rentals = reusePopulatedCars(
+      serializedRentals.map(restoreHistoricalCar)
+    ) as RentalWithCar[];
     const currentDate = new Date().toISOString();
-    const ownerBookings = serializedOwnerBookings
-      .map(restoreHistoricalCar)
-      .map((booking: SerializedRental) =>
-        protectOwnerBookingContact(booking, currentDate)
+    const restoredOwnerBookings = reusePopulatedCars(
+      serializedOwnerBookings.map(restoreHistoricalCar)
+    ) as SerializedOwnerBooking[];
+    const ownerBookings = restoredOwnerBookings.map((booking) => {
+      const compactBooking = {
+        ...booking,
+        car: booking.car
+          ? { ...booking.car, images: booking.car.images?.slice(0, 1) }
+          : null,
+        client:
+          'client' in booking && booking.client
+            ? {
+                ...booking.client,
+                images: booking.client.images?.slice(0, 1),
+              }
+            : null,
+      } as OwnerBooking;
+      const protectedBooking = protectOwnerBookingContact(
+        compactBooking,
+        currentDate
       );
+
+      return {
+        ...compactBooking,
+        client: protectedBooking.client ?? null,
+      };
+    });
 
     const isMobile = isMobileSSR();
 

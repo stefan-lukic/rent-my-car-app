@@ -130,6 +130,9 @@ const carSchema: Schema<ICar> = new Schema(
   }
 );
 
+// Match the owner profile query without scanning the complete car collection.
+carSchema.index({ renter: 1 });
+
 const Car: Model<ICar> =
   mongoose.models.Car || mongoose.model<ICar>('Car', carSchema);
 export default Car;

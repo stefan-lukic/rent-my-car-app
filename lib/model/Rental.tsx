@@ -79,6 +79,9 @@ rentalSchema.index({
   'rentalPeriod.startDate': 1,
   'rentalPeriod.endDate': 1,
 });
+// Match the profile queries so MongoDB does not scan every rental document.
+rentalSchema.index({ client: 1 });
+rentalSchema.index({ renter: 1, 'rentalPeriod.startDate': 1 });
 
 const Rental: Model<IRental> =
   mongoose.models.Rental || mongoose.model<IRental>('Rental', rentalSchema);

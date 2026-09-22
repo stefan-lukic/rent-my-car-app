@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { LogOut } from 'lucide-react';
 import l from '@/helper/en';
 
 export default function LogoutButton() {
@@ -13,7 +13,8 @@ export default function LogoutButton() {
       onClick={() => signOut({ callbackUrl: '/sign-in' })}
     >
       {l.common.logOut}
-      <LogoutIcon />
+      {/* Reuse the app icon set instead of loading MUI in every shared header. */}
+      <LogOut aria-hidden="true" className="h-4 w-4" />
     </button>
   );
 }

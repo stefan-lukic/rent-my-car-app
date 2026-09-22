@@ -80,7 +80,7 @@ const RentalCard: React.FC<RentalCardProps> = ({
         : statusLabel[status];
   const cancellationAllowed = canCancelRental(rental, currentDate);
   const images = car.images ?? [];
-  const formatDate = (date: Date) =>
+  const formatDate = (date: string | Date) =>
     new Date(date).toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',

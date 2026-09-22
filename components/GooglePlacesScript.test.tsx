@@ -3,8 +3,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import GooglePlacesScript from './GooglePlacesScript';
 
 vi.mock('next/script', () => ({
-  default: ({ strategy: _strategy, ...props }: { strategy?: string }) => (
-    <script {...props} />
+  default: ({ strategy, ...props }: { strategy?: string }) => (
+    <script data-strategy={strategy} {...props} />
   ),
 }));
 
@@ -36,5 +36,6 @@ describe('GooglePlacesScript', () => {
       expect.stringContaining('key=server-key')
     );
     expect(script).toHaveAttribute('src', expect.stringContaining('places'));
+    expect(script).toHaveAttribute('data-strategy', 'lazyOnload');
   });
 });

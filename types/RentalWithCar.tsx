@@ -1,4 +1,4 @@
-import { ICar } from '@/lib/model/car/Car';
+import type { ICar } from '@/lib/model/car/Car';
 import type { ClientReview } from './Review';
 
 export enum RentalStatus {
@@ -6,18 +6,25 @@ export enum RentalStatus {
   Cancelled = 'cancelled',
 }
 
+export type RentalCarSummary = Pick<
+  ICar,
+  '_id' | 'make' | 'carModel' | 'city' | 'images' | 'pricePerDay'
+> &
+  Partial<Pick<ICar, 'carLocation' | 'renter'>>;
+
 export type RentalWithCar = {
   _id: string;
-  car: ICar;
+  // Historical rentals can use a compact snapshot after the original car is deleted.
+  car: RentalCarSummary | null;
   rentalPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: string | Date;
+    endDate: string | Date;
   };
   totalCost: number;
   status?: RentalStatus;
   // Keep the booking owner for cancellation attribution after listing changes.
   renter?: string;
-  cancelledAt?: Date;
+  cancelledAt?: string | Date;
   cancelledBy?: string;
   clientReview?: ClientReview;
 };
