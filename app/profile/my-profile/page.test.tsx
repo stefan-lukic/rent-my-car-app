@@ -76,15 +76,19 @@ describe('MyProfilePage profile data loading', () => {
     mocks.findRentals.mockImplementation((filter) => {
       if ('client' in filter) {
         return {
-          populate: () => ({ lean: () => Promise.resolve(rentals) }),
+          select: () => ({
+            populate: () => ({ lean: () => Promise.resolve(rentals) }),
+          }),
         };
       }
 
       return {
-        sort: () => ({
-          populate: () => ({
+        select: () => ({
+          sort: () => ({
             populate: () => ({
-              lean: () => Promise.resolve(ownerBookings),
+              populate: () => ({
+                lean: () => Promise.resolve(ownerBookings),
+              }),
             }),
           }),
         }),
@@ -106,17 +110,21 @@ describe('MyProfilePage profile data loading', () => {
     mocks.findRentals.mockImplementation((filter) => {
       if ('client' in filter) {
         return {
-          populate: () => ({
-            lean: () => Promise.reject(new Error('Rental query failed')),
+          select: () => ({
+            populate: () => ({
+              lean: () => Promise.reject(new Error('Rental query failed')),
+            }),
           }),
         };
       }
 
       return {
-        sort: () => ({
-          populate: () => ({
+        select: () => ({
+          sort: () => ({
             populate: () => ({
-              lean: () => Promise.resolve(ownerBookings),
+              populate: () => ({
+                lean: () => Promise.resolve(ownerBookings),
+              }),
             }),
           }),
         }),
@@ -145,13 +153,15 @@ describe('MyProfilePage profile data loading', () => {
     };
 
     mocks.findRentals.mockImplementation(() => ({
-      populate: () => ({
-        lean: () => Promise.resolve([historicalRental]),
-      }),
-      sort: () => ({
+      select: () => ({
         populate: () => ({
+          lean: () => Promise.resolve([historicalRental]),
+        }),
+        sort: () => ({
           populate: () => ({
-            lean: () => Promise.resolve([historicalRental]),
+            populate: () => ({
+              lean: () => Promise.resolve([historicalRental]),
+            }),
           }),
         }),
       }),
@@ -182,15 +192,19 @@ describe('MyProfilePage profile data loading', () => {
     mocks.findRentals.mockImplementation((filter) => {
       if ('client' in filter) {
         return {
-          populate: () => ({ lean: () => Promise.resolve(rentals) }),
+          select: () => ({
+            populate: () => ({ lean: () => Promise.resolve(rentals) }),
+          }),
         };
       }
 
       return {
-        sort: () => ({
-          populate: () => ({
+        select: () => ({
+          sort: () => ({
             populate: () => ({
-              lean: () => Promise.resolve([cancelledBooking]),
+              populate: () => ({
+                lean: () => Promise.resolve([cancelledBooking]),
+              }),
             }),
           }),
         }),

@@ -1,8 +1,7 @@
 'use client';
 
 import { Button } from './UI/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import { AlertCircle, CalendarSearch, MapPin } from 'lucide-react';
+import { AlertCircle, CalendarSearch, MapPin, Search } from 'lucide-react';
 import { CarCity } from '@/lib/model/car/CarCity';
 import { useCarSearchForm } from '@/hooks/useCarSearch';
 import CustomDatePicker from './UI/CustomDatePicker';
@@ -119,7 +118,8 @@ const CarRentalSearch = ({
             <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
           ) : (
             <>
-              <SearchIcon className="mr-2" /> {l.common.search}
+              <Search aria-hidden="true" className="mr-2 h-5 w-5" />{' '}
+              {l.common.search}
             </>
           )}
         </Button>

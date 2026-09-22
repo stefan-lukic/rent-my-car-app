@@ -1,10 +1,7 @@
-'use client';
-
 import l from '@/helper/en';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import {
   ArrowRight,
   BadgeEuro,
@@ -12,57 +9,11 @@ import {
   CarFront,
   KeyRound,
 } from 'lucide-react';
-import { CarFilterState } from '@/lib/model/car/CarFilterState';
-import { useAuth } from '@/hooks/useAuth';
-import useMediaQuery from '@/hooks/useMediaQuery';
-import HowItWorksModal from '@/components/HowItWorksModal';
-import CarFilters from '@/components/CarFilters';
-import CarRentalSearch from '@/components/CarRentalSearch';
-import MobileCarFilters from '@/components/mobile/MobileCarFilters';
-import MobileCarRentalSearch from '@/components/mobile/MobileCarRentalSearch';
-import { HomePageSkeleton } from '@/components/UI/LoadingSkeletons';
-import { parseCalendarDate } from '@/lib/utils/calendarDate';
-
-const initialFilters: CarFilterState = {
-  minPrice: '',
-  maxPrice: '',
-  make: '',
-  carType: '',
-  engine: '',
-  minSeats: '',
-};
+import HomeSearchSection from '@/components/HomeSearchSection';
+import HowItWorksButton from '@/components/HowItWorksButton';
+import Skeleton from '@/components/UI/Skeleton';
 
 export default function Home() {
-  return (
-    <Suspense fallback={<HomePageSkeleton />}>
-      <HomeContent />
-    </Suspense>
-  );
-}
-
-function HomeContent() {
-  const searchParams = useSearchParams();
-  const { loading } = useAuth();
-  const isMobile = useMediaQuery('(max-width: 767px)');
-  const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
-  const [filters, setFilters] = useState<CarFilterState>(() => ({
-    minPrice: searchParams.get('minPrice') ?? initialFilters.minPrice,
-    maxPrice: searchParams.get('maxPrice') ?? initialFilters.maxPrice,
-    make: searchParams.get('make') ?? initialFilters.make,
-    carType: searchParams.get('carType') ?? initialFilters.carType,
-    engine: searchParams.get('engine') ?? initialFilters.engine,
-    minSeats: searchParams.get('minSeats') ?? initialFilters.minSeats,
-  }));
-  const initialSearchValues = {
-    city: searchParams.get('city') ?? '',
-    startDate: parseCalendarDate(searchParams.get('start')),
-    endDate: parseCalendarDate(searchParams.get('end')),
-  };
-
-  if (loading || isMobile === null) {
-    return <HomePageSkeleton />;
-  }
-
   return (
     <main className="min-h-screen bg-surface text-ink">
       <section className="relative overflow-hidden border-b border-ink-secondary bg-ink">
@@ -174,28 +125,9 @@ function HomeContent() {
           </p>
         </div>
 
-        {/* Mount only the active search view to prevent duplicate IDs and requests. */}
-        {isMobile ? (
-          <MobileCarRentalSearch
-            filters={filters}
-            initialValues={initialSearchValues}
-            persistSearch
-            filtersSlot={
-              <MobileCarFilters filters={filters} setFilters={setFilters} />
-            }
-          />
-        ) : (
-          <div className="grid items-start gap-6 md:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
-            <aside className="sticky top-24">
-              <CarFilters filters={filters} setFilters={setFilters} />
-            </aside>
-            <CarRentalSearch
-              filters={filters}
-              initialValues={initialSearchValues}
-              persistSearch
-            />
-          </div>
-        )}
+        <Suspense fallback={<Skeleton className="h-44 w-full bg-white" />}>
+          <HomeSearchSection />
+        </Suspense>
       </section>
 
       <section className="border-t border-border bg-white">
@@ -213,13 +145,7 @@ function HomeContent() {
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsHowItWorksOpen(true)}
-            className="min-h-11 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-body transition-colors hover:border-brand-light hover:bg-brand-tint hover:text-brand-dark"
-          >
-            {l.navigation.howItWorksNav}
-          </button>
+          <HowItWorksButton />
         </div>
       </section>
 
@@ -264,12 +190,6 @@ function HomeContent() {
           </nav>
         </div>
       </footer>
-
-      {/* Keep the homepage CTA connected to the same guidance dialog. */}
-      <HowItWorksModal
-        isOpen={isHowItWorksOpen}
-        onClose={() => setIsHowItWorksOpen(false)}
-      />
     </main>
   );
 }
